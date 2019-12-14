@@ -6,7 +6,7 @@
 
 - Ray starting aflockofswifts github organization.  See me (ray) IRL if you want to join the organization.  
 
-- Josh and John are working on a SwiftUI version of Boggle.  Currently sharing around the table using airdrop.
+- Josh and John are working on a SwiftUI version of Boggle.  https://github.com/joshuajhomann/Boggle-SwiftUI
 
 - John and Josh used `UITextChecker` to validate the dictionary which contained 250k invalid words.  Seems to be slow, it takes 5 minutes to process the 300k dictionary.  Cleaned up dictionary opens fast in iOS but crashes in catalyst (???)
 
