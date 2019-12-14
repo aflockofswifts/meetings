@@ -8,8 +8,27 @@
 
 - Josh and John are working on a SwiftUI version of Boggle.  Currently sharing around the table using airdrop.
 
-- Bill wants to know how to use hash tags in his instagram profile
+- John and Josh used `UITextChecker` to validate the dictionary which contained 250k invalid words.  Seems to be slow, it takes 5 minutes to process the 300k dictionary.  Cleaned up dictionary opens fast in iOS but crashes in catalyst (???)
 
-- To be continued...
+- Xcode 11.3 seems to have trouble opening a large json array. Hangs. (Reported to Apple as FB7493904)
+
+- Bill wants to know how to use hash tags in his instagram profile (Not Swift related but hey...)
+
+- Simon is working of SwiftUI layout with video player.  Also used `Bundle.main` to fetch a local video rather than streaming from the web.
+
+- Victoria is going through a SpriteKit tutorial  
+
+- Swiftforgood.com Book is on pre-order.
+
+### Some Code
+
+`PrefixTree` is a trie that provides fast lookup in the English dictionary for a valid word.  Here is the key method:
+
+```swift
+     func contains(_ collection: SomeCollection) -> Bool {
+        collection.reduce(into: self, { $0 = $0?.children[$1]})?.isTerminal == true
+     }
+```
+
 
 
