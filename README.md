@@ -34,7 +34,11 @@ https://www.meetup.com/A-Flock-of-Swifts/
      }
 ```
 
+### Required init issue
+
 A short coming in the current version of Swift is that even if you have a `final class` if you reference and init a `Self` you *MUST* have a `required` initializer.  It seems like it should not be `required` if the class is `final`.
 
- 
+#### Screenshot of Boogle App
+
+![Boogle Screen shot](resources/boggle_screenshot.png)
 
