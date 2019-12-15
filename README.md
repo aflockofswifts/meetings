@@ -1,5 +1,9 @@
 # A Flock of Swifts 
 
+A Flock of Swifts is a physical space meeting of like-minded people excited about the Swift language.  We normally meet each Saturday morning.  Here is our meetup page.  All people and all skill levels are welcome to join.  
+
+https://www.meetup.com/A-Flock-of-Swifts/
+
 ## 2019.12.14 (Sat)
 
 - Discussion  of Markov Chains, Markov Chain Monte Carlo (MCMC)
