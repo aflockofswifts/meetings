@@ -4,7 +4,12 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
-## 2019.12.14 (Sat)
+## 2019.12.21 [A Geeky Swiftmas Party]
+
+The party is enqueued and ready!
+
+
+## 2019.12.14 [New Beginnings]
 
 - Discussion  of Markov Chains, Markov Chain Monte Carlo (MCMC)
 
