@@ -4,9 +4,33 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2019.12.28 [One two three four]
+
+Swift for TensorFlow models?
+
+
 ## 2019.12.21 [A Geeky Swiftmas Party]
 
-The party is enqueued and ready!
+Making Ornaments, snacks, drinks (moldly drinks!), iPad Pictionary, a presentation, discussion. 
+
+Five Swift things to be excited about in 2020.
+
+- SwiftUI and Combine
+- Swift on the Server
+- Swift for Machine Learning (TensorFlow)
+- The vibrant Swift community
+- Our community
+
+Brainstorm ideas for 2020.
+
+- Analyze buoy data in relation to tsunamis
+- Build a game for Apple Arcade (or find out what it takes)
+- Build a self driving car (Use Swift for TensorFlow)
+- Build a Draw and Guess Game
+
+### Links:
+- https://www.donkeycar.com
+- https://www.robolink.com/codrone/
 
 
 ## 2019.12.14 [New Beginnings]
