@@ -6,9 +6,38 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ## 2020.01.04 
 
-- Simon Simon worked on SwiftUI navigation.  We hit a bug where you can't push a view after it has been dismissed.
+- Simon Simon worked on SwiftUI navigation.  We hit a bug where you can't push a view after it has been dismissed.  This is really weird.
 
-- Victoria worked on SpriteKit and attempted to commit her code Gitup.  She is still not sold on version control.
+```swift
+struct DetailView: View {
+
+    @Environment(\.presentationMode) var presentation
+
+    var body: some View {
+        Button("Done") {
+            self.presentation.wrappedValue.dismiss()
+        }
+    }
+}
+
+struct ContentView: View {
+    var body: some View {
+        NavigationView {
+            NavigationLink(destination: DetailView()) {
+                Text("Hello")
+            }
+        }
+    }
+}
+```
+
+Any ideas?
+
+- Victoria worked on SpriteKit and attempted to commit her code with Gitup.  She understands the importance of version control but isn't a fan of the current product offerings.  
+
+https://gitup.co
+
+- Other topics included working with Firebase (cascading multiple requests)
 
 
 ## 2019.12.21 [A Geeky Swiftmas Party]
