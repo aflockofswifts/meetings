@@ -4,9 +4,11 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
-## 2019.12.28 [One two three four]
+## 2020.01.04 
 
-Swift for TensorFlow models?
+- Simon Simon worked on SwiftUI navigation.  We hit a bug where you can't push a view after it has been dismissed.
+
+- Victoria worked on SpriteKit and attempted to commit her code Gitup.  She is still not sold on version control.
 
 
 ## 2019.12.21 [A Geeky Swiftmas Party]
