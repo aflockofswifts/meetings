@@ -33,6 +33,30 @@ struct ContentView: View {
 
 Any ideas?
 
+--EDIT: Josh--
+John and I worked on the same issue a few weeks ago.  The solution is to use a binding for the navigationLink.  If you think about it its wierd to be manipulating the global presentation state since whether or not a view is presented is a piece of local state that someone should own (in this case that someone is the parent).
+
+```
+struct DetailView: View {
+  @Binding var isShown: Bool
+  var body: some View {
+    Button("done") {
+      self.isShown = false
+    }
+  }
+}
+
+struct ContentView: View {
+  @State private var isShown = false
+  var body: some View {
+    NavigationView {
+      NavigationLink.init("hello", destination: DetailView(isShown: $isShown), isActive: $isShown)
+    }
+  }
+}
+```
+--END EDIT--
+
 - Victoria worked on SpriteKit and attempted to commit her code with Gitup.  She understands the importance of version control but isn't a fan of the current product offerings.  
 
 https://gitup.co
