@@ -37,7 +37,7 @@ Any ideas?
 
 John and I worked on the same issue a few weeks ago.  The solution is to use a binding for the navigationLink.  If you think about it its wierd to be manipulating the global presentation state since whether or not a view is presented is a piece of local state that someone should own (in this case that someone is the parent).
 
-```
+```swift
 struct DetailView: View {
   @Binding var isShown: Bool
   var body: some View {
@@ -57,6 +57,9 @@ struct ContentView: View {
 }
 ```
 --END EDIT--
+
+Ray:  Actually this also does not work. If you go back using the back button, you can no longer push onto the navigation stack.  (At least in the 13.3 sim).
+
 
 - Victoria worked on SpriteKit and attempted to commit her code with Gitup.  She understands the importance of version control but isn't a fan of the current product offerings.  
 
