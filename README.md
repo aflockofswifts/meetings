@@ -51,6 +51,22 @@ https://github.com/joshuajhomann/TVMaze-SwiftUI-Navigation
 
 Adding a coordinator turns out to be a little less straightforward than originally thought.
 
+
+### Looking for a Job
+
+Some ideas in no particular order.
+
+- Hired
+- Vettery
+- TrippleByte
+- Karat
+- Mainz Brady Group
+- StackOverflow
+- Zip Recruiter
+- AngelList
+
+Project a professional appearance online.
+
 ## 2020.01.04 
 
 - Simon Simon worked on SwiftUI navigation.  We hit a bug where you can't push a view after it has been dismissed.  This is really weird.
