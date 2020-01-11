@@ -4,6 +4,31 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.01.11
+
+John working on button customization using a view modifier.  I suggested creating a `ButtonModifier` because you can use 
+
+Josh and Ray working on SwiftUI navigation.
+
+Some background links:
+
+### Basic SwiftUI Navigation
+https://www.raywenderlich.com/5824937-swiftui-tutorial-navigation
+
+### Deep Linking (Uses AppState to control navigation)
+https://nalexn.github.io/swiftui-deep-linking/
+This uses `AppState` to figure out how views set themselves up.
+
+### Combine Tutorial Navigation
+https://www.raywenderlich.com/4161005-mvvm-with-combine-tutorial-for-ios
+Combine tutorial which contains some info on "pragmatic navigation" using a view builder function.
+
+### Starter Project from Josh
+This uses the TVMaze API that creates a simple navigation.
+https://github.com/joshuajhomann/TVMaze-SwiftUI-Navigation
+
+Adding a coordinator turns out to be a little less straightforward than originally thought.
+
 ## 2020.01.04 
 
 - Simon Simon worked on SwiftUI navigation.  We hit a bug where you can't push a view after it has been dismissed.  This is really weird.
