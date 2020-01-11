@@ -6,7 +6,29 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ## 2020.01.11
 
-John working on button customization using a view modifier.  I suggested creating a `ButtonModifier` because you can use 
+John working on button customization using a view modifier.  I suggested creating a `ButtonModifier` because you can get at the button.
+
+```swift
+struct RectangularButtonStyle: ButtonStyle {
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label.frame(width: 150, height: 50)
+      .background(Color.blue)
+      .foregroundColor(.white)
+      .font(.subheadline)
+      .cornerRadius(10)
+    
+  } 
+}
+
+// Use it like this:
+
+Button("Press Me!") {
+  print("Hello")
+}.buttonStyle(RectangularButtonStyle())
+
+```
+
 
 Josh and Ray working on SwiftUI navigation.
 
