@@ -4,6 +4,12 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+
+## 2020.01.18
+
+Your Topic Here!
+
+
 ## 2020.01.11
 
 John working on button customization using a view modifier.  I suggested creating a `ButtonModifier` because you can get at the button.
