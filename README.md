@@ -7,6 +7,8 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ## 2020.01.18
 
+Coding challenges for all levels if anyoen is interested in trying: https://www.reddit.com/r/dailyprogrammer/
+
 Your Topic Here!
 
 
