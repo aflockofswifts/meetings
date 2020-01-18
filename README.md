@@ -13,6 +13,25 @@ The deadline is fast approaching.  Update your apps with a launch storyboard and
 ```As announced at WWDC19, starting April 2020, apps submitted to the App Store must use an Xcode storyboard to provide the app’s launch screen and must have an interface that supports any display size.```
 https://developer.apple.com/news/?id=01132020b
 
+CIFilter example:
+```
+import PlaygroundSupport
+import UIKit
+
+let ciImage = Bundle.main.url(forResource: "dog", withExtension: "jpg")
+  .flatMap { try! Data(contentsOf:$0) }
+  .flatMap(UIImage.init(data:))?
+  .cgImage
+  .flatMap(CIImage.init(cgImage:))
+
+let context = CIContext()
+let sepiaFilter = CIFilter(name: "CIGaussianBlur")
+sepiaFilter?.setValue(ciImage, forKey: kCIInputImageKey)
+sepiaFilter?.setValue(16, forKey: "inputRadius")
+let image = (sepiaFilter?.value(forKey: kCIOutputImageKey) as? CIImage)
+  .flatMap(UIImage.init(ciImage:))
+```
+
 
 ## 2020.01.11
 
