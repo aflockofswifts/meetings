@@ -7,9 +7,11 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ## 2020.01.18
 
-Coding challenges for all levels if anyoen is interested in trying: https://www.reddit.com/r/dailyprogrammer/
+Coding challenges for all levels if anyone is interested in trying: https://www.reddit.com/r/dailyprogrammer/
 
-Your Topic Here!
+The deadline is fast approaching.  Update your apps with a launch storyboard and support for arbitrary screen sizes.
+```As announced at WWDC19, starting April 2020, apps submitted to the App Store must use an Xcode storyboard to provide the app’s launch screen and must have an interface that supports any display size.```
+https://developer.apple.com/news/?id=01132020b
 
 
 ## 2020.01.11
