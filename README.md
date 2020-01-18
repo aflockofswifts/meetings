@@ -24,11 +24,10 @@ let ciImage = Bundle.main.url(forResource: "dog", withExtension: "jpg")
   .cgImage
   .flatMap(CIImage.init(cgImage:))!
 
-let context = CIContext()
-let sepiaFilter = CIFilter(name: "CIGaussianBlur")
-sepiaFilter?.setValue(ciImage, forKey: kCIInputImageKey)
-sepiaFilter?.setValue(16, forKey: "inputRadius")
-let uncroppedImage = (sepiaFilter?.value(forKey: kCIOutputImageKey) as? CIImage)
+let blur = CIFilter(name: "CIGaussianBlur")
+blur?.setValue(ciImage, forKey: kCIInputImageKey)
+blur?.setValue(16, forKey: "inputRadius")
+let uncroppedImage = (blur?.value(forKey: kCIOutputImageKey) as? CIImage)
   .flatMap(UIImage.init(ciImage:))!
 let croppedImage = UIGraphicsImageRenderer(size: ciImage!.extent.size).image { _ in
   uncroppedImage.draw(at: .init(
