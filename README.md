@@ -4,6 +4,10 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.01.25
+
+John is exploring swift package manager: https://swift.org/package-manager/
+Josh worked on displaying a chain of CFilters in a MTKView: https://github.com/joshuajhomann/Core-Image-Metal-View
 
 ## 2020.01.18
 
