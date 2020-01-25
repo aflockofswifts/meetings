@@ -8,6 +8,7 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 John is exploring swift package manager: https://swift.org/package-manager/
 Josh worked on displaying a chain of CFilters in a MTKView: https://github.com/joshuajhomann/Core-Image-Metal-View
+Feathering: https://stackoverflow.com/questions/40593884/how-to-achieve-real-feather-fade-effect-on-a-uiimage-which-is-cropped-by-a-uibez/40667463#40667463
 
 ## 2020.01.18
 
