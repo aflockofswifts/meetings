@@ -4,6 +4,15 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.02.08
+* Josh made 2D water in spriteKit: https://github.com/joshuajhomann/Waves
+* John worked on bar charts in SwiftUI
+
+## 2020.02.01
+* We met at Daden LLC for some presentations
+* Ray covered github & swift package manger https://gitup.co
+* Josh covered SwiftUIAnimations: https://github.com/joshuajhomann/SwiftUI-Animations
+
 ## 2020.01.25
 
 * John is exploring swift package manager: https://swift.org/package-manager/
