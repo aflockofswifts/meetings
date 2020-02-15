@@ -4,6 +4,45 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.02.15
+
+Decoding JSON from firebase dictionaries:
+```
+protocol JSONRepresentable {
+  init?(json: [String: Any])
+  func json() -> [String: Any]?
+}
+
+extension JSONRepresentable where Self: Codable {
+  init?(json: [String:Any]) {
+    guard let value = (try? JSONSerialization.data(withJSONObject: json, options: []))
+      .flatMap ({ try? JSONDecoder().decode(Self.self, from: $0) }) else {
+        return nil
+    }
+    self = value
+  }
+  func json() -> [String:Any]? {
+    return (try? JSONEncoder().encode(self))
+      .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) } as? [String: Any]
+
+  }
+}
+
+
+struct User: Codable, JSONRepresentable {
+  var name: String
+}
+
+let dictionary: [[String: Any]] = [
+  ["name" : "John"],
+  ["name" : "Bill"],
+  ["invalid": "test"]
+]
+
+let users = dictionary.compactMap(User.init(json:))
+print(users)
+```
+
 ## 2020.02.08
 * Josh made 2D water in spriteKit: https://github.com/joshuajhomann/Waves
 * John worked on bar charts in SwiftUI
