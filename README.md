@@ -6,6 +6,8 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ## 2020.02.15
 
+Josh is working on AWS amplify: https://aws-amplify.github.io/docs/ios/start?ref=amplify-iOS-btn
+
 Decoding JSON from firebase dictionaries:
 ```
 protocol JSONRepresentable {
