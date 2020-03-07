@@ -12,6 +12,8 @@ We broke into groups and tried to apply `PreferenceKey` to the problem of making
 
 Josh's solution to this problem is here: https://github.com/joshuajhomann/Preferences
 
+A similar problem solved without preferences by manually calcaluating everything is here: https://github.com/joshuajhomann/Boggle-SwiftUI
+
 ## 2020.02.15
 
 Josh is working on AWS amplify: https://aws-amplify.github.io/docs/ios/start?ref=amplify-iOS-btn
