@@ -4,6 +4,14 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.03.07
+
+We met at Daden LLC where Ray gave a presentation on layout in SwiftUI and how to communicate information up the View tree by using `PreferenceKey`.
+
+We broke into groups and tried to apply `PreferenceKey` to the problem of making a grid where you can select a number of squares by dragging.
+
+Josh's solution to this problem is here: https://github.com/joshuajhomann/Preferences
+
 ## 2020.02.15
 
 Josh is working on AWS amplify: https://aws-amplify.github.io/docs/ios/start?ref=amplify-iOS-btn
