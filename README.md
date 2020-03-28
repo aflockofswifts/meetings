@@ -4,6 +4,21 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.03.28
+
+We met on Zoom due to California's current "Safer at home" restrictions.
+
+Ray presented a measure utility to explore sizing of SwiftUI.Views.
+Ray discussed new features in Swift 5.2:
+  * Key Path Expressions as Functions https://github.com/apple/swift-evolution/blob/master/proposals/0249-key-path-literal-function-expressions.md
+  * Callable values of user-defined nominal types https://github.com/apple/swift-evolution/blob/master/proposals/0253-callable.md
+and new in Swift 5.3:
+  * Enum cases as protocol witnesses https://github.com/apple/swift-evolution/blob/master/proposals/0280-enum-cases-as-protocol-witnesses.md
+
+Josh presented debouncing expensive operations in combine with an Ascii filter example available here: https://github.com/joshuajhomann/AsciiFilter
+
+Jo fixed her launch image by purging the similator & fixed an opacity animation.  Note that that requirement to use a storybaord for your launch screen has been delayed: https://developer.apple.com/news/
+
 ## 2020.03.07
 
 We met at Daden LLC where Ray gave a presentation on layout in SwiftUI and how to communicate information up the View tree by using `PreferenceKey`.
