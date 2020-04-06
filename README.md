@@ -4,6 +4,18 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.04.05
+
+We met on Zoom.
+
+Ray presented a playground on `keyPaths`
+More on keypaths: https://github.com/apple/swift-evolution/blob/master/proposals/0161-key-paths.md
+
+Josh presented a playground on `propertyWappers`, their `wrappedValues` and their `projectedValues` and then demostrated a project to show the `projectedValues` for the `propertyWrappers` in SwiftUI and Combine: https://github.com/aflockofswifts/2020-4-5-Property-Wrappers
+More on property wrappers: https://github.com/apple/swift-evolution/blob/master/proposals/0258-property-wrappers.md
+More on key apth dynamic member lookup: https://github.com/apple/swift-evolution/blob/master/proposals/0252-keypath-dynamic-member-lookup.md
+
+
 ## 2020.03.28
 
 We met on Zoom due to California's current "Safer at home" restrictions.
