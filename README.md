@@ -4,12 +4,16 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
-## 2020.04.05
+## 2020.04.04
 
 We met on Zoom.
 
+There have been many small improvements to Swift from Swift 4 to the current 5.2.  We are noticing how many of these changes are being utilized in interesting and even unexpected ways in libraries like SwiftUI.
+
 Ray presented a playground on `keyPaths`
 * More on keypaths: https://github.com/apple/swift-evolution/blob/master/proposals/0161-key-paths.md
+* The sample code that we played with: https://gist.github.com/rayfix/4ca37c321fb64fc376b100b2f6b08ef5
+
 
 Josh presented a playground on `propertyWappers`, their `wrappedValues` and their `projectedValues` and then demostrated a project to show the `projectedValues` for the `propertyWrappers` in SwiftUI and Combine: https://github.com/aflockofswifts/2020-4-5-Property-Wrappers
 
