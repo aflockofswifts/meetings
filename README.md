@@ -14,6 +14,13 @@ Ray presented a playground on `keyPaths`
 * More on keypaths: https://github.com/apple/swift-evolution/blob/master/proposals/0161-key-paths.md
 * The sample code that we played with: https://gist.github.com/rayfix/4ca37c321fb64fc376b100b2f6b08ef5
 
+There are many `KeyPath` types that the compiler uses in various situations:
+
+* `KeyPath<Root, Value>`
+* `WriteableKeyPath<Root, Value>`
+* `ReferenceWritableKeyPath<Root, Value>`
+* `PartialKeyPath<Root>`
+* `AnyKeyPath`
 
 Josh presented a playground on `propertyWappers`, their `wrappedValues` and their `projectedValues` and then demostrated a project to show the `projectedValues` for the `propertyWrappers` in SwiftUI and Combine: https://github.com/aflockofswifts/2020-4-5-Property-Wrappers
 
