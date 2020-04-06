@@ -16,6 +16,7 @@ Josh presented a playground on `propertyWappers`, their `wrappedValues` and thei
 * More on property wrappers: https://github.com/apple/swift-evolution/blob/master/proposals/0258-property-wrappers.md
 * More on key apth dynamic member lookup: https://github.com/apple/swift-evolution/blob/master/proposals/0252-keypath-dynamic-member-lookup.md
 
+John showed his card game in SwiftUI, using image slicing.  We discussed some possible solutions for animations.
 
 ## 2020.03.28
 
