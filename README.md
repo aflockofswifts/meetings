@@ -4,6 +4,16 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.04.11
+
+We met on Zoom.
+
+Josh presented how to make a type eraser, and when to use type erasure in SwiftUI and Combine: https://github.com/joshuajhomann/TypeErasure
+
+Ray talked about type erasure with opaque return types using the `some` keyword.
+
+John presented a flip animationf or his card game and we discussed various ideas for how to animate cards moving from one section of the game board to another.
+
 ## 2020.04.04
 
 We met on Zoom.
