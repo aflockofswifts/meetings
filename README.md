@@ -4,6 +4,32 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.04.25
+
+We met on Zoom.
+
+Talked about Dave Abrahams' apperance on the Swift by Sundell podcast.
+https://www.swiftbysundell.com/podcast/71/
+
+Start with a value type, you will discover (not invent) the protocols by exploring the problem domain.
+
+John was running into a problem with creating fancy buttons:
+https://www.appcoda.com/swiftui-button-style-animation/
+
+Discovered the problem was that the gradient code using colors from the asset catalog not registered.  They can be registered.
+
+Josh: Why can't Xcode auto generate code for the assets?
+
+Presentation on Swift on the Server using Vapor
+https://iosdevsurvey.com/2019/08-swift-on-the-server/
+
+Ray will be giving a presentation on this on Monday night.
+https://www.meetup.com/sdiosdevelopers/events/270119290/
+
+Josh working on a Combine / SwiftUI version of John Conway's Life. Having trouble with timer events.
+
+Next week we will look more at SwiftUI animation and app architecture. If you have DispatchQueue in your View code you are doing it wrong.
+
 ## 2020.04.11
 
 We met on Zoom.
