@@ -6,76 +6,30 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ## 2020.05.02
 
-John's Chart code:
-```
-import SwiftUI
-import SwiftUICharts
-struct ContentView: View {
-    @State var tabIndex:Int = 0
+We met today on Zoom.  There were four presentations.
 
+### A demonstration of scale and rotation effect anchor with `UnitPoint`
+by Ray Fix
 
-    var body: some View {
-        TabView(selection: $tabIndex) {
-            BarCharts().tabItem { Group{
-                    Image(systemName: "chart.bar")
-                    Text("Bar charts")
-                }}.tag(0)
+We created a simple project and explored animation modifiers.
+https://gist.github.com/rayfix/6cdfcbffc9294456729d46aab8184ef8
 
-            LineCharts().tabItem { Group{
-                    Image(systemName: "waveform.path.ecg")
-                    Text("Line charts")
-                }}.tag(1)
-            PieCharts().tabItem { Group{
-                    Image(systemName: "chart.pie")
-                    Text("Pie charts")
-                }}.tag(2)
-            LineChartsFull().tabItem { Group{
-                Image(systemName: "waveform.path.ecg")
-                Text("Full screen line charts")
-            }}.tag(3)
-        }  
-    }
-}
+### Charting in SwiftUI
+by John James
 
-struct BarCharts:View {
-    var body: some View {
-        VStack{
-            BarChartView(data: ChartData(points:  [8,23,54,32,12,37,7,23,43]), title: "Title", style: Styles.barChartStyleOrangeLight)
-        }
-    }
-}
+First load in the package using the package manager:
+https://github.com/AppPear/ChartView
 
-struct LineCharts:View {
-    var body: some View {
-        VStack{
-            LineChartView(data: [8,23,54,32,12,37,7,23,43], title: "Title")
-        }
-    }
-}
+It is very easy to add and remove packages.
 
-struct PieCharts:View {
-    var body: some View {
-        VStack{
-            PieChartView(data: [8,23,54,32,12,37,7,23,43], title: "Title")
-        }
-    }
-}
+Show off the code using this sample code:
+https://gist.github.com/rayfix/89e6d6167e7c1881e222413e1d3cee03
 
-struct LineChartsFull: View {
-    var body: some View {
-        VStack{
-            LineView(data: [8,23,54,32,12,37,7,23,43], title: "Line chart", legend: "Full screen").padding()
-            // legend is optional, use optional .padding()
-        }
-    }
-}
+### John Conway's Life in SwiftUI
+by Josh Homann
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
-```
+### Concentration in SwiftUI
+by Josh Homann
 
 ## 2020.04.25
 
