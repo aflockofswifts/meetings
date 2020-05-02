@@ -26,7 +26,7 @@ Show off the code using this sample code:
 https://gist.github.com/rayfix/89e6d6167e7c1881e222413e1d3cee03
 
 ### John Conway's Life in SwiftUI
-by Josh Homann
+https://github.com/joshuajhomann/Conway-Life-SwiftUI
 
 ### Concentration in SwiftUI
 by Josh Homann
