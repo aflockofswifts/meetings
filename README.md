@@ -25,6 +25,7 @@ https://github.com/codger/SwiftUI-Rolex
 ### Concentration with Animation
 
 Uses a redux inspired approach
+
 https://github.com/joshuajhomann/Memory-SwiftUI-Animation
 
 
