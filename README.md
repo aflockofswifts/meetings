@@ -4,6 +4,30 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.05.09
+
+We met on Zoom and focused on SwiftUI today.
+
+### Demonstration of making a view dragable
+
+Use `ViewModifiers` to make behaviors reusable.
+
+https://gist.github.com/rayfix/605066823f4a70c644dd216226d51c41
+
+### Rolex Watch (1)
+
+// TBD
+
+### Rolex Watch Refactored (2)
+
+// TBD
+
+### Concentration with Animation
+
+Uses a redux inspired approach
+https://github.com/joshuajhomann/Memory-SwiftUI-Animation
+
+
 ## 2020.05.02
 
 We met today on Zoom.  There were four presentations.
