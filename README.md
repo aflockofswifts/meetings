@@ -20,7 +20,7 @@ https://github.com/codger/SwiftUI-Rolex
 
 ### Rolex Watch Refactored (2)
 
-// TBD
+https://github.com/aflockofswifts/2020-05-09-SwiftUI-Rolex-Refactor-MVVM
 
 ### Concentration with Animation
 
