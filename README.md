@@ -4,6 +4,22 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+
+## 2020.05.16
+
+We met on Zoom and did some review of SwiftUI and Combine
+
+### Building up a ViewModel
+
+We built a very simple SwiftUI with a slider and a couple of numbers.  We purposefully wrote a lot of wrong code that compiled so we could understand why it was wrong.  For example, if you put an onRecieve of a publisher in your view, that publisher is going to get the CurrentValue each time and fail to update correctly.  Reviewed the mechanism by which Bindings work with State and ObservedObject property wrappers.  How to use the projected type to get bindings for both State and ObservedObjects.
+
+https://gist.github.com/rayfix/f97a8f9bac0bc3ba7d23f64fa4b3dfe1
+
+
+Josh showed off a project to get magic cards and converted it from imperative to declarative and functional reactive.
+
+TBD
+
 ## 2020.05.09
 
 We met on Zoom and focused on SwiftUI today.
