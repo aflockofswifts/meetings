@@ -17,8 +17,9 @@ https://gist.github.com/rayfix/f97a8f9bac0bc3ba7d23f64fa4b3dfe1
 
 
 Josh showed off a project to get magic cards and converted it from imperative to declarative and functional reactive.
+The project is here with two folders, the starting imperative version and the final declarative version:
 
-TBD
+https://github.com/joshuajhomann/Magic-Browser-SwiftUI
 
 ## 2020.05.09
 
