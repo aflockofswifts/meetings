@@ -47,6 +47,21 @@ https://www.youtube.com/watch?v=uqjUeefqec8
 
 This will be an open-source project eventually; after releases are finalized.
 
+
+### Stanford Class
+
+Stanford videos are starting to come out.  Thanks Matt!
+https://cs193p.sites.stanford.edu/
+
+
+### The Composable Architecture
+
+Ray will discuss (and demo) this at next week's meeting.
+
+----
+
+
+
 ## 2020.05.16
 
 We met on Zoom and did some review of SwiftUI and Combine
