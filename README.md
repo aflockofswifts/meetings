@@ -5,6 +5,48 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 https://www.meetup.com/A-Flock-of-Swifts/
 
 
+## 2020.05.23
+
+We met on Zoom and talked about SwiftUI state observation and looked forward to what is coming at WWDC 2020.
+
+### Probing @State and @Binding
+
+We looked the similarities and difference between @Binding and @State.  State is the single source of truth that can be connected to two way bindings.  We can use the projected type of @State to get at the binding.  Everything stays in sync!
+
+### Observable Object
+
+We used didSet {} to limit a message to 20 characters.  Our combine version didn't work.  Here is the broken code for that attempt.
+
+https://gist.github.com/rayfix/854c2844366351e4fe29e91118ebfdbb
+
+The print show that the string is being truncated but for some reason assign to message isn't working like we think it should.
+
+### A minimal custom @Environment  example
+
+Exploring the @Environment and @EnvironmentObject
+
+https://gist.github.com/rayfix/1606190f572b6eb934e45f4a56701feb
+
+### Swift 5.3
+
+Josh walked us through things coming in Swift 5.3
+
+https://medium.com/better-programming/whats-new-in-swift-5-3-142d89d4d1f7
+
+### Teaser: Animating 1024
+
+Josh is creating the game 1024.  With relatively small code he got the whole game working but without animation.  Animation is coming next week.
+
+### Divvy Scan
+
+From Joe
+
+This is a short explainer video of the project I worked on during the Brother hackathon:
+
+https://www.youtube.com/watch?v=uqjUeefqec8
+
+This will be an open-source project eventually; after releases are finalized.
+
 ## 2020.05.16
 
 We met on Zoom and did some review of SwiftUI and Combine
