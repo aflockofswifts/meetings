@@ -58,6 +58,46 @@ https://cs193p.sites.stanford.edu/
 
 Ray will discuss (and demo) this at next week's meeting.
 
+
+### Follow up on text assignment with a binding
+
+It appears that this doesn't work because we are trying to modify the `@Published` value while SwiftUI is in the middle of a redraw.  Matt discovered it does work if you add a `receive(on: DispatchQue.main)`, which I suspect is due to the fact that this defers the update to the next runloop, at which point SwiftUI is no longer in the midst of a redraw.
+
+```
+import Combine
+import SwiftUI
+import PlaygroundSupport
+
+final class VM: ObservableObject {
+  @Published var text = "0123456789"
+  var s: AnyCancellable?
+  init() {
+    s = $text
+      .filter { $0.count > 10 }
+      .map {
+        print("Map")
+        return String($0.prefix(10))
+      }
+      .assign(to: \.text, on: self)
+  }
+}
+
+struct V: View {
+  @ObservedObject var vm: VM = .init()
+  var body: some View {
+    VStack {
+      Text(vm.text)
+      TextField("test", text: .init(get: { self.vm.text}, set: {
+        print("setting")
+        self.vm.text = $0
+      }))
+    }
+  }
+}
+
+PlaygroundPage.current.liveView = UIHostingController(rootView: V())
+```
+
 ----
 
 
