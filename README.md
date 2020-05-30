@@ -4,6 +4,13 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.05.30
+
+Ray showed how to use template views in lieu of preferences to make views with a minimum size.  https://swiftwithmajid.com/2020/05/13/template-view-pattern-in-swiftui/
+
+John demoed a maps project using UIViewRepresentable to show and zoom in on a MapView using spans and geometry effects.
+
+Josh demoed his 2048 project and showed how to use coordinate spaces, and generic preference keys to leverage the SwiftUI rendering system with custom drawing: https://github.com/joshuajhomann/SwiftUI-2048
 
 ## 2020.05.23
 
