@@ -9,6 +9,7 @@ https://www.meetup.com/A-Flock-of-Swifts/
 Ray showed how to use template views in lieu of preferences to make views with a minimum size.  https://swiftwithmajid.com/2020/05/13/template-view-pattern-in-swiftui/
 
 John demoed a maps project using UIViewRepresentable to show and zoom in on a MapView using spans and geometry effects.
+https://github.com/codger/MapZoom
 
 Josh demoed his 2048 project and showed how to use coordinate spaces, and generic preference keys to leverage the SwiftUI rendering system with custom drawing: https://github.com/joshuajhomann/SwiftUI-2048
 
