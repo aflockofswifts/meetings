@@ -4,6 +4,28 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.06.06
+
+We discussed functional approaches to solving Standford CS193P's 3rd assignment:
+https://cs193p.sites.stanford.edu/sites/g/files/sbiybj16636/files/media/file/assignment_3.pdf
+
+Point free's composable architecture.  Note that their sample app contains many examples that you may find to be useful.
+https://github.com/pointfreeco/swift-composable-architecture
+The video series is here:
+https://www.pointfree.co/episodes/ep100-a-tour-of-the-composable-architecture-part-1
+
+Demo Composable app showing master detail navigation and composable reducers for state propagation:
+https://github.com/joshuajhomann/Composable-Test
+
+We discussed the idea `projection` in the context of transforming state to substate and of `pullback` as the inverse of transforming a subaction to an action using a casePath:
+https://www.pointfree.co/blog/posts/22-some-news-about-contramap
+https://github.com/pointfreeco/swift-case-paths
+
+Stephen Celis - Reactive view models, simplified:
+https://www.youtube.com/watch?v=uTLG_LgjWGA
+
+Next week, more Composable Architecture (including side effects) and functional MVVM in SwiftUI & Combine and a follow up on Stanford homework 3.
+
 ## 2020.05.30
 
 Ray showed how to use template views in lieu of preferences to make views with a minimum size.  https://swiftwithmajid.com/2020/05/13/template-view-pattern-in-swiftui/
