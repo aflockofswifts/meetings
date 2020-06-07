@@ -9,6 +9,8 @@ https://www.meetup.com/A-Flock-of-Swifts/
 We discussed functional approaches to solving Standford CS193P's 3rd assignment:
 https://cs193p.sites.stanford.edu/sites/g/files/sbiybj16636/files/media/file/assignment_3.pdf
 
+Joe shared his solution here: https://github.com/jmestro/SetGame/tree/master
+
 Point free's composable architecture.  Note that their sample app contains many examples that you may find to be useful.
 https://github.com/pointfreeco/swift-composable-architecture
 The video series is here:
