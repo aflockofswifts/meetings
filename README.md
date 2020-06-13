@@ -4,6 +4,16 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.06.13
+
+Ray presented a solution for genrating combinations of sequences and touched on the differences between the opaque return types from `some` and the concrete `Any*` type erasers as well as code coverage and unit testing.
+
+Josh presented a solution to Stanford's CS193P Homework 3 using the Composable Architecture from Pointfree
+https://github.com/joshuajhomann/Set-Game-Composable-Architecture-CS193P
+
+Frank shared an upcoming WWDC recap meetup for Swift Paris online June 30 (GMT +2 6:00PM which is 9:00AM Pacific)
+https://www.meetup.com/swiftparis/events/271199742
+
 ## 2020.06.06
 
 We discussed functional approaches to solving Standford CS193P's 3rd assignment:
