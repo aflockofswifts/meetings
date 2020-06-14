@@ -6,13 +6,38 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ## 2020.06.13
 
+### Generics and Opaque types
+
 Ray presented a solution for genrating combinations of sequences and touched on the differences between the opaque return types from `some` and the concrete `Any*` type erasers as well as code coverage and unit testing.
+
+Here is the gist of the code:
+
+https://gist.github.com/rayfix/9053908eccfad6cb744dc6048fa2b8dc
+
+Started a discussion here:
+
+https://forums.swift.org/t/constraining-associated-type-s-of-opaque-types/37551
+
+Xcode tips:
+- Document the code you write by selecting the API and pressing Option-Command-/.  Then fill in the placehodlers.
+- Option shift click to make multiple, simultaneous error points.
+- Enable coverage to check tests
+
+Update: We were looking for overall coverage. statistics.  You have to turn on coverage in the scheme.
+
+![Coverage](resources/coverage_screenshot.png)
+
+### SwiftUI and Composable 
 
 Josh presented a solution to Stanford's CS193P Homework 3 using the Composable Architecture from Pointfree
 https://github.com/joshuajhomann/Set-Game-Composable-Architecture-CS193P
 
+### Announcment
+
 Frank shared an upcoming WWDC recap meetup for Swift Paris online June 30 (GMT +2 6:00PM which is 9:00AM Pacific)
 https://www.meetup.com/swiftparis/events/271199742
+
+---
 
 ## 2020.06.06
 
