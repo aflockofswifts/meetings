@@ -25,9 +25,9 @@ Xcode tips:
 
 Update: We were looking for overall coverage. statistics.  You have to turn on coverage in the scheme.
 
-![Coverage](resources/coverage_screenshot.png)
+![Coverage](resources/screenshot_coverage.png)
 
-### SwiftUI and Composable 
+### SwiftUI, Stanford Course and Composable Architecture
 
 Josh presented a solution to Stanford's CS193P Homework 3 using the Composable Architecture from Pointfree
 https://github.com/joshuajhomann/Set-Game-Composable-Architecture-CS193P
