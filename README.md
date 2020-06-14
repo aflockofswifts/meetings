@@ -20,10 +20,10 @@ https://forums.swift.org/t/constraining-associated-type-s-of-opaque-types/37551
 
 Xcode tips:
 - Document the code you write by selecting the API and pressing Option-Command-/.  Then fill in the placehodlers.
-- Option shift click to make multiple, simultaneous error points.
-- Enable coverage to check tests
+- Option shift click to make multiple, simultaneous edit points.
+- Option drag to select a rectangular region.
 
-Update: We were looking for overall coverage. statistics.  You have to turn on coverage in the scheme.
+Update: We were looking for overall coverage. statistics.  You have to turn on coverage in the scheme.  Also enable coverage in the display.
 
 ![Coverage](resources/screenshot_coverage.png)
 
