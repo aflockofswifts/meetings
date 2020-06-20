@@ -4,6 +4,64 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2020.06.20
+
+### Drawing a custom WatchOS style activity ring view in SwiftUI
+Ray presented creating a custom watchOS style activity ring view in SwiftUI by using shapes, AngularGradient, strokes and transforms.
+
+### Publishers and Functional MVVM
+Josh reviewed Publishers:
+  * Publishers emit 0 to ♾️ Outputs followed by exactly 0 or 1 completion or Failure
+  * Subscriptions (sink and assign) return a Cancellable that you must retain to keep the Publisher alive
+We looked at the various ways you can create a publisher:
+```
+//Factories
+let a = Just(1)
+let b = Empty(completeImmediately: false, outputType: String.self, failureType: Never.self)
+let c = Fail<Int, URLError>(error: URLError(URLError.Code(rawValue: 404)))
+
+// Closure
+let d = Future<Int, Never> { promise in
+  promise(.success(1))
+}
+
+// Subject
+class A {
+  @Published var a = 0
+}
+let e = CurrentValueSubject<Int, Never>(0)
+let f = PassthroughSubject<Int, Never>()
+
+// Foundation (or RealityKit)
+let g = NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)
+let h = URLSession.shared.dataTaskPublisher(for: URL(string: "cnn.com")!)
+let i = [1,2,3].publisher
+let j = Timer.publish(every: 1, on: .main, in: .common)
+```
+
+We looked at how you can use various operators including `map`, `scan`, and `prepend` to model a stateful system functionally.
+```
+let emojis = "🐶🐱🐭🐹🐰🦊🐻🐼🐨🐯"
+
+let cancellable = Timer
+  .publish(every: 1, on: .main, in: .common)
+  .autoconnect()
+  .map { _ in 1 }
+  .scan (0, +)
+  .prepend(0)
+  .map { index in
+    let wrappedIndex = index % emojis.count
+    return String(emojis[emojis.index(emojis.startIndex, offsetBy: wrappedIndex)])
+  }
+  .sink { output in
+    print(output)
+  }
+```
+* We looked making a functional viewModel and the difference between `flatMap` and `switchToLatest`
+* We applied what we learned to refactor and imperative version of Tic Tac Toe to be stateless, declarative, immutable and functional.
+
+example code: https://github.com/joshuajhomann/TicTacToe-SwiftUI
+
 ## 2020.06.13
 
 ### Generics and Opaque types
