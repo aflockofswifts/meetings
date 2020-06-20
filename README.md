@@ -11,6 +11,11 @@ Ray presented creating a custom watchOS style activity ring view in SwiftUI by u
 
 https://gist.github.com/rayfix/651894420460161b8f2345f9e6a07b59
 
+The idea for drawing the circle at the end came from this implementation:
+
+https://andyregensky.dev/articles/swiftui-activityrings/
+
+This article also describes making a shadow and clip region which we did not discuss.  (I don't think it looks great on a white background.  The example uses a black background.)
 
 ### Publishers and Functional MVVM
 Josh reviewed Publishers:
