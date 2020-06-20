@@ -7,7 +7,10 @@ https://www.meetup.com/A-Flock-of-Swifts/
 ## 2020.06.20
 
 ### Drawing a custom WatchOS style activity ring view in SwiftUI
-Ray presented creating a custom watchOS style activity ring view in SwiftUI by using shapes, AngularGradient, strokes and transforms.
+Ray presented creating a custom watchOS style activity ring view in SwiftUI by using shapes, AngularGradient, strokes and transforms.  Here is what we came up with:
+
+https://gist.github.com/rayfix/651894420460161b8f2345f9e6a07b59
+
 
 ### Publishers and Functional MVVM
 Josh reviewed Publishers:
