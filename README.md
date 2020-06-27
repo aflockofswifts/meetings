@@ -1,5 +1,36 @@
 # A Flock of Swifts 
 
+## 2020.06.27
+
+### WWDC 2020 round up
+Ray showed:
+  * The new [`DocumentGroup`](https://developer.apple.com/documentation/swiftui/documentgroup) and [`TextEditor`](https://developer.apple.com/documentation/swiftui/resetfocusaction)
+John showed
+  * dismissing the keyboard with UIKit.  There aappear to be a series of focus values in the environment that you may wish to [explore further](https://developer.apple.com/documentation/swiftui/resetfocusaction)
+  * [The new multiple traingling closure syntaxt](https://forums.swift.org/t/se-0279-multiple-trailing-closures/34255)
+  * The new [`Map`](https://developer.apple.com/documentation/mapkit/map) `struct` in SwiftUI; similar functionality exists for:
+    * SpriteKit
+    * SceneKit
+    * AVKit
+    * QuickLook
+    * Homekit
+    * ClockKit
+    * WatchKit
+Josh showed
+  * control flow and optional binding in a ViewBuilder
+  * [`Label`](https://developer.apple.com/documentation/swiftui/label) 
+  * Images inside of String interpolation
+  * `LazyVGrid`.  We also discussed the new LazyVStack/HStack and ScrollViewReader which you can find [here](https://developer.apple.com/documentation/swiftui/view-layout-and-presentation)
+Additional discussion:
+  * `@Namespace` and `matchedGeometryEffect`
+  * `ContainerRelativeSshape`
+  * `Guage` and `ProgressView`
+  * `ToobarItem` and semantic positioning
+  * `Link`, `AppleArchive`, `System`, `Numeric`
+  *  Automatic loading skeleton generation with `.preview`
+  * `@main`, `@Argument`, `@Help`
+  * `Appstorage` and `SceneStorage`
+
 A Flock of Swifts is a physical space meeting of like-minded people excited about the Swift language.  We normally meet each Saturday morning.  Here is our meetup page.  All people and all skill levels are welcome to join.  
 
 https://www.meetup.com/A-Flock-of-Swifts/
