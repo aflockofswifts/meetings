@@ -3,9 +3,9 @@
 ## 2020.06.27
 
 ### WWDC 2020 round up
-Ray showed:
+#### Ray showed:
   * The new [`DocumentGroup`](https://developer.apple.com/documentation/swiftui/documentgroup) and [`TextEditor`](https://developer.apple.com/documentation/swiftui/resetfocusaction)
-John showed
+#### John showed
   * dismissing the keyboard with UIKit.  There aappear to be a series of focus values in the environment that you may wish to [explore further](https://developer.apple.com/documentation/swiftui/resetfocusaction)
   * [The new multiple traingling closure syntaxt](https://forums.swift.org/t/se-0279-multiple-trailing-closures/34255)
   * The new [`Map`](https://developer.apple.com/documentation/mapkit/map) `struct` in SwiftUI; similar functionality exists for:
@@ -16,7 +16,7 @@ John showed
     * Homekit
     * ClockKit
     * WatchKit
-Josh showed
+#### Josh showed
   * control flow and optional binding in a ViewBuilder
   * [`Label`](https://developer.apple.com/documentation/swiftui/label) 
   * Images inside of String interpolation
