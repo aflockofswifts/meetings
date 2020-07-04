@@ -6,6 +6,25 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ----
 
+## 2020.07.04
+
+Happy 4th!  
+
+#### Ray showed:
+
+A fireworks demonstration using the new `SpriteView` available in SwiftUI.  The demo shows how to use a geometry reader to scale the scene to the entire device or window.
+
+I cleaned up some of the variable names and start the fireworks show in onAppear rather than in the init.  I also added a message in a ZStack
+
+![Fireworks Demo. Happy 4th!](resources/FireworksDemo.gif)
+
+The source code is here:  https://github.com/aflockofswifts/FireworksDemo
+
+#### Josh showed:
+
+TBD...
+
+
 ## 2020.06.27
 
 ### WWDC 2020 round up
