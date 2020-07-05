@@ -22,7 +22,11 @@ The source code is here:  https://github.com/aflockofswifts/FireworksDemo
 
 #### Josh showed:
 
-TBD...
+  * [Nasa Media Search](https://github.com/joshuajhomann/NasaMediaSearch-SwiftUI) example project
+  * [OutlineGroup](https://developer.apple.com/documentation/swiftui/outlinegroup) to create a hierarchical navigation side bar
+  * [@Appstorage](https://developer.apple.com/documentation/swiftui/appstorage) to persist recent searches.
+  * [GridItem](https://developer.apple.com/documentation/swiftui/griditem) to create `.fixed`, `.flexible` and .`adaptive` grids
+  * [fullScreenCover](https://developer.apple.com/documentation/scenekit/sceneview/3607780-fullscreencover) to present fullscreen modals on iPad on MacOS
 
 
 ## 2020.06.27
