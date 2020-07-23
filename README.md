@@ -6,6 +6,36 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ----
 
+## 2020.07.24
+
+Persistence!  UserDefaults, Property Wrappers, Core Data in SwiftUI and more..
+
+## 2020.07.18
+
+Dug into many of the shortcomings of the Combine framework and how they can be overcome.  Great demos on concat, amb and more by Josh.
+
+We looked at these projects:
+
+https://github.com/CombineCommunity/CombineExt
+
+Adds a bunch of missing features for combine (including concat).
+
+We also looked at:
+
+https://github.com/pointfreeco/combine-schedulers
+
+This allows you to control time in detail.
+
+----
+
+## 2020.07.11
+
+Demonstrated examples of using `UIHostingViewController` and `UIViewControllerRepresentable` to interoperate between SwiftUI and UIKit.
+
+Josh had an amazing demonstration but because turnout was light this week, we decided to save it for a future meetup.
+
+----
+
 ## 2020.07.04
 
 Happy 4th!  
