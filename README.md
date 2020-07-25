@@ -8,7 +8,48 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ## 2020.07.24
 
-Persistence!  UserDefaults, Property Wrappers, Core Data in SwiftUI and more..
+### Using `UserDefaults`
+
+John showed how to make an apps view-model remember its state using `UserDefaults`.  He did that by loading (or defaulting) the values of the view-model in the initializer and saving the values in the `didSet` method for each of these published properties. He created a separate "Hello" view that initialized the view-model and showed some of the data.  It stays in sync with the rest of the app because it is coming in from `UserDefaults`.
+
+Interesting finding:  The + operator is implemented for `Text` views. 
+
+The code: TBD
+
+### A generic storage abstraction
+
+Josh took another look at John's solution.  First, he demonstrated using the new SwiftUI feature `@AppStorage` that lets you save things in `UserDefaults` and also conforms to the `DynamicProperty` protocol which means that your `View` will recompute the `body` every time it changes.  It has some downsides in that it cannot be used inside an `ObservableObject` and only support a very primative set of data types.
+
+He asked what would happen if requirements changed. For example, first you used `UserDefaults`, but then you wanted to sync to cloudkit.  Then you required a common file format for android devices.  Then you wanted to use Firebase; then your own server.  Can you abstact the problem of saving and loading so that you can implement any of these solutions without making changes to the call-sites of your code.  He first created a generic `StorageService` based on the `Codable` protocol.  He implemented this for mock storage service (in-memory dictionary) and then `UserDefaults`.  He then put this into John's original solution.  So that he could keep `@Published` vars publishing their changes and control setter control of these types, he created a `Storage` wrapper type that used `@dynamicMemberLookup` to guarantee values get saved.  Finally, he showed how he could swap out the storage implementation using file based storage.
+
+The code: TBD
+
+### Stacks of Navigation
+
+Andrei showed us what happens if you navigate to a view that has navigation in it. The navigation titles stack!  This is cool but probably not what you want because it reduces the amount of content available.  You only want the top level view to be wrapped in the `NavigationView`.  When you navigate down the hierarchy, you can still use `.navigationTitle(...)` modifiers and they will utilize the top level `NavigationView`.
+
+### Implementing an in-place editable, draggable folder icon
+
+Ray showed a demo making a draggable folder that can be edited in-place. The two major tricks here:
+
+#### Point 1
+
+Make `TextField` use the same layout spaces as `Text`
+
+```swift
+    Text(text)
+      .hidden()
+      .overlay(TextField("",  text: $text))
+```
+
+#### Point 2
+
+When making your `DragGesture()` make sure to make the `minimumDistance` > 0 or it will interfere with `TextField`
+
+The code:
+https://gist.github.com/rayfix/400893d383bae7fbab4a69f7b535d5d1
+
+---
 
 ## 2020.07.18
 
