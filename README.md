@@ -14,7 +14,7 @@ John showed how to make an apps view-model remember its state using `UserDefault
 
 Interesting finding:  The + operator is implemented for `Text` views. 
 
-The code: TBD
+The code: https://github.com/codger/Persistant-Demo
 
 ### A generic storage abstraction
 
