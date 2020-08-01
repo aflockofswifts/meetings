@@ -6,6 +6,28 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ----
 
+## 2020.08.01
+
+### Matched Geometry
+
+SwiftUI this year brought a way to make smooth transitions across views. You match a two views with the same `id` and `namespace` and then SwiftUI can do an interpolating animation between them.  Much like a Keynote magic move.  John put together a project with a few examples of this.
+
+https://github.com/codger/Matched-Geometry
+
+### Creating a `.popTip()` modifier
+
+Josh looked at how to create a custom modifier that does layout and display of a small popup view.
+
+Code: TBD
+
+### Core Data based and Item Browswer
+
+Ray is working on a CoreData based app that lets you build a hierarchy of items that you can browse, tag and search for much like the files app.  We discussed how to setup the CoreData App given that App types are implemented as structs and don't have lifetime.
+
+https://github.com/rayfix/ItemBrowser
+
+----
+
 ## 2020.07.24
 
 ### Using `UserDefaults`
