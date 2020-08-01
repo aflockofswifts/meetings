@@ -16,9 +16,10 @@ https://github.com/codger/Matched-Geometry
 
 ### Creating a `.popTip()` modifier
 
-Josh looked at how to create a custom modifier that does layout and display of a small popup view.
+Josh looked at how to create a custom view modifier that does layout and display of a small popup view.  
+We explored how to use `PreferenceKey` to send information up the view hierachy and how to use `EnvironmentKey` to add our PopTipStyle to SwiftUI's envrionment so that in can be used to style all child Poptips without having to provide the same parameters to each modifier.
 
-Code: TBD
+Code: https://github.com/joshuajhomann/PopTip-SwiftUI
 
 ### Core Data based and Item Browswer
 
