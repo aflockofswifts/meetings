@@ -4,6 +4,24 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+
+----
+## 2020.08.08
+
+We explored dismissing the keyboard in SwiftUI using a hack to send the resignFirstResponder selector to the shared application.  (It still works for SwiftUI native (@main struct defined) apps.
+
+We also created a shake animation effect using GeometryEffect and a ProjectionTransform that translated the x coordinate.
+
+Josh showed us the difference between different styles of animations including implicit animation with the animation modifier and explicit animations using withAnimation. 
+
+The code can be found here:
+
+https://gist.github.com/rayfix/400893d383bae7fbab4a69f7b535d5d1
+
+Josh demostrated the Hero animation in action using one of his first expermental SwiftUI apps that reads in Pokemon.
+
+We also debuged some Navigation related code.  After the meeting John and Josh found that you need to set the rendering mode to .original if you want it to look right within a navigation view.  We will probably go over this in more detail next week.
+
 ----
 
 ## 2020.08.01
