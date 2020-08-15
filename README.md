@@ -5,6 +5,84 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 https://www.meetup.com/A-Flock-of-Swifts/
 
 
+---
+## 2020.08.15
+
+### Navigation Bars
+
+We looked at three column navigation using a simple app.
+
+```swift
+struct View1: View {
+  var body: some View {
+    Color.red
+  }
+}
+
+struct View2: View {
+  var body: some View {
+    Color.blue
+  }
+}
+
+struct View3: View {
+  var body: some View {
+    Color.green
+  }
+}
+
+@main
+struct BrowserApp: App {
+  var body: some Scene {
+    WindowGroup {
+      View1().navigationBarTitle("1", displayMode: .inline)
+      View2().navigationBarTitle("2", displayMode: .inline)
+      View3().navigationBarTitleDisplayMode(.inline)
+         .toolbar(...)
+     }
+  }
+}
+```
+### Semantic Toolbars Versus Navigation Bar Items
+
+You can only have one .principle. It doesn't show up if there is 
+a navigation title.
+
+```swift
+.toolbar {
+  ToolbarItem(placement: .principal) {
+    HStack {
+      Button("Button 1") {  }                
+      Button("Button 2") {  }
+      Button("Button 3") {  }
+    }
+  }
+}
+```
+
+We filed a feedback issue about a strange thing when the button of one of the above HStacks is small (one character).
+
+### Showing a list of different Views
+
+The trick is to use an AnyView type erasure and then wrap that in a ForEach that 
+is enumerated to be identifiable.  
+
+Guess: works well for small number of views but
+might be harder to diff and result in slower performance when there are larger
+numbers of views?
+
+```swift
+let views = [AnyView(View1()), AnyView(View2()), AnyView(View3())]
+
+...
+
+VStack {
+ ForEach(Array(views.enumerated()), id: \.offset) { pair in
+   pair.element
+ }
+}
+```
+
 ----
 ## 2020.08.08
 
