@@ -60,7 +60,11 @@ a navigation title.
 }
 ```
 
-We filed a feedback issue about a strange thing when the button of one of the above HStacks is small (one character).
+### Feedback sent to Apple -- FB8415373 
+
+We filed a feedback issue about a strange thing when the button of one of the above HStacks is small (one character) and has padding.
+
+![FB8415373](resources/clip-bug.png)
 
 ### Showing a list of different Views
 
