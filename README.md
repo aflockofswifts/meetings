@@ -66,6 +66,53 @@ We filed a feedback issue about a strange thing when the button of one of the ab
 
 ![FB8415373](resources/clip-bug.png)
 
+```swift
+import SwiftUI
+
+struct MainView: View {
+  var body: some View {
+    Color.green
+  }
+}
+
+struct TestView: View {
+  var body: some View {
+    MainView()
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .principal) {
+          HStack {
+            Button {  } label: {
+              Text("😫")   // Disappears without a trace, unless you make longer string
+                .padding(.horizontal, 100)
+                .background(Color.red)
+              // .layoutPriority(1) // commenting this in will also fix it
+            }
+            Button {  } label: {
+              Text("😁")
+                .padding(.horizontal, 90) // making this 100 will also fix it
+                .background(Color.red)
+            }
+          }
+        }
+      }
+  }
+}
+
+@main
+struct BrowserApp: App {
+  var body: some Scene {
+    WindowGroup {
+      NavigationView {
+        TestView()
+        TestView()
+      }
+    }
+  }
+}
+```
+
+
 ### Showing a list of different Views
 
 The trick is to use an AnyView type erasure and then wrap that in a ForEach that 
