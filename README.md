@@ -6,6 +6,10 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 
 ---
+## 2020.08.29
+Path animation and adpating UI based on size class:
+https://github.com/joshuajhomann/PathMorphing-SwiftUI
+
 ## 2020.08.15
 
 ### Navigation Bars
