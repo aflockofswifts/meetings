@@ -5,6 +5,16 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 https://www.meetup.com/A-Flock-of-Swifts/
 
 
+
+
+---
+
+## 2020.09.05
+- Navigation, page controllers using tab views and a page style
+- Discussion about making cancellable publishers in combine
+
+## 2020.09.
+
 ---
 ## 2020.08.29
 Path animation and adpating UI based on size class:
