@@ -13,8 +13,6 @@ https://www.meetup.com/A-Flock-of-Swifts/
 - Navigation, page controllers using tab views and a page style
 - Discussion about making cancellable publishers in combine
 
-## 2020.09.
-
 ---
 ## 2020.08.29
 Path animation and adpating UI based on size class:
