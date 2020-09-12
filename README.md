@@ -8,6 +8,10 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 
 ---
+## 2020.09.12
+We dicussed cross platform caching: Firebase, Apollo, CoreData / iCloud, Realm, CouchDB
+John showed his weather app and we discussed JSON serialization using www.quicktype.io and the new colored SF Symbols:  https://github.com/codger/OpenWeatherDemo2
+Josh showed another weather app and we discussed dependency injection and Futures: https://github.com/joshuajhomann/weather-swiftui
 
 ## 2020.09.05
 - Navigation, page controllers using tab views and a page style
