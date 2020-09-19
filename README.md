@@ -6,6 +6,32 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 
 
+---
+2020.09.19
+
+### Mocks
+
+Ray talked about mocking services.
+
+There are three different approaches:
+
+- Baked into the code (if-else)
+- Make a service protocol, use the protocol once for the service, once for the mock
+- Make a service struct with closure properties that define service
+
+A gist of the code can be found here:
+https://gist.github.com/rayfix/e63b84c12f47650fad8d7d50697eb9f1
+
+The last approach, called protocol witnesses, is more manual but nice for composability.
+
+### Loading States
+
+Josh created a reddit client that uses a generic loading abstraction.  He also created
+a shimmering modifier that can be composed with the new redacted modifier for a very cool
+visual loading effect.
+
+The project can be found here:
+TBD
 
 ---
 ## 2020.09.12
