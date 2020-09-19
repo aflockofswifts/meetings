@@ -4,12 +4,20 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+---
+### 2020.10.03
 
+TBD
+
+---
+## 2020.09.26
+
+Moving day. See you October 3rd.
 
 ---
 ## 2020.09.19
 
-### Mocks
+### Mocking Services
 
 Ray talked about mocking services.
 
