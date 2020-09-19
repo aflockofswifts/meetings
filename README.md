@@ -38,8 +38,7 @@ Josh created a reddit client that uses a generic loading abstraction.  He also c
 a shimmering modifier that can be composed with the new redacted modifier for a very cool
 visual loading effect.
 
-The project can be found here:
-TBD
+The project can be found here: https://github.com/joshuajhomann/ShimmeringLoadingState
 
 ---
 ## 2020.09.12
