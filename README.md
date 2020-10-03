@@ -4,10 +4,32 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
----
-### 2020.10.03
+##
 
-TBD
+---
+## 2020.10.03
+
+### Seedable Random Numbers
+
+Ray showed how to build a psuedo random number generator.  It gives you 
+repeatability and reasonable randomness for tests but is not cryptographically 
+secure.  You can use it as a replacement for SystemRandomNumberGenerator().
+
+https://gist.github.com/rayfix/656d044c87dfc059ad301d378fe28e33
+
+
+### Tides App
+
+This mega presentation from Josh will span several meetings and eventually cover:
+
+  - Multiplatform
+  - Watch
+  - Using Swift PM
+  - Widgets
+
+Tim Colson created some detailed meeting notes on Dropbox:
+
+https://paper.dropbox.com/doc/Flock-of-Swifts--A8y~OD2rSkR3ODVFk1TfhR9EAQ-RYLxaSucg20Uhe9Bn2X5O
 
 ---
 ## 2020.09.26
