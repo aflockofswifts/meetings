@@ -6,6 +6,34 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ##
 
+
+## 2020.10.10
+
+### Offical Swift Algorithms
+
+There is a new sub-project from swift.org for algorithms. 
+It can be found at https://github.com/apple/swift-algorithms/
+
+### Tides App Continuation
+
+This week Josh built out the actual dataTaskPublisher endpoint and rendering.
+He should how publishers can be combined together to form new publishers for filtering
+and organizing content.
+
+He described other tips for organizing code and keeping everything neat and
+tidey (pun!).  
+
+Finally, Josh shoowed how to use the SwiftUI Map view along with custom annotations 
+and lamented on the shortcomings of the SwiftUI implementation.
+
+Tim C posted his notes here:
+https://paper.dropbox.com/doc/Flock-of-Swifts--A9QHVH0PWyw1HQ9hwVQbwImiAg-RYLxaSucg20Uhe9Bn2X5O
+
+Quote of the week:
+
+"That was a firehose of awesome."
+-- Tim Colson on Josh's presentation
+
 ---
 ## 2020.10.03
 
