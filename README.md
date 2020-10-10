@@ -4,8 +4,7 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
-##
-
+---
 
 ## 2020.10.10
 
@@ -16,9 +15,9 @@ It can be found at https://github.com/apple/swift-algorithms/
 
 ### Tides App Continuation
 
-This week Josh built out the actual dataTaskPublisher endpoint and rendering.
-He should how publishers can be combined together to form new publishers for filtering
-and organizing content.
+This week Josh built out the actual dataTaskPublisher endpoint for tide data and view 
+rendering.  He showed how publishers can be combined together to form new 
+publishers for filtering and organizing content.
 
 He described other tips for organizing code and keeping everything neat and
 tidey (pun!).  
