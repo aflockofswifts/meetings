@@ -5,6 +5,32 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+## 2020.10.24
+
+Presentation on `PHPickerViewController`
+
+
+
+---
+## 2020.10.17
+
+### Tides App Continued
+
+Josh continued to work to finish out the Tides app and added the following features:
+
+  - A endpoint to get station data and a mock
+  - Use of a charting package to show tide predictions data
+  - Better map pin annotations
+  - Selecting and deselecting favorites
+  - An .all vs .favorites segmented control display.
+  
+Tim Colson added to his notes constellation:
+
+https://paper.dropbox.com/doc/Flock-of-Swifts--A9QHVH0PWyw1HQ9hwVQbwImiAg-RYLxaSucg20Uhe9Bn2X5O
+
+Josh will do some cleanup and publish to a repo soon.
+
+---
 
 ## 2020.10.10
 
