@@ -5,11 +5,28 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
 ## 2020.10.24
 
-Presentation on `PHPickerViewController`
+Discussion on monetization.  AdMob, funnels, subscriptions.  This meetup is coming up on Monday.
+
+https://www.meetup.com/sdiosdevelopers/events/274096826/
 
 
+Presentation on `PHPickerViewController` and using `UIViewRepresentable` and `UIViewControllerRepresentable`. 
+Here is the final code of what we worked on.
+
+https://gist.github.com/rayfix/96deae8e715554560e9e89a8bd48ab71
+
+Thanks for great feedback from Frank, John, Tim. Now, I think I could actually do a presentation on this topic.
+
+We talked about ARC and cancellable.  Specifically, this tweet from Peter Steinberger:
+
+https://twitter.com/steipete/status/1318812545621393408
+
+Tim Colson's blow by blow can be found here:
+
+https://paper.dropbox.com/doc/Flock-of-Swifts--A9QHVH0PWyw1HQ9hwVQbwImiAg-RYLxaSucg20Uhe9Bn2X5O
 
 ---
 ## 2020.10.17
