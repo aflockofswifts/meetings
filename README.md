@@ -10,7 +10,14 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 Happy Halloween!
 
-This week we reviewed what we did last week with PHPickerViewController and talked about problems.
+Frank gave an presentation on a tricky layout problem that ended up having a simple solution.
+He had a wrapped UIViewRepresentable containing a label that was taking the entire screen.
+
+`.fixedSize()`
+
+https://developer.apple.com/documentation/swiftui/text/fixedsize()
+
+Ray reviewed what we did last week with PHPickerViewController and talked about problems.
 
 - Adding support for multiple images
 - Be careful using ForEach with ranges.  It has to be constant.
