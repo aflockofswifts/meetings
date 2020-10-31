@@ -21,19 +21,24 @@ This week we reviewed what we did last week with PHPickerViewController and talk
 - Be careful with strong reference cycles!
 
 Final code can be found here:
+
 https://gist.github.com/rayfix/becca80cb2dc1c5e90496a6b7c61274b
 
 #### Chat notes
 CocoaPods and manual install for AdMob explained
+
 https://developers.google.com/admob/ios/quick-start
 
 An unanswered AdMob forum request for a date on SPM compatibility. ;-)
+
 https://support.google.com/admob/thread/73551601?hl=en
 
 Using ForEach with id. (Be careful if your array contains duplicates!)
+
 https://www.hackingwithswift.com/quick-start/swiftui/how-to-create-views-in-a-loop-using-foreach
 
 Tim Colson's detailed blow-by-blow
+
 https://paper.dropbox.com/doc/Flock-of-Swifts--A~gCRNtylBictlURDRC0xwMRAg-RYLxaSucg20Uhe9Bn2X5O
 
 
