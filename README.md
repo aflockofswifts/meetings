@@ -4,6 +4,39 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+
+---
+### 2020.10.31
+
+Happy Halloween!
+
+This week we reviewed what we did last week with PHPickerViewController and talked about problems.
+
+- Adding support for multiple images
+- Be careful using ForEach with ranges.  It has to be constant.
+- Using a view-model instead of state
+- Using a UIHostingController
+- Connecting the UIKit and SwiftUI worlds with Combine
+- Start with .sync and convert to a functional chain
+- Be careful with strong reference cycles!
+
+Final code can be found here:
+https://gist.github.com/rayfix/becca80cb2dc1c5e90496a6b7c61274b
+
+#### Chat notes
+CocoaPods and manual install for AdMob explained
+https://developers.google.com/admob/ios/quick-start
+
+An unanswered AdMob forum request for a date on SPM compatibility. ;-)
+https://support.google.com/admob/thread/73551601?hl=en
+
+Using ForEach with id. (Be careful if your array contains duplicates!)
+https://www.hackingwithswift.com/quick-start/swiftui/how-to-create-views-in-a-loop-using-foreach
+
+Tim Colson's detailed blow-by-blow
+https://paper.dropbox.com/doc/Flock-of-Swifts--A~gCRNtylBictlURDRC0xwMRAg-RYLxaSucg20Uhe9Bn2X5O
+
+
 ---
 
 ## 2020.10.24
@@ -24,7 +57,7 @@ We talked about ARC and cancellable.  Specifically, this tweet from Peter Steinb
 
 https://twitter.com/steipete/status/1318812545621393408
 
-Tim Colson's blow by blow can be found here:
+Tim Colson's blow-by-blow can be found here:
 
 https://paper.dropbox.com/doc/Flock-of-Swifts--A9QHVH0PWyw1HQ9hwVQbwImiAg-RYLxaSucg20Uhe9Bn2X5O
 
