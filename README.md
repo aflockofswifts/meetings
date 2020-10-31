@@ -10,12 +10,17 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 Happy Halloween!
 
+#### Layout of UILabel with fixedSize
+
 Frank gave an presentation on a tricky layout problem that ended up having a simple solution.
-He had a wrapped UIViewRepresentable containing a label that was taking the entire screen.
+He had a wrapped UIViewRepresentable containing a label that was taking the entire screen.  
+Adding this modifier made the layout use the intrinsic size of the UILabel (size of the text).
 
 `.fixedSize()`
 
 https://developer.apple.com/documentation/swiftui/text/fixedsize()
+
+#### More Image Picking
 
 Ray reviewed what we did last week with PHPickerViewController and talked about problems.
 
