@@ -6,6 +6,24 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 
 ---
+### 2020.11.07
+
+We discussed memory management (ARC) and how to prevent reference cycles and extend lifetime with closure captures (aka lambda captures in C++).  The discussion comes from a RW forum post:
+
+https://forums.raywenderlich.com/t/advanced-swift-memory-management-conclusion-raywenderlich-com/71286/4
+
+
+We also looked at Google's Swift benchmark package that was showcased at the Swift for TensorFlow design meeting last week:
+
+https://github.com/google/swift-benchmark
+
+
+Tim Colson's blow-by-blow:
+
+https://paper.dropbox.com/doc/Flock-of-Swifts--A~gCRNtylBictlURDRC0xwMRAg-RYLxaSucg20Uhe9Bn2X5O
+
+
+---
 ### 2020.10.31
 
 Happy Halloween!
