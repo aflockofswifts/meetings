@@ -6,6 +6,77 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 
 ---
+
+### 2020.11.14
+
+We had some problems starting the meeting because of Big Sur. Installing Zoom 5.4.1 resolved and changing preference fixed the issue for Ray.
+
+#### Deprecated hashValue
+
+Franklin shared a Swift lang bug he has been working on.  It is reported here. He proposes getting rid of the hashValue definition in RawRepresentable.
+
+https://bugs.swift.org/browse/SR-13851 
+
+#### SwiftUI Grid
+
+Ray created an auto-resizing data grid for displaying a bunch of numbers.  A gist of the project can be found here:
+
+https://gist.github.com/rayfix/1805ad584f1028b3e52ecf45c3f0ce9e
+
+The shortcoming of the solution is that the header cells can scroll off the window and can't be pinned on the screen.  It would be great if ScrollView took the content offset as a binding.  Unfortunately, it currently does not.  This probably needs to be implemented with `UIViewRepresentable`
+
+#### Mirror, mirror on the wall
+
+John wants to build a unit conversion app using foundation. Does he need to make his own list of all the unit types?  The short answer is yes.
+
+Josh made an attempt at using mirror to get them.  However, since mirror only mirrors stored properties, it won't do the job here.
+
+```swift
+struct A {
+  var a,b,c: Int
+}
+
+let mirror = Mirror(reflecting: A.init(a: 1, b: 2, c: 3))
+
+mirror.children.forEach { child in
+  print(mirror.subjectType, child.label!, "value: \(child.value)")
+}
+```
+
+This prints:
+
+```console
+A a value: 1
+A b value: 2
+A c value: 3
+```
+
+#### Apple Silicon Mac
+
+Looking forward to the performance of the new M1 Macs. These are all low end systems with integrated graphics. (16 GB max)  It will be interesting to see how it scales to higher end systems that have external graphics.
+
+#### Functional vs OO
+
+Recommended viewing from Josh about functional and object oriented from a historical perspective.
+
+https://www.youtube.com/watch?v=6YbK8o9rZfI
+
+#### What Framework to use?
+
+SwiftUI is the new hotness should I use it.  There are several factors to weigh in the consideration:
+
+- The familiarity team
+- Hiring future engineers
+- What iOS versions need to be supported? (if iOS 12, SwiftUI is a no-go)
+
+RxSwift with MVVM seems like a good candidate because it has a similar mindset to SwiftUI and supports iOS 12 and later.
+
+#### Tim Colson's blow-by-blow:
+
+https://paper.dropbox.com/doc/Flock-of-Swifts--A~gCRNtylBictlURDRC0xwMRAg-RYLxaSucg20Uhe9Bn2X5O
+
+---
+
 ### 2020.11.07
 
 We discussed memory management (ARC) and how to prevent reference cycles and extend lifetime with closure captures (aka lambda captures in C++).  The discussion comes from a RW forum post:
