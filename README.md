@@ -6,6 +6,73 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 
 ---
+### 2020.11.21
+
+
+#### App Store Prices
+
+We talked about recent changes to app store cost.  If you are making less than 1M, Apple will start only taking a 15% cut.
+
+What about trial offers?  Here are some links from Tim:
+
+https://developer.apple.com/documentation/storekit/in-app_purchase/subscriptions_and_offers/implementing_introductory_offers_in_your_app
+
+Ed notes Tier 0 that follows the naming convention: “14-day Trial.”
+
+https://bitsplitting.org/2018/06/06/ersatz-free-trials/ -> article on Apple allowing this from 2018
+
+#### M1 Macs and Mac mini hubs
+
+It's fast and cool.  Wakes from sleep fast, has a better keyboard.  It's very fast too.
+
+https://daringfireball.net/2020/11/the_m1_macs
+
+https://techcrunch.com/2020/11/17/yeah-apples-m1-macbook-pro-is-powerful-but-its-the-battery-life-that-will-blow-you-away/ 
+
+We need cheap hubs.  Apple tax too high:
+
+Links from Ed Arenberg:
+
+https://www.macrumors.com/2020/11/20/owc-thunderbolt-hub-mac/
+
+https://www.sabrent.com/product/SB-XTMQ-2TB/rocket-xtrm-q-2tb-usb-3-2-thunderbolt-3-external-ssd-sb-xtmq-2tb/
+
+https://www.sabrent.com/product/SB-XTMQ-1TB/rocket-xtrm-q-1tb-usb-3-2-thunderbolt-3-external-ssd-sb-xtmq-1tb/
+
+https://www.amazon.com/Sabrent-Rocket-Thunderbolt-External-SB-XTMQ-2TB/dp/B08BZ2FXTF/ref=sr_1_14?dchild=1&keywords=sabrent+external+nvme&qid=1605982882&sr=8-14
+
+In the future (M2)?
+https://en.wikipedia.org/wiki/Unum_(number_format)
+
+#### Progress on a scrolling table header
+
+Using `UIViewRepresentable` with a `UIView` that contains three `UICollection` wired together via scroll view delegate.
+Something is wrong with layout.  We tried to debug it. (The problem is now solved and will have the solution next week.)
+
+Debugging functional chains.
+
+```swift
+extension Sequence {
+  func print() -> Self {
+    forEach { Swift.print($0) }
+    return self
+  }
+}
+```
+
+Note:  I got it all working.
+
+https://vimeo.com/482224242
+
+
+#### Returning to the Tides app
+
+- implemented a new endpoint and mock to get more information: low and high tide
+- thought about inputs and outputs and bindings so that we can refactor the view model
+
+Think of the view model that takes a bunch of inputs from user interface and services and generates outputs: views and service actions.
+
+---
 
 ### 2020.11.14
 
