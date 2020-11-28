@@ -4,6 +4,48 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+---
+### 2020.11.28
+
+#### M1 Show and Tell
+John gave us a demo of his maxed-out 13" MacBook Pro using Xcode.  He ran a sample project using lazy grids that reproduce the app store layout.  The article is on medium here: 
+
+https://medium.com/swlh/make-your-app-faster-using-lazystacks-in-swiftui-6c670950a8ff
+
+The Github repository is here:
+https://github.com/KeatoonMask/AppStoreGrid
+
+Some notable aspects:
+   - The simulator starts up almost instantly.
+   - It doesn't get hot, even under load.
+   - It's cold on John's legs because he is always in shorts.
+
+John is using this monitor:
+
+https://www.amazon.com/Portable-Monitor-Touchscreen-Auto-Rotating-Kickstand/dp/B086VJP65W?ref_=ast_sto_dp
+
+#### DataGridView Summary
+
+Ray gave a keynote presentation on creating a data grid view. The presentation is here:
+
+https://github.com/aflockofswifts/meetings/blob/main/resources/DataGridView.pdf
+
+The source code is here:
+
+https://github.com/rayfix/DataGridView
+
+There is a quick look view controller that lets you view CSV and pdf files:
+https://developer.apple.com/documentation/quicklook/qlpreviewcontroller
+
+#### Continuing the Tides App
+
+Josh continued refactoring the Tides app.  Going from our design document, we built a view model that takes the screen's inputs and maps it to outputs using a CombineLatest4 publisher chain.
+
+Josh showed the use of an external extensions library for Combine.  Unfortunately, multiple assignment doesn't work the way hoped for so ended up not being able to use it.
+
+https://github.com/CombineCommunity/CombineExt
+
+Sometimes you need to spell out the return type for a closure to compile.  We will continue building this next week.
 
 ---
 ### 2020.11.21
