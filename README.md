@@ -4,6 +4,91 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+
+---
+
+### 2020.12.05
+
+Here is a quick summary of our last meeting. A more detailed version from Tim Colson can be found here: https://bit.ly/flock-of-swift-notes
+
+#### Caleb's Inventory Demo
+
+Caleb gave an overview of his inventory app. The current version uses Storyboards, a network service and delegates.  We discussed using callback closures for network requests and did some of that refactoring in realtime with Josh driving most of the discussion.
+
+- Use the Swift Result type
+- Use a custom error type
+- Use `defer` to manage a boolean value that says if a request is "processing" or in-flight.
+
+This week a Swift evolution proposal talks about how callbacks are "suboptimal" even though they are a good starting point for current Swift.
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md
+
+#### Mark's Stock Rater Demo
+
+Demostrated a command line app written in Python to show stock the performance of a given stock.  Scrapping info from the web.
+
+Mark would love to partner with someone to tackle something for Apple Watch.
+
+Josh offered to make a quick demo if Mark can provide an API.
+
+You can use a tool called ngrok to project a private API out onto the web.
+
+https://ngrok.com/
+
+#### Emil's Questions About Crypto and IAP
+
+- Don't store sensitive data in UserDefaults
+- Consider using Keychain
+- Probably don't want to fight against Apple's provided mechanisms
+
+#### Josh Continues Tides App
+
+Continuing the Tides app example, Josh created a destructureAndAssign method on the Publisher protocol.
+
+- Swift lacks variatics so you have to make overloads explicitly
+- AnyObject is not a type erasure but a standin for any reference type
+- ReferenceWritableKeyPath
+- Abstract each input
+- Use where to put constraints on the generic
+- Require Failure == Never so that you can call sync without an error type
+- Frank suggested using `@inlinable`
+
+
+```swift
+extension Publisher {
+  @inlinable
+  func destructureAndAssign<A,B,C,Target: AnyObject>(
+      to a: ReferenceWritableKeyPath<Target, A>,
+      and b: ReferenceWritableKeyPath<Target, B>,
+      and c: ReferenceWritableKeyPath<Target, C>,
+      on target: Target) ->  AnyCancellable where Output == (A,B,C), Failure == Never {
+    sink(recieveValue: { [weak target] output in
+        target?[keyPath: a] = output.0
+        target?[keyPath: b] = output.1
+        target?[keyPath: c] = output.2                
+      })
+   }
+}
+```
+
+#### John's Watermark Display
+
+John showed the Hacking w/ Swift solution:
+
+https://www.hackingwithswift.com/quick-start/swiftui/how-to-play-movies-with-videoplayer
+
+#### Josh's Watermark
+
+This version creates a new image:
+
+```
+let image = UIGraphicsImageRenderer(bounds: .init(origin: .zero, size: .init(width: 100, height: 100))).image { context in
+  UIImage(systemName: "circle.fill")?.draw(at: .zero)
+  NSAttributedString(string: "watermark").draw(at: .zero)
+}
+```
+
+
 ---
 ### 2020.11.28
 
