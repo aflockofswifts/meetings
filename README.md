@@ -9,7 +9,7 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ### 2020.12.05
 
-Here is a quick summary of our last meeting. A more detailed version from Tim Colson can be found here: https://bit.ly/flock-of-swift-notes
+Here is a quick summary of our last meeting. A more detailed version with lots of screenshots from Tim Colson can be found here: https://bit.ly/flock-of-swift-notes
 
 #### Caleb's Inventory Demo
 
@@ -25,7 +25,7 @@ https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md
 
 #### Mark's Stock Rater Demo
 
-Demostrated a command line app written in Python to show stock the performance of a given stock.  Scrapping info from the web.
+Mark demostrated a command line app written in Python to show stock the performance of a given stock ticker.  Scrapping info from the web.
 
 Mark would love to partner with someone to tackle something for Apple Watch.
 
@@ -40,6 +40,7 @@ https://ngrok.com/
 - Don't store sensitive data in UserDefaults
 - Consider using Keychain
 - Probably don't want to fight against Apple's provided mechanisms
+- Why not make an IAP to remove image watermark?
 
 #### Josh Continues Tides App
 
@@ -81,7 +82,7 @@ https://www.hackingwithswift.com/quick-start/swiftui/how-to-play-movies-with-vid
 
 This version creates a new image:
 
-```
+```swift
 let image = UIGraphicsImageRenderer(bounds: .init(origin: .zero, size: .init(width: 100, height: 100))).image { context in
   UIImage(systemName: "circle.fill")?.draw(at: .zero)
   NSAttributedString(string: "watermark").draw(at: .zero)
