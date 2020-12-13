@@ -7,6 +7,58 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
 
+
+### 2020.12.12
+
+### Josh's watermark playground
+```
+import UIKit
+import PlaygroundSupport
+
+let image = Bundle.main.url(forResource: "a", withExtension: "jpg")
+  .flatMap { try? Data.init(contentsOf: $0) }
+  .flatMap(UIImage.init(data:))!
+
+let bounds = CGRect(origin: .zero, size: image.size)
+
+var format = UIGraphicsImageRendererFormat()
+format.scale = 1
+
+let waterMarkedImage = UIGraphicsImageRenderer(
+  bounds: bounds,
+  format: format
+).image { context in
+  image.draw(in: bounds)
+  UIColor(white: 1, alpha: 0.4).setFill()
+  UIBezierPath(ovalIn: bounds).fill()
+}
+
+let imageView = UIImageView(image: waterMarkedImage)
+imageView.contentMode = .scaleAspectFit
+imageView.bounds = .init(origin: .zero, size: .init(width: 300, height: 300))
+PlaygroundPage.current.liveView = imageView
+```
+
+We discussed first class functions in Swift `.flatMap(UIImage.init(data:))` vs `.flatMap { UIImage(data:$0)) }` and end example of `reduce` as a function that takes a function `func(Accumuated, Element) -> Accumulated` and the equivalence of the following forms in swift:
+```
+[1,2,3].reduce(0, +)
+[1,2.3].reduce(0) { accumulated, element in
+  accumulated + element
+}
+func plus(_ a: Int, b: Int) -> Int {
+  a + b
+}
+[1,2,3].reduce(0, plus)
+```
+
+We discussed how to write Swift idiomatically:
+
+ - Prefer `guard` as earyly in the scope as possible (ie top of function) to assert precoditions, rather that if / return
+ - Prefer the composition of functional methods on swift `Sequence` to imperative `for` loops: https://developer.apple.com/documentation/swift/sequence
+ - Prefer values (`struct`, `enum`) over references (`class`, `indirect`) unless you have a well founded to opt into reference symantics
+ - Perfer failable initializers to incomplete objects
+ - Prefer default values or factor methods to requiring mutable state (as with the objC `UIGraphicsImageRendererFormat` above)
+
 ### 2020.12.05
 
 Here is a quick summary of our last meeting. A more detailed version with lots of screenshots from Tim Colson can be found here: https://bit.ly/flock-of-swift-notes
