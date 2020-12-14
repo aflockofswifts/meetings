@@ -10,8 +10,62 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 ### 2020.12.12
 
-### Josh's watermark playground
+Also see https://bit.ly/flock-of-swift-notes
+
+### Xcode Tips and Tricks from John
+
+Not sure if this is where these tips came from but need to put credit where it is due:
+https://www.hackingwithswift.com/articles/166/xcode-tips-and-tricks-part-one
+
+These are the tips from Paul Hudson that John J. demoed during the meetup:
+
+Xcode tip #1: Swift can synthesize memberwise initializers for structs, but not for classes. Fortunately, Xcode can generate the code for us: select your class name, then go to the Editor menu and choose Refactor > Generate Memberwise Initializer. Done!
+
+Xcode tip #2: When building software, it’s important to make sure your app works for *everyone*. One great way to do that is with Xcode’s environment overrides panel, which lets you adjust Dynamic Type size, accessibility options, and appearance all in one place.
+
+Xcode tip #3: You probably already know that you can click after any open { or close } brace to have Xcode highlight its matching brace, but another useful tip is that you can double click a brace to select the entire block of code it contains.
+
+Xcode tip #4: Xcode can check if your spelling is correct, and it even understands that camelCaseNames should be treated as separate words. Go to the Edit menu and choose Format > Spelling and Grammar > Check Spelling While Typing, and Xcode will check your code for typos.
+
+Xcode tip #5: If you have a Swift file with many errors, you can use Xcode’s fix-its to try to correct them one by one. But a faster way is to go to the Editor menu and choose Fix All Issues to apply fix-its all at once. (Make sure and double-check which changes were made!)
+
+Xcode tip #6: When you search using Xcode’s find navigator, you can click to view individual results and make any changes you want. But when you’re done, I recommend you hit Backspace to remove the search item from the results, so you can see which results you have left to check.
+
+Xcode tip #7: This is the simplest tip I know, but it will save you time if you don’t already know it. Whenever you see Automatic Preview Updating Paused in your SwiftUI canvas, press Opt+Cmd+P to resume previewing. Alternatively, use Opt+Cmd+Return to hide the canvas completely.
+
+Xcode tip #8: If you frequently move from Xcode to the simulator, tile them side by side. With the simulator active, go to the Window menu and choose Tile Window To Right Of Screen, then select Xcode on the left. You can adjust the split so the simulator sits snugly on the right.
+
+Xcode tip #9: Xcode has great code completion built right in, but sometimes as you scroll through the options you might find the names are too long to fit. Fortunately, you can just grab the edge of the autocomplete popup and drag it as wide as you want!
+
+Xcode tip #10: Breakpoints are great for debugging – place them by selecting a line number, or remove them by right-clicking and choosing Delete Breakpoint. You can also remove one by dragging it away, but a fast method is to use Cmd+\ to toggle a breakpoint on the current line.
+
+### String Encryption
+
+A quick demo by Ray on CryptoKit using the mac playgrounds app (not Xcode):
+
+```swift
+import CryptoKit
+import Foundation
+
+let data = "Secret Message!".data(using: .utf8)!
+
+let key = SymmetricKey(size: .bits256)
+let sealed = try AES.GCM.seal(data, using: key)
+
+let result = try AES.GCM.open(sealed, using: key)
+print(String(data: result, encoding: .utf8)!)
+
+do {
+    let wrongKey = SymmetricKey(size: .bits256)
+    let _ = try AES.GCM.open(sealed, using: wrongKey)
+} catch {
+    print(error)
+}
 ```
+
+### Josh's watermark playground
+
+```swift
 import UIKit
 import PlaygroundSupport
 
@@ -40,7 +94,7 @@ PlaygroundPage.current.liveView = imageView
 ```
 
 We discussed first class functions in Swift `.flatMap(UIImage.init(data:))` vs `.flatMap { UIImage(data:$0)) }` and end example of `reduce` as a function that takes a function `func(Accumuated, Element) -> Accumulated` and the equivalence of the following forms in swift:
-```
+```swift
 [1,2,3].reduce(0, +)
 [1,2.3].reduce(0) { accumulated, element in
   accumulated + element
