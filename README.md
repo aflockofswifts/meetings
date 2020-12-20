@@ -16,31 +16,25 @@ Where to get started as an iOS developer.
 Use playgrounds to learn about pure Swift:
 
 (Learn to code in 7 days)
-
 https://apps.apple.com/us/story/id1498544817
 
 SwiftUI Tutorial from Apple
-
 https://developer.apple.com/tutorials/swiftui/
 
 Paul Hudson:
-
 https://www.hackingwithswift.com/100
 
 Ray Wenderlich:
-
 https://www.raywenderlich.com/
 
 iOS Academy:
-
 https://youtu.be/U-Y9HJzNhQ0
 
-#### Processing video frame
+#### Processing video frames
 
 Some discussion about Tim's app ideas QR code inventory, vocabulary lookup.
 
 How to process video frames:
-
 https://developer.apple.com/documentation/coremedia/cmsamplebuffer-u71
 
 #### Small Array
@@ -90,7 +84,6 @@ numbers.combinations(ofCount: count)
 
 By changing count, you can make it pairs of 2, 3, ... numbers.
 
-
 Josh showed us an O(n) algorithm that solves the count == 2 problem.
 
 Code:
@@ -100,6 +93,7 @@ Code:
 // that completes the combo.
 // TBD
 ```
+---
 
 ### 2020.12.12
 
