@@ -12,7 +12,7 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 Also see https://bit.ly/flock-of-swift-notes
 
-### Xcode Tips and Tricks from John
+#### Xcode Tips and Tricks from John
 
 Not sure if this is where these tips came from but need to put credit where it is due:
 https://www.hackingwithswift.com/articles/166/xcode-tips-and-tricks-part-one
@@ -39,7 +39,7 @@ Xcode tip #9: Xcode has great code completion built right in, but sometimes as y
 
 Xcode tip #10: Breakpoints are great for debugging – place them by selecting a line number, or remove them by right-clicking and choosing Delete Breakpoint. You can also remove one by dragging it away, but a fast method is to use Cmd+\ to toggle a breakpoint on the current line.
 
-### String Encryption
+#### String Encryption
 
 A quick demo by Ray on CryptoKit using the mac playgrounds app (not Xcode):
 
@@ -63,7 +63,7 @@ do {
 }
 ```
 
-### Josh's watermark playground
+#### Josh's watermark playground
 
 ```swift
 import UIKit
