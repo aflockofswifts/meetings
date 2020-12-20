@@ -91,7 +91,18 @@ Code:
 ```swift
 // Put the complement numbers in the set and look up the one 
 // that completes the combo.
-// TBD
+import Foundation
+import PlaygroundSupport
+
+let input = [1721, 979, 366, 299, 675, 1456]
+let compliments = Set(input.map { 2020 - $0} )  // O(n)
+print(compliments)
+// contains on a Set O(C)
+let solution = input
+  .first { compliments.contains(2020 - $0) }
+  .map { ($0, 2020 - $0) }
+  .map(String.init(describing:))
+print(solution ?? "no solution")
 ```
 ---
 
