@@ -4,9 +4,102 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 https://www.meetup.com/A-Flock-of-Swifts/
 
+Also see Tim's notes: Also see https://bit.ly/flock-of-swift-notes
 
 ---
+### 2020.12.19
 
+#### Getting started
+
+Where to get started as an iOS developer.
+
+Use playgrounds to learn about pure Swift:
+
+(Learn to code in 7 days)
+
+https://apps.apple.com/us/story/id1498544817
+
+SwiftUI Tutorial from Apple
+
+https://developer.apple.com/tutorials/swiftui/
+
+Paul Hudson:
+
+https://www.hackingwithswift.com/100
+
+Ray Wenderlich:
+
+https://www.raywenderlich.com/
+
+iOS Academy:
+
+https://youtu.be/U-Y9HJzNhQ0
+
+#### Processing video frame
+
+Some discussion about Tim's app ideas QR code inventory, vocabulary lookup.
+
+How to process video frames:
+
+https://developer.apple.com/documentation/coremedia/cmsamplebuffer-u71
+
+#### Small Array
+
+A brainstorm idea by Ray for a fixed size small array that requires no
+heap allocations.  We outlined the idea though didn't write out the 
+whole thing.  Here is a "working" example completed after the meeting: 
+
+https://gist.github.com/rayfix/7ebacfac3beb3eac661197fe372228d6
+
+Josh made the observation that subscripting might be slow because of 
+all of the branches required.  After the meeting I tried another 
+example and after posting a question to the Swift forum I learned that
+there is some prior art:
+
+https://forums.swift.org/t/getting-around-unsafe-pointer-mutability-requirements/43136
+
+#### Xcode Live Preview
+
+Time shows a demo.  Push the button, it appears on the device.  You can also 
+connect wirelessly by going to Xcode menu Window :: Devices and Simulators
+and checking the box for wireless.
+
+https://github.com/dmsnell/aoc2020/blob/trunk/src/day1.erl
+
+#### Advent of Code
+
+Tim C showed us a website he was introduced by a functional programmers meetup
+
+We attached this problem:
+
+https://github.com/dmsnell/aoc2020/blob/trunk/src/day1.erl
+
+Find the product of two number in the list that add to 2020:
+
+An O(n^2) solution that uses swift-algorithms goes like this:
+
+```swift
+
+import Algorithms
+
+numbers.combinations(ofCount: count)
+  .lazy
+  .first { $0.reduce(0, +) == 2020 }
+  .map { $0.reduce(1,*) }
+```
+
+By changing count, you can make it pairs of 2, 3, ... numbers.
+
+
+Josh showed us an O(n) algorithm that solves the count == 2 problem.
+
+Code:
+
+```swift
+// Put the complement numbers in the set and look up the one 
+// that completes the combo.
+// TBD
+```
 
 ### 2020.12.12
 
