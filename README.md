@@ -7,6 +7,90 @@ https://www.meetup.com/A-Flock-of-Swifts/
 Also see Tim's notes: Also see https://bit.ly/flock-of-swift-notes
 
 ---
+### 2020.12.26
+
+#### OAuth
+
+Ed wants to hide an OAuth service behind his service:
+
+
+https://developers.google.com/identity/protocols/oauth2/service-account — server to server
+
+#### HIPPA Rule of thumb
+
+Be careful. Use the service; don't cache or save anything. 
+
+#### Navigation from Spensor
+
+Spenser showed his test app.  Josh recommended that he lift his Navigation object into a shared object via @EnvironmentObject
+
+
+#### Wrapping paper app from John
+
+Fully functional app from John for determining wrapping paper size.
+
+Link TBD
+
+Some notes:
+
+- `@AppState` can be used to save to user defaults
+- `Image` can take advantage of font metrics to be the right size.
+
+
+#### Async Await
+
+This proposal got accepted a few days ago:
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md
+
+Download the snapshot:
+
+https://swift.org/builds/development/xcode/swift-DEVELOPMENT-SNAPSHOT-2020-12-23-a/swift-DEVELOPMENT-SNAPSHOT-2020-12-23-a-osx.pkg
+
+Add this to your project:  
+
+`-Xfrontend -enable-experimental-concurrency`
+
+```swift
+func computeX() async -> Int {
+  42
+}
+
+func computeY() async -> Int {
+  31
+}
+
+var result: Int = 0
+
+@asyncHandler func computeSum() {
+  let x = await computeX()
+  let y = await computeY()
+  result = x + y
+}
+```
+
+Lots to learn.  Josh's recommended reading:
+
+- https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md
+- https://github.com/DougGregor/swift-evolution/blob/concurrency-objc/proposals/NNNN-concurrency-objc.md
+- https://github.com/DougGregor/swift-evolution/blob/structured-concurrency/proposals/nnnn-structured-concurrency.md
+- https://github.com/DougGregor/swift-evolution/blob/actors/proposals/nnnn-actors.md
+
+#### EVO Swift App
+
+Recommendation from Josh on following Swift proposals.
+
+- https://apps.apple.com/ug/app/evolution-app/id1210898168
+
+#### Generic Algorithms by Josh
+
+Mapping into a Set.  
+
+```swift
+// TBD
+```
+
+---
 ### 2020.12.19
 
 #### Getting started
