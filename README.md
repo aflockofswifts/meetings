@@ -29,7 +29,11 @@ Spenser showed his test app.  Josh recommended that he lift his Navigation objec
 
 Fully functional app from John for determining wrapping paper size.
 
-Link TBD
+After seeing this 
+https://gizmodo.com/i-desperately-need-this-lego-machine-that-measures-pres-1845927829
+I created an app to calc the size of wrapping paper to cut for gifts. 
+
+https://github.com/codger/Wrapping-Paper-Calculator
 
 Some notes:
 
