@@ -20,7 +20,7 @@ Tim's notes: https://bit.ly/flock-of-swift-notes
 
 Happy New Year!
 
-Josh created an animated SwiftUI `RingChart` view that he plans to integrate into the **Tides** app.
+Josh created an animated SwiftUI `RingChart` view that he plans to integrate into the **Tides** app.  The code is here: https://github.com/joshuajhomann/RingChart
 
 ![RingChart](resources/ringchart.gif)
 
