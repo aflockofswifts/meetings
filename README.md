@@ -2,9 +2,7 @@
 
 A Flock of Swifts is a physical space meeting of like-minded people excited about the Swift language.  We normally meet each Saturday morning.  Here is our meetup page.  All people and all skill levels are welcome to join.  
 
-### RSVP Here
-
-https://www.meetup.com/A-Flock-of-Swifts/
+**RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 Tim's notes: https://bit.ly/flock-of-swift-notes
 
