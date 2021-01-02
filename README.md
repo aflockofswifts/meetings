@@ -8,6 +8,12 @@ https://www.meetup.com/A-Flock-of-Swifts/
 
 Tim's notes: https://bit.ly/flock-of-swift-notes
 
+### 2021.01.09
+
+- TBD
+
+---
+
 ### 2021.01.02
 
 Happy New Year!
