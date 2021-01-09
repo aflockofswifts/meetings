@@ -13,7 +13,7 @@ Tim's Dropbox Paper notes: https://bit.ly/flock-of-swift-notes
 We discussed the new asynchronous sequence proposal https://github.com/apple/swift-evolution/blob/main/proposals/0298-asyncsequence.md
 
 We discussed `reduce` (fold) and its inverse (unfold) `sequence` https://developer.apple.com/documentation/swift/2011998-sequence
-```
+```swift
 let a = (0..<20).reduce(0, +)
 print(a)
 
@@ -27,7 +27,7 @@ let b = sequence(state: (total: a, counter: 0)) { state -> Int? in
 print(Array(b))
 ```
 We then explored the limitations of `sequence` ie (its inability to remove a element once its been produced) and derived a new unfold operator:
-```
+```swift
 @discardableResult func unfold<State>(into value: State, next: @escaping (inout State) -> State?) -> State {
   var localState = value
   var unfolded = sequence(state: localState) { _ -> State? in
@@ -38,7 +38,7 @@ We then explored the limitations of `sequence` ie (its inability to remove a ele
 }
 ```
 and we used it to replace an imperative version of reversi:
-```
+```swift
   private func flipsForAdding(_ targetColor: Piece.Color, at coordinate: Coordinate) -> [Coordinate] {
     guard coordinate.isValidForBoard && board[coordinate].color == nil else { return [] }
     var total = [Coordinate]()
@@ -62,7 +62,7 @@ and we used it to replace an imperative version of reversi:
   }
 ```
 with a functional version:
-```
+```swift
  private func flipsForAdding(_ targetColor: Piece.Color, at coordinate: Coordinate) -> [Coordinate] {
     guard coordinate.isValidForBoard && board[coordinate].color == nil else { return [] }
     return Constant.adjacentOffsets.flatMap { [board] offset -> [Coordinate]  in
