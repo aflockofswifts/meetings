@@ -84,7 +84,7 @@ with a functional version:
 ```
 
 Full project: https://github.com/joshuajhomann/Reversi-SwiftUI-Animation
-
+![Reversi](https://github.com/joshuajhomann/Reversi-SwiftUI-Animation/blob/master/preview.gif)
 ---
 
 ### 2021.01.02
