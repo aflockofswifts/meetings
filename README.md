@@ -3,9 +3,11 @@
 A Flock of Swifts is a physical space meeting of like-minded people excited about the Swift language.  We normally meet each Saturday morning.  Here is our meetup page.  All people and all skill levels are welcome to join.  
 
 Tim's Dropbox Paper notes: https://bit.ly/flock-of-swift-notes
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
+### 2021.01.18
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ### 2021.01.09
 We discussed the new asynchronous sequence proposal https://github.com/apple/swift-evolution/blob/main/proposals/0298-asyncsequence.md
