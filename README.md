@@ -6,8 +6,69 @@ Tim's Dropbox Paper notes: https://bit.ly/flock-of-swift-notes
 
 ---
 
-### 2021.01.18
+### 2021.01.23
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+### 2021.01.18
+
+#### Discussion of Corporate Dev Account vs Personal Account
+
+Be careful of LLC (with a single person) or even a corporation. If you don't do everything to the letter, chances are the corporate veil can be pierced.  When you are just starting out, it is probably easiest to use a personal account.  While there was agreement that it can be changed later there was some disagreement about how hard it is to do.
+
+#### Emil's TikTok App Tutorial Recommendation
+https://www.youtube.com/watch?v=71-l3Ndf6Ug
+
+#### iCloud sync
+
+What folder should you use to sync with?
+
+- Library - saved, not directly accessible
+- Document - save, user access
+- Cache - purgeable not directly accessible
+
+Sync is surprisingly hard so it makes sense to use a third party library.  Several exist:
+
+- iCloud https://developer.apple.com/icloud/cloudkit/
+- Realm  https://realm.io
+- Apollo for GraphQL https://www.apollographql.com/docs/ios/
+- Google Firebase https://firebase.google.com
+- Parse 
+
+Tim:
+
+https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit
+
+#### Refactoring to Combine
+
+Emily gave us a presentation on Caleb and her experience refactoring to Combine.
+
+- The code is nicer than nested callbacks.
+- Discussion on weak captures to prevent extension of lifetime (capture self, or just capture exactly what is needed in the callback closure).
+- How can the number of error states be reduced?
+
+Josh reminded us of a previous project that abstracts loading state and error / empty response handling.
+
+https://github.com/joshuajhomann/ShimmeringLoadingState
+
+Josh also recommends a single access point for doing requests.  Link TBD. (Next week?)
+
+
+#### Proposal for Visualization Toolkit
+
+The idea is to have a library to allow you to read in a CSV file and then render as a plot.
+
+Can we make something comparable to D3 https://d3js.org
+
+#### Tesla Watch App: Modules
+
+Josh showed an in-progress watch app that uses the Tesla API to unlock the car. We will look at it in greater detail in a future meetup.
+
+This week he showed how to factor out watch and iOS code into a common Swift Package Manager module.
+
+
+---
 
 ### 2021.01.09
 We discussed the new asynchronous sequence proposal https://github.com/apple/swift-evolution/blob/main/proposals/0298-asyncsequence.md
