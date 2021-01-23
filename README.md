@@ -4,10 +4,70 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 Tim's Dropbox Paper notes: https://bit.ly/flock-of-swift-notes
 
+
+### 2021.01.30
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
 ---
 
 ### 2021.01.23
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+#### Proxy 
+
+Some talk about network security and SSL pinning. It is a topic for future meetup.  You can try it out:
+
+https://www.charlesproxy.com
+
+https://proxyman.io
+
+#### Swift Fiddle
+
+It let's you play with the Swift compiler (and different versions) online.
+
+https://swiftfiddle.com
+
+#### Enums
+
+We talked about how equality checking for enums do not consider argument labels.  The same thing goes for comparison and hash values coming in a future
+version of Swift when tuples will become Equatable, Comparable and Hashable 
+if all of the element types are Equatable, Comparable and Hashable respectively.
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0283-tuples-are-equatable-comparable-hashable.md
+
+Regarding comparison of floating point, question about zero was raised.  IEEE-754 specifies a sign bit so there are multiple representations of zero.
+
+https://developer.apple.com/documentation/swift/double/1538731-iszero
+
+#### Your Demo Here
+
+If you have a trick or tip and want to show the group, remember to write it down.
+
+Tim had several in the chat maybe he can show us next week:
+
+https://www.dunebook.com/best-xcode-themes/
+https://github.com/tonsky/FiraCode
+https://medium.com/swlh/how-to-draw-bounding-boxes-with-swiftui-d93d1414eb00 
+
+#### Demo SwiftUI Picker
+
+We explored Picker with a simple example. T
+
+https://gist.github.com/rayfix/ed02927bce0d645911b578edf5379baf
+
+#### Names in the app store
+
+Needs to be a real name or company name (LLC, Corporation, etc).  Apple doesn't allow DBAs.
+
+https://developer.apple.com/support/enrollment/
+
+#### Demo Exquisite Corpse
+
+Got a quick demo of a game that jo is building. And talked about debugging firebase cloud functions.  It is taking minutes to spin up an instance and something seems wrong.
+
+
+
+
+
 
 ---
 
