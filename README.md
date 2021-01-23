@@ -224,11 +224,6 @@ https://developer.apple.com/support/enrollment/
 
 Got a quick demo of a game that jo is building. And talked about debugging firebase cloud functions.  It is taking minutes to spin up an instance and something seems wrong.
 
-
-
-
-
-
 ---
 
 ### 2021.01.18
