@@ -4,10 +4,170 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 Tim's Dropbox Paper notes: https://bit.ly/flock-of-swift-notes
 
-
-### 2021.01.30
+### 2021.02.06
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
+### 2021.01.30
+Josh presented his telsa app (which is current broken due to the fact that Tesla just changed their authentication method).  
+https://github.com/joshuajhomann/tesla
+
+Josh is covering creation of local packages next wednesday: https://www.meetup.com/LearnSwiftLA/events/276056318/attendees/
+
+We looked at making a `struct` to encapsulate the unique information about an endpoint:
+```
+struct EndPoint {
+  enum HTTPMethod: String {
+    case post = "POST", get = "GET"
+  }
+  enum Parameters {
+    case url([String: String]), body(Data)
+  }
+  var path: String
+  var method: HTTPMethod
+  var parameters: Parameters? = nil
+  var requiresAuthentication = true
+  var headers: [String: String] = Self.jsonHeaders
+}
+
+...
+
+static func getVehicleData(id: Int) -> Self {
+    .init(path: "/api/1/vehicles/\(id)/vehicle_data", method: .get)
+}
+```
+
+As well as the alternative of using Moya for a more robust general solution: https://github.com/Moya/Moya  
+
+We discussed using quicktype.io to code gen conformance to `Codable` and making server errors `Codable`:
+```
+public struct ErrorMessage: Codable {
+  public var message: String
+  public enum CodingKeys: String, CodingKey {
+    case message = "error"
+  }
+}
+```
+
+We discussed the value of strongly typed errors and name shadowing Swift.Error:
+```
+  public enum Error: Swift.Error {
+    case invalidURL, networkError(Swift.Error), decodingError(Swift.Error), unauthenticated, server(message: String)
+    public var message: String {
+      switch self {
+      case let .server(message): return message
+      case let .networkError(error): return error.localizedDescription
+      case let .decodingError(error): return error.localizedDescription
+      case .invalidURL: return "Invalid URL"
+      case .unauthenticated: return "Unauthenticated"
+      }
+    }
+    public var isVehicleUnavailableError: Bool {
+      if case let .server(message) = self {
+        return message.starts(with: "vehicle unavailable")
+      }
+      return false
+    }
+  }
+```
+
+We building a URL request from `URLComponents`, `URLQueryItems` and body data:
+```
+  private func makeRequest(from endPoint: EndPoint) throws -> URLRequest {
+    var components = URLComponents()
+    components.scheme = Constant.scheme
+    components.host = Constant.host
+    components.path = endPoint.path
+    if case let .url(parameters) = endPoint.parameters {
+      components.queryItems = parameters.map { key, value in
+        .init(name: key, value: value)
+      }
+    }
+    guard let url = components.url else {
+      throw Error.invalidURL
+    }
+    var request = URLRequest(url: url)
+    request.httpMethod = endPoint.method.rawValue
+    endPoint.headers.forEach { key, value in
+      request.setValue(value, forHTTPHeaderField: key)
+    }
+    if case let .body(data) = endPoint.parameters {
+      print(String(data: data, encoding: .utf8))
+      request.httpBody = data
+    }
+    return request
+  }
+```
+
+We discussed a generic request function:
+```
+  private func request<SomeDecodable: Decodable, Output>(
+    _ decoded: SomeDecodable.Type,
+    from endPoint: EndPoint,
+    transform: @escaping (SomeDecodable) -> Output
+  ) -> AnyPublisher<Output, Error> {
+    guard var request = try? makeRequest(from: endPoint) else {
+      return Fail(error: .invalidURL).eraseToAnyPublisher()
+    }
+    if endPoint.requiresAuthentication {
+      guard let token = token?.accessToken else {
+        return Fail(error: .unauthenticated).eraseToAnyPublisher()
+      }
+      EndPoint.authenticatedHeaders(from: token).forEach { key, value in
+        request.addValue(value, forHTTPHeaderField: key)
+      }
+    }
+    return URLSession
+      .shared
+      .dataTaskPublisher(for: request)
+      .mapError(Error.networkError(_:))
+      .map(\.data)
+      .handleEvents(receiveOutput: { data in
+        print(endPoint.path)
+        print(String(data: data, encoding: .utf8) ?? "")
+      }, receiveCompletion: { completion in
+        switch completion {
+        case .finished: return
+        case let .failure(error):
+          print(endPoint.path)
+          print("ERROR:\(error.localizedDescription)")
+        }
+      })
+      .decode(type: Either<SomeDecodable, ErrorMessage>.self, decoder: Self.jsonDecoder)
+      .mapError(Error.decodingError(_:))
+      .map { either -> AnyPublisher<SomeDecodable, Error> in
+        switch either {
+        case let .left(someDecodable): return Just(someDecodable).setFailureType(to: Error.self).eraseToAnyPublisher()
+        case let .right(errorMessage): return Fail(error: Error.server(message: errorMessage.message)).eraseToAnyPublisher()
+        }
+      }
+      .switchToLatest()
+      .map(transform)
+      .eraseToAnyPublisher()
+  }
+```
+
+We discussed that side effects should be handled by `handleEvents` and that errors can be made strongly typed with `mapError`.  
+
+We also discussed using a generic `Either` enum to decode heterogenous types from our response (either the decodable type we are looking for or a server error):
+
+```
+enum Either<Left, Right> {
+  case left(Left), right(Right)
+}
+
+extension Either: Decodable where Left: Decodable, Right: Decodable {
+  init(from decoder: Decoder) throws {
+    let container = try decoder.singleValueContainer()
+    if let value = try? container.decode(Left.self) {
+      self = .left(value)
+    } else if let value = try? container.decode(Right.self) {
+      self = .right(value)
+    } else {
+      throw DecodingError.typeMismatch(Self.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for \(String(describing:Self.self))"))
+    }
+  }
+}
+```
 ---
 
 ### 2021.01.23
