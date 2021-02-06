@@ -4,8 +4,77 @@ A Flock of Swifts is a physical space meeting of like-minded people excited abou
 
 Tim's Dropbox Paper notes: https://bit.ly/flock-of-swift-notes
 
-### 2021.02.06
+### 2021.02.13
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+### 2021.02.06
+
+#### Xcode Tricks and Tips
+
+Rainer presented a list of tricks and Tips in Xcode and macOS.
+
+- Click the jump bar, and then start typing to do a fuzzy match.
+- Command click the jump bar to get an alphabetical listing by scope.
+- Command Shift J reveals where a file is located in the file navigator.
+- Command shift A exposes actions on a selected piece of text
+- Comment `// MARK: - Note` creates a note in the jump bar. Also `FIXME:` and `TODO:`.  The colon is important.
+- Command-option square brackets moves a line or a group of lines up and down.
+- Multi-cursor support
+
+#### Other tricks:
+
+Emacs keybindings https://caiorss.github.io/Emacs-Elisp-Programming/Keybindings.html
+
+Custom snippets https://medium.com/@hassanahmedkhan/writing-custom-code-snippets-in-xcode-9e91f8ed4207
+
+#### xcconfig
+
+Frank introduced us to the world of xcconfig files. You can specify these files to use in your build.  They handle comments, key values such as:
+
+MY_SETTING = "this is debug mode"
+
+- You can cut and past from the build configuration of Xcode.
+- It understands include files to support common settings.
+- You can use `include?` for optional includes used for local configuration not checked into version control.
+
+Reference
+
+https://nshipster.com/xcconfig/
+
+#### SHA256
+
+Ray demo'ed SHA256 hash generation.  Using CryptoKit makes it easy.
+
+```swift
+import UIKit
+import CryptoKit
+
+var str = "Hello, playground!"
+
+let data = str.data(using: .utf8)!
+let digest = SHA256.hash(data: data)
+print(String(describing: digest))
+
+extension Digest {
+    var hexString: String {
+        map { String(format: "%02x", $0) }.joined()
+    }
+}
+
+let d2 = SHA512.hash(data: data)
+SHA512.byteCount
+print(digest.hexString)
+print(d2.hexString)
+```
+
+#### Review of setting up a URL publishing chain.
+
+Josh walked us through step by step the publishing chain in his Tesla API.
+
+https://github.com/joshuajhomann/tesla/blob/main/TeslaOwnerAPI/Sources/TeslaOwnerAPI/TeslaOwnerAPI.swift
+
+
+---
 
 ### 2021.01.30
 Josh presented his telsa app (which is current broken due to the fact that Tesla just changed their authentication method).  
