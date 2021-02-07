@@ -15,11 +15,18 @@ Rainer presented a list of tricks and Tips in Xcode and macOS.
 
 - Click the jump bar, and then start typing to do a fuzzy match.
 - Command click the jump bar to get an alphabetical listing by scope.
+- Command-option square brackets to move the entire line of text under the cursor up & down. This also works for partially selected lines of text.
+- Define a shortcut in Xcode's key bindings to delete the line under the cursor (or partially selected lines): Command-Backsapce (Pay attention to collisions with system shortcuts ⚠️.
+- Control-left/right arrow to move from captial to capital in CamelCase words
+- Option-left/right arrows to move to word boundaries, command-left/right arrows to go to head and tail of the line. Hold SHIFT to also select. (Works also in all Apple text editors, i.e. TextEdit & Pages)
+- Select text, Command-K to add a URL/web link in Apple text editors.
+- Control-Command left/right arrows to go back & forth in file 'browser' history (Shout-out to Caleb!)
 - Command Shift J reveals where a file is located in the file navigator.
-- Command shift A exposes actions on a selected piece of text
-- Comment `// MARK: - Note` creates a note in the jump bar. Also `FIXME:` and `TODO:`.  The colon is important.
+- Command Shift A exposes actions on a selected piece of text
+- Comment `// MARK: - Note` creates a note in the jump bar. Also `FIXME:` and `TODO:`.  The colon makes it show up in the list of jump bar items, and the `-` makes a horizontal divider line in the menu.
 - Command-option square brackets moves a line or a group of lines up and down.
-- Multi-cursor support
+- Multi-cursor support: Control-Shift-click or arrow up/down
+- Click the blue 'change' ribbon to see an action menu. Command-click to automatically show/hide the changes
 
 #### Other tricks:
 
