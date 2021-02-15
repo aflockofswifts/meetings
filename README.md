@@ -1,6 +1,8 @@
 # A Flock of Swifts 
 
-A Flock of Swifts is a meeting of like-minded people excited about the Swift language.  We normally meet each Saturday morning. All people and all skill levels are welcome to join.  
+We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
+
+All people and all skill levels are welcome to join.  
 
 ---
 
@@ -12,30 +14,27 @@ A Flock of Swifts is a meeting of like-minded people excited about the Swift lan
 
 #### Tricks and tips
 
-John brought some Xcode tips from a Paul Hudson article: 
+John shared Xcode tips from [24 Quick Xcode Tipes article by Paul Hudson](https://www.hackingwithswift.com/articles/229/24-quick-xcode-tips)
 
-https://www.hackingwithswift.com/articles/229/24-quick-xcode-tips
-
-Some good ones:
-  - **Command-option-control g** Run the last unit test.
-  - **Command-option /** Automatic doc comment template.
-  - **Command-control-shift A** Author's view (git blame) 
+Notable shortcuts:
+  - **Command-option-control g**  - Run the last unit test.
+  - **Command-option /**  - Automatic doc comment template.
+  - **Command-control-shift A**  - Author's view (git blame) 
 
 #### M1 Rumors 
 
-Bill is interested in M1 rumors.
-
-https://www.macworld.co.uk/news/mac-trends-2021-3800044/#toc-3800044-4
+Bill is interested in M1 rumors, especially this one about a [Mac Mini _Pro version_ in space grey](https://www.macworld.co.uk/news/mac-trends-2021-3800044/#toc-3800044-4)!
 
 #### SwiftUI Composition
 
-Tim Colson presented about SwiftUI composition.
+Tim Colson presented strategies for SwiftUI Composition, i.e. breaking views down into components. SwiftUI composition exercises were inspired by strategies from articles/code/videos by Joseph Pacheco and Paul Hudson. 
 
-SwiftUI composition exercises inspired by the Reminders view and strategies from Pacheco article, and Paul Hudson article/video on better SwiftUI views.  This github repo has it all:
+The code-along session style was inspired by Tim's year teaching and David Laing's [Grand Unified Theory of Documentation (Divio)](documentation.divio.com) which itself decomposes documentation into four types. Intent was a hands-on learning oriented tutorial, applying composition techniques to a task reminders view. (Unfortunately, Zoom sharing + Xcode + (2 x 4K monitors) crippled Tim's 2015 MBP 13" i7/16GB. He needs an M1x MBP 14"! 
 
-https://github.com/timcolson/tut-swiftui-comp
+See Tim's GitHub repo has for links and sample code:
+https://github.com/timcolson/tut-swiftui-comp -- start with tag v1  `git co tags/v1`
 
-The ideal presentation style is a code-along where a working reminders app is progressively refined for composability. There were issues getting Xcode and Zoom to share screen resources.   
+If interested in working thru the code together, reach out to Tim. 
 
 #### Breakout rooms
 
@@ -50,7 +49,7 @@ We will try this next week.
 
 Rainer presented a list of tricks and Tips in Xcode and macOS.
 
-- Click the jump bar, and then start typing to do a fuzzy match.
+- Click the "jump bar"; then start typing to do a fuzzy match.
 - Command click the jump bar to get an alphabetical listing by scope.
 - Command-option square brackets to move the entire line of text under the cursor up & down. This also works for partially selected lines of text.
 - Define a shortcut in Xcode's key bindings to delete the line under the cursor (or partially selected lines): Command-Backsapce (Pay attention to collisions with system shortcuts ⚠️.
@@ -67,9 +66,8 @@ Rainer presented a list of tricks and Tips in Xcode and macOS.
 
 #### Other tricks:
 
-Emacs keybindings https://caiorss.github.io/Emacs-Elisp-Programming/Keybindings.html
-
-Custom snippets https://medium.com/@hassanahmedkhan/writing-custom-code-snippets-in-xcode-9e91f8ed4207
+* [Emacs keybindings](https://caiorss.github.io/Emacs-Elisp-Programming/Keybindings.html)
+* [Custom Code Snippets in Xcode](https://medium.com/@hassanahmedkhan/writing-custom-code-snippets-in-xcode-9e91f8ed4207)
 
 #### xcconfig
 
@@ -81,9 +79,7 @@ MY_SETTING = "this is debug mode"
 - It understands include files to support common settings.
 - You can use `include?` for optional includes used for local configuration not checked into version control.
 
-Reference
-
-https://nshipster.com/xcconfig/
+* [Xcode Build Configuration Files article by Mattt @ NSHipster](https://nshipster.com/xcconfig/) - reference article with info similar to what Frank shared 
 
 #### SHA256
 
@@ -111,23 +107,28 @@ print(digest.hexString)
 print(d2.hexString)
 ```
 
-#### Review of setting up a URL publishing chain.
+#### URL Publishing Chain Revisited
 
-Josh walked us through step by step the publishing chain in his Tesla API.
-
-https://github.com/joshuajhomann/tesla/blob/main/TeslaOwnerAPI/Sources/TeslaOwnerAPI/TeslaOwnerAPI.swift
-
+By request, Josh walked us step-by-step thru the Combine URL publishing chain in his [TeslaOwnerAPI.swift](https://github.com/joshuajhomann/tesla/blob/main/TeslaOwnerAPI/Sources/TeslaOwnerAPI/TeslaOwnerAPI.swift)
 
 ---
 
 ### 2021.01.30
-Josh presented his telsa app (which is current broken due to the fact that Tesla just changed their authentication method).  
+Josh presented his Tesla Owner app. 
 https://github.com/joshuajhomann/tesla
 
-Josh is covering creation of local packages next wednesday: https://www.meetup.com/LearnSwiftLA/events/276056318/attendees/
+(Note as of 2021.02-13 app is broken due to Tesla changing the authentication process; however, the concepts are still notable!)   
+
+FYI - Josh presenting at SwiftLA meetup - [Creation of Local Packages](https://www.meetup.com/LearnSwiftLA/events/276056318/attendees/)
+
+Some high level notes:
+* Uses a Shared URL session
+* Models data quickly with Quicktype.io 
+* Maps generic Errors to specific server error types
+* Returns 
 
 We looked at making a `struct` to encapsulate the unique information about an endpoint:
-```
+```swift
 struct EndPoint {
   enum HTTPMethod: String {
     case post = "POST", get = "GET"
@@ -149,10 +150,10 @@ static func getVehicleData(id: Int) -> Self {
 }
 ```
 
-As well as the alternative of using Moya for a more robust general solution: https://github.com/Moya/Moya  
+Noted that [Moya](https://github.com/Moya/Moya ) is a more robust general solution; however, a lot can be done with plain URLSessions, as Josh expertly demo'd. 
 
 We discussed using quicktype.io to code gen conformance to `Codable` and making server errors `Codable`:
-```
+```swift
 public struct ErrorMessage: Codable {
   public var message: String
   public enum CodingKeys: String, CodingKey {
@@ -162,7 +163,7 @@ public struct ErrorMessage: Codable {
 ```
 
 We discussed the value of strongly typed errors and name shadowing Swift.Error:
-```
+```swift
   public enum Error: Swift.Error {
     case invalidURL, networkError(Swift.Error), decodingError(Swift.Error), unauthenticated, server(message: String)
     public var message: String {
@@ -184,7 +185,7 @@ We discussed the value of strongly typed errors and name shadowing Swift.Error:
 ```
 
 We building a URL request from `URLComponents`, `URLQueryItems` and body data:
-```
+```swift
   private func makeRequest(from endPoint: EndPoint) throws -> URLRequest {
     var components = URLComponents()
     components.scheme = Constant.scheme
@@ -212,7 +213,7 @@ We building a URL request from `URLComponents`, `URLQueryItems` and body data:
 ```
 
 We discussed a generic request function:
-```
+```swift
   private func request<SomeDecodable: Decodable, Output>(
     _ decoded: SomeDecodable.Type,
     from endPoint: EndPoint,
@@ -259,11 +260,12 @@ We discussed a generic request function:
   }
 ```
 
-We discussed that side effects should be handled by `handleEvents` and that errors can be made strongly typed with `mapError`.  
+We discussed :
+* how side effects should be handled by `handleEvents` 
+* errors can be made strongly typed with `mapError`.  
+* using a generic `Either` enum to decode heterogenous types from our response (either the decodable type we are looking for or a server error):
 
-We also discussed using a generic `Either` enum to decode heterogenous types from our response (either the decodable type we are looking for or a server error):
-
-```
+```swift
 enum Either<Left, Right> {
   case left(Left), right(Right)
 }
@@ -287,7 +289,7 @@ extension Either: Decodable where Left: Decodable, Right: Decodable {
 
 #### Proxy 
 
-Some talk about network security and SSL pinning. It is a topic for future meetup.  You can try it out:
+Discussed network security and _SSL pinning_. Potential topic for future meetup.  You can try it out:
 
 https://www.charlesproxy.com
 
@@ -302,10 +304,8 @@ https://swiftfiddle.com
 #### Enums
 
 We talked about how equality checking for enums do not consider argument labels.  The same thing goes for comparison and hash values coming in a future
-version of Swift when tuples will become Equatable, Comparable and Hashable 
-if all of the element types are Equatable, Comparable and Hashable respectively.
+version of Swift when [tuples will become Equatable, Comparable and Hashable[(https://github.com/apple/swift-evolution/blob/main/proposals/0283-tuples-are-equatable-comparable-hashable.md) if all of the element types are Equatable, Comparable and Hashable respectively.
 
-https://github.com/apple/swift-evolution/blob/main/proposals/0283-tuples-are-equatable-comparable-hashable.md
 
 Regarding comparison of floating point, question about zero was raised.  IEEE-754 specifies a sign bit so there are multiple representations of zero.
 
@@ -315,15 +315,13 @@ https://developer.apple.com/documentation/swift/double/1538731-iszero
 
 If you have a trick or tip and want to show the group, remember to write it down.
 
-Tim had several in the chat maybe he can show us next week:
-
-https://www.dunebook.com/best-xcode-themes/
-https://github.com/tonsky/FiraCode
-https://medium.com/swlh/how-to-draw-bounding-boxes-with-swiftui-d93d1414eb00 
+https://www.dunebook.com/best-xcode-themes/ - 
+https://github.com/tonsky/FiraCode - font for terminal and Xcode that includes ligatures for common two-char symbols
+[How to draw bounding boxes with SwiftUI (Medium)](https://medium.com/swlh/how-to-draw-bounding-boxes-with-swiftui-d93d1414eb00) - useful for scanning-related project ideas, ex: draw a box around a QR code in a video capture. 
 
 #### Demo SwiftUI Picker
 
-We explored Picker with a simple example. T
+We explored Picker with a simple example. 
 
 https://gist.github.com/rayfix/ed02927bce0d645911b578edf5379baf
 
@@ -335,7 +333,7 @@ https://developer.apple.com/support/enrollment/
 
 #### Demo Exquisite Corpse
 
-Got a quick demo of a game that jo is building. And talked about debugging firebase cloud functions.  It is taking minutes to spin up an instance and something seems wrong.
+Got a quick demo of a game that Jo is building. And talked about debugging Firebase cloud functions.  It is taking minutes to spin up an instance and something seems wrong.
 
 ---
 
@@ -359,14 +357,11 @@ What folder should you use to sync with?
 Sync is surprisingly hard so it makes sense to use a third party library.  Several exist:
 
 - iCloud https://developer.apple.com/icloud/cloudkit/
+  - [Apple - Mirroring a Core Data Store with CloudKit](https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit)
 - Realm  https://realm.io
 - Apollo for GraphQL https://www.apollographql.com/docs/ios/
 - Google Firebase https://firebase.google.com
 - Parse 
-
-Tim:
-
-https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit
 
 #### Refactoring to Combine
 
@@ -399,7 +394,7 @@ This week he showed how to factor out watch and iOS code into a common Swift Pac
 ---
 
 ### 2021.01.09
-We discussed the new asynchronous sequence proposal https://github.com/apple/swift-evolution/blob/main/proposals/0298-asyncsequence.md
+We discussed the new [asynchronous sequence proposal](https://github.com/apple/swift-evolution/blob/main/proposals/0298-asyncsequence.md)
 
 We discussed `reduce` (fold) and its inverse (unfold) `sequence` https://developer.apple.com/documentation/swift/2011998-sequence
 ```swift
@@ -480,7 +475,9 @@ Full project: https://github.com/joshuajhomann/Reversi-SwiftUI-Animation
 
 Happy New Year!
 
-Josh created an animated SwiftUI `RingChart` view that he plans to integrate into the **Tides** app.  The code is here: https://github.com/joshuajhomann/RingChart
+Josh created an animated SwiftUI `RingChart` view that he plans to integrate into the **Tides** app.  
+
+https://github.com/joshuajhomann/RingChart
 
 ![RingChart](resources/ringchart.gif)
 
