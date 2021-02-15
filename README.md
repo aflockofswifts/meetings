@@ -1,11 +1,48 @@
 # A Flock of Swifts 
 
-A Flock of Swifts is a physical space meeting of like-minded people excited about the Swift language.  We normally meet each Saturday morning.  Here is our meetup page.  All people and all skill levels are welcome to join.  
+A Flock of Swifts is a meeting of like-minded people excited about the Swift language.  We normally meet each Saturday morning. All people and all skill levels are welcome to join.  
 
-Tim's Dropbox Paper notes: https://bit.ly/flock-of-swift-notes
+---
 
-### 2021.02.13
+### 2021.02.20
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+### 2021.02.13
+
+#### Tricks and tips
+
+John brought some Xcode tips from a Paul Hudson article: 
+
+https://www.hackingwithswift.com/articles/229/24-quick-xcode-tips
+
+Some good ones:
+  - **Command-option-control g** Run the last unit test.
+  - **Command-option /** Automatic doc comment template.
+  - **Command-control-shift A** Author's view (git blame) 
+
+#### M1 Rumors 
+
+Bill is interested in M1 rumors.
+
+https://www.macworld.co.uk/news/mac-trends-2021-3800044/#toc-3800044-4
+
+#### SwiftUI Composition
+
+Tim Colson presented about SwiftUI composition.
+
+SwiftUI composition exercises inspired by the Reminders view and strategies from Pacheco article, and Paul Hudson article/video on better SwiftUI views.  This github repo has it all:
+
+https://github.com/timcolson/tut-swiftui-comp
+
+The ideal presentation style is a code-along where a working reminders app is progressively refined for composability. There were issues getting Xcode and Zoom to share screen resources.   
+
+#### Breakout rooms
+
+We will try this next week.
+
+---
+
 
 ### 2021.02.06
 
