@@ -4,7 +4,6 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join.  
 
-
 ---
 ### 2021.02.27
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
@@ -23,8 +22,10 @@ https://github.com/airbnb/lottie-ios
 - https://www.raywenderlich.com
 - Stanford course https://cs193p.sites.stanford.edu
 - The landmarks tutorial from Apple https://developer.apple.com/tutorials/swiftui/
+- Paul Hudson's 100 days of Swift / SwiftUI 
 - A new tutorial from Apple https://developer.apple.com/tutorials/app-dev-training
 - Newsletter by Matteo Manferdini https://matteomanferdini.com
+- Another list of resources: http://bit.ly/get-started-with-swift
 
 #### Debug session: problem with gestures in a collection view
 
@@ -45,11 +46,13 @@ https://developer.apple.com/documentation/uikit/uiviewcontroller/1621435-support
 
 #### How do you make an enable button and a slider
 
-
 https://gist.github.com/rayfix/11827eaf8acae38a08b2190c0db72cee
 
-We used onAppear and onChange to sync state and a binding.
+We used `onAppear` and `onChange` to sync state and a binding.
 
+We hit a disable styling problem.  Jo mentioned this:
+
+https://stackoverflow.com/questions/64756306/using-a-toggle-to-disable-a-slider-in-swiftui-results-in-styling-problems
 
 
 ---
