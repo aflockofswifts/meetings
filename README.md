@@ -4,10 +4,53 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join.  
 
+
+---
+### 2021.02.27
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
 ---
 
 ### 2021.02.20
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+#### Discussion
+
+This is a good system to produce animations made by designers.
+https://github.com/airbnb/lottie-ios
+
+#### What are some good SwiftUI starter resources?
+
+- https://www.raywenderlich.com
+- Stanford course https://cs193p.sites.stanford.edu
+- The landmarks tutorial from Apple https://developer.apple.com/tutorials/swiftui/
+- A new tutorial from Apple https://developer.apple.com/tutorials/app-dev-training
+- Newsletter by Matteo Manferdini https://matteomanferdini.com
+
+#### Debug session: problem with gestures in a collection view
+
+We did a group debug of Clarissa's code. The tap selector for the tap selector wasn't being called.  Josh spoted the problem: the gesture was being added to the cell's root view instead of the `contentView`.  Remember that table view cells and collection view cells have a `contentView` that you need to add your custom views and gestures to.
+
+#### Problem with Collection Views in iOS 14.4
+
+Jumping to a particular cell seems to be broken. Mira provided a discussion link:
+
+https://developer.apple.com/forums/thread/663156?answerId=642133022#642133022
+
+#### How do you make an app that uses landscape but only in one view
+
+One way is to make a class derived from UIViewController that is a NonRotatingView and overrides supported orientations.  All the views
+that don't rotate derive from that.
+
+https://developer.apple.com/documentation/uikit/uiviewcontroller/1621435-supportedinterfaceorientations
+
+#### How do you make an enable button and a slider
+
+
+https://gist.github.com/rayfix/11827eaf8acae38a08b2190c0db72cee
+
+We used onAppear and onChange to sync state and a binding.
+
+
 
 ---
 ### 2021.02.13
