@@ -3,12 +3,74 @@
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
 All people and all skill levels are welcome to join.  
-
 ---
 ### 2021.02.27
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
-
 ---
+
+### 2021.02.27
+
+#### Discussion
+
+Josh had a link for Ray as a follow up on his mandlebrot plot: https://www.youtube.com/watch?v=ovJcsL7vyrk&vl=en
+
+Clarissa had a question on her flipping animation.  Josh suggested interactively flipping each card as a function of how far a touch has traveled by using the UIView.transform property: https://developer.apple.com/documentation/uikit/uiview/1622459-transform and then animating the transform back to `.identity` when the gesture ends. 
+
+#### Measurement
+
+Time showed a problem with apple's Measurement example.
+
+#### @propertyWrappers
+
+We looked at the basics of proertyWrappers and their three characteristics: 1) a required `wrappedValue`, 2) an optional `projectedValue` 3) an optional `init(wrappedValue:)`.  The only thing a propertyWrapper provides is renaming for the `wrappedValue` (`name`), the underlying struct (`_name`) and the `projectedValue` (`$name`) it is otherwise entirely equivalent to the unsugared struct, as this playground demonstrates:
+```
+import Foundation
+import PlaygroundSupport
+
+@propertyWrapper
+struct Uppercased {
+  private var value: String = ""
+  var wrappedValue: String {
+    get { value.uppercased() }
+    set { value = newValue }
+  }
+  var projectedValue: String {
+    value
+  }
+  init(wrappedValue: String) {
+    self.wrappedValue = wrappedValue
+  }
+}
+
+final class Person {
+  @Uppercased var name = "josh"
+  var name2 = Uppercased(wrappedValue: "peter")
+  func output() {
+    // name.wrappedValue
+    print(name)
+    // name
+    print(_name)
+    // name.projectedValue
+    print($name)
+
+    print(name2.wrappedValue)
+    print(name2)
+    print(name2.projectedValue)
+  }
+}
+
+let p = Person()
+p.output()
+```
+
+#### Custom DynamicProperty implementations
+
+We looked at Apple's DynamicProperty documentations and noted that the only required function has a default implmenation and that call of the propertyWrappers that implment the protocol are listed at the bottom of the page: https://developer.apple.com/documentation/swiftui/dynamicproperty  
+
+Josh walked through the code for this project on how to build your own custom DynamicProperty.  The readme for the project has more details: https://github.com/joshuajhomann/CustomDynamicProperties  
+
+We saw the `struct`s in swift cannot be mutated inside of a function that is not flagged as `mutating`.  We further saw that Apple skirts this restriction with `@State` by using the `nonmutating` keyword for its setter, and that we can do the same thing an achieve the same behavior by using a reference type to store our variable: the reference never changes, but the pointee can change.  If we want to communicate information about the pointee changing, we can use the `ObservedObject` protocol.
+
 
 ### 2021.02.20
 
