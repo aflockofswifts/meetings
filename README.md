@@ -14,7 +14,40 @@ All people and all skill levels are welcome to join.
 
 Josh had a link for Ray as a follow up on his mandlebrot plot: https://www.youtube.com/watch?v=ovJcsL7vyrk&vl=en
 
-Clarissa had a question on her flipping animation.  Josh suggested interactively flipping each card as a function of how far a touch has traveled by using the UIView.transform property: https://developer.apple.com/documentation/uikit/uiview/1622459-transform and then animating the transform back to `.identity` when the gesture ends. 
+Josh showed a math project manually laying out equations in SwiftUI and asked if there is another way to do it.  Frank suggested MathML https://en.wikipedia.org/wiki/MathML which is supported by WKWebView.
+
+Clarissa had a question on her flipping animation.  Josh suggested interactively flipping each card as a function of how far a touch has traveled by using the UIView.transform property: https://developer.apple.com/documentation/uikit/uiview/1622459-transform and then animating the transform back to `.identity` when the gesture ends. although Josh just realized that this is wrong and you need the y-axis (uiview only rotates about z) so you have to actually use CALayer's transform instead of the view's transform for this particular animation.  For instance:
+```
+import PlaygroundSupport
+import UIKit
+
+final class V: UIViewController {
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    let square = UIView()
+    square.translatesAutoresizingMaskIntoConstraints = false
+    square.backgroundColor = .red
+    view.addSubview(square)
+    NSLayoutConstraint.activate([
+      square.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      square.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+      square.widthAnchor.constraint(equalToConstant: 100),
+      square.heightAnchor.constraint(equalTo: square.widthAnchor)
+    ])
+
+    let rotation: CABasicAnimation = CABasicAnimation(keyPath: "transform")
+
+    CATransaction.begin()
+    rotation.duration = 5
+    rotation.fromValue = CATransform3D()
+    rotation.toValue = CATransform3DMakeRotation(.pi, 0, 1, 0)
+    square.layer.add(rotation, forKey: "scale")
+    CATransaction.commit()
+  }
+}
+
+PlaygroundPage.current.liveView = V()
+```
 
 #### Measurement
 
