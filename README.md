@@ -18,7 +18,7 @@ Clarissa had a question on her flipping animation.  Josh suggested interactively
 
 #### Measurement
 
-Time showed a problem with apple's Measurement example.
+Tim showed a problem with apple's Measurement example.
 
 #### @propertyWrappers
 
