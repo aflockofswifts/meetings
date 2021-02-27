@@ -4,20 +4,21 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join.  
 ---
-### 2021.03.06
+## 2021.03.06
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 ---
 
-### 2021.02.27
+## 2021.02.27
 
-#### Discussion
+### Discussion
 
 Josh had a link for Ray as a follow up on his mandlebrot plot: https://www.youtube.com/watch?v=ovJcsL7vyrk&vl=en
 
-Josh showed a math project manually laying out equations in SwiftUI and asked if there is another way to do it.  Frank suggested MathML https://en.wikipedia.org/wiki/MathML which is supported by WKWebView.
+John showed a math project manually laying out equations in SwiftUI. Asked if there is another way to do it.  Frank suggested MathML https://en.wikipedia.org/wiki/MathML which is supported by WKWebView. Others mentioned LaTeX.  
 
-Clarissa had a question on her flipping animation.  Josh suggested interactively flipping each card as a function of how far a touch has traveled by using the UIView.transform property: https://developer.apple.com/documentation/uikit/uiview/1622459-transform and then animating the transform back to `.identity` when the gesture ends. although Josh just realized that this is wrong and you need the y-axis (uiview only rotates about z) so you have to actually use CALayer's transform instead of the view's transform for this particular animation.  For instance:
-```
+Clarissa had a question on her flipping animation. Josh suggested interactively flipping each card as a function of how far a touch has traveled by using the UIView.transform property: https://developer.apple.com/documentation/uikit/uiview/1622459-transform and then animating the transform back to `.identity` when the gesture ends. although Josh just realized that this is wrong and you need the y-axis (uiview only rotates about z) so you have to actually use CALayer's transform instead of the view's transform for this particular animation.  For instance:
+
+```swift
 import PlaygroundSupport
 import UIKit
 
@@ -49,14 +50,108 @@ final class V: UIViewController {
 PlaygroundPage.current.liveView = V()
 ```
 
-#### Measurement
+### Intro to Measurement
 
-Tim showed a problem with apple's Measurement example.
+TimC gave a brief intro to Foundation Measurements in an XCode playground. Asked for help with Apple's broken Custmo Unit example. Josh suggested running in Mac Playgrounds app - showed the true error. 
 
-#### @propertyWrappers
+```swift
+//
+// Brief intro to Measurements
+// Creation, Conversion, Custom
+//
+
+import Foundation
+
+// Create a Measurement
+var mile = Measurement(value: 1, unit: UnitLength.miles)
+
+// Convert to another unit
+var dMiles = mile.converted(to: .meters)
+mile.converted(to: .yards)
+
+// Extend UnitLength to include pool-laps conversions:
+extension UnitLength {
+    static let lap50m = UnitLength(symbol: "laps", converter: UnitConverterLinear(coefficient: 50))
+    static let lap50y = UnitLength(symbol: "laps", converter: UnitConverterLinear(coefficient: 45.72))
+    static let lap25y = UnitLength(symbol: "laps", converter: UnitConverterLinear(coefficient: 45.72/2))
+}
+
+// How many laps
+var lapCount = mile.converted(to: UnitLength.lap50m)
+
+// Make Measurement init less verbose
+extension Measurement {
+    init(_ v: Double, _ u: UnitType) {
+        self.init(value:v, unit:u)
+    }
+}
+
+// Swimmers consider 1650 yards or 1500 meters a "mile"
+// These distances are shorter than an actual mile
+var mileSwimY = Measurement(1650, UnitLength.yards)
+var mileSwimM = Measurement(1500, UnitLength.meters)
+mileSwimY.converted(to: .miles)
+mileSwimM.converted(to: .miles)
+
+// How many laps do you need to swim in different pools?
+
+// 1500 meters in a 50 meter pool (Olympic) -> 30 laps
+mileSwimM.converted(to: .lap50m)
+
+// 1500 meters in a 50 yard pool -> ~33 laps
+mileSwimM.converted(to: .lap50y)
+
+// 1500 meters in a 25 yard pool -> ~66 laps
+mileSwimM.converted(to: .lap25y)
+
+// Actual Mile in a 25 yard pool -> ~71 laps (Tim swims 72 to end where he started)
+mile.converted(to: .lap25y)
+
+/* Create a Custom Dimension
+ 
+ Apple example code for RadioactivityUnits does NOT compile;
+    after some updates, it compiles, throws a runtime error.
+ https://developer.apple.com/documentation/foundation/dimension
+
+ class CustomRadioactivityUnit: Dimension {
+    //init needs converter: argument name
+    static let becquerel = CustomRadioactivityUnit(symbol: "Bq", UnitConverterLinear(coefficient: 1.0))
+    static let curie = CustomRadioactivityUnit(symbol: "Ci", UnitConverterLinear(coefficient: 3.7e10))
+
+    static let baseUnit = self.becquerel // replace with "becquerel" to compile
+}
+
+ **THANKS JoshHomann** for suggesting Mac Playgrounds app which shows the run-time error.
+ 
+ Error: Crashing on exception: *** You must override baseUnit in your class
+      Page_Contents.CustomRadioactivityUnit to define its base unit.
+
+ Note -- obviously the static let isn't doing the job, but TimC found below works:
+ */
+
+// Working Custom Unit Dimension!
+class CustomRadioactivityUnit: Dimension {
+    static let becquerel = CustomRadioactivityUnit(
+        symbol: "Bq", converter: UnitConverterLinear(coefficient: 1.0))
+    static let curie = CustomRadioactivityUnit(
+        symbol: "Ci", converter: UnitConverterLinear(coefficient: 3.7e10))
+    
+    override class func baseUnit() -> Self {
+        becquerel as! Self // expects a *Dimension* as Self
+    }
+}
+
+var rads = Measurement(1, CustomRadioactivityUnit.becquerel)
+var radsC = rads.converted(to: .curie)
+
+print("Rads=\(rads) -> curie= \(radsC) ")
+```
+
+### Intro to @propertyWrappers - JoshH
 
 We looked at the basics of proertyWrappers and their three characteristics: 1) a required `wrappedValue`, 2) an optional `projectedValue` 3) an optional `init(wrappedValue:)`.  The only thing a propertyWrapper provides is renaming for the `wrappedValue` (`name`), the underlying struct (`_name`) and the `projectedValue` (`$name`) it is otherwise entirely equivalent to the unsugared struct, as this playground demonstrates:
-```
+
+```swift
 import Foundation
 import PlaygroundSupport
 
@@ -96,7 +191,7 @@ let p = Person()
 p.output()
 ```
 
-#### Custom DynamicProperty implementations
+### Custom DynamicProperty implementations
 
 We looked at Apple's DynamicProperty documentations and noted that the only required function has a default implmenation and that call of the propertyWrappers that implment the protocol are listed at the bottom of the page: https://developer.apple.com/documentation/swiftui/dynamicproperty  
 
@@ -105,14 +200,14 @@ Josh walked through the code for this project on how to build your own custom Dy
 We saw the `struct`s in swift cannot be mutated inside of a function that is not flagged as `mutating`.  We further saw that Apple skirts this restriction with `@State` by using the `nonmutating` keyword for its setter, and that we can do the same thing an achieve the same behavior by using a reference type to store our variable: the reference never changes, but the pointee can change.  If we want to communicate information about the pointee changing, we can use the `ObservedObject` protocol.
 
 
-### 2021.02.20
+## 2021.02.20
 
-#### Discussion
+### Discussion
 
 This is a good system to produce animations made by designers.
 https://github.com/airbnb/lottie-ios
 
-#### What are some good SwiftUI starter resources?
+### What are some good SwiftUI starter resources?
 
 - https://www.raywenderlich.com
 - Stanford course https://cs193p.sites.stanford.edu
@@ -122,24 +217,24 @@ https://github.com/airbnb/lottie-ios
 - Newsletter by Matteo Manferdini https://matteomanferdini.com
 - Another list of resources: http://bit.ly/get-started-with-swift
 
-#### Debug session: problem with gestures in a collection view
+### Debug session: problem with gestures in a collection view
 
 We did a group debug of Clarissa's code. The tap selector for the tap selector wasn't being called.  Josh spoted the problem: the gesture was being added to the cell's root view instead of the `contentView`.  Remember that table view cells and collection view cells have a `contentView` that you need to add your custom views and gestures to.
 
-#### Problem with Collection Views in iOS 14.4
+### Problem with Collection Views in iOS 14.4
 
 Jumping to a particular cell seems to be broken. Mira provided a discussion link:
 
 https://developer.apple.com/forums/thread/663156?answerId=642133022#642133022
 
-#### How do you make an app that uses landscape but only in one view
+### How do you make an app that uses landscape but only in one view
 
 One way is to make a class derived from UIViewController that is a NonRotatingView and overrides supported orientations.  All the views
 that don't rotate derive from that.
 
 https://developer.apple.com/documentation/uikit/uiviewcontroller/1621435-supportedinterfaceorientations
 
-#### How do you make an enable button and a slider
+### How do you make an enable button and a slider
 
 https://gist.github.com/rayfix/11827eaf8acae38a08b2190c0db72cee
 
@@ -151,9 +246,9 @@ https://stackoverflow.com/questions/64756306/using-a-toggle-to-disable-a-slider-
 
 
 ---
-### 2021.02.13
+## 2021.02.13
 
-#### Tricks and tips
+### Tricks and tips
 
 John shared Xcode tips from [24 Quick Xcode Tipes article by Paul Hudson](https://www.hackingwithswift.com/articles/229/24-quick-xcode-tips)
 
@@ -162,11 +257,11 @@ Notable shortcuts:
   - **Command-option /**  - Automatic doc comment template.
   - **Command-control-shift A**  - Author's view (git blame) 
 
-#### M1 Rumors 
+### M1 Rumors 
 
 Bill is interested in M1 rumors, especially this one about a [Mac Mini _Pro version_ in space grey](https://www.macworld.co.uk/news/mac-trends-2021-3800044/#toc-3800044-4)!
 
-#### SwiftUI Composition
+### SwiftUI Composition
 
 Tim Colson presented strategies for SwiftUI Composition, i.e. breaking views down into components. SwiftUI composition exercises were inspired by strategies from articles/code/videos by Joseph Pacheco and Paul Hudson. 
 
@@ -177,16 +272,16 @@ https://github.com/timcolson/tut-swiftui-comp -- start with tag v1  `git co tags
 
 If interested in working thru the code together, reach out to Tim. 
 
-#### Breakout rooms
+### Breakout rooms
 
 We will try this next week.
 
 ---
 
 
-### 2021.02.06
+## 2021.02.06
 
-#### Xcode Tricks and Tips
+### Xcode Tricks and Tips
 
 Rainer presented a list of tricks and Tips in Xcode and macOS.
 
@@ -205,12 +300,12 @@ Rainer presented a list of tricks and Tips in Xcode and macOS.
 - Multi-cursor support: Control-Shift-click or arrow up/down
 - Click the blue 'change' ribbon to see an action menu. Command-click to automatically show/hide the changes
 
-#### Other tricks:
+### Other tricks:
 
 * [Emacs keybindings](https://caiorss.github.io/Emacs-Elisp-Programming/Keybindings.html)
 * [Custom Code Snippets in Xcode](https://medium.com/@hassanahmedkhan/writing-custom-code-snippets-in-xcode-9e91f8ed4207)
 
-#### xcconfig
+### xcconfig
 
 Frank introduced us to the world of xcconfig files. You can specify these files to use in your build.  They handle comments, key values such as:
 
@@ -222,7 +317,7 @@ MY_SETTING = "this is debug mode"
 
 * [Xcode Build Configuration Files article by Mattt @ NSHipster](https://nshipster.com/xcconfig/) - reference article with info similar to what Frank shared 
 
-#### SHA256
+### SHA256
 
 Ray demo'ed SHA256 hash generation.  Using CryptoKit makes it easy.
 
@@ -248,13 +343,13 @@ print(digest.hexString)
 print(d2.hexString)
 ```
 
-#### URL Publishing Chain Revisited
+### URL Publishing Chain Revisited
 
 By request, Josh walked us step-by-step thru the Combine URL publishing chain in his [TeslaOwnerAPI.swift](https://github.com/joshuajhomann/tesla/blob/main/TeslaOwnerAPI/Sources/TeslaOwnerAPI/TeslaOwnerAPI.swift)
 
 ---
 
-### 2021.01.30
+## 2021.01.30
 Josh presented his Tesla Owner app. 
 https://github.com/joshuajhomann/tesla
 
@@ -426,9 +521,9 @@ extension Either: Decodable where Left: Decodable, Right: Decodable {
 ```
 ---
 
-### 2021.01.23
+## 2021.01.23
 
-#### Proxy 
+### Proxy 
 
 Discussed network security and _SSL pinning_. Potential topic for future meetup.  You can try it out:
 
@@ -436,13 +531,13 @@ https://www.charlesproxy.com
 
 https://proxyman.io
 
-#### Swift Fiddle
+### Swift Fiddle
 
 It let's you play with the Swift compiler (and different versions) online.
 
 https://swiftfiddle.com
 
-#### Enums
+### Enums
 
 We talked about how equality checking for enums do not consider argument labels.  The same thing goes for comparison and hash values coming in a future
 version of Swift when [tuples will become Equatable, Comparable and Hashable[(https://github.com/apple/swift-evolution/blob/main/proposals/0283-tuples-are-equatable-comparable-hashable.md) if all of the element types are Equatable, Comparable and Hashable respectively.
@@ -452,7 +547,7 @@ Regarding comparison of floating point, question about zero was raised.  IEEE-75
 
 https://developer.apple.com/documentation/swift/double/1538731-iszero
 
-#### Your Demo Here
+### Your Demo Here
 
 If you have a trick or tip and want to show the group, remember to write it down.
 
@@ -460,34 +555,34 @@ https://www.dunebook.com/best-xcode-themes/ -
 https://github.com/tonsky/FiraCode - font for terminal and Xcode that includes ligatures for common two-char symbols
 [How to draw bounding boxes with SwiftUI (Medium)](https://medium.com/swlh/how-to-draw-bounding-boxes-with-swiftui-d93d1414eb00) - useful for scanning-related project ideas, ex: draw a box around a QR code in a video capture. 
 
-#### Demo SwiftUI Picker
+### Demo SwiftUI Picker
 
 We explored Picker with a simple example. 
 
 https://gist.github.com/rayfix/ed02927bce0d645911b578edf5379baf
 
-#### Names in the app store
+### Names in the app store
 
 Needs to be a real name or company name (LLC, Corporation, etc).  Apple doesn't allow DBAs.
 
 https://developer.apple.com/support/enrollment/
 
-#### Demo Exquisite Corpse
+### Demo Exquisite Corpse
 
 Got a quick demo of a game that Jo is building. And talked about debugging Firebase cloud functions.  It is taking minutes to spin up an instance and something seems wrong.
 
 ---
 
-### 2021.01.18
+## 2021.01.18
 
-#### Discussion of Corporate Dev Account vs Personal Account
+### Discussion of Corporate Dev Account vs Personal Account
 
 Be careful of LLC (with a single person) or even a corporation. If you don't do everything to the letter, chances are the corporate veil can be pierced.  When you are just starting out, it is probably easiest to use a personal account.  While there was agreement that it can be changed later there was some disagreement about how hard it is to do.
 
-#### Emil's TikTok App Tutorial Recommendation
+### Emil's TikTok App Tutorial Recommendation
 https://www.youtube.com/watch?v=71-l3Ndf6Ug
 
-#### iCloud sync
+### iCloud sync
 
 What folder should you use to sync with?
 
@@ -504,7 +599,7 @@ Sync is surprisingly hard so it makes sense to use a third party library.  Sever
 - Google Firebase https://firebase.google.com
 - Parse 
 
-#### Refactoring to Combine
+### Refactoring to Combine
 
 Emily gave us a presentation on Caleb and her experience refactoring to Combine.
 
@@ -519,13 +614,13 @@ https://github.com/joshuajhomann/ShimmeringLoadingState
 Josh also recommends a single access point for doing requests.  Link TBD. (Next week?)
 
 
-#### Proposal for Visualization Toolkit
+### Proposal for Visualization Toolkit
 
 The idea is to have a library to allow you to read in a CSV file and then render as a plot.
 
 Can we make something comparable to D3 https://d3js.org
 
-#### Tesla Watch App: Modules
+### Tesla Watch App: Modules
 
 Josh showed an in-progress watch app that uses the Tesla API to unlock the car. We will look at it in greater detail in a future meetup.
 
@@ -534,7 +629,7 @@ This week he showed how to factor out watch and iOS code into a common Swift Pac
 
 ---
 
-### 2021.01.09
+## 2021.01.09
 We discussed the new [asynchronous sequence proposal](https://github.com/apple/swift-evolution/blob/main/proposals/0298-asyncsequence.md)
 
 We discussed `reduce` (fold) and its inverse (unfold) `sequence` https://developer.apple.com/documentation/swift/2011998-sequence
@@ -612,7 +707,7 @@ Full project: https://github.com/joshuajhomann/Reversi-SwiftUI-Animation
 ![Reversi](https://github.com/joshuajhomann/Reversi-SwiftUI-Animation/blob/master/preview.gif)
 ---
 
-### 2021.01.02
+## 2021.01.02
 
 Happy New Year!
 
