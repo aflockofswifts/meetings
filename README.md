@@ -3,9 +3,103 @@
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
 All people and all skill levels are welcome to join.  
+
+
+---
+## 2021.03.13
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
 ---
 ## 2021.03.06
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+### Demo Time
+
+Caleb and Emily showed a new version of their app. They had some questions about handling multipart posts and general app architecture.
+
+Is SwiftUI ready for production? The answer depends on the user base you need to support.  (They are currently requiring iOS 13 because they are using Combine.)
+
+```none
+Tim Colson to Everyone (9:42 AM)
+I’ve been reading this guys blog for the past few days. Good stuff — started with this one “AppKit is Done” - https://kean.blog/post/appkit-is-done
+That said, his followup was “…But Not NSTableView” — for tables over ~10K items - https://kean.blog/articles/
+I also found 2019-Oct “SwiftUI Layout System” interesting context for layout system evolution. https://kean.blog/post/swiftui-layout-system
+```
+
+The story about how Uber almost had a disaster when they switched to Swift:
+
+```swift
+https://twitter.com/StanTwinB/status/1336890449861066753?s=20
+```
+
+### Push Notifications
+
+What is the state of the art for push notifications?
+
+https://developer.apple.com/notifications/
+
+Many services out there. You probably don't want to roll your own unless you have to.
+
+### Network Sniffing
+
+- Postman
+- Paw https://paw.cloud
+- Charles Proxy
+- Wireshark
+- RESTed
+- Insomnia https://insomnia.rest
+
+Aside: Serial 2 is a great tool for sniffing USB/serial devices on macOS
+
+https://www.decisivetactics.com/products/serial/
+
+### LaTeX and MathML
+
+A cool project would be to write a LaTeX parser that rendered using MathML and WKWebView. 
+
+### Units and Codable
+
+```swift
+import Foundation
+let mile = Measurement(value: 1, unit: UnitLength.miles)
+let encoder = JSONEncoder()
+let data = try encoder.encode(mile)
+print(String(data: data, encoding: .utf8)!)
+let decoded = try JSONDecoder().decode(Measurement<UnitLength>.self, 
+                                       from: data)
+print(decoded)
+decoded.converted(to: .fathoms)
+```
+
+The archive looks like this:
+
+```none
+{"value":1,"unit":{"converter":{"constant":0,"coefficient":1609.3440000000001},"symbol":"mi"}}
+```
+
+
+### Capture Lists
+
+Capture lists are a way of extending lifetime.  The capture occurs at the point of declaration so be careful about capturing values.  They can also be used to break reference cycles, but they tend to be rare.  Try to capture the minimum set of things that you need to.  If you are doing MVC, you probably don't need to inject in and capture your services.  Instead, you can use a singleton.  If you are doing MVVM or others you probably need to use the capture list.
+
+
+### Getting Started
+
+We all agree that https://cs193p.sites.stanford.edu is a great course.  The prerequisites are OOP, data structures and algorithms but you might be able to fake it even without some of those things.
+
+### Swimbols
+
+John demo'ed a cool tool for using symbols that outputs code.
+
+https://apps.apple.com/us/app/swimbols/id1525226399
+
+### Slack
+
+LA Swift Coders has a Slack channel.
+
+https://join.slack.com/t/swiftcodersla/shared_invite/zt-745saxp2-irO2nTquTwFDHriTmU5JBg
+
+
+
 ---
 
 ## 2021.02.27
