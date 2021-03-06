@@ -16,20 +16,16 @@ All people and all skill levels are welcome to join.
 
 Caleb and Emily showed a new version of their app. They had some questions about handling multipart posts and general app architecture.
 
+Josh gave us a brief survey of various app architectures.
+
 Is SwiftUI ready for production? The answer depends on the user base you need to support.  (They are currently requiring iOS 13 because they are using Combine.)
 
-```none
-Tim Colson to Everyone (9:42 AM)
-I’ve been reading this guys blog for the past few days. Good stuff — started with this one “AppKit is Done” - https://kean.blog/post/appkit-is-done
-That said, his followup was “…But Not NSTableView” — for tables over ~10K items - https://kean.blog/articles/
-I also found 2019-Oct “SwiftUI Layout System” interesting context for layout system evolution. https://kean.blog/post/swiftui-layout-system
-```
+Some links from Tim Colson
+- https://kean.blog/post/appkit-is-done
+- https://kean.blog/post/swiftui-layout-system
 
 The story about how Uber almost had a disaster when they switched to Swift:
-
-```swift
 https://twitter.com/StanTwinB/status/1336890449861066753?s=20
-```
 
 ### Push Notifications
 
