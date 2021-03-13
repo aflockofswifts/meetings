@@ -5,9 +5,91 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join.  
 
 
+
 ---
-## 2021.03.13
+## 2021.03.20
+
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2021.03.13
+
+### What's new in Swift evolution?
+
+#### CGFloat <-> Double
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0307-allow-interchangeable-use-of-double-cgfloat-types.md
+
+Great if this sharp edge were fixed.  A good April 1st version of this would be to introduce `CGDouble` 🤣 
+
+#### Actors
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0306-actors.md
+
+Some chatter about the pattern in general: https://en.wikipedia.org/wiki/Actor_model
+
+It is available in many languages.  (I first encountered it a decade ago in C++ Boost asio.)
+
+## Alignment Guides
+
+There are many ways of performing the alignment in Swift.  We looked at several ways using alignment guides.  Here was a basic example we explored.
+
+```swift
+extension HorizontalAlignment {
+    enum Custom: AlignmentID {
+        static func defaultValue(in context: ViewDimensions) -> CGFloat {
+            context[.leading]
+        }
+    }
+    static var custom: HorizontalAlignment = HorizontalAlignment(Custom.self)
+}
+
+ struct ContentView: View {
+        var body: some View {
+            VStack(alignment: .custom) {
+                HStack {
+                    Text("Name")
+                    TextField("John J.", text: .constant(""))
+                        .alignmentGuide(.custom) { context in
+                            context[HorizontalAlignment.center]
+                        }
+                }
+                HStack {
+                    Text("Address")
+                    TextField("1234 Main Drive", text: .constant(""))
+                        .alignmentGuide(.custom) { context in
+                            context[.leading]
+                        }
+                }
+            }.padding()
+        }
+ }
+```
+
+
+## Adding Measurement Units
+
+The `Measurement` facility in Foundation lets you add different units of the same dimension in a type safe way.  Be careful with temperature, though.  If you add `C` and `F` together it will convert to the base unit (`K`) add those  which might not be expected.  Add in the same units to keep the conversion from happening.
+
+```swift
+import Foundation
+let a = Measurement(value: 70, unit: UnitTemperature.fahrenheit)
+let b = Measurement(value: 20, unit:
+                UnitTemperature.celsius)
+a + b
+a.converted(to: .kelvin) + b.converted(to: .kelvin)  // same as a + b
+
+a + b.converted(to: .fahrenheit)  // probably what you meant
+```
+
+## NSAttributedStrings and Result Builders
+
+Josh created a cool custom result builder for creating composable NSAttributedString without all of the type loss of its Objective-C / NSDictionary based API.
+
+He is working on a Swift package to do this.
+
+TBD: URL
 
 ---
 ## 2021.03.06
