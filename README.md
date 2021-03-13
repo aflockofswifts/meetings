@@ -75,19 +75,19 @@ The `Measurement` facility in Foundation lets you add different units of the sam
 ```swift
 import Foundation
 let a = Measurement(value: 70, unit: UnitTemperature.fahrenheit)
-let b = Measurement(value: 20, unit:
-                UnitTemperature.celsius)
-a + b
+let b = Measurement(value: 20, unit: UnitTemperature.celsius)
+a + b // really hot!
+
 a.converted(to: .kelvin) + b.converted(to: .kelvin)  // same as a + b
 
-a + b.converted(to: .fahrenheit)  // probably what you meant
+a + b.converted(to: .fahrenheit)  // probably what you meant, not as hot
 ```
 
-## NSAttributedStrings and Result Builders
+## Better NSAttributedString API with Result Builder
 
 Josh created a cool custom result builder for creating composable NSAttributedString without all of the type loss of its Objective-C / NSDictionary based API.
 
-He is working on a Swift package to do this.
+He plans on publishing a Swift Package of this work.
 
 TBD: URL
 
