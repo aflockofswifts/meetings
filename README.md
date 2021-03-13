@@ -70,7 +70,7 @@ extension HorizontalAlignment {
 
 ## Adding Measurement Units
 
-The `Measurement` facility in Foundation lets you add different units of the same dimension in a type safe way.  Be careful with temperature, though.  If you add `C` and `F` together it will convert to the base unit (`K`) add those  which might not be expected.  Add in the same units to keep the conversion from happening.
+The `Measurement` facility in Foundation lets you add different units of the same dimension in a type safe way.  Be careful with temperature, though.  If you add `C` and `F` together it will convert to the base unit (`K`) and add those  which might not be expected.  Stay in the same units to keep the implicit conversion from happening.
 
 ```swift
 import Foundation
