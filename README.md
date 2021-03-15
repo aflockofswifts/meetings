@@ -87,9 +87,10 @@ a + b.converted(to: .fahrenheit)  // probably what you meant, not as hot
 
 Josh created a cool custom result builder for creating composable NSAttributedString without all of the type loss of its Objective-C / NSDictionary based API.
 
-He plans on publishing a Swift Package of this work.
+Package and example project:
 
-TBD: URL
+https://github.com/joshuajhomann/AttributedStringBuilder
+![image](https://github.com/joshuajhomann/AttributedStringBuilder/blob/master/preview.png?raw=true "Preview")
 
 ---
 ## 2021.03.06
