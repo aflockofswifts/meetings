@@ -5,11 +5,61 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join.  
 
 
+---
+## 2021.03.27
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
 ## 2021.03.20
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+### Breakout sessions
+
+Had fun with breakout sessions.  I can see how we can use these in the future.
+
+### Setting Autolayout Constraints and whitespace
+
+Constraints need to set the xy position and width and height of a view.  Sometimes the size has an implicit content size and you don't need to set the width and height.  You want to avoid under constraining or specifying conflicting contraints.
+
+#### How to make whitespace at the bottom?
+
+1. Make a constraint >= 1
+2. Set vertical hugging priority to the lowest possible value (1)
+
+### String Performance Cliff
+
+If you load in a string with:
+
+```swift
+let value = try String(contentsOf: url)
+```
+
+You might load a string that is UTF16 or non-contiguous.  That causes a 10x slowdown.  This might be noticeable if you have a string processing app or a lot of concurrent users on a server app.
+
+There are two functions you might want to be aware of:
+
+```swift
+    value.isContiguousUTF8  // can this string use the fast path algorithms?
+    value.makeContiguousUTF8() // makes it O(1) to access the storage
+```
+
+Also, there are two overloads: `String(contentsOf: url)` and `String(contentsOf: url, encoding: .utf8)`  The first does autodetection the second assumes the encoding.  Prefer specifying it when you can as it may guarantee contiguous storage in the future. 
+
+See https://forums.swift.org/t/confused-by-string-iteration-performance/46723/9
+
+### Codable and code synthesis
+
+A lot of forum discussions happening right now with relation to Codable because of the associated type proposal.
+
+We talked about this one: https://forums.swift.org/t/why-does-subclassing-a-codable-class-produce-class-has-no-initializers/23586
+
+
+### Swizzling and associated storage to track view controller leaks
+
+Josh walked through the different types of dispatch available to Swift: static dispatch, virtual table (closely related to witness table) dispatch, and full Objective-C message dispatch.  The last is the most flexible to a frightening extent.  It allows you to swizzle (replace) system methods like `viewDidLoad` of `UIViewController` types.  Using assocated storage you can track stuff about the object including an object with a custom `deinit`.  
+
+Code: TBD
+
 
 ---
 
