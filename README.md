@@ -58,7 +58,47 @@ We talked about this one: https://forums.swift.org/t/why-does-subclassing-a-coda
 
 Josh walked through the different types of dispatch available to Swift: static dispatch, virtual table (closely related to witness table) dispatch, and full Objective-C message dispatch.  The last is the most flexible to a frightening extent.  It allows you to swizzle (replace) system methods like `viewDidLoad` of `UIViewController` types.  Using assocated storage you can track stuff about the object including an object with a custom `deinit`.  
 
-Code: TBD
+Code:
+```Swift
+extension UIViewController {
+
+  final class OnDealloc {
+    var closure: () -> Void
+    init(_ closure: @escaping () -> Void) {
+      self.closure = closure
+    }
+    deinit {
+      closure()
+    }
+  }
+  private static var associatedObjectAddress = String(reflecting: OnDealloc.self)
+
+  @objc private func swizzledViewDidLoad() {
+    let onDealloc = OnDealloc {
+      print("Dealloc \(Self.self)")
+    }
+    objc_setAssociatedObject(self, &Self.associatedObjectAddress, onDealloc, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    print("ViewDidLoad \(Self.self)")
+    swizzledViewDidLoad()  //ViewDidLoad
+  }
+  private static let swizzleImplementation: Void = {
+    let originalSelector = #selector(UIViewController.viewDidLoad)
+    let swizzledSelector = #selector(UIViewController.swizzledViewDidLoad)
+
+    guard let originalMethod = class_getInstanceMethod(UIViewController.self, originalSelector),
+          let swizzledMethod = class_getInstanceMethod(UIViewController.self, swizzledSelector) else {
+      return
+    }
+
+    method_exchangeImplementations(originalMethod, swizzledMethod)
+  }()
+
+  static func swizzle() {
+    _ = swizzleImplementation
+  }
+
+}
+```
 
 
 ---
