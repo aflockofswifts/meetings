@@ -12,6 +12,10 @@ All people and all skill levels are welcome to join.
 ---
 ## 2021.03.27
 
+John showed the beginning of his app: https://github.com/codger/Guess-Who which he would like to make into an interactive coding exercise.  If you'd like to contribute, propose a feature and you can present it during the meetup and crowd source the solution.
+
+Ray demoed an issue with a CowWrapper type where it was causing unexpected allocations.  Demo TBD.
+
 Josh showed a solution to making a `UIStackView` in `UIScrollView` scroll only when the content exceeds the scrollView's height, and making the stackview equal the scrollview's height in all other cases.  This involves 10 constraints:
   * 4 position constraints on the scrollView's `frameLayoutGuide` to its parent view to position the scrollview.
   * 4 position constraints on the stackview to the scrollView's `contentLayoutGuide` to position the stackView inside the scrollview
