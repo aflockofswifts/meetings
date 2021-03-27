@@ -4,12 +4,76 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join.  
 
+---
+## 2021.04.03
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
 ## 2021.03.27
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+Josh showed a solution to making a `UIStackView` in `UIScrollView` scroll only when the content exceeds the scrollView's height, and making the stackview equal the scrollview's height in all other cases.  This involves 10 constraints:
+  * 4 position constraints on the scrollView's `frameLayoutGuide` to its parent view to position the scrollview.
+  * 4 position constraints on the stackview to the scrollView's `contentLayoutGuide` to position the stackView inside the scrollview
+  * 2 dimension constraints to imply the size of the stackView
+    * A cross axis (horizontal for a vertical scroll) constraint that constrains the stackView's width to the scrollView's width, causing the scrollView to not scroll horizontally
+    * An axis constraint (height for a vertical scrollView) that provides a minimum dimension for the stackView's axis that is equal to or greater than the scrollView's scrolling axis.  This constraint *must* not be required (the priority must be less than `.required` which has a rawValue of 1000)
+Finally, at least one view in the stack needs to be expandable.  In this example it is the spacer view.  Expandability is accomplished by setting the contentHuggingPiority of the expandable view(s) to a value lower than all of the other views in the stack for the scrolling axis (vertical).
 
+```
+class ViewController: UIViewController {
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    let title = UILabel()
+    title.text = "Title"
+    let subtitle = UILabel()
+    subtitle.numberOfLines = 0
+    subtitle.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    let imageView = UIImageView(image: UIImage(systemName: "star.fill") ?? UIImage())
+    imageView.contentMode = .scaleAspectFill
+    imageView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+    let button = UIButton()
+    button.backgroundColor = .black
+    button.setTitle("Test", for: .normal)
+    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    button.widthAnchor.constraint(equalToConstant: 100).isActive = true
+    button.layer.cornerRadius = 8
+    let spacer = UIView()
+    spacer.translatesAutoresizingMaskIntoConstraints = false
+    spacer.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+    spacer.setContentHuggingPriority(.init(rawValue: 0), for: .vertical)
+    let stack = UIStackView.init(arrangedSubviews: [
+      title,
+      imageView,
+      subtitle,
+      spacer,
+      button
+    ])
+    stack.translatesAutoresizingMaskIntoConstraints = false
+    stack.axis = .vertical
+    stack.alignment = .center
+    let scrollView = UIScrollView()
+    scrollView.translatesAutoresizingMaskIntoConstraints = false
+    scrollView.addSubview(stack)
+    view.addSubview(scrollView)
+    NSLayoutConstraint.activate([
+      scrollView.frameLayoutGuide.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      scrollView.frameLayoutGuide.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+      scrollView.frameLayoutGuide.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      scrollView.frameLayoutGuide.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+      scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: stack.topAnchor),
+      scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: stack.bottomAnchor),
+      scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
+      scrollView.contentLayoutGuide.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
+      scrollView.widthAnchor.constraint(equalTo: stack.widthAnchor),
+    ])
+    let height = scrollView.heightAnchor.constraint(greaterThanOrEqualTo: stack.heightAnchor)
+    height.priority = .defaultLow
+    height.isActive = true
+  }
+}
+```
 ---
 ## 2021.03.20
 
