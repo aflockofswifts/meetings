@@ -24,7 +24,7 @@ Josh showed a solution to making a `UIStackView` in `UIScrollView` scroll only w
     * An axis constraint (height for a vertical scrollView) that provides a minimum dimension for the stackView's axis that is equal to or greater than the scrollView's scrolling axis.  This constraint *must* not be required (the priority must be less than `.required` which has a rawValue of 1000)
 Finally, at least one view in the stack needs to be expandable.  In this example it is the spacer view.  Expandability is accomplished by setting the contentHuggingPiority of the expandable view(s) to a value lower than all of the other views in the stack for the scrolling axis (vertical).
 
-```
+```swift
 class ViewController: UIViewController {
 
   override func viewDidLoad() {
