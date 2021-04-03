@@ -3,18 +3,85 @@
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
 All people and all skill levels are welcome to join.  
+---
+## 2021.04.10
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
 ## 2021.04.03
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+## Review of Mutable Value Semantics
+
+Ray did a review of what mutable value semantics are in Swift using the iPad note app to draw with. Languages like Java and Python use reference semantics for performance. Languages like Haskell have value semantics but achieve it through immutability. Swift gets the best of both worlds by using reference semantics privately but then doing  copy-on-write to achieve value semantics.
+
+Tim wrote some playground code to work through the ideas:
+
+```swift
+// Value Semantics
+let a = [1,2,3]
+// b just "points" to same memory as "a"
+let b = a
+// c just points to a
+var c = a
+print(a,b,c) // [1,2,3][1,2,3][1,2,3]
+    // Standard Swift Types support "Mutable Value Semantics" - i.e. Copy on Write (aka "COW paradigm")
+    // Uh Oh - this is a var that changes... so COW!
+c.append(4)
+print(a,b,c) // [1,2,3][1,2,3][1,2,3,4]
+
+// Example with Classes (Person) 
+class Person {
+    var name : String
+    init(name: String) {
+        self.name = name
+    }
+}
+var p1 = Person(name:"Josh1")
+let p2 = Person(name:"Josh2")
+let p3 = Person(name:"Josh3")
+print("p1 unique=\(isKnownUniquelyReferenced(&p1))")
+var people : [Person] = [p1, p2, p3]
+print(people)
+//  print("people unique=\(isKnownUniquelyReferenced(&people))")
+print("p1 unique=\(isKnownUniquelyReferenced(&p1))")
+//  let tallPeople = people
+//  let smartPeople = people
+```
+
+We looked at the problem with SwiftUI and CoW types. The property wrappers `@State` and `@Published` make a local copy which prevents the copy optimization.  Instead, you can use `objectWillChange` on `ObservableObject` directly.
+
+https://gist.github.com/rayfix/dc079e527be76f9be4a419ca2896d5ba
+
+### Swift on Tap
+
+Tim showed us Apple-like documentation but with examples.
+https://swiftontap.com/
+
+Frank: It’s by Antoine van Der Lee, and his blog is worth reading too.
+https://www.avanderlee.com
+
+Another SwiftUI resource:
+https://kean.blog
+
+### Importing a binary framework and vending it from SwiftPM
+
+Ed talked about a problem he is still trying to solve. We think he will need to import the library through a bridging header of a modulemap file.
+
+### Rumors and Discussion
+https://www.macrumors.com/2020/12/22/2021-apple-tv-rumors/
+
+### Video app pitch
+
+Yi pitched his video app that he is just beginning with.
+
 
 ---
 ## 2021.03.27
 
 John showed the beginning of his app: https://github.com/codger/Guess-Who which he would like to make into an interactive coding exercise.  If you'd like to contribute, propose a feature and you can present it during the meetup and crowd source the solution.
 
-Ray demoed an issue with a CowWrapper type where it was causing unexpected allocations.  Demo TBD.
+Ray demoed an issue with a CowWrapper type where it was causing unexpected allocations.  The solution will be presented in the next meeting!
 
 Josh showed a solution to making a `UIStackView` in `UIScrollView` scroll only when the content exceeds the scrollView's height, and making the stackview equal the scrollview's height in all other cases.  This involves 10 constraints:
   * 4 position constraints on the scrollView's `frameLayoutGuide` to its parent view to position the scrollview.
