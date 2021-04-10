@@ -4,9 +4,82 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join.  
 ---
-## 2021.04.10
+## 2021.04.17
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+## 2021.04.10
+
+### Touch Route
+
+Ed has a new app in the App Store called Touch Route. Several participated in the TestFlight. Time to get it and give him a five star review! :)
+
+https://apps.apple.com/us/app/touchroute/id1559820521
+
+### Swift Packages with Binary Frameworks
+
+Ed also gave us a quick tour about how to use frameworks from SwiftPM. Important: you need to convert a .framework to an .xcframework to be usable.  The package definition DSL is just Swift code.
+
+We also talked about various Brother printers
+https://www.brother-usa.com/support/ql820nwb - Brother QL-820NWB
+
+### Review of Property Wrappers
+
+We worked through this example:
+
+```swift
+@propertyWrapper
+struct Clamped<Value: Comparable> {
+    var range: ClosedRange<Value>
+    private var value: Value
+    var wrappedValue: Value {
+        get { value.clamped(to: range) }
+        set { value = newValue }
+    }
+    var projectedValue: Value {
+        get { value }
+        set { value = newValue }
+    }
+    init(wrappedValue: Value, range: ClosedRange<Value>) {
+        value = wrappedValue
+        self.range = range
+    }
+}
+
+extension Comparable {
+    func clamped(to range: ClosedRange<Self>) -> Self {
+        min(max(range.lowerBound, self), range.upperBound)
+    }
+}
+```
+
+Josh Homann has covered this in previous meetups.
+https://github.com/joshuajhomann/CustomDynamicProperties
+
+Also, Josh recommends using Snippets in Xcode as a way to expose the entire surface area of a function in one shot.
+
+```swift
+@propertyWrapper
+struct <#Name#> {
+  private var value: <#Wrapped#>
+  var wrappedValue: <#Wrapped#> {
+    get { value }
+    set { value = newValue }
+  }
+  var projectedValue: <#Projected#> {
+    get { value }
+    set { value = newValue }
+  }
+  init(wrappedValue: <#Wrapped#>) {
+    value = wrappedValue
+  }
+}
+```
+
+A new Swift evolution proposal 0293 has been accepted and will be in Swift 5.5.  Expect to see a lot more `@` symbols at next WWDC.
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0293-extend-property-wrappers-to-function-and-closure-parameters.md
 
 ---
 ## 2021.04.03
