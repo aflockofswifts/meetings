@@ -58,11 +58,11 @@ https://gist.github.com/rayfix/dc079e527be76f9be4a419ca2896d5ba
 Tim showed us Apple-like documentation but with examples.
 https://swiftontap.com/
 
-Frank: It’s by Antoine van Der Lee, and his blog is worth reading too.
-https://www.avanderlee.com
+Frank: Swift on Tap is the work of [Alex Fine](https://github.com/alexfine).
 
-Another SwiftUI resource:
-https://kean.blog
+Some SwiftUI resources worth a look:
+  - https://www.avanderlee.com (Antoine van Der Lee)
+  - https://kean.blog
 
 ### Importing a binary framework and vending it from SwiftPM
 
