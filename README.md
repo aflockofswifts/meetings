@@ -2,11 +2,83 @@
 
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
-All people and all skill levels are welcome to join.  
+All people and all skill levels are welcome to join. 
+
+## 2021.04.24
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
 ---
 ## 2021.04.17
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+### New Swift Evolution Proposals, Repos and Tools
+
+We talked about some of the new evolution proposals and repositories available.
+
+#### Evolution Proposals
+- https://github.com/apple/swift-evolution/blob/main/proposals/0308-postfix-if-config-expressions.md
+- https://github.com/apple/swift-evolution/blob/main/proposals/0309-unlock-existential-types-for-all-protocols.md
+- https://github.com/apple/swift-evolution/blob/main/proposals/0310-effectful-readonly-properties.md
+- https://github.com/apple/swift-evolution/blob/main/proposals/0311-task-locals.md
+
+#### Swift Repositories
+
+- https://github.com/apple/swift-collections
+
+Other repos to think about using:
+
+- https://github.com/apple/swift-numerics
+- https://github.com/apple/swift-algorithms
+
+
+### User Experience Resources
+
+Read the Human Interface Guidelines (HIG).  There are also websites that explore different user interfaces 
+
+- https://developer.apple.com/design/human-interface-guidelines/
+- https://dribbble.com/shots/popular/mobile
+- https://mobbin.design
+
+### Corner Rounding
+
+Mira had a question about label corner rounding. The discovery was that if corner rounding is added to the init of a custom collection view cell it works but if added to layoutSubviews, it does not. It is somewhat a mystery as to why this is the case
+
+### Core Data vs ...
+
+Curtis was wonding about https://github.com/groue/GRDB.swift as a wrapper for data.  A simpler approach may be to just store everything in a file that is saved to the documents directory.
+
+If you are learning about CoreData you might want to check this out:
+
+- https://www.youtube.com/watch?v=yOhyOpXvaec
+
+Also you might want to read this:
+
+https://davedelong.com/blog/2018/05/09/the-laws-of-core-data/
+
+Josh A. reminded us that parse which is alive and well (and uses Mongo under the hood) 
+
+https://docs.parseplatform.org/
+
+### Previews for UIKit
+
+Josh created a package that lets you preview UIKit views and view controllers using the SwiftUI preview mechanism.
+
+https://github.com/joshuajhomann/Preview
+
+
+### Table View Data Sources
+
+Ask three questions?
+
+1. How does it work?  (coding concern)
+2. Why does it work that way? (software engineering concern)
+3. Should it work that way? (deeper software engineering concern)
+
+Josh gave a presentation about table view data sources.  His first example used standard MVC to show pokeman characters loaded in from a JSON document.  It had a searchbar to narrow down search terms.  It worked but performed expensive filter work on the main thread, had to have mutable shared state properties, and didn't animate changes.
+
+Next, he used the diffable data source to solve the same problem.  This is a more declarative form put everything in the initializer (except for the observing publisher subscription).  It applies snapshots as the data source to achieve animation when search is activated.  The structures look more like SwiftUI.
+
+Next week he will take this example further and show an MVVM implementation that looks a lot more like SwiftUI.
 
 ---
 ## 2021.04.10
