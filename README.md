@@ -79,7 +79,7 @@ Josh gave a presentation about table view data sources.  His first example used 
 Next, he used the diffable data source to solve the same problem.  This is a more declarative form put everything in the initializer (except for the observing publisher subscription).  It applies snapshots as the data source to achieve animation when search is activated.  The structures look more like SwiftUI.
 
 Next week he will take this example further and show an MVVM implementation that looks a lot more like SwiftUI.
-
+https://github.com/joshuajhomann/DiffableDataSources
 ---
 ## 2021.04.10
 
