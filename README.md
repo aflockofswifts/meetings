@@ -10,13 +10,14 @@ All people and all skill levels are welcome to join.
 
 ---
 
+
 ## 2021.04.24
 
 ### Product and Rumor Talk
 
 We talked about the new product Apple made. Ray and John pre-ordered AirTags. Ray is excited to buy an M1 iPad when it becomes available.
 
-There was a leak about future laptops: 
+We discussed the quanta leaks:   
 https://appleinsider.com/articles/21/04/21/stolen-quanta-documents-show-macbook-pro-with-sd-card-slot-magsafe
 
 ### UITextField vs UITextView
@@ -39,20 +40,24 @@ https://savingsapp.com
 Sync solution used http://www.ensembles.io
 
 #### Feedback
-- Utilize PR for advertising. (http://www.prweb.com)
+
+We discussed market positioning and marketing and possibly using a press release as a better value proposition than advertising: http://www.prweb.com. 
+
 - Emphasize the angle of user privacy.
 - Look at https://www.mrmoneymustache.com/mmm-recommends/
 - Localization https://github.com/mac-cain13/R.swift 
 
 ### Josh's picks
 
-Benchmarking Swift
+#### Benchmarking Swift
 https://benchmarksgame-team.pages.debian.net/benchmarksgame/which-programs-are-fastest.html
 
-One language to rule them all?
+#### One language to rule them all?
 https://www.youtube.com/watch?v=P2yr-3F6PQo
 
-Lots of changes coming in Swift 5.5
+Josh suggested watching this Uncle Bob video where Bob proposes that new programming paradigms are about subtraction and not adding features and that we may have discovered all of the programming paradigms because there is nothing else left to subtract.  The most interesting discussion is at the 13:20 mark. 
+
+#### Lots of changes coming in Swift 5.5
 https://apple.github.io/swift-evolution/
 
 ---
