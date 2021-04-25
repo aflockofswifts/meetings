@@ -4,9 +4,56 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.04.24
+## 2021.05.01
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2021.04.24
+
+### Product and Rumor Talk
+
+We talked about the new product Apple made. Ray and John pre-ordered AirTags. Ray is excited to buy an M1 iPad when it becomes available.
+
+There was a leak about future laptops: 
+https://appleinsider.com/articles/21/04/21/stolen-quanta-documents-show-macbook-pro-with-sd-card-slot-magsafe
+
+### UITextField vs UITextView
+
+Josh notes UITextField is generally easier to work with because it has the target action behavior of `UIControl`.
+
+https://developer.apple.com/documentation/uikit/uitextview
+https://developer.apple.com/documentation/uikit/uicontrol
+
+### Demonstration of Yi's apps
+
+He showed a cool desktop picture app that uses the Unsplash API.
+
+https://ylin.co
+
+He showed his finance app which compared with big competitors is (1) easy to use (2) protects your privacy (3) is not a subscription model. Asked for market. 
+
+https://savingsapp.com
+
+Sync solution used http://www.ensembles.io
+
+#### Feedback
+- Utilize PR for advertising. (http://www.prweb.com)
+- Emphasize the angle of user privacy.
+- Look at https://www.mrmoneymustache.com/mmm-recommends/
+- Localization https://github.com/mac-cain13/R.swift 
+
+### Josh's picks
+
+Benchmarking Swift
+https://benchmarksgame-team.pages.debian.net/benchmarksgame/which-programs-are-fastest.html
+
+One language to rule them all?
+https://www.youtube.com/watch?v=P2yr-3F6PQo
+
+Lots of changes coming in Swift 5.5
+https://apple.github.io/swift-evolution/
 
 ---
 ## 2021.04.17
