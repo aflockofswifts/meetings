@@ -9,7 +9,7 @@ All people and all skill levels are welcome to join.
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
-## 2021.04.4
+## 2021.4.24
 
 We discussed the quanta leaks:   
 https://appleinsider.com/articles/21/04/21/stolen-quanta-documents-show-macbook-pro-with-sd-card-slot-magsafe
