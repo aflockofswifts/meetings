@@ -4,9 +4,29 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.04.24
+## 2021.04.31
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+## 2021.04.4
+
+We discussed the quanta leaks:   
+https://appleinsider.com/articles/21/04/21/stolen-quanta-documents-show-macbook-pro-with-sd-card-slot-magsafe
+
+Caleb asked about multiline textfields.  We discussed the difference between UITextField and UITextView. 
+https://developer.apple.com/documentation/uikit/uitextview
+https://developer.apple.com/documentation/uikit/uicontrol 
+
+Yi gave a MacOS and iOS demo of his app: http://www.ensembles.io. 
+
+We discussed market positioning and marketing and possibly using a press release as a better value proposition than advertising: http://www.prweb.com. 
+
+We discussed the relative speed of a variety of languages including Swift: https://benchmarksgame-team.pages.debian.net/benchmarksgame/which-programs-are-fastest.html. 
+
+Josh suggested watching this Uncle Bob video where Bob proposes that new programming paradigms are about subtraction and not adding features and that we may have discovered all of the programming paradigms because there is nothing else left to substract.  The most interesting discussion is at thr 13:20 mark.  
+
+We briefly discussed localization with R: https://github.com/mac-cain13/R.swift
 
 ---
 ## 2021.04.17
