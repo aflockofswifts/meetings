@@ -4,7 +4,7 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.04.31
+## 2021.5.1
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
