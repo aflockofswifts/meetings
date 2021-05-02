@@ -4,12 +4,25 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.05.01
+## 2021.05.08
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+## 2021.05.1
 
+### Storekit
+
+Emil asked about the requirements for decrypting and inspecting the receipt payload for Storekit in app purchases.  We discussed that the official Apple solution is to have your server validate the receipts against the Apple servers to avoid a possible man in the middle attack, although you can do this on device if you don't have a server and are willing to ignore Apple's security concerns.
+
+### Parsing command line arguments
+TBD
+
+### Coordinators
+
+Curits asked about how to perform deeplinking from a local notification in his app.  We discussed the MVC architecture and noted that it lacks a separate component for routing.  This problem also exists for MVVM applications in SwiftUI where the view tree is a function of the viewmodel state.  We discussed the possibility of solving this with a separate Router/Coordinator component that can be imperative for UIKit code and reactive for SwiftUI, allowing for a single unified routing architecture in a mixed app.  We looked at how you can handle deeplinks imperatively by handling 3 functions in the app delegate (didLaunch, open url, and didRecieveRemoteNotification) and funneling the results to one function that can inspect the application's keywindow rootViewController to decide how to route the link.  We dicussed the possible pitfalls of changing the navigation stack when the user is not logged in, when the user is in the middle of some content creation (typing a message for instance), or when the user does not have permission or is not authenticated.  We will explore this concept in the future as part of a broader discussion on modern ios app architecture.
+
+---
 
 ## 2021.04.24
 
