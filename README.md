@@ -16,7 +16,12 @@ All people and all skill levels are welcome to join.
 Emil asked about the requirements for decrypting and inspecting the receipt payload for Storekit in app purchases.  We discussed that the official Apple solution is to have your server validate the receipts against the Apple servers to avoid a possible man in the middle attack, although you can do this on device if you don't have a server and are willing to ignore Apple's security concerns.
 
 ### Parsing command line arguments
-TBD
+
+We looked at the Swift argument parser library. This was developed, among other reasons, to provide argument parsing for the Swift compiler. While most of Swift is written in C++, parts are being re-written now in Swift.
+
+We created a simple SwiftUI app and passed arguments to it. You can find the example, and more information on this blog post:
+
+https://rayfix.org/2021/04/24/swiftui-argument-parser.html
 
 ### Coordinators
 
