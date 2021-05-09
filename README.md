@@ -4,9 +4,30 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.05.08
+## 2021.05.15
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+## 2021.05.8
+
+### Swift 5.5
+
+We discussed the current status of the Swift 5.5 with many of the proposals approved ahead of WWDC: https://apple.github.io/swift-evolution/
+
+### Swift Package index
+
+Ray showed the Swift package index and the apbility to download and test a package in a playground: https://swiftpackageindex.com. 
+He also showed the collections package and the Dequeue: https://github.com/apple/swift-collections
+
+### Rendering cell gradients
+Josh A showed his project to create a messaging UI framework.  We discussed possible ways to render a gradient overlay for the entire scrollview in UIKit and in Swift UI.  Josh H suggested using a blend mode on a gradient to tint the cells like this: https://github.com/joshuajhomann/Shimmer/blob/master/Sources/Shimmer/Shimmer.swift
+
+### MVC, Diffable DataSources and MVVM in UIKit and SwiftUI
+Josh H continued his demo on modern app architecture in UIKit and SwiftUI.  We recapped what a basica imperative MVC TableView VC looks like in UIKit, what the analogous declarative version looks like by using DiffableDataSources, Combine and UIAction.  We noted that we were able to delete all of the instance variables in the declartive version because all the mutable state is now private to the init function.  
+
+We then created a futher refinement by lifting out the busness logic to a SwiftUI inspired viewModel, and saw that we can use the same viewModel to drive both the UIKit and SwiftUI versions of this screen, giving us a single reactive declarative and immutable architecture for both UIKit and SwiftUI that is especially useful for hybrid apps that need to use both UI layers:
+https://github.com/joshuajhomann/DiffableDataSources
 
 ---
 ## 2021.05.1
