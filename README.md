@@ -4,9 +4,25 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.05.15
+## 2021.05.22
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+## 2021.05.15
+
+### Fluent SQLite
+Ray TBD
+
+### Inversion of Dependecies
+We discussed the `D` in `SOLID`: dependency inversion and how it can we be used to facade your database implementation so that you can swap out the implementation of your caching or storage layer without affecting the rest of your app (ie swap Coredata for Fluent).
+https://ducmanhphan.github.io/2020-01-15-Understanding-about-SOLID-part-5/
+
+### Transforming a while loop into an asynchronous Publisher
+
+Josh showed how we can take a while loop for a series of asynchronous tasks and reimagine it as a generic recursive asynchrounous function.  This is useful for tasks such as making repeated sequential network requests until the response satisfies some predicate.
+
+<script src="https://gist.github.com/joshuajhomann/f488ea054668485c8e86c07368f4f5d0.js"></script>
 
 ---
 ## 2021.05.8
