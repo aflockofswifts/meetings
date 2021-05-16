@@ -13,6 +13,7 @@ All people and all skill levels are welcome to join.
 
 ### Fluent SQLite
 Ray TBD
+https://docs.vapor.codes/4.0/fluent/overview/
 
 ### Inversion of Dependecies
 We discussed the `D` in `SOLID`: dependency inversion and how it can we be used to facade your database implementation so that you can swap out the implementation of your caching or storage layer without affecting the rest of your app (ie swap Coredata for Fluent).
