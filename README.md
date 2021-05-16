@@ -22,7 +22,44 @@ https://ducmanhphan.github.io/2020-01-15-Understanding-about-SOLID-part-5/
 
 Josh showed how we can take a while loop for a series of asynchronous tasks and reimagine it as a generic recursive asynchrounous function.  This is useful for tasks such as making repeated sequential network requests until the response satisfies some predicate.
 
-<script src="https://gist.github.com/joshuajhomann/f488ea054668485c8e86c07368f4f5d0.js"></script>
+```
+import PlaygroundSupport
+import Combine
+
+extension Publishers {
+  static func publishLatest<Output, Failure>(
+    while predicate: @escaping (Output) -> Bool,
+    make publisherFactory: @escaping (Output?) -> AnyPublisher<Output, Failure>
+  ) -> AnyPublisher<Output, Failure> {
+    func makeNextPublisher(from output:Output?) -> AnyPublisher<Output, Failure> {
+      publisherFactory(output).map { result -> AnyPublisher<Output, Failure> in
+        predicate(result)
+          ? Publishers.Concatenate(
+              prefix: Just(result).setFailureType(to: Failure.self),
+              suffix: makeNextPublisher(from: result)
+            ).eraseToAnyPublisher()
+          : Empty(
+              completeImmediately: true,
+              outputType: Output.self,
+              failureType: Failure.self
+            ).eraseToAnyPublisher()
+      }
+      .switchToLatest()
+      .eraseToAnyPublisher()
+    }
+    return makeNextPublisher(from: nil)
+  }
+}
+
+
+let c = Publishers.publishLatest(
+  while: { $0 < 3 },
+  make: { previous in Just(previous.map { $0 + 1 } ?? 0).eraseToAnyPublisher() }
+)
+.sink(receiveValue: {
+  print($0)
+})
+```
 
 ---
 ## 2021.05.8
