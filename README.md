@@ -12,8 +12,8 @@ All people and all skill levels are welcome to join.
 ## 2021.05.15
 
 ### Fluent SQLite
-Ray TBD
-https://docs.vapor.codes/4.0/fluent/overview/
+
+In previous weeks we have talked about using a variety of data backends for iOS models.  I demonstrated how you can use the Fluent ORM from the Vapor project to back your SwiftUI app. Here is the writeup: https://rayfix.org/2021/05/18/fluent-swiftui.html
 
 ### Inversion of Dependecies
 We discussed the `D` in `SOLID`: dependency inversion and how it can we be used to facade your database implementation so that you can swap out the implementation of your caching or storage layer without affecting the rest of your app (ie swap Coredata for Fluent).
