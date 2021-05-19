@@ -23,7 +23,7 @@ https://ducmanhphan.github.io/2020-01-15-Understanding-about-SOLID-part-5/
 
 Josh showed how we can take a while loop for a series of asynchronous tasks and reimagine it as a generic recursive asynchrounous function.  This is useful for tasks such as making repeated sequential network requests until the response satisfies some predicate.
 
-```
+```swift
 import PlaygroundSupport
 import Combine
 
