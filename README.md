@@ -4,10 +4,18 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.05.22
+## 2021.05.29
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
+---
+## 2021.05.22
+
+### Coredata, Dependency Injection, Inversion of Dependencies
+Josh reworked Apple's sample CoreData project to facade CoreData behind a value and function only interface, sequesting the CoreData specific logic, types and delegates behind a protocol and decoupling the rest of the app from the dependency on Coredata.  See last weeks discussiong for dependency inversionf or more details.
+
+https://github.com/joshuajhomann/DatabaseFacade
+![DatabaseFacade](https://github.com/joshuajhomann/DatabaseFacade/blob/master/preview.gif)
 ---
 ## 2021.05.15
 
