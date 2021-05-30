@@ -4,12 +4,62 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.05.29
+## 2021.06.05
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+## 2021.05.29
+
+We talked about getting the most out of the WWDC.
+  - Download the developer app
+  - Make sure to watch the Platforms state of the Union
+  - Watch what's new in Swift
+
+We spent most of the meeting working through this article by Paul Hudson:
+
+https://www.hackingwithswift.com/articles/233/whats-new-in-swift-5-5
+
+The newsletter https://iosdevweekly.com mentioned some videos that might also be useful to watch:
+
+https://alejandromp.com/blog/swift-concurrency/
+
+Apple needs to get caught up on graphics technology.
+
+https://www.ign.com/articles/unreal-engine-5-dog-render-10-billion-polygons
+
+---
 ## 2021.05.22
+
+### Announcements
+
+- The new book [Expert Swift](https://www.raywenderlich.com/books/expert-swift/v1.0/) is out. You can read the first four chapters for free and Ray Fix wrote two of those. Any feedback you have toward the next edition would be useful!
+
+- Paul Hegarty's famous [CS193p iOS Stanford class](https://cs193p.sites.stanford.edu) for 2021 is out. He does an amazing job of teaching SwiftUI from the ground up. Worth watching.
+
+### Router Pattern
+
+Tim Colson helped us explore a navigational pattern related someone to coordinators. 
+
+https://davidgarywood.com/writing/swiftui-router-pattern/
+
+- Protip: To reset user defaults quickly you can just delete the app in the simulator.
+
+### Building C++
+
+Ed was working through some tricky build issues. One issue which we were able to solve was related to ensuring that there one definition of a symbol in C++ so the linker doesn't get duplicates.  You must declare things "extern" in shared headers.  Also, special care needs to be taken for C:
+
+```cpp
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// C code here
+
+#ifdef __cplusplus
+}
+#endif
+```
 
 ### Coredata, Dependency Injection, Inversion of Dependencies
 Josh reworked Apple's sample CoreData project to facade CoreData behind a value and function only interface, sequesting the CoreData specific logic, types and delegates behind a protocol and decoupling the rest of the app from the dependency on Coredata.  See last weeks discussiong for dependency inversionf or more details.
