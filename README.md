@@ -4,10 +4,106 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.06.05
+## 2021.06.12
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
+---
+## 2021.06.05
+
+* Ray will be live on the Raywenderlich podcast after WWDC.  Signup here: https://us02web.zoom.us/webinar/register/WN_Rljgpr44Twag3K9BbM3kuw
+
+* Emily asked about showing a different viewcontroller at startup depending on Userdefaults.  We discussed using childViewControllers and setting the rootViewController programatically from the Appdelegate or the SceneDelegate
+```
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        let contentView = ContentView()
+        if let windowScene = scene as? UIWindowScene {
+            let window = UIWindow(windowScene: windowScene)
+            window.rootViewController = figureOutWhichVCGoesHere()
+            self.window = window
+            window.makeKeyAndVisible()
+        }
+    }
+```
+
+* Dan's app is available on the app store.  Check it out here: https://apps.apple.com/mu/app/mygames-database/id1559848159
+
+* Ed demoed his brother hackathon entry for buying/renting AR rendered NFT's.
+
+* Josh demoed the problem with classes and shared mutable state that `actors` are designed to solve.  For example this code is not thread safe:
+```
+final class Poop {
+    private var count: Int = 0
+    private let serialQueue = DispatchQueue(label: String(reflecting: Poop.self))
+    func poo() {
+        count += 1
+        print(count == 1 ?  "💩 is good" : "\(count) bad 💩 happened!!!!")
+        count -= 1
+    }
+}
+
+let poop = Poop()
+for _ in 0..<10 {
+    DispatchQueue.global(qos: .background).async {
+        poop.poo()
+    }
+}
+```
+It can be made thread safe by adding locks or a serial `DispatchQueue`, but this results in a programmer guarantee and not a compiler guarantee:
+```
+final class Poop {
+    private var count: Int = 0
+    private let serialQueue = DispatchQueue(label: String(reflecting: Poop.self))
+    func poo() {
+        serialQueue.async { [weak self] in
+            guard let self = self else { return }
+            self.count += 1
+            print(self.count == 1 ?  "💩 is good" : "\(self.count) bad 💩 happened!!!!")
+            self.count -= 1
+        }
+    }
+}
+
+let poop = Poop()
+for _ in 0..<10 {
+    DispatchQueue.global(qos: .background).async {
+        poop.poo()
+    }
+}
+```
+
+* We discussed the types in Swift and when to use them:
+  * enum
+    * Is your type heterogeneous?
+    * Does your type represent discretely many states?
+    * enum is a value unless you use the indirect keyword
+  * struct
+    * structs have value semantics
+    * Copy on write for types that are implemented as references
+    * Sendable thread safe by default
+  * tuple
+    * tuple have value semantics
+    * anonymous
+    * Sendable thread safe by default
+  * class
+    * class has reference semantics
+    * Implies shared ownership
+    * Allows inheritance (don’t use it for non obj C code)
+    * Not thread safe unless its immutable or you guarantee safety
+    * Have lifetime with init and deinit
+  * actor
+    * actor has reference semantics
+    * Implies shared ownership
+    * No inheritance
+    * Thread safe and Sendable but you pay a performance cost
+  * func
+    * func is a reference type
+    * Not thread safe; you make the guarantee with @Sendable
+  * Protocol
+    * protocol is abstract type
+    * Prefer to using inheritance
+
+Josh's shorthand rule for `class` vs `actor`: Use an `actor` for all of the service level objects in your app (networking, caching, location etc.) but continue to use classes for types that are owned by UI thread objects (ie viewModels) and wherever you need to inherit from Objective C or can guarantee single threaded access or immutability.
 ---
 ## 2021.05.29
 
