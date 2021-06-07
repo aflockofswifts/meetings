@@ -14,7 +14,7 @@ All people and all skill levels are welcome to join.
 * Ray will be live on the Raywenderlich podcast after WWDC.  Signup here: https://us02web.zoom.us/webinar/register/WN_Rljgpr44Twag3K9BbM3kuw
 
 * Emily asked about showing a different viewcontroller at startup depending on Userdefaults.  We discussed using childViewControllers and setting the rootViewController programatically from the Appdelegate or the SceneDelegate
-```
+```swift
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         let contentView = ContentView()
         if let windowScene = scene as? UIWindowScene {
@@ -31,7 +31,7 @@ All people and all skill levels are welcome to join.
 * Ed demoed his brother hackathon entry for buying/renting AR rendered NFT's.
 
 * Josh demoed the problem with classes and shared mutable state that `actors` are designed to solve.  For example this code is not thread safe:
-```
+```swift
 final class Poop {
     private var count: Int = 0
     private let serialQueue = DispatchQueue(label: String(reflecting: Poop.self))
@@ -104,7 +104,9 @@ for _ in 0..<10 {
     * Prefer to using inheritance
 
 Josh's shorthand rule for `class` vs `actor`: Use an `actor` for all of the service level objects in your app (networking, caching, location etc.) but continue to use classes for types that are owned by UI thread objects (ie viewModels) and wherever you need to inherit from Objective C or can guarantee single threaded access or immutability.
+
 ---
+
 ## 2021.05.29
 
 We talked about getting the most out of the WWDC.
