@@ -50,7 +50,7 @@ for _ in 0..<10 {
 }
 ```
 It can be made thread safe by adding locks or a serial `DispatchQueue`, but this results in a programmer guarantee and not a compiler guarantee:
-```
+```swift
 final class Poop {
     private var count: Int = 0
     private let serialQueue = DispatchQueue(label: String(reflecting: Poop.self))
