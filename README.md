@@ -4,9 +4,34 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.06.12
+
+## 2021.06.19
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2021.06.12
+
+### WWDC Discussion
+
+You are probably best off using the developer app to watch the videos.  Get started here:
+
+https://developer.apple.com/wwdc21/
+
+Josh talked about some of the major themes and surprises from this year.
+
+- Continued improvement to bring parity to all platforms but not do something like run Mac apps on iPad.
+- Markdown support for Text
+- No developments on Combine. Pushes the FRP story out by another year.
+
+Other discussion:
+
+- Frank's pick was Demystifying SwiftUI
+- Column breakpoints!
+- ARC observed lifetime vs guaranteed lifetime
+
+We will be talking a lot more about these things in the coming weeks.
 
 ---
 ## 2021.06.05
