@@ -34,6 +34,14 @@ John James needs to get a new watch or replace his battery.  Discussion about "r
 
 A presentation from Josh about the difference between existential protocol types, generics, type erased Any*, and some types.
 
+Universals:
+  * Generic functions
+  * `Any`
+  * `AnyObject`, `AnyClass`
+  * Concrete generic type erasers: `Any*` `AnySequence`, `AnyView`, `AnyPublisher`
+Existentials:
+  * existentials (SE-309): `let a: CustomStringConvertible = 1`.  Dynamically implemented by witness table.
+  * `some`: `let a: some CustomStringConvertible = 1`.  Statically known at compile time.
 A question from Josh A in the chat we didn't notice. (We'll discuss the answer next week):
 
 > Hope this isn't a silly question, but why do we need "some", couldn't we do something like T<View>, like just a normal generic? Is it because we want the compiler to know the type? Or is it because there are so many different ways to satisfy the "View protocol" having a normal generic wouldn't work?
