@@ -4,13 +4,48 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-
-## 2021.06.26
+## 2021.07.3
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
+---
+
+## 2021.06.26
+
+## Command line dice roll app
+Peter showed his command line dice rolling app and we discussed some problems he was having compiling the app from the command line when including a swift package:  https://github.com/PPeter326/Roll
+
+## Met Museum Gallery
+Josh demoed an app using the Met API https://metmuseum.github.io .  We discussed:
+  * Code generating the response with quicktype.io and manually cleaning up the generated code
+  * A generic networking layer using the new `try await URLSession.shared.data(for:)` API
+  * Using an `actor` for the service layer of the app
+  * The new `AsyncImage` View in iOS 15
+  * The new `.searchable`, `.searchCompletion` and `.onSubmit` modifiers in iOS 15
+  * The new `@MainActor` annotation
+  * Reviewed the `@AppStorage` property wrapper from iOS 14
+  * discussed chaining `await` calls and a problem with using `withThrowingTaskGroup(of:` inside a `async`
+The partial project is here: https://github.com/joshuajhomann/Met  We will finish it next week.
+
+## Bridging await to Combine
+We dicussed the differences push (Combine) vs pull (async/await), strong error typing (combine) vs weak error typing (async/await), cold publishers (the Combine structs) vs hot publishers (the Combine references and async/await), and how to bridge async functions to Combine by leveraging Future, a hot publisher.
+```
+extension Future where Failure == Error {
+    convenience init(awaiting asyncTask: @escaping () async throws -> Output) {
+        self.init { promise in
+            async {
+                do {
+                    promise(.success(try await asyncTask()))
+                } catch {
+                    promise(.failure(error))
+                }
+            }
+        }
+    }
+}
+```
 ---
 
 ## 2021.06.19
