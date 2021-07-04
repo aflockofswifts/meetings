@@ -41,7 +41,8 @@ extension Sequence {
   * discussed new `.safeAreaInset` modifier
   * discussed new `.foregroundStyle` label styles
   * discussed new `Material` styles
-Project: https://github.com/joshuajhomann/Met
+Project: https://github.com/joshuajhomann/Met  
+
 ![Met](https://github.com/joshuajhomann/Met/raw/master/preview.gif)
 ---
 
