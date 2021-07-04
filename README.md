@@ -3,13 +3,46 @@
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
 All people and all skill levels are welcome to join. 
-
-## 2021.07.3
+## 2021.07.10
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
+---
+
+## 2021.07.3
+
+## Met Museum Gallery
+We continued the Met Museum app.
+Fixes:
+  * Fixed the problem with search results not updating by using the new `OrderedSet` in the `swift-collections` package.  We all discussed package lists and the new IDE changes for packages in XCode 13.
+  * Fix the parallel download issue by using `withThrowingTaskGroup` and hoisted this logic into its own generic function:
+```
+extension Sequence {
+    func asyncUnorderedMap<Value>(awaiting transform: @escaping (Element) async throws -> Value) async rethrows -> [Value] {
+        try await withThrowingTaskGroup(of: [Value].self) { group in
+            forEach { element in
+                group.async {
+                    [try await transform(element)]
+                }
+            }
+            return try await group.reduce(into: [Value]()) { total, next in
+                total.append(contentsOf: next)
+            }
+        }
+    }
+}
+
+```
+  * discussed the `.listStyle` and `.listRowSeparator` modifiers
+  * created a `DetailView` and discussed when to use an `ObservableObject` vs when to use a `struct` for a viewModel
+  * discussed `AttributedString` from markdown, new iOS 15 `Date` formatter and List Formatter
+  * discussed new `.safeAreaInset` modifier
+  * discussed new `.foregroundStyle` label styles
+  * discussed new `Material` styles
+Project: https://github.com/joshuajhomann/Met
+![Met](https://github.com/joshuajhomann/Met/raw/master/preview.gif)
 ---
 
 ## 2021.06.26
