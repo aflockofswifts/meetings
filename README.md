@@ -3,11 +3,34 @@
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
 All people and all skill levels are welcome to join. 
-## 2021.07.10
+## 2021.07.17
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2021.07.10
+
+## Ray TBD
+
+## Nasa Astronomy Image of the Day
+Josh shows a [code along project](https://github.com/joshuajhomann/Nasa-Image-Of-The-Day) designed to show how to use async / await with SwiftUI in iOS 15 beta.
+
+We dicussed:
+  * The Nasa  Astronomy Picture of the Day API: https://api.nasa.gov
+  * decoding the response with Quicktype: https://quicktype.io
+  * cleaning up the type to remove optional elements, use strong typing for `URL`, and make the resulting struct `Identifiable` so it works in a `SwiftUI.List`
+  * build a `URL` with `URLComponents`
+  * making an async initializer for `Result`
+  * making an async network request and decoding the response
+  * switching over the images enum to handle loading, error and loaded states
+  * Using the new `AsyncImage` API
+  * Using the new `.task` modifier to start an async task that is automatically scoped to the lifetime of the view
+  * using the new `.refreshable` modifier to implement pull to refresh  
+  
+![image](./preview.gif "Preview")
 
 ---
 
