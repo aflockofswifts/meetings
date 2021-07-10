@@ -30,7 +30,7 @@ We dicussed:
   * Using the new `.task` modifier to start an async task that is automatically scoped to the lifetime of the view
   * using the new `.refreshable` modifier to implement pull to refresh  
   
-![image](./preview.gif "Preview")
+![image](https://github.com/joshuajhomann/Nasa-Image-Of-The-Day/blob/master/preview.gif)
 
 ---
 
