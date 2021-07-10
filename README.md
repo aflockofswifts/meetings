@@ -16,7 +16,7 @@ Join us next Saturday:
 ## Ray TBD
 
 ## Nasa Astronomy Image of the Day
-Josh shows a [code along project](https://github.com/joshuajhomann/Nasa-Image-Of-The-Day) designed to show how to use async / await with SwiftUI in iOS 15 beta.
+Josh showed a [code along project](https://github.com/joshuajhomann/Nasa-Image-Of-The-Day) designed to show how to use async / await with SwiftUI in iOS 15 beta.
 
 We dicussed:
   * The Nasa  Astronomy Picture of the Day API: https://api.nasa.gov
