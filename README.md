@@ -13,7 +13,11 @@ Join us next Saturday:
 
 ## 2021.07.10
 
-## Ray TBD
+## R-Style Boolean Sequences in Swift
+
+Ray presented some extensions on Sequences and Collection to make Swift work more like the statistical programming language R.  (PS: After reinstalling Big Sur 11.4, things worked a lot better. The playground that was having problems in the demo suddenly just worked. Hah.)
+
+[Walkthrough](https://rayfix.org/2021/07/10/r-style-boolean-sequences-swift.html)
 
 ## Nasa Astronomy Image of the Day
 Josh showed a [code along project](https://github.com/joshuajhomann/Nasa-Image-Of-The-Day) designed to show how to use async / await with SwiftUI in iOS 15 beta.
@@ -41,7 +45,8 @@ We continued the Met Museum app.
 Fixes:
   * Fixed the problem with search results not updating by using the new `OrderedSet` in the `swift-collections` package.  We all discussed package lists and the new IDE changes for packages in XCode 13.
   * Fix the parallel download issue by using `withThrowingTaskGroup` and hoisted this logic into its own generic function:
-```
+
+```swift
 extension Sequence {
     func asyncUnorderedMap<Value>(awaiting transform: @escaping (Element) async throws -> Value) async rethrows -> [Value] {
         try await withThrowingTaskGroup(of: [Value].self) { group in
@@ -88,7 +93,8 @@ The partial project is here: https://github.com/joshuajhomann/Met  We will finis
 
 ## Bridging await to Combine
 We dicussed the differences push (Combine) vs pull (async/await), strong error typing (combine) vs weak error typing (async/await), cold publishers (the Combine structs) vs hot publishers (the Combine references and async/await), and how to bridge async functions to Combine by leveraging Future, a hot publisher.
-```
+
+```swift
 extension Future where Failure == Error {
     convenience init(awaiting asyncTask: @escaping () async throws -> Output) {
         self.init { promise in
