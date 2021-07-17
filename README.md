@@ -3,6 +3,7 @@
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
 All people and all skill levels are welcome to join. 
+
 ## 2021.07.24
 
 Join us next Saturday:
@@ -14,7 +15,8 @@ Join us next Saturday:
 ## 2021.07.17
 
 ## Questions
-  * Dan Asked about respurces for RxSwift: 
+  * Ray asked about the composable architecture
+  * Dan asked about resources for RxSwift: 
     * Frank suggests https://freak4pc.medium.com/whats-new-in-rxswift-5-f7a5c8ee48e7 
     * Josh suggests https://rxslack.herokuapp.com
   * Emily asked about the touch area for UIButton contained in a UIBArButtonItem
@@ -23,11 +25,21 @@ Join us next Saturday:
      * Ray offered that you can expand the tap area of any view by overriding hitTest: https://developer.apple.com/documentation/uikit/uiview/1622469-hittest
   * Peter asked about compsing property wrappers to make a @Published @Clamped property.  This is impossible. Josh suggested instead making @Clamped a Dynamic property. https://github.com/joshuajhomann/CustomDynamicProperties/blob/master/CustomDynamicProperties/Interval.swift
 
-## Ray blog post TDB
+## @ViewBuilder SwiftUI API Conventions
+
+We walked through a [https://www.fivestars.blog/articles/swiftui-patterns-view-builders/][blog post] on the Five Stars blog that talked about how SwiftUI has changed API over the last couple years with regards to ViewBuilders and trailing closures.
+
+- Instead of a single generic view, SwiftUI now prefers @ViewBuilders
+- Main content comes first and labels and secondary views second
+- Takes advantage of trailing closure syntax
+- `@escaping` closures for actions come last, after the view builders
+
+Although not covered in this blog post, the latest beta has enabled these new APIs back to iOS13.
 
 ## TimelineView and CanvasView
 Josh reviewed the new `TimelineView` and `Canvas` in iOS 15.  We discussed animation scheduling and the graphics context.
-```
+
+```swift
 struct ContentView: View {
     @StateObject private var viewModel = ViewModel()
     var body: some View {
@@ -57,6 +69,9 @@ extension CGSize {
 }
 ```
 
+The animation schedule is analogous to `CADisplayLink` and executes on every frame available.  This is great for animation.
+
+The `GraphicsContext` has a bunch of features including grabbing resolved images and text so that duplicates can be draw very quickly. See the documentation for details.
 
 ---
 
