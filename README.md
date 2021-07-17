@@ -23,11 +23,11 @@ Join us next Saturday:
      * Ed Suggested not using a UIButton as UIBarbuttonItem already expands its touch target
      * Josh Suggested using UIAppearance to style the UIBarButtonItem when contained in a UINavigationBar instead of an image: https://developer.apple.com/documentation/uikit/uiappearance and settign the backItem to "Back" int he navigation delegate: https://developer.apple.com/documentation/uikit/uinavigationcontroller/customizing_your_app_s_navigation_bar
      * Ray offered that you can expand the tap area of any view by overriding hitTest: https://developer.apple.com/documentation/uikit/uiview/1622469-hittest
-  * Peter asked about compsing property wrappers to make a @Published @Clamped property.  This is impossible. Josh suggested instead making @Clamped a Dynamic property. https://github.com/joshuajhomann/CustomDynamicProperties/blob/master/CustomDynamicProperties/Interval.swift
+  * Peter asked about composing property wrappers to make a @Published @Clamped property.  This is impossible. Josh suggested instead making @Clamped a Dynamic property. https://github.com/joshuajhomann/CustomDynamicProperties/blob/master/CustomDynamicProperties/Interval.swift
 
 ## @ViewBuilder SwiftUI API Conventions
 
-We walked through a [https://www.fivestars.blog/articles/swiftui-patterns-view-builders/][blog post] on the Five Stars blog that talked about how SwiftUI has changed API over the last couple years with regards to ViewBuilders and trailing closures.
+We walked through a [https://www.fivestars.blog/articles/swiftui-patterns-view-builders/](blog post) on the Five Stars blog that talked about how SwiftUI has changed API over the last couple years with regards to ViewBuilders and trailing closures.
 
 - Instead of a single generic view, SwiftUI now prefers @ViewBuilders
 - Main content comes first and labels and secondary views second
