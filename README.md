@@ -3,11 +3,57 @@
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
 All people and all skill levels are welcome to join. 
-## 2021.07.17
+## 2021.07.24
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2021.07.17
+
+## Questions
+  * Emily asked about the touch area for UIButton contained in a UIBArButtonItem
+     * Ed Suggested not using a UIButton as UIBarbuttonItem already expands its touch target
+     * Josh Suggested using UIAppearance to style the UIBarButtonItem when contained in a UINavigationBar instead of an image: https://developer.apple.com/documentation/uikit/uiappearance and settign the backItem to "Back" int he navigation delegate: https://developer.apple.com/documentation/uikit/uinavigationcontroller/customizing_your_app_s_navigation_bar
+     * Ray offered that you can expand the tap area of any view by overriding hitTest: https://developer.apple.com/documentation/uikit/uiview/1622469-hittest
+  * Peter asked about compsing property wrappers to make a @Published @Clamped property.  This is impossible. Josh suggested instead making @Clamped a Dynamic property. https://github.com/joshuajhomann/CustomDynamicProperties/blob/master/CustomDynamicProperties/Interval.swift
+
+## Ray blog post TDB
+
+## TimelineView and CanvasView
+Josh reviewed the new `TimelineView` and `Canvas` in iOS 15.  We discussed animation scheduling and the graphics context.
+```
+struct ContentView: View {
+    @StateObject private var viewModel = ViewModel()
+    var body: some View {
+        TimelineView(.animation()) { time in
+            Canvas { context, size in
+                let minimumDimension = size.minimumDimension
+                let delta = minimumDimension * 0.1 * sin(time.date.timeIntervalSince1970) + minimumDimension * 0.1
+                let rect = CGRect(origin: .zero, size: .init(width: minimumDimension, height: minimumDimension))
+                    .offsetBy(
+                        dx: (size.width - minimumDimension) / 2,
+                        dy: (size.height - minimumDimension) / 2
+                    )
+                    .insetBy(dx: delta, dy: delta)
+                context.fill(
+                    Path(ellipseIn: rect),
+                    with: .color(.red)
+                )
+            }
+        }
+    }
+}
+
+extension CGSize {
+    var minimumDimension: Double {
+        min(width, height)
+    }
+}
+```
+
 
 ---
 
