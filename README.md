@@ -14,6 +14,9 @@ Join us next Saturday:
 ## 2021.07.17
 
 ## Questions
+  * Dan Asked about respurces for RxSwift: 
+    * Frank suggests https://freak4pc.medium.com/whats-new-in-rxswift-5-f7a5c8ee48e7 
+    * Josh suggests https://rxslack.herokuapp.com
   * Emily asked about the touch area for UIButton contained in a UIBArButtonItem
      * Ed Suggested not using a UIButton as UIBarbuttonItem already expands its touch target
      * Josh Suggested using UIAppearance to style the UIBarButtonItem when contained in a UINavigationBar instead of an image: https://developer.apple.com/documentation/uikit/uiappearance and settign the backItem to "Back" int he navigation delegate: https://developer.apple.com/documentation/uikit/uinavigationcontroller/customizing_your_app_s_navigation_bar
