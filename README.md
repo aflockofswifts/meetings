@@ -10,6 +10,112 @@ Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
+
+---
+
+## 2021.07.31
+
+### Overheating MacBook Pro
+
+We started off the meeting talking about Ray's computer problems with macOS 11.4 - macOS 11.5, Zoom, Google meetup and overheating.  Update: After getting the pentalop driver to disassemble and clean the dust the 2019 MBP, the problem appears to be resolved!  There was a lot of dust stuck in the fan blades.
+
+### Capturing Video Frames
+
+Tim asked about the state of the art for capturing video. https://medium.com/ios-os-x-development/ios-camera-frames-extraction-d2c0f80ed05a
+
+### Colors with themes
+
+There was a question about how to handle colors with light and dark themes.  Josh talked about how to specify multiple colors per theme in an asset catalog as well as resolved colors: https://developer.apple.com/documentation/uikit/uicolor/3238042-resolvedcolor
+
+### TouchRoute
+
+Ed gave us a demo of GeoCoding and reverse geocoding.
+
+He uses this in his app **TouchRoute**.  Five star reviews welcome!
+
+https://apps.apple.com/us/app/touchroute/id1559820521
+
+
+### Formatters
+
+New in foundation is the ability to specify formatters.  These formatters are better typed than before.
+
+```swift
+let date = Date()
+date.formatted(date: .abbreviated, time: .omitted)
+
+let stuff = [1,2,3,4,5].map(String.init)
+print(stuff.formatted(.list(type: .and)))
+```
+
+https://developer.apple.com/documentation/foundation/formatter
+
+### Usability Feedback 
+
+Tim Colson let us know about a group that offers free advice on user experience.
+
+http://uxua.arizona.edu/dropin
+
+### Extensible Options
+
+Static member lookup in Swift 5.5 gives us the syntactic elegance and code completion of enums while making things extensible.
+
+Imagine a library method:
+
+```swift
+
+protocol ItemSorting {
+    func sort(_ items: [Item]) -> [Item]
+}
+
+extension Array where Element == Item {
+    func sort<Method: ItemSorting>(method: Method) -> [Item] {
+    method.sort(self)
+    }
+}
+```
+
+The library can define methods:
+
+```swift
+struct NoneItemSorting: ItemSorting {
+    func sort(_ items: [Item]) -> [Item] {
+        items
+    }
+}
+
+extension ItemSorting where Self == NoneItemSorting {
+    static var none: NoneItemSorting {
+        NoneItemSorting()
+    }
+}
+```
+
+But clients outside the library can also define methods.
+
+```swift
+struct CrazyItemSorting: ItemSorting {
+    func sort(_ items: [Item]) -> [Item] {
+        print("Crazy!")
+        return items
+    }
+}
+
+extension ItemSorting where Self == CrazyItemSorting {
+    static var crazy: CrazyItemSorting {
+        CrazyItemSorting()
+    }
+}
+```
+
+How beautiful it looks at the call site:
+
+```swift
+[Item(name: "Hello", date: .now)].sort(method: .none)
+```
+
+
+
 ---
 
 ## 2021.07.17
