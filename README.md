@@ -4,16 +4,15 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.07.24
+## 2021.07.31
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
-
 ---
 
-## 2021.07.31
+## 2021.07.24
 
 ### Overheating MacBook Pro
 
@@ -34,7 +33,6 @@ Ed gave us a demo of GeoCoding and reverse geocoding.
 He uses this in his app **TouchRoute**.  Five star reviews welcome!
 
 https://apps.apple.com/us/app/touchroute/id1559820521
-
 
 ### Formatters
 
@@ -113,8 +111,6 @@ How beautiful it looks at the call site:
 ```swift
 [Item(name: "Hello", date: .now)].sort(method: .none)
 ```
-
-
 
 ---
 
