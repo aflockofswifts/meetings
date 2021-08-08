@@ -4,11 +4,76 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.07.31
+## 2021.08.14
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2021.08.07
+
+This meeting was a smorgasbord of topics by group participants.
+
+Ed had a couple of questions about building his watch app in SwiftUI.
+
+1. How to make a piece of text scale up.  Using a geometry reader is one solution to the problem. Josh H. had a better solution.  Make font size extra large and then scale it down by setting the minimum scale factor to something really small.
+
+```swift
+Text("Hello, world!")
+   .font(.system(size: 400))
+   .lineLimit(1)
+   .minimumScaleFactor(0.00001)
+```
+
+2. How to implement double tap in SwiftUI.  The best solution we could come up with was to use a ZStack-ed `UIHostingView` with a `UIGestureRecognizer`.
+
+> Don't use touchesBegan and friends from `UIResponder`.  It is the old, ugly way of doing it.
+
+We talked about syncing solutions.  You can't force an iCloud sync.
+
+There are other solutions:
+
+https://developer.apple.com/documentation/watchconnectivity
+
+Probably the best way is to do the iCloud sync separately.
+
+Firebase is a low latency solution but Ed doesn't like it because it is a large dependency with a lot of extra baggage that your app probably doesn't need.
+
+A commercial solution noted was Pusher https://pusher.com but none seems to have had actual experience with it.
+
+Tim showed us an app that he was making (QuickStuff) but needed to change the orientation of the video stream for Mac and iOS.
+
+```swift
+// Set the video orientation mode for Mac only
+        // NOT needed when Mac Target is added!
+        #if os(OSX)
+            print("---> macOS")
+        #elseif os(watchOS)
+            print("---> watchOS")
+        #elseif os(tvOS)
+            print("---> tvOS")
+        #elseif os(iOS)
+            #if targetEnvironment(macCatalyst)
+                print("---> macOS - Catalyst")
+            #else
+                print("---> iOS")
+            // Without a Mac Target, running on Mac lands here
+            //preview.connection?.videoOrientation = .landscapeLeft
+            #endif
+        #endif
+```
+
+Ray talked about a recent evolution pitch that will allow opaque return types to be structural types.  https://forums.swift.org/t/structural-opaque-result-types/50998
+
+---
+
+## 2021.07.31
+
+In this meeting, Josh created a generic property wrapper for transforming values.  He also made the property wrapper conform to Dynamic Property which is useful in SwiftUI to make sure the body property of a view gets recomputed upon mutation. Among other tricks, he showed how to use nonmutating set with a reference type.
+
+See previous meetings (April) for more information about property wrappers.
 
 ---
 
