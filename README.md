@@ -75,6 +75,148 @@ In this meeting, Josh created a generic property wrapper for transforming values
 
 See previous meetings (April) for more information about property wrappers.
 
+```
+import Combine
+import SwiftUI
+import PlaygroundSupport
+import Foundation
+
+protocol TransformerProtcol {
+    associatedtype Value
+    var transform: (Value) -> Value { get }
+}
+
+struct AnyTransformer<Value>: TransformerProtcol {
+    let transform: (Value) -> Value
+}
+
+enum CharacterCase { case lower, upper, capitalized }
+
+extension TransformerProtcol {
+    static func identity<Value>() -> AnyTransformer<Value> {
+        .init { $0 }
+    }
+    static func clamp<Value: Comparable>(_ range: ClosedRange<Value>) -> AnyTransformer<Value> {
+        .init { min(max($0, range.lowerBound), range.upperBound) }
+    }
+    static func rounded<Value: BinaryFloatingPoint>(_ rule: FloatingPointRoundingRule = .up) -> AnyTransformer<Value> {
+        .init { $0.rounded(rule) }
+    }
+    static func normalized<Value: BinaryFloatingPoint>(magnitude: Value) -> AnyTransformer<Value> {
+        .init { $0 / magnitude }
+    }
+    static func trimmed(_ characterSet: CharacterSet = .whitespacesAndNewlines) -> AnyTransformer<String> {
+        .init { $0.trimmingCharacters(in: characterSet) }
+    }
+    static func cased(_ characterCase: CharacterCase) -> AnyTransformer<String> {
+        .init {
+            switch characterCase {
+            case .lower: return $0.lowercased()
+            case .upper: return $0.uppercased()
+            case .capitalized: return $0.capitalized
+            }
+        }
+    }
+}
+
+@propertyWrapper
+struct Transform<Value>: DynamicProperty {
+    final class Wrapper: ObservableObject {
+        @Published var value: Value
+        @Published var untransformedValue: Value
+        private let setter: (Value) -> Value
+        init(
+            untransformedValue: Value,
+            setter: @escaping (Value) -> Value
+        ) {
+            self.untransformedValue = untransformedValue
+            self.setter = setter
+            value = setter(untransformedValue)
+        }
+        func set(_ newValue: Value) {
+            untransformedValue = newValue
+            value = setter(newValue)
+        }
+    }
+    @ObservedObject private var wrapped: Wrapper
+    var wrappedValue: Value {
+        get { wrapped.value }
+        nonmutating set { wrapped.set(newValue) }
+    }
+
+    var projectedValue: Wrapper {
+        wrapped
+    }
+
+    init(
+        wrappedValue: Value,
+        _ setter: AnyTransformer<Value>
+    ) {
+        let wrapper = Wrapper(untransformedValue: wrappedValue, setter: setter.transform)
+        _wrapped = .init(wrappedValue: wrapper)
+    }
+}
+
+final class B: ObservableObject {
+    @Transform(.clamp(0...1.0)) var a = 1.5
+    @Transform(.rounded()) var b = 2.7
+    @Transform(.trimmed()) var c = " sdsf "
+}
+let b = B()
+print(b.a)
+print(b.b)
+
+extension NSNotification.Name {
+    static let persistedDidChange = NSNotification.Name(rawValue: "PersistedDidChange")
+}
+
+@propertyWrapper
+struct Persisted<Value: Codable>: DynamicProperty {
+    final class Wrapper: ObservableObject {
+        @Published var value: Value
+        private let defaults: UserDefaults
+        private let suiteName: String?
+        private let key: String
+        init(
+            value: Value,
+            suiteName: String? = nil,
+            key: String
+        ) {
+            defaults = suiteName.flatMap(UserDefaults.init(suiteName:)) ?? .standard
+            self.key = key
+            self.suiteName = suiteName
+            self.value = defaults
+                .data(forKey: key)
+                .flatMap { try? JSONDecoder().decode(Value.self, from: $0) } ?? value
+
+            NotificationCenter
+                .default
+                .publisher(for: .persistedDidChange)
+                .compactMap { notification in
+                    guard (notification.object as? String) == suiteName else { return nil }
+                    return notification.userInfo?[key] as? Value
+                }
+                .assign(to: &$value)
+        }
+        func setAndSave(_ newValue: Value) {
+            guard let data = try? JSONEncoder().encode(newValue) else { return }
+            value = newValue
+            defaults.set(data, forKey: key)
+            NotificationCenter.default.post(.init(name: .persistedDidChange, object: suiteName, userInfo: [key: newValue]))
+        }
+    }
+    @ObservedObject private var wrapped: Wrapper
+    var wrappedValue: Value {
+        get { wrapped.value }
+        nonmutating set { wrapped.setAndSave(newValue) }
+    }
+
+    var projectedValue: Published<Value>.Publisher {
+        wrapped.$value
+    }
+}
+```
+
 ---
 
 ## 2021.07.24
