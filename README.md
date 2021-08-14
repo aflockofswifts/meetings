@@ -56,10 +56,10 @@ private extension Double {
 }
 
 extension RetryStrategyProtocol where Self == RetryStrategy {
-    static func count(_ count: Int) -> RetryStrategyProtocol {
-        RetryStrategy(sequence: repeatElement(0, count: count))
+    static func forever(delay: TimeInterval = 0) -> RetryStrategyProtocol {
+        RetryStrategy(sequence: sequence(first: Double.nanoSeconds(delay)) { $0 })
     }
-    static func count(_ count: Int, delay: TimeInterval) -> RetryStrategyProtocol {
+    static func count(_ count: Int, delay: TimeInterval = 0) -> RetryStrategyProtocol {
         RetryStrategy(sequence: repeatElement(Double.nanoSeconds(delay), count: count))
     }
     static func exponential(count: Int, initial: TimeInterval, multiplier: TimeInterval = 2) -> RetryStrategyProtocol {
@@ -68,6 +68,7 @@ extension RetryStrategyProtocol where Self == RetryStrategy {
         }
         return RetryStrategy(sequence: exponential.lazy.map(Double.nanoSeconds(_:)))
     }
+}
 }
 
 final class Service {
