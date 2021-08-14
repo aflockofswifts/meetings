@@ -3,12 +3,113 @@
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
 All people and all skill levels are welcome to join. 
-
-## 2021.08.14
+## 2021.08.21
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+- 
+## 2021.08.14
+
+We discussed:
+  * Storyboards vs Nib file vs Code
+  * GPU vs CPU rendering
+  * The cost of passing value types back and forth between queue's vs using references
+  * Swift.Mirror and various loggin solutions.
+
+Ed showed his watch running app and solicited feedback.  He is lookf or beta testers next week.
+
+Josh covered creata generic retry method for structure concurrency.  We discussed a few concepts along the way:
+  * Using `Task.detached` to spawn an asynchonous context from a synchronous context
+  * Expressing retry as a loop and as a recursive function
+  * naive, interval and exponential rety
+  * Using `Task.sleep` to suspent the current task
+  * static member llokup
+  * private extensions
+  * lazy repeated sequences with `repeatElement`
+  * unfold sequences with `sequence`
+  * lazy sequences with `.lazy`
+```
+protocol RetryStrategyProtocol {
+    func delay() -> UInt64?
+}
+
+final class RetryStrategy: RetryStrategyProtocol {
+
+    private var generator: AnySequence<UInt64>
+    private var iterator: AnySequence<UInt64>.Iterator
+
+    init<SomeSequence: Sequence>(sequence generator: SomeSequence) where SomeSequence.Element == UInt64 {
+        self.generator = AnySequence(generator)
+        iterator = self.generator.makeIterator()
+    }
+
+    func delay() -> UInt64? {
+        iterator.next()
+    }
+}
+
+private extension Double {
+    static func nanoSeconds(_ value: Self) -> UInt64 {
+        .init(max(value, 0) * 1e9)
+    }
+}
+
+extension RetryStrategyProtocol where Self == RetryStrategy {
+    static func count(_ count: Int) -> RetryStrategyProtocol {
+        RetryStrategy(sequence: repeatElement(0, count: count))
+    }
+    static func count(_ count: Int, delay: TimeInterval) -> RetryStrategyProtocol {
+        RetryStrategy(sequence: repeatElement(Double.nanoSeconds(delay), count: count))
+    }
+    static func exponential(count: Int, initial: TimeInterval, multiplier: TimeInterval = 2) -> RetryStrategyProtocol {
+        let exponential = sequence(first: initial) { next in
+            next * multiplier
+        }
+        return RetryStrategy(sequence: exponential.lazy.map(Double.nanoSeconds(_:)))
+    }
+    static func exponential(count: Int, initial: TimeInterval, exponent: TimeInterval) -> RetryStrategyProtocol {
+        let exponential = sequence(state: 0) { iteration in
+            initial + pow(1 + exponent, iteration)
+        }
+        return RetryStrategy(sequence: exponential.lazy.map(Double.nanoSeconds(_:)))
+    }
+}
+
+final class Service {
+    struct 💩: Error { }
+    private var state = 1
+    func getValue() async throws -> Int {
+        defer { state += 1 }
+        guard state.isMultiple(of: 4) else {
+            print("Service failed \(state) at \(Date.now)")
+            throw 💩()
+        }
+        print("Service succeeded \(state) at \(Date.now)")
+        return state
+    }
+}
+
+let service = Service()
+
+func retry<Value>(_ strategy: RetryStrategyProtocol, awaiting task: @escaping () async throws -> Value) async throws -> Value {
+    func onRetry(iteration: Int, task: @escaping () async throws -> Value) async throws -> Value {
+        do {
+            return try await task()
+        } catch {
+            guard let delay = strategy.delay() else { throw error }
+            await Task.sleep(delay)
+            return try await onRetry(iteration: iteration + 1, task: task)
+        }
+    }
+    return try await onRetry(iteration: 0, task: task)
+}
+
+let t = Task.detached {
+    let value = try await retry(.exponential(count: 3, initial: 1.0)) { try await service.getValue() }
+    print(value)
+}
+```
 
 ---
 
