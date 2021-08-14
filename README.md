@@ -68,12 +68,6 @@ extension RetryStrategyProtocol where Self == RetryStrategy {
         }
         return RetryStrategy(sequence: exponential.lazy.map(Double.nanoSeconds(_:)))
     }
-    static func exponential(count: Int, initial: TimeInterval, exponent: TimeInterval) -> RetryStrategyProtocol {
-        let exponential = sequence(state: 0) { iteration in
-            initial + pow(1 + exponent, iteration)
-        }
-        return RetryStrategy(sequence: exponential.lazy.map(Double.nanoSeconds(_:)))
-    }
 }
 
 final class Service {
