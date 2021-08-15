@@ -66,7 +66,7 @@ extension RetryStrategyProtocol where Self == RetryStrategy {
         let exponential = sequence(first: initial) { next in
             next * multiplier
         }
-        return RetryStrategy(sequence: exponential.lazy.map(Double.nanoSeconds(_:)))
+        return RetryStrategy(sequence: exponential.prefix(count).lazy.map(Double.nanoSeconds(_:)))
     }
 }
 }
