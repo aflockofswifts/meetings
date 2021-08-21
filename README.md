@@ -3,12 +3,73 @@
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
 All people and all skill levels are welcome to join. 
-## 2021.08.21
+
+
+## 2021.08.28
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
-- 
+
+---
+
+## 2021.08.21
+
+### Regex
+
+Carlyn showed us some code that she was experimenting with wrt regex in Swift.
+
+- https://gist.github.com/carlynorama/4307eed19393dd91d738c2a56d892127
+
+- https://gist.github.com/carlynorama/35023ab68a81d56342651b1c1e926cd7
+
+She also discovered this resource during the meeting:
+
+https://regex101.com
+
+Josh suggested that she might want to explore Apple's natural language offerings.
+
+https://developer.apple.com/documentation/naturallanguage
+
+### TimelineView Example
+
+Ray gave an example on how to use the new timeline view:
+
+```swift
+struct ContentView: View {
+
+    @State var dates: [Date] = []
+
+    func timeSince(now: Date, input: Date) -> String {
+        let formatter = RelativeDateTimeFormatter()
+        return formatter.localizedString(for: input, relativeTo: now.addingTimeInterval(1))
+    }
+
+    var body: some View {
+        NavigationView {
+            VStack {
+                TimelineView(.periodic(from: .now, by: 1)) { _ in
+                    List(dates, id: \.self) { date in
+                        Text(timeSince(now: .now, input: date))
+                    }
+                }
+                Button("Add") {
+                    withAnimation {
+                        dates.append(.now)
+                    }
+                }
+            }.navigationTitle("Times!")
+        }
+    }
+}
+```
+
+### Sequences, AsyncSequences and AsyncStreams
+
+Josh gave a review how sequences and iterators work and showed how they are a basis for the new AsyncSequence.  He also showed how the `sequence(first:next:)` and `sequence(state:next)` are similar to AsyncStreams.  If you are creating a async stream from traditional callback-style code, you can use the continuation builder initializer.  If you have proper `async` you can use another initializer.
+
+---
+
 ## 2021.08.14
 
 We discussed:
@@ -29,7 +90,8 @@ Josh covered creata generic retry method for structure concurrency.  We discusse
   * lazy repeated sequences with `repeatElement`
   * unfold sequences with `sequence`
   * lazy sequences with `.lazy`
-```
+
+```swift
 protocol RetryStrategyProtocol {
     func delay() -> UInt64?
 }
