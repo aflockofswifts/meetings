@@ -68,6 +68,158 @@ struct ContentView: View {
 
 Josh gave a review how sequences and iterators work and showed how they are a basis for the new AsyncSequence.  He also showed how the `sequence(first:next:)` and `sequence(state:next)` are similar to AsyncStreams.  If you are creating a async stream from traditional callback-style code, you can use the continuation builder initializer.  If you have proper `async` you can use another initializer.
 
+```
+import UIKit
+
+struct Fibonnacci: Sequence, IteratorProtocol {
+    private var penultimate = 1
+    private var last = 0
+    mutating func next() -> Int? {
+        let next = penultimate + last
+        penultimate = last
+        last = next
+        return last < Int.max >> 1 ? next : nil
+    }
+    func makeIterator() -> some IteratorProtocol {
+        Self()
+    }
+}
+
+extension Sequence {
+    func printPrefix(_ count: Int) {
+        print(self.prefix(count).map { "\($0)" }.joined(separator: " "))
+    }
+}
+
+Fibonnacci().printPrefix(20)
+
+let zeros = sequence(first: 0) { previous in previous }
+zeros.printPrefix(20)
+
+let odds = sequence(first: 1) { $0 + 2 }
+odds.printPrefix(20)
+
+let fib = sequence(state: (penultimate: 1, last: 0)) { state -> Int? in
+    let next = state.penultimate + state.last
+    state.penultimate = state.last
+    state.last = next
+    return next
+}
+
+fib.printPrefix(20)
+
+enum List<Element>: Sequence, ExpressibleByArrayLiteral {
+    case end
+    indirect case node(value: Element, next: List<Element>)
+
+    private struct ListIterator: IteratorProtocol {
+        var current: List<Element>
+        mutating func next() -> Element? {
+            switch current {
+            case .end:
+                return nil
+            case let .node(value, next):
+                current = next
+                return value
+            }
+        }
+    }
+    func makeIterator() -> some IteratorProtocol {
+        ListIterator(current: self)
+    }
+
+    mutating func push(front: Element) {
+        self = .node(value: front, next: self)
+    }
+
+    init(arrayLiteral elements: Element...) {
+        self = .end
+        elements.reversed().forEach { self.push(front: $0) }
+    }
+}
+
+var list: List = [1,2,3,4,5]
+let list2 = list
+list.push(front: 0)
+list.printPrefix(100)
+list2.printPrefix(100)
+
+struct Delayed<SomeElement>: AsyncSequence {
+    typealias AsyncIterator = DelayIterator
+    typealias Element = SomeElement
+    private let delay: TimeInterval
+    private let sequence: AnySequence<SomeElement>
+    init<SomeSequence: Sequence>(
+        sequence: SomeSequence,
+        delay: TimeInterval
+    ) where SomeSequence.Element == SomeElement {
+        self.sequence = AnySequence(sequence)
+        self.delay = delay
+    }
+    struct DelayIterator: AsyncIteratorProtocol {
+        private let delay: UInt64
+        private let iterator: AnySequence<SomeElement>.Iterator
+        init(
+            delay: TimeInterval,
+            sequence: AnySequence<SomeElement>
+        ) {
+            self.delay = UInt64(delay * 1e9)
+            iterator = sequence.makeIterator()
+        }
+        mutating func next() async throws -> SomeElement? {
+            await Task.sleep(delay)
+            return iterator.next()
+        }
+    }
+
+    func makeAsyncIterator() -> DelayIterator {
+        DelayIterator(delay: delay, sequence: sequence)
+    }
+}
+
+let delayed = Delayed(sequence: fib, delay: 1)
+
+Task.detached {
+    var iterator = delayed.makeAsyncIterator()
+    while let next = try await iterator.next() {
+        print(next)
+    }
+}
+extension NSNotification.Name {
+    static let josh = NSNotification.Name("josh")
+}
+
+let c = Timer
+    .publish(every: 1, tolerance: nil, on: .main, in: .common, options: nil)
+    .autoconnect()
+    .sink(receiveValue: { _ in
+        NotificationCenter.default.post(.init(name: .josh, object: nil, userInfo: ["date": Date.now]))
+    })
+
+
+
+let stream = AsyncStream<Date> { continuation in
+    NotificationCenter.default.addObserver(forName: NSNotification.Name.josh, object: nil, queue: nil) { notification in
+        guard let date = notification.userInfo?["date"] as? Date else { return }
+        continuation.yield(date)
+    }
+}
+
+let stream2 = AsyncStream<Date>.init(unfolding: {
+    await NotificationCenter.default.notifications(named: .josh, object: nil)
+        .compactMap { $0.userInfo?["date"] as? Date }
+        .prefix(1)
+        .first { _ in true }!
+})
+
+Task.detached {
+    for await element in stream2 {
+        print(element)
+    }
+}
+
+```
+
 ---
 
 ## 2021.08.14
