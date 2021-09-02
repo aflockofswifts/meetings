@@ -5,13 +5,189 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join. 
 
 
-## 2021.08.28
+## 2021.09.4
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
-
+- 
 ---
+
+## 2021.08.28
+
+Asteroids in SwiftUI using `TimeLineView` `Canvas` and `GCVirtualController`
+```
+//
+//  ContentView.swift
+//  Asteroids
+//
+//  Created by Joshua Homann on 8/28/21.
+//
+
+import Combine
+import GameController
+import SwiftUI
+
+// MARK: - ViewModel
+final class ViewModel: ObservableObject {
+
+    // MARK: - Entity
+    struct Entity {
+        var orientation: Double = 0
+        var position: CGPoint = .zero
+        var velocity: CGVector = .zero
+    }
+
+    // MARK: - Instance
+    private(set) var player = Entity()
+    private(set) var bullets: [Entity] = []
+
+    // MARK: - Private
+    private var subscriptions: Set<AnyCancellable> = []
+    private let controller: GCVirtualController
+    private var thumbStick: UnitPoint = .zero
+    private var lastBounds: CGRect = .zero
+    private var lastUpdateTime: Date?
+
+    // MARK: - Init
+    init() {
+        let virtualConfiguration = GCVirtualController.Configuration()
+        virtualConfiguration.elements = [GCInputLeftThumbstick, GCInputButtonA]
+        let controller = GCVirtualController(configuration: virtualConfiguration)
+        controller.connect()
+        self.controller = controller
+        controller.controller?.extendedGamepad?.leftThumbstick.valueChangedHandler = { [weak self] _, x, y in
+            self?.thumbStick = .init(x: Double(x), y: Double(y))
+        }
+
+        let buttonPresses = PassthroughSubject<Bool, Never>()
+        controller.controller?.extendedGamepad?.buttonA.valueChangedHandler = { _, _, pressed in
+            buttonPresses.send(pressed)
+        }
+
+        buttonPresses
+            .throttle(for: .seconds(0.25), scheduler: DispatchQueue.main, latest: false)
+            .map { pressed in
+                pressed
+                    ? Timer
+                        .publish(every: 0.33, on: .main, in: .common)
+                        .autoconnect()
+                        .map { _ in () }
+                        .prepend(())
+                        .eraseToAnyPublisher()
+                    : Empty(completeImmediately: true).eraseToAnyPublisher()
+            }
+            .switchToLatest()
+            .sink(receiveValue: { [weak self] _ in
+                guard let self = self else { return }
+                self.bullets.append(.init(
+                    orientation: self.player.orientation,
+                    position: self.player.position,
+                    velocity: .init(
+                        dx: self.player.velocity.dx + cos(self.player.orientation - .τ / 4) * 5,
+                        dy: self.player.velocity.dy + sin(self.player.orientation - .τ / 4) * 5
+                    )
+                ))
+            })
+            .store(in: &subscriptions)
+
+    }
+
+    func update(for time: Date, in bounds: CGRect) {
+        let dt = lastUpdateTime.map(time.timeIntervalSince) ?? 0
+        lastUpdateTime = time
+        if bounds != lastBounds {
+            lastBounds = bounds
+            player.position = .init(x: bounds.midX, y: bounds.midY)
+        }
+        player.orientation += thumbStick.x * .τ * dt
+        let acceleration: Double = thumbStick.y * 4.0
+        player.velocity = .init(
+            dx: player.velocity.dx + cos(player.orientation - .τ / 4) * acceleration * dt,
+            dy: player.velocity.dy + sin(player.orientation - .τ / 4) * acceleration * dt
+        )
+        player.velocity.clamp(to: 250 * dt)
+        player.position = .init(
+            x: fmod(player.position.x + player.velocity.dx + bounds.width, bounds.width),
+            y: fmod(player.position.y + player.velocity.dy + bounds.height, bounds.height)
+        )
+
+        for index in bullets.indices {
+            bullets[index].position.x += bullets[index].velocity.dx * dt * 50
+            bullets[index].position.y += bullets[index].velocity.dy * dt * 50
+        }
+
+        bullets = bullets.filter { bounds.contains($0.position) }
+    }
+}
+
+extension CGVector {
+    var magnitude: Double {
+        sqrt(dx * dx + dy * dy)
+    }
+
+    mutating func clamp(to limit: Double) {
+        let m = magnitude
+        guard limit < magnitude else { return }
+        dx /= m
+        dy /= m
+        dx *= limit
+        dy *= limit
+    }
+}
+
+// MARK: - ContentViewView
+struct ContentView: View {
+    // MARK: - Instance
+    @StateObject private var viewModel = ViewModel()
+    private enum Graphic: Hashable {
+        case ship, bullet, alien
+    }
+    // MARK: - View
+    var body: some View {
+        TimelineView(.animation()) { time in
+            Canvas(
+                opaque: true,
+                colorMode: .linear,
+                rendersAsynchronously: true,
+                renderer: { context, size in
+                    let bounds = CGRect(origin: .zero, size: size)
+                    viewModel.update(for: time.date, in: bounds)
+                    context.fill(
+                        Rectangle().path(in: bounds),
+                        with: .color(.black)
+                    )
+                    if let resolvedBullet = context.resolveSymbol(id: Graphic.bullet) {
+                        for bullet in viewModel.bullets {
+                            var context = context
+                            context.translateBy(x: bullet.position.x, y: bullet.position.y)
+                            context.rotate(by: .init(radians: bullet.orientation))
+                            context.draw(resolvedBullet, at: .zero)
+                        }
+                    }
+                    if let ship = context.resolveSymbol(id: Graphic.ship) {
+                        var context = context
+                        context.translateBy(x: viewModel.player.position.x, y:  viewModel.player.position.y)
+                        context.rotate(by: .init(radians: viewModel.player.orientation))
+                        context.draw(ship, at: .zero)
+                    }
+                },
+                symbols: {
+                    Text("🚀").font(.system(size: 48)).rotationEffect(.radians(-.τ / 8)).hueRotation(.init(radians: .τ / 2.0)).tag(Graphic.ship)
+                    Text("🔥").font(.system(size: 24)).rotationEffect(.radians(.τ / 2)).tag(Graphic.bullet)
+                    Text("👾").font(.system(size: 64)).tag(Graphic.alien)
+                }
+            )
+        }
+        .edgesIgnoringSafeArea(.all)
+        .preferredColorScheme(.dark)
+    }
+}
+
+extension Double {
+    static let τ: Self = .pi * 2
+}
+```
 
 ## 2021.08.21
 
