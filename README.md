@@ -4,19 +4,139 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-
-## 2021.09.4
+## 2021.09.11
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
-- 
+
+---
+
+## 2021.09.04
+
+
+### An optimal algorithm for bounded random integers
+
+State of the art work is being done in Swift.  
+
+"Everyone knows that generating an unbiased random integer in a range 0 ..< upperBound, where upperBound is not a power of two, requires rejection sampling. What if I told you that Big Random Number has lied to us for decades, and we have been played for absolute fools?"
+
+https://github.com/apple/swift/pull/39143
+
+### On Randomness
+
+Ed talked about floating pins on only Atari 2600s.
+
+Carlyn told us about this:
+
+https://arstechnica.com/information-technology/2015/10/this-11-year-old-is-selling-cryptographically-secure-passwords-for-2-each/
+
+Felipe Cardoso to Everyone (10:07 AM)
+A really cool video about the nature of randomness. Vsauce - What is random? https://www.youtube.com/watch?v=9rIy0xY99a0
+
+### Quiz Machine (version 1)
+
+Ray did code overview of a SwiftUI quiz app.
+
+The repo is here:
+
+https://github.com/rayfix/M25a
+
+We talked about the overall architecture which uses a state machine.  A good talk about making state machines can be found here (via Josh):
+
+https://www.youtube.com/watch?v=7UC7OUdtY_Q
+Cory Benfield - Building State Machines in Swift
+
+It would be nice if Swift had better ways to deal with enum types:
+
+One library is case paths:
+
+https://github.com/pointfreeco/swift-case-paths
+
+### Backward capability
+
+We talked an approach for supporting older OSes. We used the M25 apps `BurndownView` as an example:
+
+```swift
+import SwiftUI
+
+
+// MARK: - Common Method
+
+private func rectangle(started: Date, current: Date, totalWidth: Double, totalTime: TimeInterval) -> some View {
+  let width = totalWidth - (min(current.timeIntervalSince(started), totalTime) / totalTime * totalWidth)
+  return Rectangle().frame(width: width, height: 10, alignment: .leading)
+    .foregroundColor(Color.accentColor)
+    .opacity(0.2)
+}
+
+// MARK: - iOS 14 version
+
+private struct BurndownView14: View {
+  let totalTime: TimeInterval
+  @State private var started: Date?
+  @State private var current: Date?
+  let timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
+
+  var body: some View {
+    GeometryReader { proxy in
+        if let started = started, let current = current {
+          rectangle(started: started, current: current,
+                    totalWidth: proxy.size.width, totalTime: totalTime)
+        }
+      }
+    .onAppear {
+      started = Date()
+    }
+    .onReceive(timer) { input in
+      self.current = input
+    }
+  }
+}
+
+// MARK: - iOS 15 version
+
+@available(iOS 15, *)
+private struct BurndownView15: View {
+
+  let totalTime: TimeInterval
+  @State private var started: Date?
+
+  var body: some View {
+    GeometryReader { proxy in
+        TimelineView(.animation) { context in
+          if let started = started {
+            rectangle(started: started, current: .now,
+                      totalWidth: proxy.size.width, totalTime: totalTime)
+          }
+        }
+    }.onAppear {
+      started = Date()
+    }
+  }
+}
+
+// MARK: -- Common view
+
+struct BurndownView: View {
+  let totalTime: TimeInterval
+  var body: some View {
+    if #available(iOS 15, *) {
+      AnyView(BurndownView15(totalTime: totalTime))
+    } else {
+      AnyView(BurndownView14(totalTime: totalTime))
+    }
+  }
+}
+```
+
 ---
 
 ## 2021.08.28
 
 Asteroids in SwiftUI using `TimeLineView` `Canvas` and `GCVirtualController`
-```
+
+```swift
 //
 //  ContentView.swift
 //  Asteroids
@@ -244,7 +364,7 @@ struct ContentView: View {
 
 Josh gave a review how sequences and iterators work and showed how they are a basis for the new AsyncSequence.  He also showed how the `sequence(first:next:)` and `sequence(state:next)` are similar to AsyncStreams.  If you are creating a async stream from traditional callback-style code, you can use the continuation builder initializer.  If you have proper `async` you can use another initializer.
 
-```
+```swift
 import UIKit
 
 struct Fibonnacci: Sequence, IteratorProtocol {
