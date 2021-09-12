@@ -4,13 +4,24 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.09.11
+## 2021.09.18
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
+## 2021.09.11
+
+### SOLID Design principles
+
+We reviewed [SOLID design principles](https://en.wikipedia.org/wiki/SOLID).  Josh recommends you watch: https://www.youtube.com/watch?v=t86v3N4OshQ
+
+### Imperative Coordinator
+
+We took a look at the original imperative coordinator pattern and some of the issues it was designed to solve:
+https://github.com/joshuajhomann/ImperativeCoordinator
 
 ## 2021.09.04
 
