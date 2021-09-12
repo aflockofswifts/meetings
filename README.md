@@ -14,6 +14,22 @@ Join us next Saturday:
 
 ## 2021.09.11
 
+### Auto Rotation Problems
+
+Ed wants to restrict an app to portait only mode except for one screen.  He is having trouble doing this.
+
+Josh thought this might help
+https://developer.apple.com/documentation/uikit/uiviewcontroller/1621400-attemptrotationtodeviceorientati
+
+It doesn't appear to re-evaluate the traits as hoped so still not working.  Follow up next week.
+
+### Working toward a Machine Learning Model
+
+Ray talked about his quiz project and how he plans to incorporate machine learning into a spaced repetition system.  Lots of ideas about how to best gamify the system.  Is ML really necessary in this case.
+
+The project is being developed here:
+https://github.com/rayfix/M25a
+
 ### SOLID Design principles
 
 We reviewed [SOLID design principles](https://en.wikipedia.org/wiki/SOLID).  Josh recommends you watch: https://www.youtube.com/watch?v=t86v3N4OshQ
