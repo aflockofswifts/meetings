@@ -4,13 +4,112 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.09.18
+## 2021.09.25
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
+## 2021.09.18
+### Signal Lab
+Peter released his first mac app to the App store.  You can download it for free (here)[https://apps.apple.com/us/app/signal-lab/id1585573168?mt=12]
+
+### Custom viewcontroller animations
+We discussed using (UIViewControllerAnimatedTransitioning)[https://developer.apple.com/documentation/uikit/uiviewcontrolleranimatedtransitioning] to animated the transition between actionsheets.  Josh has an old example from a pervious meetup (here)[https://github.com/joshuajhomann/CustomTransitions] 
+
+### Testable Architecture with MVVM + Coordinator
+We discussed the motivation for writing tests.  Watch these videos for additional context:
+  * The Scribe's Oath • Robert "Uncle Bob" Martin: https://www.youtube.com/watch?v=Tng6Fox8EfI
+  * Leveraging MVVM & TDD for a better life: https://www.youtube.com/watch?v=EpTlqx6NjYo
+We looked at how to write a type eraser for our Coordinator protocol by curring the implicit self parameter to the coordinator's `handle` function:
+```
+protocol Coordinator {
+    associatedtype Action
+    func handle(_ action: Action)
+}
+
+extension Coordinator {
+    func eraseToAnyCoordinator() -> AnyCoordinator<Action> {
+        .init(self)
+    }
+}
+
+struct AnyCoordinator<Action>: Coordinator {
+    private let _handle: (Action) -> Void
+    init<SomeCoordinator: Coordinator>(_ coordinator: SomeCoordinator) where SomeCoordinator.Action == Action {
+        _handle = coordinator.handle(_:)
+    }
+    func handle(_ action: Action) {
+        _handle(action)
+    }
+}
+```
+We then looked at how this enables us to write a mock coordinator that simply records all of its actions:
+```
+final class RecordingCoordinator<Action>: Coordinator {
+    var actions: [Action] = []
+    func handle(_ action: Action) {
+        actions.append(action)
+    }
+}
+```
+We talked about the adding a test target to your app and how to `@testable` import your module and setup your tests:
+```
+import XCTest
+@testable import ImperativeCoordinator
+
+final class ListViewModelTest: XCTestCase {
+
+    var coordinator: RecordingCoordinator<ListCoordinator.Action>!
+    var consumablesService: ConsumablesService!
+    var viewModel: ListViewModel!
+
+    override func setUpWithError() throws {
+        coordinator = .init()
+        consumablesService = .init()
+        viewModel = .init(coordinator: coordinator, consumablesService: consumablesService)
+    }
+
+    override func tearDownWithError() throws {
+        coordinator = nil
+        consumablesService = nil
+        viewModel = nil
+    }
+```
+Using the mock, we can write tests and assert that the actions we expect are captured by the mock:
+```
+    func test_ViewModel_OnSelect_SomeConsumables() throws {
+        let indexToSelect = 5
+        consumablesService.ordinalNumberConsumable = 1
+        viewModel.onSelect(viewModel.items[indexToSelect])
+        XCTAssertTrue(coordinator.actions.contains {
+            switch $0 {
+            case let .showDetail(number):
+                return number == viewModel.items[indexToSelect].number
+            default:
+                return false
+            }
+        })
+        XCTAssertEqual(1, coordinator.actions.count)
+    }
+    func test_ViewModel_OnSelect_NoConsumables() throws {
+        let indexToSelect = 5
+        consumablesService.ordinalNumberConsumable = 0
+        viewModel.onSelect(viewModel.items[indexToSelect])
+        XCTAssertTrue(coordinator.actions.contains { action in
+            switch action {
+            case .show:
+                return true
+            default:
+                return false
+            }
+        })
+        XCTAssertEqual(1, coordinator.actions.count)
+    }
+}
+```
 
 ## 2021.09.11
 
