@@ -1,4 +1,4 @@
-# A Flock of Swifts 
+# A Flock of Swifts
 
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
@@ -24,7 +24,8 @@ We discussed the motivation for writing tests.  Watch these videos for additiona
   * The Scribe's Oath • Robert "Uncle Bob" Martin: https://www.youtube.com/watch?v=Tng6Fox8EfI
   * Leveraging MVVM & TDD for a better life: https://www.youtube.com/watch?v=EpTlqx6NjYo
 We looked at how to write a type eraser for our Coordinator protocol by curring the implicit self parameter to the coordinator's `handle` function:
-```
+
+```swift
 protocol Coordinator {
     associatedtype Action
     func handle(_ action: Action)
@@ -46,8 +47,10 @@ struct AnyCoordinator<Action>: Coordinator {
     }
 }
 ```
+
 We then looked at how this enables us to write a mock coordinator that simply records all of its actions:
-```
+
+```swift
 final class RecordingCoordinator<Action>: Coordinator {
     var actions: [Action] = []
     func handle(_ action: Action) {
@@ -55,8 +58,10 @@ final class RecordingCoordinator<Action>: Coordinator {
     }
 }
 ```
+
 We talked about the adding a test target to your app and how to `@testable` import your module and setup your tests:
-```
+
+```swift
 import XCTest
 @testable import ImperativeCoordinator
 
@@ -78,8 +83,10 @@ final class ListViewModelTest: XCTestCase {
         viewModel = nil
     }
 ```
+
 Using the mock, we can write tests and assert that the actions we expect are captured by the mock:
-```
+
+```swift
     func test_ViewModel_OnSelect_SomeConsumables() throws {
         let indexToSelect = 5
         consumablesService.ordinalNumberConsumable = 1
@@ -987,7 +994,7 @@ print(stuff.formatted(.list(type: .and)))
 
 https://developer.apple.com/documentation/foundation/formatter
 
-### Usability Feedback 
+### Usability Feedback
 
 Tim Colson let us know about a group that offers free advice on user experience.
 
@@ -2379,7 +2386,7 @@ Notable shortcuts:
   - **Command-option /**  - Automatic doc comment template.
   - **Command-control-shift A**  - Author's view (git blame) 
 
-### M1 Rumors 
+### M1 Rumors
 
 Bill is interested in M1 rumors, especially this one about a [Mac Mini _Pro version_ in space grey](https://www.macworld.co.uk/news/mac-trends-2021-3800044/#toc-3800044-4)!
 
@@ -2645,7 +2652,7 @@ extension Either: Decodable where Left: Decodable, Right: Decodable {
 
 ## 2021.01.23
 
-### Proxy 
+### Proxy
 
 Discussed network security and _SSL pinning_. Potential topic for future meetup.  You can try it out:
 
