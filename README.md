@@ -4,7 +4,7 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.09.25
+## 2021.10.02
 
 Join us next Saturday:
 
@@ -12,7 +12,74 @@ Join us next Saturday:
 
 ---
 
+## 2021.09.25
+
+### Good Learning Sources
+
+Jake asked about good Swift learning sources.  Here are ones that came up.  I added a couple more at the end:
+
+- https://kavsoft.dev
+- https://swiftui-lab.com
+- https://www.avanderlee.com
+- https://www.swiftbysundell.com
+- https://cs193p.sites.stanford.edu
+- https://www.pointfree.co
+- https://nsscreencast.com/episodes
+- https://talk.objc.io
+- https://raywenderlich.com
+- 
+
+### Analytics & Social media
+
+We talked about anaylytics and crash reporting.
+
+Emil mentioned that Facebook has been in the news.  He gave us a couple links to look at:
+
+- https://www.wsj.com/articles/facebook-knows-instagram-is-toxic-for-teen-girls-company-documents-show-11631620739
+- https://deadline.com/2021/09/real-time-with-bill-maher-facebook-disfunction-root-causes-1234844306/
+
+### FocusState
+
+FocusState is a new property wrapper in iOS 15 that is the declarative version of UIResponder.  It has some limitations about having to live in the view.  Based on a Free pointfree.co video we explored how to use this new property wrapper with a proper view model.
+
+https://www.pointfree.co/episodes/ep155-swiftui-focus-state
+
+
+Jake posed a problem about putting focus on the login right when the view appears.
+
+Ultimately we needed to put in a  delay.
+
+```swift
+    .onAppear {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        viewModel.onAppear()
+      }
+    }
+```
+
+
+John James sent some resources:
+  - Original WWDC video https://developer.apple.com/videos/play/wwdc2021/10023/?time=601
+  - A todo app https://www.youtube.com/watch?v=ZEYgknhh29Q (solves the problem around 11:00)
+
+It looks like Form now works.  
+
+
+### Performance
+
+Emily was asking about basic performance measurement. We demoed using gauges in Xcode and launching Instruments.  Josh also mentioned using signposts in the logging system to drill down on a specific performance related problem.
+
+
+Ed told us about a powerful performance measurement (misnamed video optimizer):
+
+https://developer.att.com/video-optimizer
+
+That's all.  See you next week!
+
+---
+
 ## 2021.09.18
+
 ### Signal Lab
 Peter released his first mac app to the App store.  You can download it for free (here)[https://apps.apple.com/us/app/signal-lab/id1585573168?mt=12]
 
