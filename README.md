@@ -16,7 +16,7 @@ Join us next Saturday:
 
 ### Good Learning Sources
 
-Jake asked about good Swift learning sources.  Here are ones that came up.  I added a couple more at the end:
+Jake asked about good Swift learning sources.  Here are ones that came up in no particular order.  I added a couple more at the end:
 
 - https://kavsoft.dev
 - https://swiftui-lab.com
@@ -27,7 +27,6 @@ Jake asked about good Swift learning sources.  Here are ones that came up.  I ad
 - https://nsscreencast.com/episodes
 - https://talk.objc.io
 - https://raywenderlich.com
-- 
 
 ### Analytics & Social media
 
@@ -62,7 +61,7 @@ John James sent some resources:
   - Original WWDC video https://developer.apple.com/videos/play/wwdc2021/10023/?time=601
   - A todo app https://www.youtube.com/watch?v=ZEYgknhh29Q (solves the problem around 11:00)
 
-It looks like Form now works.  
+It looks like Form now works.  We could use `onAppear` instead of just `task`
 
 
 ### Performance
