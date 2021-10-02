@@ -14,7 +14,7 @@ Join us next Saturday:
 ## 2021.10.02
 
 CoreMotion:
-```
+```swift
 @MainActor
 final class ViewModel: ObservableObject {
 
