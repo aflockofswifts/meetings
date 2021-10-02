@@ -4,13 +4,73 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.10.02
+## 2021.10.09
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+## 2021.10.02
+
+CoreMotion:
+```
+@MainActor
+final class ViewModel: ObservableObject {
+
+    @Published private(set) var recent = 0.0
+    @Published private(set) var maximum = 0.0
+    private let motionManager: CMMotionManager
+
+    init() {
+        let motionManager = CMMotionManager()
+        self.motionManager = motionManager
+
+        Timer
+            .publish(every: 0.1, on: .main, in: .common)
+            .autoconnect()
+            .map { _ -> Double in
+                guard let vector = motionManager.accelerometerData?.acceleration else { return 0.0 }
+                return sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
+            }
+            .scan([0]) { accumulated, next in
+                (accumulated + [next]).suffix(50)
+            }
+            .map { $0.max() ?? 0.0 }
+            .assign(to: &$recent)
+
+        $recent
+            .scan(0) { maximum, next in
+                max(maximum, next)
+            }
+            .assign(to: &$maximum)
+    }
+
+    func onAppear() {
+        motionManager.startAccelerometerUpdates()
+    }
+
+    func onDisappear() {
+        motionManager.stopAccelerometerUpdates()
+    }
+}
+
+struct ContentView: View {
+    @StateObject private var viewModel = ViewModel()
+    var body: some View {
+        VStack {
+            Text("\(viewModel.recent.formatted(.number.precision(.fractionLength(3))))g")
+                .font(.largeTitle)
+            Text("Max: \(viewModel.maximum.formatted(.number.precision(.fractionLength(3))))g")
+                .font(.headline)
+                .foregroundColor(.secondary)
+        }
+        .onAppear { viewModel.onAppear() }
+        .onDisappear { viewModel.onDisappear() }
+    }
+}
+```
+
 
 ## 2021.09.25
 
