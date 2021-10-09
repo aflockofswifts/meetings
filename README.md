@@ -4,12 +4,16 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.10.09
+## 2021.10.16
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
+## 2021.10.09
+
+Josh covered logging with `Logger` and `OSLogStore` in iOS15:
+https://github.com/joshuajhomann/Logging
 ---
 ## 2021.10.02
 
