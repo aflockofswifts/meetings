@@ -12,9 +12,108 @@ Join us next Saturday:
 
 ## 2021.10.09
 
-Josh covered logging with `Logger` and `OSLogStore` in iOS15:
+### Formatting numbers
+
+Though it has been covered before for dates, Swift 5.5 brings some nice foundation changes for formatting number.
+
+Example:
+
+```swift
+let x = 3.100001
+x.formatted(.number.precision(.fractionLength(3)))
+```
+
+We also looked at a bunch of other formatting options.  Consider making an internal or private extension if you use a complex formatted configuration:
+
+Example:
+
+```swift
+public
+extension BinaryFloatingPoint {
+  var usdCurrency: String {
+    formatted(.currency(code: "usd"))
+  }
+}
+```
+
+The implementation does a lot of internal caching so you don't have to worry about making a static formatter.
+
+### Codable and Enumerations with Associated values
+
+Yes, this works now in Swift 5.5.
+
+```swift
+enum Vehicle: Equatable {
+  case airplane(String)
+  case car(Int, String)
+  case bicycle([Int])
+  case gocart(maker: String)
+  case boat
+}
+
+let vehicles: [Vehicle] = [
+    .airplane("Hello"),
+    .car(42, "Hi"),
+    .gocart(maker: "w"),
+    .boat
+  ]
+
+extension Vehicle: Codable {}
+
+```
+
+
+A handy extension from Josh lets your pretty printing encodables:
+
+```swift
+private extension Encodable {
+    var prettyPrinted: String {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        return (try? encoder.encode(self))
+            .flatMap { String(data: $0, encoding: .utf8) } ?? "\(self)"
+    }
+}
+
+print(vehicles.prettyPrinted)
+```
+
+This gives you:
+
+```swift
+[
+  {
+    "airplane" : {
+      "_0" : "Hello"
+    }
+  },
+  {
+    "car" : {
+      "_0" : 42,
+      "_1" : "Hi"
+    }
+  },
+  {
+    "gocart" : {
+      "maker" : "w"
+    }
+  },
+  {
+    "boat" : {
+
+    }
+  }
+]
+```
+
+
+### Logging
+
+Josh covered logging with `Logger` and `OSLogStore` in iOS 15:
 https://github.com/joshuajhomann/Logging
+
 ---
+
 ## 2021.10.02
 
 CoreMotion:
