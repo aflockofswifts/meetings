@@ -4,11 +4,68 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.10.16
+
+## 2021.10.23
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2021.10.16
+
+Performance tip from Jake.  He found that setting the proxy in View initializer led to the lag.  Instead, setting it in onAppear was much faster.
+He also used made TextField layout like he wanted by putting TextField and Text in a ZStack and then giving the Text an opacity of 0.
+
+## Effectful, Readonly Properties
+
+We talked about this proposal
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0310-effectful-readonly-properties.md
+
+
+You can define throws and async in the getter like this:
+
+```swift
+struct User {
+  var name: String {
+    get throws {
+      return "Name"
+    }
+  }
+}
+```
+
+
+And call it like this:
+
+```swift
+let user = User()
+let name = try user.name
+```
+
+You only need a try at the outer most level. So:
+
+```swift
+func process(_ name: String) throws -> String {
+  name
+}
+
+try process(try user.name) // long way
+try process(user.name)     // short way
+```
+
+We also had an impromptu discussion about actors. The above proposal probably came about because actors need to have async properties. Peter provided this link to background material.
+
+Peter provided this link.
+
+https://gist.github.com/lattner/31ed37682ef1576b16bca1432ea9f782#part-2-actors-eliminating-shared-mutable-state
+
+
+We talked about how actors give you islands of concurrency, and write a lot of the boilerplate code for you.
+
+---
 
 ## 2021.10.09
 
