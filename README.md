@@ -4,14 +4,116 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-
-## 2021.10.23
+## 2021.10.30
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
+## 2021.10.23
+
+Emil found that he could not access the camera roll from an App clip
+Carlyn asked about image storage (Coredata vs Documents) and cloud storage with Cloudkit
+Mark had some questions about tuples and the scan function using CoreMotion example from a few weeks ago
+Peter had some questions about debugging @IBInspectable & @IBDesignable
+
+Josh talked about how to bridge Combine, structured concurrency and completion handlers:
+```
+import Combine
+import Foundation
+
+func eventual<Value>(
+    result: Result<Value, Error>,
+    after delay: TimeInterval,
+    completion: @escaping (Result<Value, Error>) -> Void
+) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+        completion(result)
+    }
+}
+
+func awaitEventual<Value>(
+    result: Result<Value, Error>,
+    after delay: TimeInterval
+) async throws -> Value {
+    try await Task {
+        await Task.sleep(UInt64(1e9 * delay))
+        switch result {
+        case let .success(value):
+            return value
+        case let .failure(error):
+            throw error
+        }
+    }
+    .value
+}
+
+
+let future = Future<Int, Error> { promise in
+    eventual(result: .success(1), after: 1) { result in
+        switch result {
+        case let .success(value):
+            print(value)
+            promise(.success(value))
+        case let .failure(error):
+            promise(.failure(error))
+        }
+    }
+}
+
+let future2 = Future<Int, Error> { promise in
+    Task {
+        do {
+            let value = try await awaitEventual(result: .success(1), after: 1)
+            promise(.success(value))
+        } catch {
+            promise(.failure(error))
+        }
+    }
+}
+
+let future3 = Future {
+    try await awaitEventual(result: .success(1), after: 1)
+}
+
+extension Future where Failure == Error {
+    convenience init(awaiting operation: @escaping () async throws -> Output) {
+        self.init { promise in
+            Task {
+                do {
+                    let value = try await operation()
+                    promise(.success(value))
+                } catch {
+                    promise(.failure(error))
+                }
+            }
+        }
+    }
+}
+
+final class AsyncFuture<Value> {
+    var value: Value  {
+        get async throws {
+            try await task.value
+        }
+    }
+
+    private let task: Task<Value, Error>
+
+    init(
+        completion: @escaping ( ( (Result<Value, Error>) -> Void ) -> Void )
+    ) {
+        task = Task {
+            try await withCheckedThrowingContinuation { continuation in
+                completion(continuation.resume(with:))
+            }
+        }
+    }
+
+}
+```
 
 ## 2021.10.16
 
