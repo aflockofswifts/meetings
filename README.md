@@ -19,8 +19,15 @@ Carlyn asked about image storage (Coredata vs Documents) and cloud storage with 
 Mark had some questions about tuples and the scan function using CoreMotion example from a few weeks ago
 Peter had some questions about debugging @IBInspectable & @IBDesignable
 
-Josh talked about how to bridge Combine, structured concurrency and completion handlers:
-```
+
+### Bridging the Worlds of Completion Handlers, Combine, and Concurrency
+
+Josh talked about how to bridge Combine, structured concurrency and completion handlers.
+
+
+Here is a method that gives you a result after a delay. 
+
+```swift
 import Combine
 import Foundation
 
@@ -33,7 +40,11 @@ func eventual<Value>(
         completion(result)
     }
 }
+```
 
+An equivalent in async/away would looks something like this. (Written in full syntax to show what is happening.)
+
+```swift
 func awaitEventual<Value>(
     result: Result<Value, Error>,
     after delay: TimeInterval
@@ -49,8 +60,13 @@ func awaitEventual<Value>(
     }
     .value
 }
+```
 
+We can use a combine future which is a reference type that runs immediately even if there are no observers. It stores the result that can be accessed later. Fire and store.
 
+In the completion handler world:
+
+```swift
 let future = Future<Int, Error> { promise in
     eventual(result: .success(1), after: 1) { result in
         switch result {
@@ -62,6 +78,11 @@ let future = Future<Int, Error> { promise in
         }
     }
 }
+```
+
+In the new concurrency world, you could do the same thing like this:
+
+```swift
 
 let future2 = Future<Int, Error> { promise in
     Task {
@@ -73,11 +94,11 @@ let future2 = Future<Int, Error> { promise in
         }
     }
 }
+```
 
-let future3 = Future {
-    try await awaitEventual(result: .success(1), after: 1)
-}
+The above is pretty verbose.  With a little up-front engineering we can do this:
 
+```swift
 extension Future where Failure == Error {
     convenience init(awaiting operation: @escaping () async throws -> Output) {
         self.init { promise in
@@ -92,7 +113,19 @@ extension Future where Failure == Error {
         }
     }
 }
+```
 
+Now it is easy to make a future. 
+
+```swift
+let future3 = Future {
+    try await awaitEventual(result: .success(1), after: 1)
+}
+```
+
+We can make our own version of Future for the concurrency world using continuations and effectful read-only properties.
+
+```swift
 final class AsyncFuture<Value> {
     var value: Value  {
         get async throws {
@@ -114,6 +147,9 @@ final class AsyncFuture<Value> {
 
 }
 ```
+
+
+
 
 ## 2021.10.16
 
