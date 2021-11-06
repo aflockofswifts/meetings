@@ -4,13 +4,131 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.10.30
+## 2021.11.13
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
+## 2021.11.6
+
+Josh talked about how to bridge from imperative delegates/callbacks to Combine by using a `PublishSubject` and how to bridge from a `Publisher` to an `AsyncSequence` by using the `values` property on a `Publisher`.
+
+```swift
+@MainActor
+final class ViewModel {
+
+    struct Item: Hashable, Identifiable {
+        var id: Int
+    }
+
+    @Published private(set) var items: [Item] = []
+    @Published private(set) var selectedItem: Item?
+
+    var didSelect: (IndexPath) -> Void = { _ in }
+
+    init() {
+        items = (0..<100).map(Item.init(id:))
+
+        let didSelectSubject = PassthroughSubject<IndexPath, Never>()
+
+        didSelect = didSelectSubject.send
+
+        let values = didSelectSubject
+            .map(\.row)
+            .map(Item.init(id:))
+            .values
+
+        Task { [weak self] in
+            for await value in values {
+                self?.selectedItem = value
+            }
+        }
+    }
+}
+
+final class ViewController: UIViewController {
+
+    private enum Section: Hashable, CaseIterable {
+        case main
+    }
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, ViewModel.Item>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, ViewModel.Item>
+    private typealias Item = ViewModel.Item
+
+    private var subscriptions = Set<AnyCancellable>()
+    private let viewModel: ViewModel
+
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        view.backgroundColor = .systemBackground
+        let layoutConfig = UICollectionLayoutListConfiguration(appearance: .plain)
+        let listLayout = UICollectionViewCompositionalLayout.list(using: layoutConfig)
+
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: listLayout)
+        collectionView.delegate = self
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(collectionView)
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
+
+        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Item> { (cell, indexPath, item) in
+            var content = cell.defaultContentConfiguration()
+            content.text = "\(item.id)"
+            cell.contentConfiguration = content
+        }
+
+        let dataSource = DataSource(
+            collectionView: collectionView,
+            cellProvider: { (collectionView, indexPath, item) in
+                collectionView.dequeueConfiguredReusableCell(
+                    using: cellRegistration,
+                    for: indexPath,
+                    item: item
+                )
+            })
+
+        viewModel
+            .$items
+            .sink(receiveValue: { items in
+                var snapshot = Snapshot()
+                snapshot.appendSections(Section.allCases)
+                snapshot.appendItems(items, toSection: .main)
+                dataSource.apply(snapshot, animatingDifferences: true)
+            })
+            .store(in: &subscriptions)
+
+        viewModel
+            .$selectedItem
+            .compactMap { $0 }
+            .sink(receiveValue: { [weak self] item in
+                let alert = UIAlertController(title: "Selected Item", message: "\(item)", preferredStyle: .alert)
+                alert.addAction(.init(title: "Ok", style: .default, handler: nil))
+                self?.present(alert, animated: true)
+            })
+            .store(in: &subscriptions)
+
+    }
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension ViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.didSelect(indexPath)
+    }
+}
+
+```
 
 ## 2021.10.23
 
