@@ -10,6 +10,8 @@ Join us next Saturday:
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+## 2021.11.20
+We are on break this week and will resume next week.
 
 ## 2021.11.13
 
