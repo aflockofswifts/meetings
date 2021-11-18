@@ -3,12 +3,187 @@
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
 All people and all skill levels are welcome to join. 
-
-## 2021.11.13
+## 2021.11.27
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2021.11.13
+
+We discussed how to bridge from delegates / callbacks to AsyncStream and how to bridge from AsyncSequence to Publisher:
+
+```swift
+import Combine
+import GameController
+import SpriteKit
+
+@MainActor
+final class GameScene: SKScene {
+    private var player = SKNode()
+    private var thumbStick: Double = .zero
+    private var controller: GCVirtualController?
+    private var canJump = true
+    private var isIdle = true
+    private var lastUpdate: Date?
+    private var subscription: AnyCancellable?
+    override func sceneDidLoad() {
+        super.sceneDidLoad()
+        player = childNode(withName: "Player") ?? player
+        player.run(.repeatForever(.animation(for: CharacterAnimation.idle)))
+
+        let virtualConfiguration = GCVirtualController.Configuration()
+        virtualConfiguration.elements = [GCInputLeftThumbstick, GCInputButtonA]
+        let controller = GCVirtualController(configuration: virtualConfiguration)
+        self.controller = controller
+        controller.connect()
+
+        physicsWorld.contactDelegate = self
+
+        controller.controller?.extendedGamepad?.leftThumbstick.valueChangedHandler = { [weak self] _, x, y in
+            guard let self = self else { return }
+            self.thumbStick = Double(x)
+        }
+
+        let (onTap, taps) = AsyncStream<Bool>.pipe()
+
+        controller.controller?.extendedGamepad?.buttonA.valueChangedHandler = { _, _, pressed in
+            onTap(pressed)
+        }
+
+        subscription = taps
+            .publisher
+            .filter { $0 }
+            .throttle(for: .seconds(0.1), scheduler: DispatchQueue.main, latest: true)
+            .sink(receiveValue: { [weak self] _ in
+                guard let self = self else { return }
+                guard self.canJump else { return }
+                self.canJump = false
+                DispatchQueue.main.async {
+                    self.player.removeAllActions()
+                    self.player.run(.sequence([
+                        .applyImpulse(.init(dx: 0, dy: 60), duration: 0.1),
+                        .animation(for: CharacterAnimation.jump),
+                        .repeatForever(.animation(for: CharacterAnimation.idle))
+                    ]))
+                }
+            })
+    }
+
+    override func didFinishUpdate() {
+        super.didFinishUpdate()
+        let now = Date.now
+        let elapsed = lastUpdate.map(now.timeIntervalSince(_:)) ?? 0
+        lastUpdate = now
+        guard canJump else { return }
+        if abs(thumbStick) < 0.1 {
+            if !isIdle {
+                player.removeAllActions()
+                player.run(.repeatForever(.animation(for: CharacterAnimation.idle)))
+            }
+            isIdle = true
+        } else {
+            if isIdle {
+                player.removeAllActions()
+                player.run(.repeatForever(.animation(for: CharacterAnimation.walk)))
+            }
+            isIdle = false
+            player.position.x += thumbStick * elapsed * 500.0
+            player.xScale = thumbStick > 0 ? 1 : -1
+        }
+    }
+}
+
+extension GameScene: SKPhysicsContactDelegate {
+    func didBegin(_ contact: SKPhysicsContact) {
+        if contact.bodyA.node === player || contact.bodyB.node === player {
+            canJump = true
+        }
+    }
+}
+
+extension AsyncStream {
+    static func pipe() -> ((Element) -> Void, Self) {
+        var input: (Element) -> Void = { _ in }
+        let output = Self { continuation in
+            input = { element in
+                continuation.yield(element)
+            }
+        }
+        return (input, output)
+    }
+}
+
+extension AsyncSequence {
+    @discardableResult
+    func bind(to subject: PassthroughSubject<Element, Never>, priority: TaskPriority? = nil) -> Task<Void, Error> {
+        Task(priority: priority) {
+            try await withTaskCancellationHandler(handler: {
+                subject.send(completion: .finished)
+            }, operation: {
+                for try await element in self {
+                    subject.send(element)
+                }
+                subject.send(completion: .finished)
+            })
+        }
+    }
+
+    var publisher: AnyPublisher<Element, Never> {
+        let subject = PassthroughSubject<Element, Never>()
+        let task = bind(to: subject, priority: nil)
+        return subject
+            .handleEvents(receiveCancel: task.cancel)
+            .eraseToAnyPublisher()
+    }
+}
+
+
+extension SKAction {
+    static func animation(named name: String, frames:  ClosedRange<Int>, frameDuration: TimeInterval) -> SKAction {
+        let textures = frames
+            .map { "\(name)\($0)"}
+            .map(SKTexture.init(imageNamed:))
+        return .animate(with: textures, timePerFrame: frameDuration, resize: false, restore: false)
+    }
+    static func animation(for spriteAnimation: SpriteAnimation) -> SKAction {
+        animation(named: spriteAnimation.name, frames: spriteAnimation.frames, frameDuration: spriteAnimation.frameDuration)
+    }
+}
+
+protocol SpriteAnimation {
+    var name: String { get }
+    var frames: ClosedRange<Int> { get }
+    var frameDuration: TimeInterval { get }
+    var totalDuration: TimeInterval { get }
+}
+
+enum CharacterAnimation: String, SpriteAnimation, RawRepresentable {
+    case idle, walk, jump
+    var name: String {
+        rawValue
+    }
+    var frames: ClosedRange<Int> {
+        switch self {
+        case .idle: return 1...14
+        case .walk: return 1...6
+        case .jump: return 1...7
+        }
+    }
+    var frameDuration: TimeInterval {
+        switch self {
+        case .idle: return 0.175
+        case .walk: return 0.175
+        case .jump: return 0.1
+        }
+    }
+    var totalDuration: TimeInterval {
+        TimeInterval(frames.count) * frameDuration
+    }
+}
+```
 
 ---
 
