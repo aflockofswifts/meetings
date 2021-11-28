@@ -3,11 +3,46 @@
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
 All people and all skill levels are welcome to join. 
-## 2021.11.27
+
+## 2021.12.04
 
 Join us next Saturday:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2021.11.27
+
+### Force Directed Graph
+
+Ray blew the dust off the old SwiftUI project from a couple of years ago that featured a force directed graph simulation.  We walked through building the project that can be found here: https://github.com/rayfix/ForceDirectedGraph
+
+Possible improvements might include using the new CanvasView and TimelineView. You could delay the transform until the very end during rendering which would be more efficient for rendering large graphs.  (The way the timer is currently setup is rather resource wasteful.)
+
+Another improvement suggested by Josh in the chat.  This code:
+
+```swift
+  init(jsonData: Data) throws {
+     let decoder = JSONDecoder()
+     let decoded = try decoder.decode(Self.self, from: jsonData)
+     self.init(nodes: decoded.nodes, links: decoded.links)
+   }
+```
+
+Can be simplified to this:
+
+```swift
+  init(jsonData: Data) throws {
+     self = try JSONDecoder().decode(Self.self, from: jsonData)
+   }
+```
+
+
+### EventKit
+
+Mark had some questions about how to filter snoozed events.  Maybe this can be done with the ns-predicate?
+
 
 ---
 ## 2021.11.20
