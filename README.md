@@ -11,6 +11,137 @@ Join us next Saturday:
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+## 2021.11.27
+
+### Cloudkit + Coredata
+
+Josh showed his Cloudkit + Coredata example: https://github.com/joshuajhomann/Todo
+
+We discussed creating a contract with `async` functions to allow implmentation with an `actor` using the standard database CRUD operations + a subscription.  Josh noted that for the subscription you reallyw ant a query function that can return a stream for earch query.  See the previous DatabaseFacade project from a prior meetup for reference.
+
+```swift
+protocol StorageServiceProtocol {
+    var toDos: AsyncStream<[ToDo]> { get async }
+    func create(toDo: ToDo) async throws
+    func read(_ id: UUID) async throws -> ToDo?
+    func update(toDo: ToDo) async throws
+    func delete(id: UUID) async throws
+}
+```
+
+We explored a simply implmenation in memory:
+```swift
+actor InMemoryStorageService: StorageServiceProtocol {
+    var toDos: AsyncStream<[ToDo]> {
+        get async {
+            values
+        }
+    }
+    private let (input, values) = AsyncStream<[ToDo]>.pipe()
+    private var value: [ToDo] = [] {
+        didSet {
+            input(value)
+        }
+    }
+    func create(toDo: ToDo) async throws {
+        guard index(with: toDo.id) == nil else { return }
+        value.append(toDo)
+    }
+
+    func read(_ id: UUID) async throws -> ToDo? {
+        index(with: id).map { value[$0] }
+    }
+
+    func update(toDo: ToDo) async throws {
+        guard let index = index(with: toDo.id) else { return }
+        value[index] = toDo
+    }
+
+    func delete(id: UUID) async throws {
+        guard let index = index(with: id) else { return }
+        value.remove(at: index)
+    }
+
+    private func index(with id: UUID) -> Int? {
+        value.firstIndex(where: { $0.id == id })
+    }
+
+}
+```
+We then injected the StorageService into the `Environment` and discussed the differences between `EnvironmentValues` and `EnvironmentObject`:
+```
+extension EnvironmentValues {
+    private struct StorageServiceKey: EnvironmentKey {
+        static let defaultValue = StorageService()
+    }
+    var storageService: StorageServiceProtocol {
+        StorageServiceKey.defaultValue
+    }
+}
+```
+We implmented a ListViewModel and discussed that it is implmented as an `ObservableObject` since it has dynamic behavior, but that the cell viewModels are implmented as structs since they have no dynamic behavior and delegate all their functionality to the parent view model.
+```swift
+struct Item: Identifiable, Hashable {
+    var id: UUID {
+        toDo.id
+    }
+    var toDo: ToDo
+    var isCompleted: Bool {
+        toDo.completed != nil
+    }
+    var delete: () -> Void
+    var toggleCompleted: () -> Void
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(toDo)
+    }
+    static func == (lhs: ToDoListViewModel.Item, rhs: ToDoListViewModel.Item) -> Bool {
+        lhs.toDo == rhs.toDo
+    }
+}
+```
+We look at how to subscribe to an AsyncSequence and to bound the subscription to the life time of the view with the new `task` `ViewModifier`:
+```swift
+subscribe = { [weak self] in
+    let itemStream = await storageService.toDos.map { toDos in
+        toDos.map { toDo in
+            Item(
+                toDo: toDo,
+                delete: {
+                    Task {
+                        try await storageService.delete(id: toDo.id)
+                    }
+                },
+                toggleCompleted: {
+                    Task {
+                        guard var toDo = try await storageService.read(toDo.id) else { return }
+                        toDo.completed = toDo.completed == nil
+                        ? Date.now
+                        : nil
+                        try await storageService.update(toDo: toDo)
+                    }
+                }
+            )
+        }
+    }
+    for await items in itemStream {
+        self?.items = items
+    }
+}
+```
+```swift
+.task {
+    await viewModel.subscribe()
+}
+```
+
+Finally we swapped out the in memory implmentation for a core data implmentation and saw that the app persisted and then looked a making everything synch across devices with CloudKit by adding two lines of code:
+
+```swift
+container = NSPersistentCloudKitContainer(name: "ManagedToDo")
+...
+context.automaticallyMergesChangesFromParent = true
+```
+
 
 ## 2021.11.27
 
