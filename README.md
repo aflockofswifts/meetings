@@ -4,20 +4,27 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2021.12.04
+## 2021.12.18
 
-Join us next Saturday:
+Last meeting of the year!  See you on 2022.01.08
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+## 2021.12.11
+
+Join us today:
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
-## 2021.11.27
+
+## 2021.12.04
 
 ### Cloudkit + Coredata
 
 Josh showed his Cloudkit + Coredata example: https://github.com/joshuajhomann/Todo
 
-We discussed creating a contract with `async` functions to allow implmentation with an `actor` using the standard database CRUD operations + a subscription.  Josh noted that for the subscription you reallyw ant a query function that can return a stream for earch query.  See the previous DatabaseFacade project from a prior meetup for reference.
+We discussed creating a contract with `async` functions to allow implmentation with an `actor` using the standard database CRUD operations + a subscription.  Josh noted that for the subscription you really want a query function that can return a stream for earch query.  See the previous DatabaseFacade project from a prior meetup for reference.
 
 ```swift
 protocol StorageServiceProtocol {
