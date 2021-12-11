@@ -12,9 +12,74 @@ Last meeting of the year!  See you on 2022.01.08
 
 ## 2021.12.11
 
-Join us today:
+### Preparing for Swift 6
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+Josh discussed the transition from Swift 5.5 to 6 and this forum post from Doug Gregor:
+
+https://forums.swift.org/t/concurrency-in-swift-5-and-6/49337
+
+Also a good resource to read:
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md
+
+
+Franklin shared this Tweet from Ole Begemann about using flags to check current code:
+
+https://twitter.com/olebegemann/status/1421144304127463427?s=20
+
+
+### Identified Collections
+
+Ray talked about pointfree identified collections and how it can be used for lists of things: https://swiftpackageindex.com/pointfreeco/swift-identified-collections
+
+
+We played around with some sample code:
+
+```swift
+import SwiftUI
+import IdentifiedCollections
+
+struct Todo: Identifiable {
+  var id: UUID
+  var name: String
+  var isCompleted: Bool
+}
+
+final class ViewModel: ObservableObject {
+  @Published var items: IdentifiedArrayOf<Todo>
+  
+  init(count: Int) {
+    self.items = IdentifiedArrayOf<Todo>(uniqueElements:
+      (1...count).map {
+        Todo(id: UUID(), name: "Item \($0)", isCompleted: .random())
+      })
+  }
+  
+  func toggleComplete(id: UUID) {
+    items[id: id]?.isCompleted.toggle()
+    print("ITEM \(items[id: id]!)")
+  }
+}
+
+struct ContentView: View {
+  @StateObject var viewModel = ViewModel(count: 1000)
+
+  var body: some View {
+    List(viewModel.items) { item in
+      HStack {
+        Text(item.name)
+        Toggle(item.isCompleted ? "Completed" : "Incomplete", isOn: .init(
+          get: { item.isCompleted },
+          set: { _ in viewModel.toggleComplete(id: item.id)}
+        )
+        ).toggleStyle(.button)
+      }
+    }    
+  }
+}
+```
+
+### Streams
 
 ---
 
