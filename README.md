@@ -27,6 +27,11 @@ Franklin shared this Tweet from Ole Begemann about using flags to check current 
 
 https://twitter.com/olebegemann/status/1421144304127463427?s=20
 
+Elliot asked about learning swiftUI:
+Emily suggested the Apple tutorials: https://developer.apple.com/tutorials/swiftui
+Carlyn suggested hacking with Swift: https://www.hackingwithswift.com
+Josh suggests the Standford CS193P course: https://cs193p.sites.stanford.edu
+
 
 ### Identified Collections
 
@@ -80,6 +85,195 @@ struct ContentView: View {
 ```
 
 ### Streams
+Josh discussed some of the pitfalls of streams:
+1. The default constructor buffers with unlimited elements, which can yield expensive and perhaps surprising behavior:
+```swift
+extension AsyncStream {
+    static func pipe() -> ((Element) -> Void, Self) {
+        var input: (Element) -> Void = { _ in }
+        let output = Self { continuation in
+            input = { element in
+                continuation.yield(element)
+            }
+        }
+        return (input, output)
+    }
+}
+
+let (input, values) = AsyncStream<Int>.pipe()
+
+(0..<3).forEach(input)
+let copy = values
+Task {
+    for await value in values {
+        print(value)
+    }
+}
+input(3)
+```
+We can fix this by using the intiaizer that takes in an explict number of elements to buffer:
+```swift
+extension AsyncStream {
+    static func pipe() -> ((Element) -> Void, Self) {
+        var input: (Element) -> Void = { _ in }
+        let output = Self(Element.self, bufferingPolicy: .bufferingNewest(0)) { continuation in
+            input = { element in
+                continuation.yield(element)
+            }
+        }
+        return (input, output)
+    }
+}
+
+let (input, values) = AsyncStream<Int>.pipe()
+
+(0..<3).forEach(input)
+let copy = values
+Task {
+    for await value in values {
+        print(value)
+    }
+}
+input(3)
+```
+2. Streams caannot currently be shared by more than one subscriber (even if you copy them).  To get around this, use a subject and its `.values` property to create a new sequence for each subscriber.
+
+### Streams in propertywrappers
+
+We made a `DyanamicPropery` `@StreamState` that updates its view whenever it is changed and that has a `projectedValue` that is a stream:
+```swift
+extension AsyncStream {
+    static func pipe() -> ((Element) -> Void, Self) {
+        var input: (Element) -> Void = { _ in }
+        let output = Self { continuation in
+            input = { element in
+                continuation.yield(element)
+            }
+        }
+        return (input, output)
+    }
+}
+@propertyWrapper
+struct StreamedState<Value>: DynamicProperty {
+    final class Projection: ObservableObject {
+        let (input, output) = AsyncStream<Value>.pipe()
+        var objectWillChange: ObservableObjectPublisher?
+        var value: Value {
+            willSet {
+                objectWillChange?.send()
+                input(newValue)
+            }
+        }
+        init(value: Value) {
+            self.value = value
+        }
+    }
+    @StateObject var projection: Projection
+    var wrappedValue: Value {
+        get { projection.value }
+        nonmutating set { projection.value = newValue }
+    }
+    var projectedValue: AsyncStream<Value> {
+        projection.output
+    }
+    init(wrappedValue: Value) {
+        let projection = Projection(value: wrappedValue)
+        _projection = .init(wrappedValue: projection)
+    }
+}
+```
+With a few modifications, we removed the `DynamicProperty` conformance and replaced it with an explicit `ObjectWillChange` publisher to make this property wrapper usable in a viewmodel:
+```swift
+
+@propertyWrapper
+struct Streamed<Value>: Publishable {
+    final class Projection {
+        let (input, output) = AsyncStream<Value>.pipe()
+        var objectWillChange: ObservableObjectPublisher?
+        var value: Value {
+            willSet {
+                objectWillChange?.send()
+                input(newValue)
+            }
+        }
+        init(value: Value) {
+            self.value = value
+        }
+    }
+    var projection: Projection
+    var wrappedValue: Value {
+        get { projection.value }
+        nonmutating set { projection.value = newValue }
+    }
+    var projectedValue: AsyncStream<Value> {
+        projection.output
+    }
+    var objectWillChange: ObservableObjectPublisher? {
+        get { projection.objectWillChange }
+        set { projection.objectWillChange = newValue }
+    }
+    init(wrappedValue: Value) {
+        projection = .init(value: wrappedValue)
+    }
+}
+```
+We used a protocol to all the viewmodel to subscribe to all of its propertywrappers with one line of code:
+```swift
+
+protocol Publishable {
+    var objectWillChange: ObservableObjectPublisher? { get set }
+}
+
+protocol ObservesPublishableChildren {
+    func beginObservingChildren()
+}
+extension ObservesPublishableChildren where Self: ObservableObject, Self.ObjectWillChangePublisher == ObservableObjectPublisher  {
+    func beginObservingChildren() {
+        for var publishable in Mirror(reflecting: self).children.compactMap({ $0.value as? Publishable }) {
+            publishable.objectWillChange = objectWillChange
+        }
+    }
+}
+```
+Finally we used these property wrappers to make a functional view model that pipes in the inputs from its view as a stream instead of calling functions:
+```swift
+@MainActor
+final class ViewModel: ObservableObject, ObservesPublishableChildren {
+    @Streamed var doubled: Int = 0
+    @Streamed var tripled: Int = 0
+    init() {
+        beginObservingChildren()
+    }
+    func callAsFunction(values: AsyncStream<Int>) async {
+        for await value in values {
+            doubled = value * value
+            tripled = value * value * value
+        }
+    }
+}
+
+struct ContentView: View {
+    @StateObject private var viewModel: ViewModel = .init()
+    @StreamedState private var value = 0
+    var body: some View {
+        VStack {
+            Stepper("Value: \(value)") {
+                value += 1
+            } onDecrement: {
+                value -= 1
+            }
+            Text("Doubled: \(viewModel.doubled)")
+            Text("Tripled: \(viewModel.tripled)")
+        }
+            .padding()
+            .task {
+                await viewModel.callAsFunction(values: $value)
+            }
+    }
+}
+```
+
+
 
 ---
 
