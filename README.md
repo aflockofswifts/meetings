@@ -6,9 +6,35 @@ All people and all skill levels are welcome to join.
 
 ## 2021.12.18
 
-Last meeting of the year!  See you on 2022.01.08
+Last meeting of the year!  Most of the meeting we spent in review.  Manu @stuffmc talked about the new Swift playgrounds.  It is an exciting new platform that brings app building to a much wider market.
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+Apple has a new series of sample apps.
+
+- https://developer.apple.com/tutorials/sample-apps
+
+Apple has a curriculum. These tend to lag behind the tools by a release or two.
+
+- https://books.apple.com/de/book/develop-in-swift-fundamentals/id1556365994?l=en
+- https://books.apple.com/de/book/develop-in-swift-data-collections/id1556365920?l=en
+- https://books.apple.com/de/book/develop-in-swift-explorations/id1556366287?l=en
+
+
+Also, Manu @stuffmc says to check his repos:
+
+- https://github.com/stuffmc
+- https://gitlab.com/stuffmc
+
+Of particular interest: Xcode 13.2 or iPad / Swift Playground 4.0: https://gitlab.com/stuffmc/MapSwiftUI.swiftpm
+
+Version control on the iPad?  Try this app:
+
+https://workingcopyapp.com/
+
+
+### Reactive programming
+
+Josh gave us a little bit of history about reactive programming.  `view = ƒ(state)`  We will talk more about this next year.  See you in 2022!
+
 
 ## 2021.12.11
 
