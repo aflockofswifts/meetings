@@ -23,7 +23,7 @@ Here is the [acceptance announcement with modifications](https://forums.swift.or
 
 Ray guided a summary discussion on Joe Groff's forum post about expected improvements to the ARC programming model and performance predictability.  The original post is here: [https://forums.swift.org/](https://forums.swift.org/t/a-roadmap-for-improving-swift-performance-predictability-arc-improvements-and-ownership-control/54206)
 
-The walk-through presentation is here: (materials/PerformanceRoadmapPitchSummary.pdf)
+The walk-through presentation [PerformanceRoadmapPitchSummary](materials/PerformanceRoadmapPitchSummary.pdf).
 
 
 ### Modern SwiftUI Magic
