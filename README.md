@@ -30,9 +30,11 @@ The walk-through presentation [PerformanceRoadmapPitchSummary](materials/Perform
 
 Josh revisited an old SwiftUI project (searching cards from the game Magic) from years ago and looked to modernize it.  Some things we did:
 
-- Use `AsyncImage`
-- Use `LazyVGrid` inside a `ScrollView`
-- Use `searchable` view modifier (inside a `NavigationView`)
+- Use `AsyncImage` removing an entire package dependency.
+- Use `LazyVGrid` inside a `ScrollView` instead of `List`
+- Use `searchable` view modifier (inside a `NavigationView`) instead of doing something custom.
+
+These changes make the user interface look great on different size devices including iPads and Macs.
 
 The original repo is here: https://github.com/joshuajhomann/Magic-Browser-SwiftUI
 
