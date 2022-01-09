@@ -25,6 +25,16 @@ Ray guided a summary discussion on Joe Groff's forum post about expected improve
 
 The walk-through presentation [PerformanceRoadmapPitchSummary](materials/PerformanceRoadmapPitchSummary.pdf).
 
+### Privacy and App Submission
+
+When you are submitting an app, you need to worry about third party dependencies (such as analytics and crash reporters) that phone home.  You need to include those privacy policies in your submission.
+
+You might wish to check your app using a proxy such as Charles or proxyman.
+ https://proxyman.io
+
+Manu wrote a book about privacy for app developers
+ https://link.springer.com/book/10.1007/978-1-4842-4291-9 
+
 
 ### Modern SwiftUI Magic
 
