@@ -4,9 +4,19 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.01.15
+## 2022.01.22
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+
+--
+
+## 2022.01.15
+
+### Converting Combine to AsyncStream
+
+Continuing the example from last week, Josh converted the Magic app over to use async/await instead of a combine publisher.  We could then compare and contrast the strenths and weaknesses of each approach.  async/await has a much more imperative feel.  For example `debounce` is a combine publisher and switching to latest. By contast, this works out to be a `Task.sleep(nanoseconds:)` and a cancel in the async await code.
+
 
 ## 2022.01.08
 
