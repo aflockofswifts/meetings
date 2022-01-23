@@ -4,9 +4,104 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.01.22
+## 2022.01.29
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.01.22
+
+### Security Vulerability in Safari?
+
+Bill was wondering about a recent vulnerability in Safari.  John Brewer shared the following link: https://arstechnica.com/information-technology/2022/01/safari-and-ios-bug-reveals-your-browsing-activity-and-id-in-real-time/
+
+### iOS 15 Adoption
+
+The age old question of what versions of iOS to support. If you are making a new app, you should strongly consider supporting only the latest OS. The decision should be guided by the specific audience however.
+
+Some related links:
+
+- https://www.macrumors.com/2022/01/13/ios-15-installation-rates/
+- https://mixpanel.com/trends/#report/ios_15
+
+### Becoming an Expert
+
+This question comes up from time to time. Here are some suggestions in no particular order (Google for links):
+
+- Attend these meetings and ask questions
+- Pick a topic and learn everything you can about it - then present it!
+- Advanced Swift by objc.io
+- Functional Swift by objc.io
+- The Stanford iOS course, updated every year, now with SwiftUI
+- RayWenderlich.com
+- 100 days of Swift, Hacking with Swift
+- Read the Swift.org forums
+
+### Resistors!
+
+John Brewer showed us his app for reading resistors!
+
+https://ResistorVision.com
+
+
+### Canvas and TimelineView Demo
+
+Converting the ForceDirectedGraph app to use Canvas and TimelineView.
+
+We implemented the node drawing:
+
+```swift
+struct GraphView: View { 
+  @ObservedObject var viewModel: GraphViewModel
+
+  var body: some View {
+    TimelineView(.animation) { timeline in
+      Canvas { context, size in
+        viewModel.canvasSize = size
+        let _ = viewModel.updateSimulation()
+        print(timeline.date)
+        context.transform = viewModel.modelToView
+        
+        for node in viewModel.graph.nodes {
+          let ellipse = viewModel.modelRect(node: node)
+          context.fill(Path(ellipseIn: ellipse), with: .color(Palette.color(for: node.group)))
+        }
+      }
+    }
+  }
+}
+```
+
+These rely on transforms that are computed in the view model when the canvas dimensions are known:
+
+```swift
+  var canvasSize: CGSize = .zero {
+    didSet {
+      let minDimension = min(canvasSize.width, canvasSize.height)
+      
+      modelToView = CGAffineTransform.identity
+        .translatedBy(x: (canvasSize.width - minDimension) * 0.5,
+                      y: (canvasSize.height - minDimension) * 0.5)
+        .scaledBy(x: minDimension, y: minDimension)
+      viewToModel = modelToView.inverted()
+      
+    }
+  }
+```
+
+We need to make sure we are transformed into the correct spaces.
+
+
+```swift
+  func modelRect(node: Node) -> CGRect {
+    let inset = -Constant.nodeSize / (modelToView.a * 2)
+    return CGRect(origin: node.position, size: .zero)
+      .insetBy(dx: inset, dy: inset)
+  }
+```
+
+We will continue the discussion next week.
 
 ---
 
