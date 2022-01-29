@@ -4,9 +4,49 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.01.29
+## 2022.01.30
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.01.29
+
+I forgot to capture the zoom chat log this week.  Whoops.  Topics included:
+
+- Lots of new Versions of Swift coming (5.6, 5.7, ... 6.0)
+- Bumping versions, John showed that Xcode has a checkbox to automatically bump version numbers
+- Use a service layer with your MVVM
+- App code
+- Default View Models should be `@MainActor final class ObervableObject`
+- Don't use @Published outside of View Models, just use an `AnyPublisher` that you can recieve on the Main thread.
+- Snow in Boston
+
+### Reveal
+
+Rainer Standke demo'ed the Reveal app.  Works best with UIKit and requires a framework that presumably does a lot of swizzling to make it work.  It tends to be faster and more robust than the Xcode solution.
+
+### Force Directed Graph
+
+We implemented the link drawing and dragging methods today.
+
+```swift
+let links = Path { drawing in
+              for link in viewModel.linkSegments() {
+                drawing.move(to: link.0)
+                drawing.addLine(to: link.1)
+              }
+            }
+        
+context.stroke(links, with: .color(white: 0.9),
+               lineWidth: viewModel.linkWidthModel)
+```
+
+We talked about setting the transforms and being careful not to write to @Published from the canvas draw method. (It causes an assertion during rotation in this sample.)
+
+![Demo of Force Directed Graph](https://raw.githubusercontent.com/rayfix/ForceDirectedGraph/main/FDG.gif)
+
+A link to the repo: https://github.com/rayfix/ForceDirectedGraph
 
 ---
 
