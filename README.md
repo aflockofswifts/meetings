@@ -4,9 +4,141 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.02.05
+## 2022.02.12
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+### Possible Topics:
+
+- Continued work on database facade (actor, background context)
+- Combine
+- Unit testing publishers
+- TimelineView rendering
+
+---
+
+## 2022.02.05
+
+### Git and Git Ignore
+
+Xcode has git integration that lets you look at pull requests. John has a problem with pagination and can only list up to "i" in his list of 89 repos.
+
+Some other git clients:
+
+- https://git-tower.com (@stuffmc's client of choice)
+- https://gitup.co (Free, open source, works great on giant repos.)
+- Sublime Merge
+- Fork
+- p4merge
+- A text editor
+
+Length side discussion about how git ignore files are processed.  You can see what your global git settings are with `git config --global -l`
+
+Here is John's .gitignore for Xcode projects:
+
+https://github.com/jeradesign/0common/blob/main/gitignore_xcode_appcode
+
+
+### Reveal Followup
+
+Rainer followed up with what Reveal shows for a SwiftUI app using the Stanford University card game project. It might not be all that useful for debugging SwiftUI but is interesting because it lets you see some of the private implementation.
+
+### Programmatically controlling `UIScrollView`
+
+You are probably better off not swizzling the implementation but using the gesture recognizer delegate to resolve conflicts.
+
+https://developer.apple.com/documentation/uikit/uigesturerecognizerdelegate
+
+
+### AttributedString
+
+New in iOS 15 there is an attributed string class that you should know about.
+
+Check out: https://developer.apple.com/documentation/foundation/attributedstring
+
+The markdown interpreter that it supports is here: https://developer.apple.com/documentation/foundation/attributedstring/markdownparsingoptions/interpretedsyntax
+
+
+Aside. A cool markdown program is MacDown: https://macdown.uranusjr.com  (It is free, open source MIT.)
+
+
+### Hacking Database Facade
+
+Ray forked Josh's Database Facade project with an alternative (but very reusable?) approach. It has the big downside that it requires the client of the service to think about the lifetime of the watcher object rather than the service worrying about it.  We started converting the service to an actor.  We made it part of the way but it is finished in the forked version of the repo.  The fork can be found here: https://github.com/rayfix/DatabaseFacade
+
+Here is the basic idea WatchValues type:
+
+```swift
+import CoreData
+import Combine
+
+// Protocol to let you turn core data types into value types.
+protocol ValueTypeConvertable {
+  associatedtype ValueType
+  func valueType() throws -> ValueType
+}
+
+// A private fetched results controller delegate that can publish
+private final class FetchEngine<ValueType, CoreDataType>: NSObject, NSFetchedResultsControllerDelegate where CoreDataType: ValueTypeConvertable, CoreDataType.ValueType == ValueType
+{
+  private let controller: NSFetchedResultsController<NSFetchRequestResult>
+  weak var target: WatchedCoreDataValues<ValueType, CoreDataType>?
+  
+  init(fetchRequest: NSFetchRequest<NSFetchRequestResult>, context: NSManagedObjectContext) {
+    controller = NSFetchedResultsController<NSFetchRequestResult>(fetchRequest: fetchRequest,
+                                                                  managedObjectContext: context,
+                                                                  sectionNameKeyPath: nil,
+                                                                  cacheName: nil)
+    super.init()
+  }
+  
+  func start(target: WatchedCoreDataValues<ValueType, CoreDataType>) {
+    self.target = target
+    controller.delegate = self
+    try? controller.performFetch()
+  }
+
+  private func transform(_ objects: [NSFetchRequestResult]) -> [ValueType] {
+    return objects
+      .compactMap { $0 as? CoreDataType }
+      .compactMap { try? $0.valueType() }
+  }
+  
+  fileprivate
+  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    guard let objects = controller.fetchedObjects else { return }
+    target?.results.send(transform(objects))
+  }
+  
+  func initialValues() -> [ValueType] {
+    guard let results = try? controller.managedObjectContext.fetch(controller.fetchRequest) else {
+      return []
+    }
+    return transform(results)
+  }
+}
+
+final class WatchedCoreDataValues<ValueType, CoreDataType>: ObservableObject
+  where CoreDataType: ValueTypeConvertable, CoreDataType.ValueType == ValueType
+{
+  var publisher: AnyPublisher<[ValueType], Never> {
+    return results
+      .prepend(fetcher.initialValues())
+      .eraseToAnyPublisher()
+  }
+  
+  fileprivate let results = PassthroughSubject<[ValueType], Never>()
+  
+  private let fetcher: FetchEngine<ValueType, CoreDataType>
+  init(fetchRequest: NSFetchRequest<NSFetchRequestResult>, context: NSManagedObjectContext) {
+    fetcher = FetchEngine(fetchRequest: fetchRequest, context: context)
+    fetcher.start(target: self)
+  }
+}
+```
+
+Having to main
+
 
 ---
 
