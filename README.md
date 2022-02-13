@@ -4,16 +4,46 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.02.12
+
+## 2022.02.19
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
-### Possible Topics:
+### Possible topics:
 
-- Continued work on database facade (actor, background context)
-- Combine
 - Unit testing publishers
-- TimelineView rendering
+- Timeline animations
+- Your questions
+
+## 2022.02.12
+
+### App Privacy
+
+Discussion about app privacy and how there is now an option to turn on URL logging for apps under settings :: general :: privacy down at the bottom.  You can also use a proxy to get at the urls and inspect the data.
+
+Proxies:
+
+- https://www.charlesproxy.com
+- https://proxyman.io
+
+
+Discussion about parental IT. Remote desktop via Facetime FTW.
+
+### Core Data and Testing
+
+Continued work on https://github.com/rayfix/DatabaseFacade  What we coded live is committed there.
+
+Things we covered:
+
+- actor basics
+- The cost of making an actor conform to a protocol
+- Type safe fetch requests
+- Managing fetch request controller lifetimes
+- Debugging concurrency issues with `-com.apple.CoreData.ConcurrencyDebug 1`
+- Writing unit tests
+- Making persistent stores in-memory containers
+- Unit testing core data
+
 
 ---
 
