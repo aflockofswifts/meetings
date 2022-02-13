@@ -307,7 +307,7 @@ We will continue the discussion next week.
 
 ---
 
-## 2022.01.15
+## [2022.01.15](2022.01.15)
 
 ### Converting Combine to async/await
 
@@ -315,7 +315,7 @@ Continuing the example from last week, Josh converted the Magic app over to use 
 
 ---
 
-## 2022.01.08
+## [2022.01.08](2022-01-08)
 
 Happy New Year!  It was a first meeting of the year lots of people turned out.
 
