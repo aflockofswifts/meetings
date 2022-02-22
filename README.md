@@ -4,16 +4,27 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-
-## 2022.02.19
+## 2022.02.26
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
-### Possible topics:
+## 2022.02.19
 
-- Unit testing publishers
-- Timeline animations
-- Your questions
+### Rendering to pdf and printers
+We discussed printing to pdf and printer contexts using:
+* UIGraphicsPDFRendererContext: https://developer.apple.com/documentation/uikit/uigraphicspdfrenderercontext
+* UIPrintPageRenderer: https://developer.apple.com/documentation/uikit/uiprintpagerenderer
+* UIPrinterPickerController: https://developer.apple.com/documentation/uikit/uiprinterpickercontroller
+
+### Leveling
+We discussed leveling and compensation:
+* https://medium.com/building-carta/engineering-levels-at-carta-d33db2a55a20
+* www.levels.fyi
+* https://www.amazon.com/dp/B08RMSHYGG
+* https://staffeng.com
+
+### Declarative Tests
+Josh presented a project showing declarative testing: https://github.com/joshuajhomann/DeclarativeTests
 
 ## 2022.02.12
 
