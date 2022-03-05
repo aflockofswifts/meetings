@@ -4,9 +4,139 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.02.26
+## 2022.03.12
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+## 2022.03.05
+
+More followup discussion of the coordinator pattern and deep linking. 
+
+### FileAccess Protocol and Actors
+
+Put file access behind an abstraction:
+
+```swift
+protocol FileAccess {
+    func write(path: [String], data: Data) async throws
+    func read(path: [String]) async throws -> Data
+    func move(source: [String], destination: [String]) async throws
+    func copy(source: [String], destination: [String]) async throws
+    func enumerate(path: [String]) async throws -> AsyncStream<String>
+    func delete(path: [String]) async throws
+    func exists(path: [String]) async throws -> Bool
+    func createDirectory(path: [String]) async throws
+}
+```
+
+Then we can implement a concrete type:
+
+```swift
+actor NativeFileAccess: FileAccess {
+  
+  enum Error: Swift.Error {
+    case couldNotEnumerate(String)
+  }
+  
+  
+  let root: URL
+  
+  init() {
+    let path =
+    NSSearchPathForDirectoriesInDomains(.documentDirectory,
+                                        .userDomainMask, true)[0]
+    root = URL(fileURLWithPath: path)
+  }
+  
+  func write(path: [String], data: Data) async throws {
+    try await Task {
+      try data.write(to: root.appending(components: path))
+    }.value
+  }
+  
+  func read(path: [String]) async throws -> Data {
+    try await Task {
+      try Data(contentsOf: root.appending(components: path))
+    }.value
+  }
+  
+  func enumerate(path: [String]) async throws -> AsyncStream<String> {
+    let location = root.appending(components: path)
+    guard let enumerator = FileManager.default.enumerator(atPath: location.path) else {
+      throw Error.couldNotEnumerate(location.absoluteString)
+    }
+    return AsyncStream(String.self) { continuation in
+      Task {
+        for element in enumerator {
+          guard let nsString =  element as? NSString else { continue }
+          let file = String(nsString)
+          continuation.yield(file)
+        }
+        continuation.finish()
+      }
+    }
+  }
+}
+
+private extension URL {
+  func appending(components: [String]) -> URL {
+    components.reduce(self) { $0.appendingPathComponent($1) }
+  }
+}
+```
+
+And it can be tested:
+
+```swift
+import XCTest
+@testable import FileAccess
+
+class FileAccessTests: XCTestCase {
+
+  func checkThrows(method: () async throws -> Void) async {
+    do {
+      try await method()
+    } catch {
+      XCTFail("method throws")
+    }
+  }
+
+  func testRoundTrip() async throws {
+    
+    let fileAccess = NativeFileAccess()
+    
+    let payload = try XCTUnwrap("Hello".data(using: .utf8))
+    try await fileAccess.write(path: ["hello.txt"], data: payload)
+    let readback = try await fileAccess.read(path: ["hello.txt"])
+    XCTAssertEqual(readback, payload)
+        
+    await checkThrows {
+     try await fileAccess.write(path: ["..", "..", "hello.txt"], data: payload)
+    }
+    
+    // Alternate approach
+    let r = await Task { try await fileAccess.read(path: ["nope.txt"]) }.result
+    XCTAssertThrowsError(try r.get())
+        
+    let files = try await fileAccess.enumerate(path: []).reduce(into: []) { $0.append($1) }
+    XCTAssertEqual(["hello.txt"], files)
+  }
+}
+```
+
+### Unsafe Pointers
+
+Josh gave a quick demo of unsafe pointers and unsafe buffer pointers.
+
+---
+
+## 2022.02.26
+
+We talked about a variety of topics including app navigation, deep linking and coordinators.
+
+Rainer gave a demo of UIKit debugging tool called chisel by Facebook.
+
+---
 
 ## 2022.02.19
 
