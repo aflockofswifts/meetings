@@ -59,6 +59,35 @@ All people and all skill levels are welcome to join.
         try assert(value)
     }
   ```
+  * We didn't make it to the final one line version, but its listed here:
+  ```swift
+  func a() async throws -> Bool {
+    true
+  }
+
+  class Tests_macOS: XCTestCase {
+      func testA() async throws {
+          try await assertTrue(eventually: a)
+      }
+  }
+
+  func assertTrue(
+      eventually operation: () async throws -> Bool,
+      _ message: @autoclosure () -> String = "",
+      file: StaticString = #filePath,
+      line: UInt = #line
+  ) async throws {
+      try await after(operation, assert: { XCTAssertTrue($0, message(), file: file, line: line)})
+  }
+
+  func after<Value>(
+      _ operation: () async throws -> Value,
+      assert: (Value) throws -> Void
+  ) async rethrows -> Void {
+      let value = try await operation()
+      try assert(value)
+  }
+  ```
 
 ## 2022.03.05
 
