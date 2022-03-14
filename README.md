@@ -4,9 +4,61 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.03.12
+## 2022.03.19
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+- 
+## 2022.03.12
+
+* We discussed use of the `@MainActor` tag for functions and closures as well as the `MainActor` singleton.
+## Autoclosures
+  * We revisited why you cannot write `XCTAssertTrue(await someAsyncFunction())
+  * We looked at the signature for XCTAssertTrue:
+  ```swift
+  public func XCTAssertTrue(_ expression: @autoclosure () throws -> Bool, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line)
+  ```
+  * We discussed what an `@autoclosure` is and why we would want to use one by looking by making an analog of the `??` operator:
+  ```swift
+    infix operator ?!
+
+    func ?!<Value>(_ lhs: Value?, rhs: Value) -> Value {
+        guard let lhs = lhs else { return rhs }
+        return lhs
+    }
+  ```
+  * We saw that the purpose of `@autoclosure` to is to defer expensive work (and possibly only perform it under certain conditions).  We saw that `XCTAssertTrue` wants to capture the error for its `@autoclosure` and reasoned that this is why the function is written with an `@autoclosure`
+  * We then wrote a function with `Result` to solve the `@autoclosure` problem:
+  ```swift
+  extension Result where Failure == Error {
+    init(awaiting operation: () async throws -> Success) async {
+        do {
+            self = .success(try await operation())
+        } catch {
+            self = .failure(error)
+        }
+    }
+  }
+  ```
+  * we looked at a more declarative solution:
+  ```swift
+    class Tests_macOS: XCTestCase {
+
+        func testA() async throws {
+            try await
+                after { try await a() }
+                assert: { XCTAssertTrue($0) }
+        }
+
+    }
+
+    func after<Value>(
+        _ operation: () async throws -> Value,
+        assert: (Value) throws -> Void
+    ) async rethrows -> Void {
+        let value = try await operation()
+        try assert(value)
+    }
+  ```
 
 ## 2022.03.05
 
