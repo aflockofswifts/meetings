@@ -7,11 +7,11 @@ All people and all skill levels are welcome to join.
 ## 2022.03.19
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
-- 
+
 ## 2022.03.12
 
 * We discussed use of the `@MainActor` tag for functions and closures as well as the `MainActor` singleton.
-## Autoclosures
+### Autoclosures
   * We revisited why you cannot write `XCTAssertTrue(await someAsyncFunction())
   * We looked at the signature for XCTAssertTrue:
   ```swift
