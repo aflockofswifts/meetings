@@ -4,9 +4,68 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.03.19
+## 2022.03.26
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.03.19
+
+### Swift 5.6
+
+We discussed the features in Swift 5.6 in Xcode 13.3.
+
+https://www.swift.org/blog/swift-5.6-released/
+
+
+- Another way to think about `any` is "box" because it make explicit there is a boxing cost to using protocols as a "base-class".
+
+We talked about method dispatch.
+https://blog.allegro.tech/2014/12/swift-method-dispatching.html
+
+
+### Swift 5.7 and beyond
+
+Proposals we focus on include improvements `some` and `any`. We also looked at the syntax shortening proposal for `if let name = name {}` to `if let name {}` 
+
+### Implementing Search
+
+Caleb was looking for some advice about how to speed up his fuzzy search performance.
+
+```swift
+final class CardSearchViewModel: ObservableObject {
+    @Published var searchTerm: String = ""
+    @Published private(set) var cards: [Card] = []
+    init(
+        cardSearchService: CardSearchServiceProtocol = CardSearchService()
+    ) {
+
+        $searchTerm
+            .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
+            .receive(on: DispatchQueue.global(qos: .userInitiated))
+            .removeDuplicates()
+            .map { searchTerm -> AnyPublisher<[MagicCard], Never> in
+                searchTerm.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                ? Just([]).eraseToAnyPublisher()
+                : cardSearchService
+                    .search(query: searchTerm)
+                    .replaceError(with: [])
+                    .eraseToAnyPublisher()
+            }
+            .switchToLatest()
+            .map { $0.map(Card.init(magicCard:)) }
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$cards)
+    }
+}
+```
+
+Manu mentioned: Premature optimization is the Root of Evil 
+https://okaleniuk.medium.com/premature-optimization-is-the-root-of-all-evil-is-the-root-of-evil-a8ab8056c6b
+
+
+---
 
 ## 2022.03.12
 
