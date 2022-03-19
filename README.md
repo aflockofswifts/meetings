@@ -33,6 +33,15 @@ Proposals we focus on include improvements `some` and `any`. We also looked at t
 
 Caleb was looking for some advice about how to speed up his fuzzy search performance.
 
+Several suggestions:
+
+  - Put the work on a background task
+  - Do transformation of the data model early and cache it
+  - Reverse the order of the loop
+  - Look into other approaches such as RegEx, computing Levenshtein distance, etc
+
+Here is a FRP example of solving the problem.
+
 ```swift
 final class CardSearchViewModel: ObservableObject {
     @Published var searchTerm: String = ""
@@ -62,7 +71,8 @@ final class CardSearchViewModel: ObservableObject {
 ```
 
 Manu mentioned: Premature optimization is the Root of Evil 
-https://okaleniuk.medium.com/premature-optimization-is-the-root-of-all-evil-is-the-root-of-evil-a8ab8056c6b
+
+   - https://okaleniuk.medium.com/premature-optimization-is-the-root-of-all-evil-is-the-root-of-evil-a8ab8056c6b
 
 
 ---
