@@ -4,9 +4,60 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.03.26
+
+## 2022.04.02
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.03.26
+
+### CI Servers and Security
+
+We began today talking about CI servers and automatically publishing to test flight.  If you are in a large organization you have to be careful about sharing keys to the app store API because it could allow anyone (including former employees) to publish or remove apps from the app store.  Carl suggested that you might want to do CI as an automated process but leave app publishing up to a human who has special access to the keys.
+
+### Group Activity Sharing
+
+Ed gave a demo of an app he is making that uses group activity sharing.  He found out about it with this tweet:
+
+https://mobile.twitter.com/imryanw/status/1486815964251320321
+
+
+There is some documentation here:
+
+https://developer.apple.com/documentation/groupactivities/groupactivitysharingcontroller
+
+We talked about message passing to keep shared apps in sync.  Josh pointed out that this is a real strength of a unidirectional redux architecture where state can be be derived by an initial value and a list of every subsequent change.
+
+### Async Sequence Library
+
+Peter alerted us to a new Apple Swift library for Async Sequences that provides much of the Combine functionality:
+
+https://www.swift.org/blog/swift-async-algorithms/
+
+
+Josh notes that sharing a sequence (like combine does) still seems to be an issue that is not addressed.
+
+### Build Partial Block Proposal 0348
+
+Josh took us on a tour of a new proposal:
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0348-buildpartialblock.md
+
+Accepting this proposal would solve the "you can only have 10 subviews in a container view" in SwiftUI problem. It could also be used for other domain specific languages (DSLs) such as RegEx or HTML or specifying neural network architectures.
+
+This talk at WWDC21 about making DSLs with result builders:
+
+https://developer.apple.com/videos/play/wwdc2021/10253/
+
+
+The thing that I really like about Becca's talk is how she uses compiler generated messages as a todo list for adding new functionality.  Brilliant.
+
+Josh has demo'ed making result builders in the past:
+
+https://github.com/joshuajhomann/AttributedStringBuilder
+<img src="https://github.com/joshuajhomann/AttributedStringBuilder/blob/master/preview.png?raw=true" width="140" alt="Preview">
 
 ---
 
