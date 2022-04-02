@@ -5,9 +5,99 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join. 
 
 
-## 2022.04.02
+## 2022.04.09
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.04.02
+
+### Update
+
+Bill suggests to update to 15.4.1 ASAP.
+
+https://www.engadget.com/apples-ios-mac-os-update-patches-two-zero-day-vulnerabilities-094010389.html
+
+
+### Practicing for Interviews
+
+Don't panic, reason through the problem and pay attention to 
+
+John Brewer recommends "Cracking the Code Interview"
+
+- https://leetcode.com
+
+- https://www.hackerrank.com
+
+### Accessiblity
+
+Lots of insights and discussion about Bluetooth and Telephony from Carlyn.
+
+Also:
+
+https://www.ablenetinc.com/switches/all-switches/
+
+### Learn about Modern Collection Views
+
+This app shows a bunch of different layouts (including table-like) layouts.
+
+- https://developer.apple.com/documentation/uikit/views_and_controls/collection_views/implementing_modern_collection_views
+
+
+### Ed Arenberg's app is in public beta
+
+- https://testflight.apple.com/join/siw7LAin
+
+There is a large wordset community. After getting a good dataset he wrote a bunch of quick lookup functions.
+
+Franklin suggested using the airport community if he is looking for a wider audience.
+
+### Tries
+
+```swift
+//
+//  PrefixTree.swift
+//  Boggle-SwiftUI
+//
+//  Created by Joshua Homann on 12/13/19.
+//  Copyright © 2019 Joshua Homann. All rights reserved.
+//
+import Foundation
+
+final class PrefixTree<SomeCollection: RangeReplaceableCollection> where SomeCollection.Element: Hashable  {
+  typealias Element = SomeCollection.Element
+
+  private var children: [Element: Self]
+  private var isTerminal: Bool = false
+
+  required init() {
+    self.children = [:]
+  }
+
+  init(elements: [SomeCollection]) {
+    self.children = [:]
+    elements.forEach { self.insert($0) }
+  }
+
+  func insert(_ collection: SomeCollection) {
+    let terminalNode = collection.reduce(into: self) { node, element in
+      let child = node.children[element, default: Self()]
+      node.children[element] = child
+      node = child
+    }
+    terminalNode.isTerminal = true
+  }
+
+  func contains(_ collection: SomeCollection) -> Bool {
+    collection.reduce(into: self, { $0 = $0?.children[$1]})?.isTerminal == true
+  }
+
+  func contains(prefix: SomeCollection) -> Bool {
+    return prefix.reduce(into: self, { $0 = $0?.children[$1]}) != nil
+  }
+}
+```
 
 ---
 
@@ -58,6 +148,43 @@ Josh has demo'ed making result builders in the past:
 
 https://github.com/joshuajhomann/AttributedStringBuilder
 <img src="https://github.com/joshuajhomann/AttributedStringBuilder/blob/master/preview.png?raw=true" width="140" alt="Preview">
+
+
+### Result Builder Snippet
+
+```swift
+@resultBuilder
+struct <#Name#>Builder {
+    typealias Expression = <#Expression#>
+    typealias Component = <#Component#>
+    typealias FinalResult = <#FinalResult#>
+
+    static func buildBlock(_ components: Component...) -> Component {
+        buildArray(components)
+    }
+    static func buildExpression(_ expression: Expression) -> Component {
+
+    }
+    static func buildOptional(_ component: Component?) -> Component {
+        component ?? <#empty#>
+    }
+    static func buildEither(first component: Component) -> Component {
+        component
+    }
+    static func buildEither(second component: Component) -> Component {
+        component
+    }
+    static func buildArray(_ components: [Component]) -> Component {
+
+    }
+    static func buildLimitedAvailability(_ component: Component) -> Component {
+        component
+    }
+    static func buildFinalResult(_ component: Component) -> FinalResult {
+
+    }
+}
+```
 
 ---
 
