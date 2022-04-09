@@ -4,10 +4,154 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
+## 2022.04.16
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
 
 ## 2022.04.09
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+### WWDC Announced
+
+Apple announced an all online meeting from June 6-10 along with an limited Apple Park June 6th event for developers and students.
+
+### Transitions and Forms
+
+Joe is working on a SwiftUI app that has a bunch of form views that want to slide back and forth. His initial version used the `AnyTransition` view to accomplish transitions. The `.move` transition only moves about halfway and using combined lets you get something that looks like a full transition.
+
+```swift
+enum MoveDirection {
+  case normal
+  case undo
+  
+  var intent: AnyTransition {
+    switch self {
+    case .normal:
+      return AnyTransition.asymmetric(
+        insertion: AnyTransition.move(edge: .trailing)
+          .combined(with: .move(edge: .trailing)),
+        removal: AnyTransition.move(edge: .leading)
+          .combined(with: .move(edge: .leading)))
+      
+    case .undo:
+      return AnyTransition.asymmetric(
+        insertion: AnyTransition.move(edge: .leading)
+          .combined(with: .move(edge: .leading)),
+        removal: AnyTransition.move(edge: .trailing)
+          .combined(with: .move(edge: .trailing)))
+    }
+  }
+}
+```
+
+These transition can be used with the `.transition()` modifier.
+
+Josh noted that SwiftUI's `TabView` can be used with a style to make something very analogous to a page controller.  We worked through the example and it looks like this:
+
+```swift
+//
+//  ContentView.swift
+//
+//  Created by Joe Mestrovich on 3/6/22.
+//
+
+import SwiftUI
+
+struct ContentView: View {
+  @State var selectedForm = 0
+  
+  var body: some View {
+    VStack {
+      ZStack {
+        Rectangle()
+          .frame(maxWidth: .infinity, maxHeight: 200, alignment: .top)
+        
+        Text("This space intentionally left blank.")
+          .fontWeight(.bold)
+          .foregroundColor(.white)
+      }
+      
+      TabView(selection: $selectedForm) {
+        AnyForm(name: "A",
+                next: { selectedForm = 1 },
+                prev: nil ).tag(1)
+        AnyForm(name: "B",
+                next: { selectedForm = 2 },
+                prev: { selectedForm = 0 }).tag(1)
+        AnyForm(name: "C",
+                next: { selectedForm = 3 },
+                prev: { selectedForm = 1 }).tag(2)
+        AnyForm(name: "D",
+                next: nil,
+                prev: { selectedForm = 2 }).tag(3)
+      }
+      .tabViewStyle(.page(indexDisplayMode: .never))
+    }
+  }
+}
+
+struct AnyForm: View {
+  var name: String
+  var next: (() -> Void)?
+  var prev: (() -> Void)?
+
+  var body: some View {
+    ZStack {
+      Rectangle()
+        .cornerRadius(24)
+        .padding()      
+      VStack {
+        Spacer()        
+        Text(name)
+          .font(.largeTitle)
+          .fontWeight(.heavy)
+          .foregroundColor(.white)        
+        Spacer()        
+        Button {
+          withAnimation {
+            next?()
+          }
+        } label: {
+          Text("normal move")
+            .fontWeight(.bold)
+        }
+        .disabled(next == nil)
+        
+        Spacer()
+        
+        Button {
+          withAnimation {
+            prev?()
+          }
+        } label: {
+          Text("undo move")
+            .fontWeight(.bold)
+        }
+        .disabled(prev == nil)
+        Spacer()
+      }
+    }
+  }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+```
+
+### Match Three Game 
+
+Josh began building a match three game that he will continue on next week. Some points that he touched on:
+
+- View models should be @MainActor
+- You can use `typealias ViewModel = GameViewModel` to make a local `var viewModel: ViewModel` in your views.
+- Special care must be taken to initialize main actor view models that are declared with `@StateModel`
+- Property keys can be used to propogate layout information up the view hierarchy
+- It is easy to create custom coordinate spaces that you can use with a geometry reader to compute frames with.
+
 
 ---
 
