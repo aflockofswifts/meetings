@@ -149,10 +149,92 @@ Josh began building a match three game that he will continue on next week. Some 
 - View models should be @MainActor
 - You can use `typealias ViewModel = GameViewModel` to make a local `var viewModel: ViewModel` in your views.
 - Special care must be taken to initialize main actor view models that are declared with `@StateModel`
-- Property keys can be used to propogate layout information up the view hierarchy
+- Preference keys can be used to propogate layout information up the view hierarchy
 - It is easy to create custom coordinate spaces that you can use with a geometry reader to compute frames with.
 
+```swift
+import SwiftUI
 
+@MainActor
+final class GameViewModel: ObservableObject {
+    @Published private(set) var cells: [Cell] = []
+    struct Cell: Identifiable, Hashable {
+        let id: UUID = .init()
+        var position: Int
+        var x: Int { position % Constant.boardWidth }
+        var y: Int { position / Constant.boardWidth }
+        var content: Int = Constant.cellContents.indices.randomElement() ?? 0
+        var isMatched = false
+    }
+    enum Constant {
+        static let boardWidth = 8
+        static let boardHeight = 8
+        static var cellCount: Int { boardWidth * boardHeight }
+        static let adjacentOffsets: [[(Int, Int)]] = [
+            [(0, 1), (0, 0), (0, -1)],
+            [(1, 0), (0, 0), (-1, 0)],
+            [(-1, -1), (0, 0), (1, 1)],
+            [(-1, 1), (0, 0), (1, -1)]
+        ]
+        static let cellContents = ["suit.spade.fill", "circlebadge.fill", "flame.fill", "tag.circle.fill", "ladybug.fill", "face.dashed.fill"]
+        static let colors = [#colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1), #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1), #colorLiteral(red: 0.8623957038, green: 0.2169953585, blue: 1, alpha: 1), #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1), #colorLiteral(red: 1, green: 0.8398167491, blue: 0, alpha: 1)]
+    }
+    init() {
+        cells = Self.newBoard()
+    }
+
+    private static func newBoard() -> [Cell] {
+        .init(
+            (0..<Constant.cellCount).map { index in
+                Cell(position: index)
+            }
+        )
+    }
+}
+
+struct SquaresPreferenceKey: PreferenceKey {
+    typealias Value = [Int: CGRect]
+    static var defaultValue: Value { [:] }
+    static func reduce(value: inout [Int : CGRect], nextValue: () -> [Int : CGRect]) {
+        nextValue().forEach { value[$0] = $1 }
+    }
+}
+
+struct ContentView: View {
+    typealias ViewModel = GameViewModel
+    @StateObject private var viewModel: ViewModel
+    @State private var squares = SquaresPreferenceKey.defaultValue
+    private enum Space: Hashable {
+        case board
+    }
+    init(viewModel: ViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+    var body: some View {
+        ZStack(alignment: .topLeading) {
+            VStack(spacing: 2)  {
+                ForEach(0..<GameViewModel.Constant.boardHeight, id: \.self) { y in
+                    HStack(spacing: 2) {
+                        ForEach(0..<GameViewModel.Constant.boardWidth, id: \.self) { x in
+                            let index = x + y * GameViewModel.Constant.boardWidth
+                            GeometryReader { proxy in
+                                RoundedRectangle(cornerRadius: 4)
+                                    .aspectRatio(1, contentMode: .fit)
+                                    .preference(
+                                        key: SquaresPreferenceKey.self,
+                                        value: [index: proxy.frame(in: .named(Space.board))]
+                                    )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .coordinateSpace(name: Space.board)
+        .onPreferenceChange(SquaresPreferenceKey.self) { squares = $0 }
+    }
+}
+```
 ---
 
 ## 2022.04.02
