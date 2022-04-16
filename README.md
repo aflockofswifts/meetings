@@ -4,9 +4,52 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.04.16
+## 2022.04.23
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.04.16
+
+### Linting
+
+Talked about introducing linting to a group.
+
+- Make a separate target for linting
+- Run lint only on the diffs
+- RW has a style guide that uses lint for checking
+
+https://github.com/raywenderlich/swift-style-guide/blob/main/SWIFTLINT.markdown
+
+
+### New Proposals
+
+Several new proposals are landing including many around RegEx.
+
+Here are some links to the proposals.  Will be covering in future meetings.
+
+- https://github.com/apple/swift-evolution/blob/main/proposals/0350-regex-type-overview.md
+- https://github.com/apple/swift-evolution/blob/main/proposals/0351-regex-builder.md
+
+
+### Hex Grids
+
+Need to implement a hex grid?  You can use arrays with special offsets.
+
+https://www.redblobgames.com/grids/hexagons/
+
+
+### Match Three Continued
+
+Josh completed his epic presentation on using SwiftUI to implement a match three style game. You can leverage the SwiftUI system to do all of the layout and animation for you. Some cool subtopics included:
+
+- A `with` function for mutation
+- User defined coordinate spaces
+- Using async system to trigger animations
+- Static member lookup for code clarity at the call site
+- Functional board manipulations and 2d algorithms
+- Types of animations (transitions vs property changes)
 
 ---
 
