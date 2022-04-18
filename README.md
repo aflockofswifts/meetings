@@ -51,6 +51,10 @@ Josh completed his epic presentation on using SwiftUI to implement a match three
 - Functional board manipulations and 2d algorithms
 - Types of animations (transitions vs property changes)
 
+code: https://github.com/joshuajhomann/Bejeweled
+
+![preview](https://github.com/joshuajhomann/Bejeweled/blob/master/preview.gif "Bejeweled")
+
 ---
 
 ## 2022.04.09
