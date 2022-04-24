@@ -4,9 +4,48 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.04.23
+## 2022.04.30
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.04.23
+
+
+### Build problems
+
+- Discussed the plight of large projects with lots of pods having build problems
+
+Adding Build configurations: 
+
+https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project?changes=__6
+
+### Thunderbolt Hubs
+
+- You want thunderbolt ports? Be prepared to spend the money.
+- Search the usual suspects, amazon, ebay, macsales, newegg, etc
+
+### Making Diagrams
+
+You can make diagrams using Omnigraffle from https://Omnigroup.com
+
+### Local Swift Packages
+
+Ray demo'ed making a local package using Josh's project from last week.  Created JoshKit and did various other experiments.  The documentation is here: https://developer.apple.com/documentation/swift_packages/
+
+Looked at the Swift Package Index project:
+
+https://swiftpackageindex.com
+
+Ray will do a presentation on Tuesday for the SDiOS group.
+
+https://www.meetup.com/sdiosdevelopers/events/284812539/
+
+### Extensible build tools in SwiftPM
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0303-swiftpm-extensible-build-tools.md
+
 
 ---
 
