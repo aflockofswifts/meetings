@@ -4,9 +4,67 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.04.30
+## 2022.05.07
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.04.30
+
+### Server Side Solutions
+
+Tim Condon of the Swift Server Work Group (SSWG) gave their annual update on the Swift blog https://www.swift.org/blog/sswg-update/
+
+Of interest to the group were the different frameworks:
+
+* Vapor (https://github.com/vapor/vapor)
+* Smoke (https://github.com/amzn/smoke-framework)
+* Hummingbird (https://github.com/amzn/smoke-framework)
+
+All of these have made progress to async/await.
+
+For the problem being asked about something as simple as a WebDAV server where you can get and put files might be enough.
+
+### Localization in SwiftUI
+
+
+
+We talked about how to do Swift localization.  Creating a Swift strings file (dictstring for pluralization).  The strings file can contain stuff like this:
+
+
+```
+// The welcome string that appears at launch.
+"CONTENT_VIEW_TITLE %@" = "Hello, world! %@";
+```
+
+```
+/* The welcome string that appears at launch. */
+"CONTENT_VIEW_TITLE %@" = "%@ こんにちは、元気？";
+```
+
+This can be used in the code like so:
+
+```swift
+struct ContentView: View {
+    var body: some View {
+      let thing = "Ray"
+      Text("CONTENT_VIEW_TITLE \(thing)")
+    }
+}
+```
+
+It is probably good to use names like CONTENT_VIEW_TITLE so it is obvious when they are wrong and just in case the same word in English maps to different translations in the target languages.
+
+
+Translations can be imported and exported through the products menu .xcloc files that have an editor that translators can use.
+
+Schemes let you change the language of the app to test.  There are special language for simulating text, having lots of diacritics, etc.
+
+
+The main type is `LocalizedStringKey` which does the lookup.
+
+
 
 ---
 
