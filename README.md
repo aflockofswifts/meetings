@@ -4,9 +4,233 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.05.07
+## 2022.05.14
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.05.07
+
+### Bridging async/await and callbacks
+
+Peter discussed the design of a system he was building. Continuations provide a bridge between the worlds.
+
+https://developer.apple.com/documentation/swift/3814988-withcheckedcontinuation
+
+
+### Building an LRU cache
+
+We walked through making an LRU cache example. The original design that I proposed had a way to get a value from the cache and another to update it.  After we finished the example, Josh suggested that a better API would be to provide a closure to do resource creation.  Since `Task` is effecively a future, we can make the cache hold these tasks.  That way multiple clients asking for the same resource will grab the same task rather than needlessly spawn multiple versions of the same work.  Also missing was some low memory handling.  After the meeting I (Ray) refactored the interface and cleaned up some of the shortcomings.  The solution looks like this:
+
+```swift
+//
+//  LRUCache.swift
+//  Practice
+//
+//  Created by Ray Fix on 5/7/22.
+//
+
+import Foundation
+import UIKit.UIImage
+typealias ImageCache = LRUCache<UUID, UIImage>
+
+actor LRUCache<Key: Hashable, Value> {
+  let maxCount: Int
+  private var tasks: [Key: Task<Value?, Never>] = [:]
+  internal var lru: [Key] = []
+  var monitoringMemory = false
+  
+  init(maxCount: Int) {
+    self.maxCount = maxCount
+    // Memory monitoring is deferred until first point of use
+    // so that we don't need an async initializer for the actor.
+  }
+      
+  func evictAll() {
+    tasks.values.forEach { $0.cancel() }
+    tasks = [:]
+    lru = []
+  }
+  
+  func evict(key: Key) {
+    if let task = tasks[key] { task.cancel() }
+    tasks.removeValue(forKey: key)
+    lru.removeAll(where: {$0 == key})
+  }
+  
+  @discardableResult
+  func fetch(key: Key,
+             priority: TaskPriority? = nil,
+             fallback: @escaping (Key) async -> Value?) async -> Value? {
+    startMonitorMemory()
+    updateLRU(for: key)
+    
+    // Get it and go.
+    if let task = tasks[key] { return await task.value }
+    // Spin up a new task, and get the value.
+    let task = Task(priority: priority) { await fallback(key) }
+    tasks[key] = task
+    return await task.value
+  }
+  
+  private func trim(count: Int) {
+    if count > 0 {
+      lru.reversed()[0..<count].forEach { key in
+        tasks[key]?.cancel()
+        tasks.removeValue(forKey: key)
+      }
+      lru = lru.dropLast(count)
+    }
+  }
+  
+  private func updateLRU(for key: Key) {
+    lru.removeAll(where: { $0 == key})
+    lru.insert(key, at: 0)
+    let extra = max(lru.count - maxCount, 0)
+    trim(count: extra)
+  }
+  
+  private func lowMemoryAction() {
+    evictAll()
+  }
+  
+  private func startMonitorMemory() {
+    if !monitoringMemory {
+      Task { @MainActor in
+        NotificationCenter.default
+          .addObserver(forName: UIApplication.didReceiveMemoryWarningNotification,
+                       object: nil, queue: nil) { [weak self] _ in
+            Task { [weak self] in
+              await self?.lowMemoryAction()
+            }
+        }
+      }
+      monitoringMemory = true
+    }
+  }
+}
+``` 
+
+Some tests:
+
+```swift
+//
+//  PracticeTests.swift
+//  PracticeTests
+//
+//  Created by Ray Fix on 5/7/22.
+//
+
+import XCTest
+@testable import Practice
+
+class PracticeTests: XCTestCase {
+
+  func testLRUCacheBasic() async throws {
+    let cache = LRUCache<String, Int>(maxCount: 3)
+    
+    // Test getting value from the fallback
+    do {
+      let value = await cache.fetch(key: "magic", fallback: { _ in 42 })
+      XCTAssertEqual(value, 42)
+    }
+    
+    // Test getting value from cache
+    do {
+      let value = await cache.fetch(key: "magic", fallback: { _ in nil })
+      XCTAssertEqual(value, 42)
+    }
+   
+    // Test getting value from the fallback
+    do {
+      await cache.evict(key: "magic")
+      let value = await cache.fetch(key: "magic", fallback: { _ in 16 })
+      XCTAssertEqual(value, 16)
+    }
+    
+  }
+  
+  func testReset() async throws {
+    let cache = LRUCache<String, Int>(maxCount: 3)
+
+    do {
+      await cache.fetch(key: "magic0", fallback: { _ in 0 })
+      await cache.fetch(key: "magic1", fallback: { _ in 1 })
+      await cache.fetch(key: "magic2", fallback: { _ in 2 })
+    }
+    
+    do {
+      let value = await cache.fetch(key: "magic0", fallback: { _ in 16 })
+      XCTAssertEqual(value, 0)
+    }
+    
+    do {
+      let value = await cache.fetch(key: "magic1", fallback: { _ in 16 })
+      XCTAssertEqual(value, 1)
+    }
+    
+    do {
+      let value = await cache.fetch(key: "magic2", fallback: { _ in 16 })
+      XCTAssertEqual(value, 2)
+    }
+    // 210
+    
+    
+    // Insert magic4 which will evict magic0
+    do {
+      let value = await cache.fetch(key: "magic3", fallback: { _ in 16 })
+      XCTAssertEqual(value, 16)
+    }
+    // 321
+    
+    do {
+      let value = await cache.fetch(key: "magic1", fallback: { _ in 16 })
+      XCTAssertEqual(value, 1)
+    }
+    // 132
+    
+    
+    do {
+      let value = await cache.fetch(key: "magic2", fallback: { _ in 16 })
+      XCTAssertEqual(value, 2)
+    }
+    //213
+    
+    do {
+      let value = await cache.fetch(key: "magic0", fallback: { _ in 16 })
+      XCTAssertEqual(value, 16)
+    }
+    // 021
+    
+    do {
+      let value = await cache.fetch(key: "magic3", fallback: { _ in 17 })
+      XCTAssertEqual(value, 17)
+    }
+    // 302
+    
+    do {
+      await cache.evict(key: "magic3")
+      let value = await cache.fetch(key: "magic3", fallback: { _ in 17 })
+      XCTAssertEqual(value, 17)
+    }
+    // 302
+    
+    do {
+      let lru = await cache.lru
+      XCTAssertEqual(lru, ["magic3", "magic0", "magic2"])
+    }
+    
+    do {
+      await cache.evict(key: "magic0")
+      let lru = await cache.lru
+      XCTAssertEqual(lru, ["magic3", "magic2"])
+    }
+  }
+
+}
+```
+
 
 ---
 
