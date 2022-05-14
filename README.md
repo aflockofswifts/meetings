@@ -4,11 +4,140 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.05.14
+## 2022.05.21
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
+## 2022.05.14
+
+### Classifying Sounds
+
+Rainer is working on using CoreML models for classifying. One suggestion (Ed A.) to split out different songs was to use ShazamKit:  https://wwdcbysundell.com/2021/roll-your-own-shazam-with-shazamkit/
+
+### Searchable
+
+Mark asked about optimizing a list view with a search text field.  The recommendation from Josh was to check out the `.searchable(text: Binding<String>)`.
+
+### Caching
+
+Ray presented improvements from last week to caching.  Some things discussed:
+
+- Making generic keys
+- Implementing low memory warning
+- Updating the fetch method to include a closure to compute the real value
+- Making errors explicit
+
+Regarding the last point, Josh pointed out that it is probably not a good idea to cache errors.  We came up with a solution during the meeting but after the meeting I realized that it is actually better not to cache tasks if errors aren't being cached.  The final code came out like this:
+
+```swift
+import Foundation
+import UIKit.UIApplication
+
+actor LRUCache<Key: Hashable, Value> {
+  let maxCount: Int
+  private var values: [Key: Value] = [:]
+  internal var lru: [Key] = []
+  private var isMonitoringMemory = false
+  
+  init(maxCount: Int) {
+    self.maxCount = maxCount
+  }
+      
+  func evictAll() {
+    values = [:]
+    lru = []
+  }
+  
+  func evict(key: Key) {
+    values.removeValue(forKey: key)
+    lru.removeAll(where: {$0 == key})
+  }
+  
+  @discardableResult
+  func fetch(key: Key,
+             fallback: @escaping () async throws -> Value) async throws -> Value {
+    startMonitoringMemory()
+    updateLRU(for: key)
+    
+    // Get it and go.
+    if let value = values[key] { return value }
+    let value = try await fallback()
+    values[key] = value
+    return value
+  }
+  
+  private func trim(count: Int) {
+    if count > 0 {
+      lru.reversed()[0..<count].forEach { key in
+        values.removeValue(forKey: key)
+      }
+      lru = lru.dropLast(count)
+    }
+  }
+  
+  private func updateLRU(for key: Key) {
+    lru.removeAll(where: { $0 == key})
+    lru.insert(key, at: 0)
+    let extra = max(lru.count - maxCount, 0)
+    trim(count: extra)
+  }
+  
+  private func lowMemoryAction() {
+    evictAll()
+  }
+  
+  private func startMonitoringMemory() {
+    if !isMonitoringMemory {
+      Task { @MainActor in
+        NotificationCenter.default
+          .addObserver(forName: UIApplication.didReceiveMemoryWarningNotification,
+                       object: nil, queue: nil) { [weak self] _ in
+            Task { [weak self] in
+              await self?.lowMemoryAction()
+            }
+          }
+      }
+      isMonitoringMemory = true
+    }
+  }
+}
+```
+
+Josh was wondering if memory warnings could be done in the initializer using a Combine publisher.
+
+```swift
+fileprivate let outOfMemory = NSNotification.Name(rawValue: UIApplication.didReceiveMemoryWarningNotification.rawValue)
+
+actor LRUCache<Key: Hashable, Value> {
+    let maxCount: Int
+    @Published private var tasks: [Key: Task<Value?, Never>] = [:]
+    @Published internal var lru: [Key] = []
+    var monitoringMemory = false
+
+    init(maxCount: Int) {
+        self.maxCount = maxCount
+        NotificationCenter.default.publisher(for: outOfMemory).map { _ in [:] }.assign(to: &$tasks)
+        NotificationCenter.default.publisher(for: outOfMemory).map { _ in [] }.assign(to: &$lru)
+    }
+```
+
+This works but he notes that you get the following warning: `This use of actor 'self' can only appear in an async initializer; this is an error in Swift 6`
+
+
+### Animation in Core Animation, UIKit and SwiftUI
+
+This presentation by Josh H. covered the ins and outs of implicit and explicit animations. As background reading, he recommends reading this: http://rensbr.eu/blog/swiftui-render-loop/
+
+Here are some points he made with his code:
+
+- Core Animations are implicit.
+- UIView animations are implicit.
+- The new SwiftUI implicit animation API specifies the property to trigger the animation off of. 
+- When this specified property triggers, all implicit animations fire.  
+- The inner-most animation wins.  
+- Explicit animations (`withAnimation`) override implicit ones.
 
 ## 2022.05.07
 
