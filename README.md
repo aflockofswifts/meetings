@@ -4,9 +4,70 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.05.21
+## 2022.05.28
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.05.21
+
+This week featured a lot of developer banter.  Here are some of the takeaways:
+
+
+### iOS 16
+
+Bill wanted to know about about iOS 16. We won't know anything concrete until WWDC in a couple weeks.
+
+### Upgrading Legacy Code
+
+John Brewer recommended this classic:
+
+https://www.amazon.com/Working-Effectively-Legacy-Michael-Feathers/dp/0131177052
+
+Daniel Young mentioned this tool that converts from Obj-C to Swift:
+
+https://swiftify.com/converter/code/
+
+### Debugging SwiftUI
+
+Daniel Young mentioned that `_printChanges()` is a static method on view that dumps the things that changed causing a re-render.
+
+```swift
+:
+var body: some View {
+  let _ = Self._printChanges()
+  :
+}
+:
+```
+
+### Pointer Authentication
+
+Pointers can be cryptographically signed?  Coming soon perhaps.  John Brewer:
+
+https://developer.apple.com/documentation/security/preparing_your_app_to_work_with_pointer_authentication
+
+### Git Work Trees
+
+Have multiple working copies in the same repo.
+
+https://levelup.gitconnected.com/git-worktrees-the-best-git-feature-youve-never-heard-of-9cd21df67baf
+
+
+### App Architecture
+
+Talked about app architecture some.  One of Josh's many sample projects:
+
+https://github.com/joshuajhomann/ImperativeCoordinator
+
+
+### Evolution Proposals
+
+We will talk more about some of them next week.  There is a nice new blog about evolution:
+
+https://jeehut.medium.com/swift-evolution-monthly-april-22-issue-f7df19377b0b
+
 
 ---
 
@@ -359,7 +420,6 @@ class PracticeTests: XCTestCase {
 
 }
 ```
-
 
 ---
 
