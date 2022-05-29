@@ -18,6 +18,7 @@ Josh showed the beginning of how to import SVG files from Illustrator via the pa
 * We looked at how using `UIPasteboard` and enumerating the types in the pasteboard as well as getting the data
 * We used `XMLParser` to grab the polugon tag from SVG file
 * We used `Scanner` to extract the points into a `sequence` that could then be converted into a `CGPath`
+<img src="https://github.com/joshuajhomann/SVGPasteBoard/blob/master/preview.png" width="640" alt="Preview">
 
 ---
 
