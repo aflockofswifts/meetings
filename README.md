@@ -200,6 +200,81 @@ Here are some points he made with his code:
 - The inner-most animation wins.  
 - Explicit animations (`withAnimation`) override implicit ones.
 
+```swift
+import UIKit
+
+final class V: UIView {
+
+    let shapeLayer = CAShapeLayer()
+
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if shapeLayer.superlayer == nil {
+            layer.addSublayer(shapeLayer)
+        }
+    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let inset = bounds.insetBy(dx: 20, dy: 20)
+        let center = CGPoint(x: inset.midX, y: inset.midY)
+        let radius = 0.5 * min(inset.width, inset.height)
+        shapeLayer.path = UIBezierPath(
+            arcCenter: center,
+            radius: radius,
+            startAngle: 0,
+            endAngle: 2 * .pi,
+            clockwise: true
+        ).cgPath
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = UIColor.red.cgColor
+        shapeLayer.lineCap = .round
+        shapeLayer.lineWidth = 20
+        shapeLayer.strokeEnd = 0
+        //backgroundColor = .clear
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: UInt64(1e9))
+            shapeLayer.strokeEnd = 0.75
+        }
+        UIView.animate(withDuration: 4, delay: 2, usingSpringWithDamping: 0.5, initialSpringVelocity: 1) {
+            self.transform = .init(rotationAngle: .pi)
+        }
+    }
+}
+```
+
+```swift
+import SwiftUI
+import UIKit
+
+struct ContentView: View {
+    @State private var isLeading = true
+    @State private var isBlue = true
+    var body: some View {
+        VStack {
+            VStack(alignment: isLeading ? .leading : .trailing) {
+                Color.white
+                Circle()
+                    .foregroundColor(isBlue ? Color.blue : Color.red)
+                    .frame(width: 300, height: 300)
+                Color.white
+            }
+            HStack {
+                Button("Toggle Alignment") { isLeading.toggle() }
+                    .padding()
+                Button("Toggle Color") { isBlue.toggle() }
+                    .padding()
+                Button("Toggle All") {
+                    isBlue.toggle()
+                    isLeading.toggle()
+                }
+                    .padding()
+            }
+        }
+            .animation(Animation.linear(duration: 0.5), value: isBlue)
+            .animation(Animation.linear(duration: 3), value: isLeading)
+    }
+}
+```
 ## 2022.05.07
 
 ### Bridging async/await and callbacks
