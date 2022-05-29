@@ -4,9 +4,20 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.05.28
+## 2022.06.04
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.05.28
+
+### SVG import
+Josh showed the beginning of how to import SVG files from Illustrator via the paste board: https://github.com/joshuajhomann?tab=repositories
+
+* We looked at how using `UIPasteboard` and enumerating the types in the pasteboard as well as getting the data
+* We used `XMLParser` to grab the polugon tag from SVG file
+* We used `Scanner` to extract the points into a `sequence` that could then be converted into a `CGPath`
 
 ---
 
