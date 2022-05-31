@@ -12,6 +12,8 @@ All people and all skill levels are welcome to join.
 
 ## 2022.05.28
 
+“If you hire smart people, you can't tell them what to do more than once a year." ––Steve Jobs
+
 ### Preliminary Banter
 
 #### VR Headsets
