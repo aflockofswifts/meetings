@@ -12,6 +12,95 @@ All people and all skill levels are welcome to join.
 
 ## 2022.05.28
 
+### Preliminary Banter
+
+#### VR Headsets
+
+- https://arstechnica.com/gadgets/2022/05/the-full-saga-of-apples-troubled-mixed-reality-headset-has-been-revealed/
+
+#### Autocompletion
+
+Add to your .zshrc:
+
+```sh
+autoload -Uz compinit && compinit
+```
+
+It will make autocomplete for git subcommands work, for example.
+
+The full story:
+
+https://zsh.sourceforge.io/Doc/Release/Completion-System.html
+
+A nice book:
+
+https://scriptingosx.com/2019/06/moving-to-zsh/
+
+
+#### Allen King's Website
+
+https://brain-gears.blogspot.com
+
+
+### Interesting Swift Links
+
+Josh showed us a set of interesting links.
+
+
+#### Transition by switching identity
+
+https://sakunlabs.com/blog/swiftui-identity-transitions/
+
+#### SwiftUI Series
+
+A hackathon type event that is now over.
+
+https://www.swiftuiseries.com/
+
+
+#### Making Simple Swift Games in the Browser with WASM
+
+https://pyrus.io/2021/05/15/gaming-with-swiftwasm.html
+
+
+#### Quick Look Hero Transition made easy
+
+https://twitter.com/JordanMorgan10/status/1526999338928439296
+
+#### Everyone loves spirals
+
+https://swiftpackageindex.com/buh/Spiral
+
+
+#### 100 Cool SwiftUI Recipes
+
+Catch up on all of these cool tips and tricks before WWDC 2022
+
+https://medium.com/devtechie/100-swiftui-recipes-by-devtechie-com-26a4bea15e95
+
+
+#### Hover Effect for iPad
+
+https://medium.com/devtechie/hovereffect-in-swiftui-e756b92747d2
+
+
+Works great with Universal Control
+
+https://support.apple.com/en-us/HT212757
+
+#### Git Worktrees
+
+Have multiple working copies set to different branches. (John points out that Xcode might get confused.)
+
+https://git-scm.com/docs/git-worktree
+
+#### How Apple is Organized for Innovation
+
+Before Steve left, he thought a lot about the roadmap that Apple should follow to maximize innovation.
+
+https://hbr.org/2020/11/how-apple-is-organized-for-innovation
+
+
 ### SVG import
 Josh showed the beginning of how to import SVG files from Illustrator via the paste board: https://github.com/joshuajhomann?tab=repositories
 
