@@ -4,9 +4,77 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.06.04
+## 2022.06.11
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.06.04
+
+
+### Get ready for WWDC
+
+WWDC starts on Monday.  I will be watching from the developer app.  Make sure you download it.  Take notes for next week as we will be talking about it.
+
+- https://developer.apple.com/wwdc22/beyond-wwdc/
+- https://wwdc.community
+- https://wwdc.community/events
+- https://www.eventbrite.com/o/ios-dev-happy-hour-admins-31205108337
+
+
+### Developer Setup
+
+
+Some cool products to make your setup more sleek:
+
+- https://www.twelvesouth.com/products/hoverbar-duo
+- https://www.twelvesouth.com/products/bookarc-macbook
+- https://www.twelvesouth.com/products/staygo-usb-c-hub
+
+
+### Better code
+
+Seven attributes of good software: simple, consistent, composable, scalable, obvious, communicative, and accommodating. Some old and new ideas mixed together in one place. --Ken Kocienda (@kocienda)
+
+https://twitter.com/kocienda/status/1531423290316558337?cxt=HHwWgsCgwczX2sAqAAAA
+
+
+"Easy to change"
+
+https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/
+
+### Showing images
+
+There are some great async APIs if you are dealing with lists of images.
+
+- https://developer.apple.com/documentation/uikit/uiimage
+
+
+### Property wrappers
+
+An interesting article about property wrappers:
+
+https://www.swiftbysundell.com/articles/accessing-a-swift-property-wrappers-enclosing-instance/
+
+
+The original property-wrapper proposal:
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0258-property-wrappers.md
+
+
+### Bridging between different asynchronous programming models
+
+- Imperative: completion handlers, callbacks, delegates, KVO, notifications, target-action, etc  
+- Combine: publishers, futures
+- Async/Await: AsyncSequence, Task
+
+(aside: Think you understand Sequence? See if you can write a "prefix".)
+
+`lazy` allows you to evalate sequences on the fly instead of materializing the entire sequence in an array.  This is useful and necessary for infinite / expensive to compute when you are only looking for the first element sequences.
+
+Most of this weeks discussion focused around Sequence/Iterator and how similar it is to AsyncSequence/AsyncIterator looking at creating Fibonacci with `sequence(state:next:)` and `AsyncStream.init()`.  Future weeks will look at actual bridging techniques. (You can also find information in the history.)
+
 
 ---
 
