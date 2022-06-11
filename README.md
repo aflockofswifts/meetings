@@ -4,9 +4,46 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.06.11
+## 2022.06.18
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+
+## 2022.06.11
+
+Today was the WWDC roundup.  Apple produced a LOT of new stuff this year.  We will be spending the next many weeks covering it.  Each attendee (more than 20 this week) told us what feature that impressed them the most. 
+
+- Watch as many of the 175 sessions that you can!
+- MAKE SURE to watch  https://developer.apple.com/wwdc22/110335
+- Take notes!
+
+Speaking of notes: https://www.wwdcnotes.com/
+
+Roundups:
+
+### Congratulations
+
+- Explore Apple Business Essentials - https://developer.apple.com/wwdc22/110335
+
+- Josh Tint (Tim Colson's former student) https://www.apple.com/ma/newsroom/2022/06/apples-wwdc22-swift-student-challenge-winners-help-communities-through-coding/ 
+
+
+### Combine Leak 
+
+No direct news about the future of combine. Navigation Recipes talk mentioned `objectWillChangeSequence`. Another in the lounge overheard an Apple engineer say the future of combine is AsyncSequence.
+
+### Career Thinking 
+
+Anonymous postings that are useful but sometimes "toxic" so beware:
+
+- https://www.teamblind.com/post/4-onsite-4-offers-3-FAANG-Strategy-AMA-L4SDE2-uQUPj5Sm
+
+
+### Animating Radial Layout Demo
+
+Josh showed of how easy it is to create a custom layout in SwiftUI with the `Layout` protocol.  You only need to implement two methods (though you can override more if you want fancy things like caching).  The first method is what your prefered size given subviews and the parents proposal.  The second is to position the subviews.
+
+Josh also used some new modifiers for getting color gradients and drop shadows to make things look really good.
 
 ---
 
