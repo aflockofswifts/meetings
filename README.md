@@ -39,7 +39,7 @@ Anonymous postings that are useful but sometimes "toxic" so beware:
 - https://www.teamblind.com/post/4-onsite-4-offers-3-FAANG-Strategy-AMA-L4SDE2-uQUPj5Sm
 
 
-### Animating Radial Layout Demo
+### Animated Radial Layout Demo
 
 Josh showed of how easy it is to create a custom layout in SwiftUI with the `Layout` protocol.  You only need to implement two methods (though you can override more if you want fancy things like caching).  The first method is what your prefered size given subviews and the parents proposal.  The second is to position the subviews.
 
