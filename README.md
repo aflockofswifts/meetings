@@ -75,6 +75,36 @@ https://github.com/apple/swift-evolution/blob/main/proposals/0258-property-wrapp
 
 Most of this weeks discussion focused around Sequence/Iterator and how similar it is to AsyncSequence/AsyncIterator looking at creating Fibonacci with `sequence(state:next:)` and `AsyncStream.init()`.  Future weeks will look at actual bridging techniques. (You can also find information in the history.)
 
+```swift
+let fib = sequence(state: (0,1)) { state -> Int? in
+    let (antepenultimate, penultimate) = state
+    let value = antepenultimate + penultimate
+    state = (penultimate, value)
+    return value
+}
+
+var iterator = fib.prefix(10).makeIterator()
+while let value = iterator.next() {
+    print(value)
+}
+
+var state = (0, 1)
+let asyncFib = AsyncStream<Int> {
+    let (antepenultimate, penultimate) = state
+    let value = antepenultimate + penultimate
+    state = (penultimate, value)
+    try? await Task.sleep(nanoseconds: UInt64(0.25e9))
+    return value
+}
+
+Task {
+    var iterator = asyncFib.prefix(10).makeAsyncIterator()
+    while let value = await iterator.next() {
+        print(value)
+    }
+}
+
+```
 
 ---
 
