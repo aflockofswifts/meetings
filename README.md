@@ -45,6 +45,10 @@ Josh showed of how easy it is to create a custom layout in SwiftUI with the `Lay
 
 Josh also used some new modifiers for getting color gradients and drop shadows to make things look really good.
 
+https://github.com/joshuajhomann/Radial
+
+
+![preview](https://github.com/joshuajhomann/Radial/raw/master/preview.gif)
 ---
 
 ## 2022.06.04
