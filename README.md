@@ -4,10 +4,126 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.06.18
+## 2022.07.02
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
+---
+
+## 2022.06.25
+
+### Weather App Demo
+
+Carlyn gave a demo of the new WeatherKit API. You can find her repo at:
+
+https://github.com/carlynorama/BlueSky
+
+
+### HaveNWant Demo
+
+HaveNWant is a biologically inspired cognitive architecture by Allen King.  Walked us through a few different demos shown on his website.
+
+http://brain-gears.blogspot.com/p/bica16-simulations.html
+
+More recently he is implementing his Factal Workbench in SwiftUI and SceneKit.
+
+
+### Algorithms and Data Structures
+
+We discussed differences about the heap and stack.  A heap allocator is complicated because it has to worry about threads, fragmentation and performance.  Allocation is non-deterministic had needs to be avoided in hard realtime systems.
+
+We talked very briefly about dictionaries and hashing algorithms. When there is a key collision in a hash table, usually it falls back to a linear search.  If you have a hashing algorithms with too many collisions you will end up with linear performance.  If you have a hash algorithm with no collisions, your hash table is probably too big.
+
+Some links:
+
+A picture is worth 1000 words:
+
+https://github.com/girliemac/a-picture-is-worth-a-1000-words
+
+
+A introductory computer science course:
+
+- https://www.edx.org/course/introduction-computer-science-harvardx-cs50x
+
+
+### Swift, SwiftUI 
+
+Josh presented some links.
+
+What's new in SwiftUI:
+- https://mackuba.eu/swiftui/changelog
+- https://bigmountainstudio.github.io/What-is-new-in-SwiftUI/
+
+The code gets written for you:
+- https://github.com/features/copilot/
+
+Discussions caught from the WWDC SwiftUI lab:
+- https://midnight-beanie-ccb.notion.site/swiftui-lounge-wwdc22-e20094b91f074398ba395c3fa245e63d
+
+
+### Music written for your game
+
+Free to use but costs a subscription if you want to own the copyright.
+- www.aiva.ai
+
+
+### SwiftUI Layout protocol
+
+Josh went though an example by the objc.io guys. Here is the free presentation with more details:
+
+https://talk.objc.io/episodes/S01E308-the-layout-protocol
+
+
+### Bust-a-move development continued
+
+Josh covered the recursive adjacency algorithms to compute the game pieces that can be removed and the ones not connected to the top.  SwiftUI handles all of the animation for you.
+
+
+### SuperHappyDevHouse: 
+
+In person meetup if you are in the bay area:
+
+http://superhappydevhouse.org/w/page/16345504/FrontPage
+
+---
+
+## 2022.06.18
+
+### New APIs
+
+- `UIHostingControllerSizingOptions`
+- `UIHostingConfiguration`
+
+These help with the interop story.  `UIHostingConfiguration` is for putting SwiftUI views into UICollectionView cells, etc.
+
+- `TextField` now has a lineLimit property that takes a range.
+- OSAllocatedUnfairLock A better, safer lock.
+
+Formatting styles are not documented very well. This website helps with that:
+
+- https://goshdarnformatstyle.com
+
+Grab live text and qr codes, etc:
+
+- DataScannerViewController 
+
+
+### Evolution to Study
+
+Here are a couple of proposals to learn about:
+
+- https://github.com/apple/swift-evolution/blob/main/proposals/0352-implicit-open-existentials.md
+- https://github.com/apple/swift-evolution/blob/main/proposals/0351-regex-builder.md
+
+
+### Layout with Bust-a-move
+
+Josh has a new example to implement with custom layout.  He is implementing the CirclePacked layout from bust-a-move using the API that we discussed last time.  This time he can use the cache to speed the calculations up.
+
+Code TBD.
+
+
+---
 
 ## 2022.06.11
 
