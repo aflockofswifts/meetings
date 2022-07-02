@@ -4,9 +4,53 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.07.02
+## 2022.07.09
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.07.02
+
+
+### Useful Links
+
+Experiment with Swift Regex online.  Brought to you by Kishikawa Katsumi and the Swift Fiddle.
+
+- https://swiftregex.com
+
+New static methods in iOS 16 for getting to common file directories:
+
+- https://nilcoalescing.com/blog/GetURLsForSystemFolders
+
+Format your Swift code
+
+- https://github.com/ruiaureliano/X-SwiftFormat
+
+Quick formatting longer lines:
+
+- https://github.com/aheze/Multiliner
+
+
+### Pokemon Navigation
+
+Josh builds a sample project using the new navigation types in iOS 16.  The new navigation gives you full programmatic control of navigation including state restoration and deep linking.
+
+- `NavigationSplitView` - The overload that you want is the one that gives you a binding to column visibility.
+- `NavigationStack` - Use path as a data tree that controls the views that get pushed on the nav stack.
+- `NavigationLink` - New overload lets you specify a value that gets propogated to the parent navigation (not a view).
+
+
+#### Miscellaneous
+
+- **JSON Tip**: Build your JSON type with: https://app.quicktype.io
+- **Xcode Tip**: Use control-shift click to create multiple cursors.
+- Make sequences lazy to prevent allocation of temporary arrays.  `zip(pokemon.lazy.map(\.id), pokemon)`
+- Be careful creating dictionary with uniqueKeysAndValues init, it will trap if that assumption is violated. Instead, use the init that specifies a collision rule. You can log an error or even throw a recoverable error if you use that version.
+- Use `@MainActor` to prevent purple errors when assigning back to published properties in your view model.
+- iPadOS 16 supports virtual memory on M1 iPads
+- Use `for await item in asyncSequence { }` to access a stream of changing values from `.task()` modifier.
+- Compiler reasons about lifetime inside `for await` so you don't have to weak capture self. (It is okay even when you put it in a Task, but can't reason about `Task.detached`)
 
 ---
 
