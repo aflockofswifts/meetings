@@ -117,7 +117,56 @@ Josh went though an example by the objc.io guys. Here is the free presentation w
 
 https://talk.objc.io/episodes/S01E308-the-layout-protocol
 
+```Swift
+import SwiftUI
 
+enum Layouts: String, Identifiable, CaseIterable {
+    case vStack
+    case hStack
+    case zStack
+    case grid
+    case circle
+    var id: Self { self }
+    var layout: any Layout {
+        switch self {
+        case .vStack: return VStack()
+        case .hStack: return HStack()
+        case .zStack: return _ZStackLayout()
+        case .grid: return Grid()
+        case .circle: return _CircleLayout(radius: 100)
+        }
+    }
+    func eraseToAnyLayout() -> AnyLayout {
+        .init(layout)
+    }
+}
+
+struct ContentView: View {
+
+    @State private var selectedLayout = Layouts.hStack
+    static let colors = [#colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1), #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1), #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1), #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1), #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1),].map(Color.init(nsColor:))
+    var body: some View {
+        VStack {
+            Picker("Layout", selection: $selectedLayout) {
+                ForEach(Layouts.allCases) { layout in
+                    Text(layout.rawValue).tag(layout)
+                }
+            }.pickerStyle(.segmented)
+            Spacer()
+            selectedLayout.eraseToAnyLayout()() {
+                ForEach(Self.colors.indices, id: \.self) { index in
+                    Capsule()
+                        .foregroundStyle(Self.colors[index].gradient)
+                        .frame(width: 60, height: 30)
+                }
+            }
+            Spacer()
+        }
+        .animation(.linear, value: selectedLayout)
+        .padding()
+    }
+}
+```
 ### Bust-a-move development continued
 
 Josh covered the recursive adjacency algorithms to compute the game pieces that can be removed and the ones not connected to the top.  SwiftUI handles all of the animation for you.
@@ -158,7 +207,6 @@ Here are a couple of proposals to learn about:
 
 - https://github.com/apple/swift-evolution/blob/main/proposals/0352-implicit-open-existentials.md
 - https://github.com/apple/swift-evolution/blob/main/proposals/0351-regex-builder.md
-
 
 ### Layout with Bust-a-move
 
