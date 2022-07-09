@@ -13,8 +13,12 @@ All people and all skill levels are welcome to join.
 ## 2022.07.09
 
 Sample project for navigation:
+
 https://github.com/joshuajhomann/PokemonNavigation
+
+
 ![preview](https://github.com/joshuajhomann/PokemonNavigation/raw/main/preview.gif)
+
 ---
 
 ## 2022.07.02
@@ -61,6 +65,7 @@ Josh builds a sample project using the new navigation types in iOS 16.  The new 
 
 https://github.com/joshuajhomann/PokemonNavigation
 ![preview](https://github.com/joshuajhomann/PokemonNavigation/raw/main/preview.gif)
+
 ---
 
 ## 2022.06.25
@@ -176,6 +181,7 @@ struct ContentView: View {
     }
 }
 ```
+
 ### Bust-a-move development continued
 
 Josh covered the recursive adjacency algorithms to compute the game pieces that can be removed and the ones not connected to the top.  SwiftUI handles all of the animation for you.
