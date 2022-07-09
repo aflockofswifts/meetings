@@ -10,6 +10,13 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2022.07.09
+
+Sample project for navigation:
+https://github.com/joshuajhomann/PokemonNavigation
+![preview](https://github.com/joshuajhomann/PokemonNavigation/raw/main/preview.gif)
+---
+
 ## 2022.07.02
 
 
@@ -53,7 +60,7 @@ Josh builds a sample project using the new navigation types in iOS 16.  The new 
 - Compiler reasons about lifetime inside `for await` so you don't have to weak capture self. (It is okay even when you put it in a Task, but can't reason about `Task.detached`)
 
 https://github.com/joshuajhomann/PokemonNavigation
-
+![preview](https://github.com/joshuajhomann/PokemonNavigation/raw/main/preview.gif)
 ---
 
 ## 2022.06.25
