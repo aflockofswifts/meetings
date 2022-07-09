@@ -12,9 +12,17 @@ All people and all skill levels are welcome to join.
 
 ## 2022.07.09
 
-Sample project for navigation:
+Josh presented iOS 16 navigation in depth. Some topics covered.
 
-https://github.com/joshuajhomann/PokemonNavigation
+  - Summary of last week's topics.
+  - Deep linking
+  - State restoration
+  - How to pick apart `NavigationPath` so you can use it in a custom URI.
+  - Design for testability
+
+Project for navigation:
+
+- https://github.com/joshuajhomann/PokemonNavigation
 
 
 ![preview](https://github.com/joshuajhomann/PokemonNavigation/raw/main/preview.gif)
@@ -63,7 +71,10 @@ Josh builds a sample project using the new navigation types in iOS 16.  The new 
 - Use `for await item in asyncSequence { }` to access a stream of changing values from `.task()` modifier.
 - Compiler reasons about lifetime inside `for await` so you don't have to weak capture self. (It is okay even when you put it in a Task, but can't reason about `Task.detached`)
 
-https://github.com/joshuajhomann/PokemonNavigation
+Sample project:
+
+- https://github.com/joshuajhomann/PokemonNavigation
+
 ![preview](https://github.com/joshuajhomann/PokemonNavigation/raw/main/preview.gif)
 
 ---
@@ -158,7 +169,13 @@ enum Layouts: String, Identifiable, CaseIterable {
 struct ContentView: View {
 
     @State private var selectedLayout = Layouts.hStack
-    static let colors = [#colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1), #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1), #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1), #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1), #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1),].map(Color.init(nsColor:))
+    static let colors = [#colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1),
+                         #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1),
+                         #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1),
+                         #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1),
+                         #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1), 
+                         #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)]
+      .map(Color.init(nsColor:))
     var body: some View {
         VStack {
             Picker("Layout", selection: $selectedLayout) {
