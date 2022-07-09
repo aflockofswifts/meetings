@@ -52,6 +52,8 @@ Josh builds a sample project using the new navigation types in iOS 16.  The new 
 - Use `for await item in asyncSequence { }` to access a stream of changing values from `.task()` modifier.
 - Compiler reasons about lifetime inside `for await` so you don't have to weak capture self. (It is okay even when you put it in a Task, but can't reason about `Task.detached`)
 
+https://github.com/joshuajhomann/PokemonNavigation
+
 ---
 
 ## 2022.06.25
