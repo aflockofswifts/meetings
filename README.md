@@ -16,7 +16,7 @@ All people and all skill levels are welcome to join.
 We explored the new `Chart` API in iOS 16:
 
 https://github.com/joshuajhomann/CoinGecko
-[preview](https://github.com/joshuajhomann/CoinGecko/blob/main/preview.png)
+![preview](https://github.com/joshuajhomann/CoinGecko/blob/main/preview.png)
 ---
 
 ## 2022.07.09
