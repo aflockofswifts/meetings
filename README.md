@@ -10,13 +10,24 @@ All people and all skill levels are welcome to join.
 
 ---
 
-
 ## 2022.07.16
 
-We explored the new `Chart` API in iOS 16:
+### No Closures in SwiftUI
+
+We discussed the blog post https://rensbr.eu/blog/swiftui-escaping-closures/ and when through the examples of how SwiftUI breaks in a sample project.
+
+### Charts
+
+We explored the new `Chart` API in iOS 16.  Josh created an app to search crypto currencies and graph their performance. Topics including:
+
+- Modelling using quicktype.io
+- App architecture, software engineering
+- The new charts API
 
 https://github.com/joshuajhomann/CoinGecko
+
 ![preview](https://github.com/joshuajhomann/CoinGecko/blob/main/preview.png)
+
 ---
 
 ## 2022.07.09
