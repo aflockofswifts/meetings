@@ -4,9 +4,17 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.07.23
+
+## 2022.07.30
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.07.23
+
+We added pdf rendering with the new `ImageRenderer` and `UIGraphicsIamgeRenderer` to the [Coin Gecko](https://github.com/joshuajhomann/CoinGecko) project.
+![preview](https://github.com/joshuajhomann/CoinGecko/blob/main/preview.png)
 
 ---
 
