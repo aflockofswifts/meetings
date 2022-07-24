@@ -15,7 +15,7 @@ All people and all skill levels are welcome to join.
 
 ### Cool Stuff noted by Carlyn
 
-Check out `https://calamityware.com` for some fun teacups.
+Check out https://calamityware.com for some fun teacups.
 
 ### AVIF: New image format
 
@@ -39,6 +39,7 @@ Other topics discussed:
 - `Task.detatched` doesn't inherit anything.
 - `Task {}` inherits executor but is not a child task so does not inherit cancellation.
 - `async let` does handle cancellation
+- Using ShareLink requires eager computation of resource to share.
 
 ![preview](https://github.com/joshuajhomann/CoinGecko/blob/main/preview.png)
 
