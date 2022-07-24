@@ -13,8 +13,35 @@ All people and all skill levels are welcome to join.
 
 ## 2022.07.23
 
-We added pdf rendering with the new `ImageRenderer` and `UIGraphicsIamgeRenderer` to the [Coin Gecko](https://github.com/joshuajhomann/CoinGecko) project.
+### Cool Stuff noted by Carlyn
+
+Check out `https://calamityware.com` for some fun teacups.
+
+### AVIF: New image format
+
+- https://9to5mac.com/2022/07/15/apple-avif-image-safari-ios-16-macos-13/
+- https://github.com/SDWebImage/SDWebImage
+
+
+### Carlyn Working on a Thing
+
+https://gist.github.com/carlynorama/ad0a7449367b9a08e8c8525d5dcc2f8a
+
+
+### PDF Rendering
+
+We added pdf rendering with the new `ImageRenderer` and `UIGraphicsImageRenderer` to the [Coin Gecko](https://github.com/joshuajhomann/CoinGecko) project.
+
+Other topics discussed:
+
+- Transformation compositions are read from the "bottom up."  Order matters!
+- SwiftUI View Modifier `.onReceive()` is called before the property is set.  Make sure to use the value passed to the closure not the current published item because it is the old value.
+- `Task.detatched` doesn't inherit anything.
+- `Task {}` inherits executor but is not a child task so does not inherit cancellation.
+- `async let` does handle cancellation
+
 ![preview](https://github.com/joshuajhomann/CoinGecko/blob/main/preview.png)
+
 
 ---
 
