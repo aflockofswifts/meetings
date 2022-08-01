@@ -4,10 +4,71 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
+## 2022.08.01
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
 
 ## 2022.07.30
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+### Augmented Reality?
+
+- https://appleinsider.com/articles/22/07/26/see-apples-vr-headset-on-your-desk-using-augmented-reality
+
+- https://departmentmap.store/timemachine
+
+### Problems with Multiple External Monitors
+
+Rainer describing a problem using multiple monitors (thunderbolt, usb-c) where the asynchrony of connection causes windows to be gathered in the wrong place.
+
+One suggestion: https://techpp.com/2021/02/16/window-manager-apps-for-macos/
+
+
+### Generally useful iOS Links
+
+- https://iosdevweekly.com/
+- https://iosdevdirectory.com
+
+
+### SwiftUI Cheatsheet
+
+- https://goshdarnswiftui.com
+
+
+Is there something like this for async/await/actors?
+
+Not really.  A few suggested readings:
+
+- https://www.hackingwithswift.com/quick-start/concurrency
+- https://github.com/apple/swift-evolution/blob/main/proposals/0306-actors.md
+
+
+### Creating Multiple Targets
+
+Carlyn is getting closer to shipping a test version of her app and looking for
+how to organize her code to prototype vs release.
+
+We went through an example of creating a separate target and a new scheme with 
+optimization enabled.
+
+
+### Composing SwiftUI Layout
+
+
+We walked through the `EqualWidthHStack` example from WWDC 2022.  Several points touched on:
+
+- `frame(maxWidth: .infinity)` returns a flexible frame. Call it on Text() so that it can be resized.
+- The `Layout` protocol has two requirements you need to fulfill to make a custom layout: (1) the total size (2) place subviews using proxy objects.
+- `LayoutSubview.sizeThatFits(.unspecified)` is the magic that lets you the text size.
+- You don't need to use preference keys to do layout.  It is not recommended but you might need to use it to support older OSes.
+
+https://developer.apple.com/documentation/swiftui/composing_custom_layouts_with_swiftui
+
+### Other 
+
+- `.layoutPriority()` needs to sometimes be used with `ZStack` to get the right effect. (Ed)
+- The difference between `.background()` and `background()` in your body is the difference between working and an infinite recursion loop.
 
 ---
 
