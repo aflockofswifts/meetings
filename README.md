@@ -4,9 +4,94 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.08.01
+## 2022.08.13
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.08.06
+
+### Random Discussion
+
+- Yes, there is a flashlight on the Apple watch.
+- Medications in iOS16
+- Sleep tracking in iOS16
+
+
+### Charts
+
+Carlyn was trying to get multiple series on a single chart to display.
+
+- https://developer.apple.com/forums/thread/711609
+
+
+We will follow up on the solution to this next week.
+
+
+### Layout Continued
+
+We continued our exploration of SwiftUI's composable layout system available in iOS16.
+
+```swift
+struct EqualWidthHStack: Layout {
+    
+    struct Geometry {
+        let maxSize: CGSize
+        let spacing: [CGFloat]
+        let totalSpacing: Double
+    }
+    
+    func maxSize(subviews: Subviews) -> CGSize {
+        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
+        return sizes.reduce(CGSize.zero) { currentMax, size in
+            CGSize(width: max(currentMax.width, size.width),
+                   height: max(currentMax.height, size.height))
+        }
+    }
+    
+    func spacing(subviews: Subviews, along axis: Axis) -> [CGFloat] {
+        zip(subviews, subviews.dropFirst()).map { views in
+            views.0.spacing.distance(to: views.1.spacing, along: axis)
+        } + [0]
+    }
+    
+    func makeCache(subviews: Subviews) -> Geometry {
+        let maxSize = maxSize(subviews: subviews)
+        let spacing = spacing(subviews: subviews, along: .horizontal)
+        let totalSpacing = spacing.reduce(0, +)
+        
+        return Geometry(maxSize: maxSize,
+                        spacing: spacing,
+                        totalSpacing: totalSpacing)
+    }
+    
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews,
+                      cache: inout Geometry) -> CGSize {
+        return CGSize(width: cache.maxSize.width *
+                      CGFloat(subviews.count) + cache.totalSpacing,
+                      height: cache.maxSize.height)
+    }
+    
+    func placeSubviews(in bounds: CGRect,
+                       proposal: ProposedViewSize,
+                       subviews: Subviews, cache: inout Geometry) {
+        
+        let proposal = ProposedViewSize(width: cache.maxSize.width,
+                                        height: cache.maxSize.height)
+        var x = bounds.minX + cache.maxSize.width /  2
+        for index in subviews.indices {
+            subviews[index].place(at: CGPoint(x: x, y: bounds.midY),
+                                  anchor: .center,
+                                  proposal: proposal)
+            x += cache.maxSize.width + cache.spacing[index]
+        }
+    }
+}
+```
+
+
+
 
 ---
 
