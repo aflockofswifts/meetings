@@ -82,9 +82,45 @@ https://github.com/apple/swift-evolution/blob/main/proposals/0366-move-function.
 
 
 ### Extistentials, Opaque Types and Primary Associated Types Demo for Combine
+```swift
+import Foundation
+import Combine
 
+//SE-361 Extensions on bound generic types (also 244 & 346)
+extension Publisher<Int, Never> {
+    func make(byAppending value: Output) -> some Publisher<Int, Never> {
+        append(value)
+    }
+}
 
-TBD
+let p = [0].publisher.make(byAppending: 1)
+
+//SE-244 Opaque Result Types
+func makeSingleValuePublisher<Value>(from value: Value) -> some Publisher<Value, Never> {
+    CurrentValueSubject<Value, Never>(value)
+}
+
+//SE-346 Lightweight same-type requirements for primary associated types
+//SE-335 Existential any
+let publishers: [any Publisher<Int, Never>] = [
+    p,
+    Just(2),
+    makeSingleValuePublisher(from: 3)
+]
+
+//SE-328 Structural opaque result types
+//SE-352 Implicitly Opened Existentials
+func printValues(for publisher: some Publisher<some CustomStringConvertible, Never>) -> AnyCancellable {
+    publisher.sink { print($0) }
+}
+
+var subscriptions: Set<AnyCancellable> = []
+publishers.forEach { publisher in printValues(for: publisher).store(in: &subscriptions) }
+for publisher in publishers {
+    printValues(for: publisher).store(in: &subscriptions)
+}
+
+```
 
 
 ---
