@@ -69,7 +69,7 @@ Persistent update for live stuff.  It will not be in the initial version of iOS1
 https://developer.apple.com/documentation/activitykit?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=web&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B569
 
 
-Franklin pointed us a HIG:
+Franklin pointed us to the HIG:
 
 - https://developer.apple.com/design/human-interface-guidelines/components/menus-and-actions/activity-views/
 
@@ -121,6 +121,12 @@ for publisher in publishers {
 }
 
 ```
+
+### i360Dev
+
+It's coming up!  Ed will be speaking about Unity and SwiftUI.
+
+https://360idev.com
 
 
 ---
