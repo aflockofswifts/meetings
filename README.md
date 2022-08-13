@@ -4,9 +4,44 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.08.13
+
+## 2022.08.20
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+
+---
+
+## 2022.08.13
+
+### MKLocalSearch
+
+Carlyn is trying to find the best way to get a bunch of results.  It seems to be only returning a single results.  
+
+Peter Wu recommends using `MKLocalSearchCompleter`
+
+```swift
+private func startProvidingCompletions() {
+        searchCompleter = MKLocalSearchCompleter()
+        searchCompleter?.delegate = self
+        searchCompleter?.region = searchRegion
+        if configuration == .city {
+            searchCompleter?.resultTypes = MKLocalSearchCompleter.ResultType([.address])
+        }
+    }
+```
+
+```swift
+private func search(for suggestedCompletion: MKLocalSearchCompletion) {
+        let searchRequest = MKLocalSearch.Request(completion: suggestedCompletion)
+        search(using: searchRequest, dismissAfterSearch: true)
+    }
+```
+
+Josh found this useful link:
+
+- https://stackoverflow.com/questions/62703042/how-to-search-for-cities-in-mapkit-swift-5
+
 
 ---
 
@@ -17,7 +52,6 @@ All people and all skill levels are welcome to join.
 - Yes, there is a flashlight on the Apple watch.
 - Medications in iOS16
 - Sleep tracking in iOS16
-
 
 ### Charts
 
@@ -90,7 +124,46 @@ struct EqualWidthHStack: Layout {
 }
 ```
 
+### Kotlin + Operator in HTML Builder
 
+Builder in Kotlin looks very similar to Swift's builder
+
+### Removing Bar from the Bottom
+
+You can use 
+
+- https://danielsaidi.com/blog/2022/08/01/removing-the-home-indicator-in-swiftui?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B571
+
+
+### 3D Transforms Explained
+
+- https://www.thealexanderlee.com/blog/how-do-3d-transforms-of-ios-views-work-under-the-hood?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B570
+
+
+### Share Live Updates with Activity Kit
+
+
+Persistent update for live stuff.  It will not be in the initial version of iOS16.
+
+https://developer.apple.com/documentation/activitykit?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=web&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B569
+
+
+Franklin pointed us a HIG:
+
+- https://developer.apple.com/design/human-interface-guidelines/components/menus-and-actions/activity-views/
+
+
+### Move Proposal
+
+Move semantics are coming to Swift!
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0366-move-function.md
+
+
+### Extistentials, Opaque Types and Primary Associated Types Demo for Combine
+
+
+TBD
 
 
 ---
