@@ -43,6 +43,50 @@ Josh found this useful link:
 - https://stackoverflow.com/questions/62703042/how-to-search-for-cities-in-mapkit-swift-5
 
 
+### Kotlin + Operator in HTML Builder
+
+Builder in Kotlin looks very similar to Swift's builder. The Kotlin result builder is unable to lift string types to the result type so you need to put the `+` operator everywhere.  This emphasizes a subtle difference in philosophy about clarity and ease-of-use at the call site.
+
+### Removing Bar from the Bottom
+
+You can remove the home button bar in SwiftUI easily.
+
+- https://danielsaidi.com/blog/2022/08/01/removing-the-home-indicator-in-swiftui?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B571
+
+
+### 3D Transforms Explained
+
+A good intro to 3D and iOS views.
+
+- https://www.thealexanderlee.com/blog/how-do-3d-transforms-of-ios-views-work-under-the-hood?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B570
+
+
+### Share Live Updates with Activity Kit
+
+
+Persistent update for live stuff.  It will not be in the initial version of iOS16.
+
+https://developer.apple.com/documentation/activitykit?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=web&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B569
+
+
+Franklin pointed us a HIG:
+
+- https://developer.apple.com/design/human-interface-guidelines/components/menus-and-actions/activity-views/
+
+
+### Move Proposal
+
+Move semantics are coming to Swift!
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0366-move-function.md
+
+
+### Extistentials, Opaque Types and Primary Associated Types Demo for Combine
+
+
+TBD
+
+
 ---
 
 ## 2022.08.06
@@ -123,48 +167,6 @@ struct EqualWidthHStack: Layout {
     }
 }
 ```
-
-### Kotlin + Operator in HTML Builder
-
-Builder in Kotlin looks very similar to Swift's builder
-
-### Removing Bar from the Bottom
-
-You can use 
-
-- https://danielsaidi.com/blog/2022/08/01/removing-the-home-indicator-in-swiftui?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B571
-
-
-### 3D Transforms Explained
-
-- https://www.thealexanderlee.com/blog/how-do-3d-transforms-of-ios-views-work-under-the-hood?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B570
-
-
-### Share Live Updates with Activity Kit
-
-
-Persistent update for live stuff.  It will not be in the initial version of iOS16.
-
-https://developer.apple.com/documentation/activitykit?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=web&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B569
-
-
-Franklin pointed us a HIG:
-
-- https://developer.apple.com/design/human-interface-guidelines/components/menus-and-actions/activity-views/
-
-
-### Move Proposal
-
-Move semantics are coming to Swift!
-
-https://github.com/apple/swift-evolution/blob/main/proposals/0366-move-function.md
-
-
-### Extistentials, Opaque Types and Primary Associated Types Demo for Combine
-
-
-TBD
-
 
 ---
 
