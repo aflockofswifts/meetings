@@ -162,7 +162,103 @@ Presentation by Josh. Includes upgrade to CoinGecko example from previous weeks.
 - Supports four representations: Data, File, Proxy, (I can't remember the last one ^^;; )
 - Generally prioritize lossless formats first, lossy formats last.
 
+```swift
+import SwiftUI
+import PhotosUI
+import UIKit
 
+enum AvatarImage {
+    case image(UIImage), livePhoto(PHLivePhoto)
+    enum Error: Swift.Error {
+        case noPhoto, invalidImage
+    }
+}
+
+struct LivePhotoView: UIViewRepresentable {
+    var livephoto: PHLivePhoto
+
+    func makeUIView(context: Context) -> PHLivePhotoView {
+        .init()
+    }
+
+    func updateUIView(_ view: PHLivePhotoView, context: Context) {
+        view.livePhoto = livephoto
+        view.startPlayback(with: .hint)
+    }
+}
+
+@MainActor
+final class ViewModel: ObservableObject {
+    @Published var selectedPhotosPickerItems: [PhotosPickerItem] = []
+    @Published var image: AvatarImage?
+    func callAsFunction() async {
+        for await item in $selectedPhotosPickerItems.values.compactMap(\.first) {
+            do {
+                async let loadLivePhoto = try await item.loadTransferable(type: PHLivePhoto.self)
+                let livePhoto = try await loadLivePhoto
+                if let livePhoto {
+                    image = .livePhoto(livePhoto)
+                } else {
+                    let data = try await item.loadTransferable(type: Data.self)
+                    async let loadImage = data.flatMap(UIImage.init(data:))
+                    let image = await loadImage
+                    self.image = image.map(AvatarImage.image(_:))
+                }
+            } catch {
+                self.image = nil
+                print(error)
+            }
+        }
+    }
+}
+
+public struct AvatarView: View {
+
+    @State private var showPicker = false
+    @StateObject private var viewModel = ViewModel()
+
+    public init() { }
+
+    public var body: some View {
+
+        Group {
+            switch viewModel.image {
+            case let .image(image):
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .clipShape(Circle())
+            case let .livePhoto(livePhoto):
+                LivePhotoView(livephoto: livePhoto).clipShape(Circle())
+            case .none:
+                Image(systemName: "pawprint.fill")
+                    .resizable()
+                    .padding(sqrt(64 * 64) / 2)
+                    .background(Circle().fill(Color(uiColor: .tertiarySystemBackground).gradient))
+            }
+        }
+        .frame(width: 128, height: 128)
+        .overlay(alignment: .bottomTrailing) {
+            Button {
+                showPicker = true
+            } label: {
+                Image(systemName: "pencil.circle.fill")
+                    .resizable()
+                    .frame(width: 36, height: 36)
+            }
+        }
+        .photosPicker(
+            isPresented: $showPicker,
+            selection: $viewModel.selectedPhotosPickerItems,
+            maxSelectionCount: 1,
+            matching: .any(of: [.livePhotos, .not(.screenshots)]),
+            preferredItemEncoding: .current
+        )
+        .task { await viewModel() }
+    }
+}
+
+```
 ---
 
 ## 2022.08.13
