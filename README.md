@@ -5,9 +5,162 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join. 
 
 
-## 2022.08.20
+## 2022.08.27
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+
+## 2022.08.20
+
+### SwiftUI Diffing
+
+New blog post describing SwiftUI diffing mechanism.
+
+- https://rensbr.eu/blog/swiftui-diffing/
+
+
+### Location Services Search
+
+- https://github.com/carlynorama/LocationServices
+
+### Putting Content Inside a ScrollView
+
+Peter investigates using scroll views.  There isn't an option to turn off clipping so you need to play with padding.
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Some Title")
+                .font(.title)
+                .frame(alignment: .leading)
+            ScrollView(.horizontal) {
+                HStack {
+                    Rectangle()
+                        .fill(.white)
+                        .frame(width: 300, height: 100)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                }
+                .padding(10) // overdraw and compensate for clipping
+            }
+            .padding(-10) // ignore parent's size proposal
+        }
+        .padding()
+    }
+}
+```
+
+### Box Style Modifier
+
+A helpful view from Ed.
+
+
+```swift
+import SwiftUI
+
+struct BoxView : ViewModifier {
+  @Environment(\.colorScheme) var colorScheme
+  var title : String
+  var color : Color?
+  
+  func body(content: Content) -> some View {    
+    ZStack(alignment: .top) {
+      RoundedRectangle(cornerRadius: 3)
+        .layoutPriority(-100)
+        .foregroundColor(.clear)
+        .overlay(RoundedRectangle(cornerRadius: 3).stroke(lineWidth: 1).foregroundColor(Color.gray))
+      content
+        .padding()
+    }
+    .overlay(alignment: .topLeading, content: {
+      Text(title)
+        .bold()
+        .padding(.horizontal,4)
+        .background(color != nil ? color! : colorScheme == .dark ? .black : .white)
+        .offset(x: 4, y: -10)
+    })
+    .padding(.top,8)
+      
+  }
+}
+
+extension View {
+  func boxStyle(title:String = "",color:Color? = nil) -> some View {
+    modifier(BoxView(title: title, color: color))
+  }
+}
+```
+
+Example Usage:
+
+```
+struct BoxView_Previews: PreviewProvider {
+  static var previews: some View {
+    ScrollView {
+      VStack {
+        Text("Hello World 3")
+          .font(.title)
+          .padding(.bottom, 8)
+        Text("More Contents 1")
+        Text("More Contents 2")
+        Text("More Contents 3")
+        Text("More Contents 4")
+      }
+      .boxStyle(title:"Hello World")      
+      Spacer()
+    }
+  }
+}
+```
+
+### Implementing Services
+
+Presentation by Josh.
+
+Some important points:
+
+  - Defining a protocol lets you program to an interface.
+  - Don't make your protocol conform to ObservableObject because it will not allow you to use actors.
+  - ObservableObject publishes on the main actor but an arbitrary actor would cause publishing to happen on the actor's executor (not the main actor)
+  - Instead consider making a view model factory that contains the service, can be put into the environment, and factory new view models.
+
+
+```
+import PlaygroundSupport
+
+final class ViewModelFactory: ObservableObject {
+    let weatherService: WeatherService
+    func makeSomeViewModel(with: User) -> SomeViewModel { }
+}
+
+protocol WeatherService {
+    func getWeather() async throws -> String
+}
+
+final class WeatherKitService: WeatherService {
+    func getWeather() async throws -> String { "" }
+}
+
+actor GoogleWeatherService: WeatherService {
+    func getWeather() async throws -> String { "" }
+}
+
+struct MockService: WeatherService {
+    func getWeather() async throws -> String { "" }
+}
+```
+
+### Transferable Protocol
+
+Presentation by Josh. Includes upgrade to CoinGecko example from previous weeks. Also, a new avatar picker project using PHPhotoPicker. In a future week, we will use Transferable to get data from the photo library to the UI.
+
+- You can define your own UTTypes.
+- The protocol requires implementation of a single static method.
+- It uses a result builder so that you can prioritize formats you support.
+- Supports four representations: Data, File, Proxy, (I can't remember the last one ^^;; )
+- Generally prioritize lossless formats first, lossy formats last.
 
 
 ---
