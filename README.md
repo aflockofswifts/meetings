@@ -95,7 +95,7 @@ extension View {
 
 Example Usage:
 
-```
+```swift
 struct BoxView_Previews: PreviewProvider {
   static var previews: some View {
     ScrollView {
@@ -127,7 +127,7 @@ Some important points:
   - Instead consider making a view model factory that contains the service, can be put into the environment, and factory new view models.
 
 
-```
+```swift
 import PlaygroundSupport
 
 final class ViewModelFactory: ObservableObject {
