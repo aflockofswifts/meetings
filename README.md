@@ -4,10 +4,79 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
+## 2022.09.03
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+
+
+---
 
 ## 2022.08.27
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+### Maps
+
+Andrei was asking about a bug he was hitting with maps. The latest way is to use `MapAnnotation`:
+
+```swift
+Map(coordinateRegion: $viewModel.region, annotationItems: viewModel.stations) { annotation in
+          MapAnnotation(coordinate: .init(latitude: annotation.lat, longitude: annotation.lng), anchorPoint: .init(x: 0.5, y: 0)) {
+            Button { viewModel.select(station: annotation) }
+              label: {
+                VStack {
+                  if annotation.name == viewModel.selectedStation?.name {
+                    VStack {
+                      Image(systemName: "mappin.circle.fill")
+                        .font(.largeTitle)
+                        .foregroundColor(Color.blue)
+                      Text(annotation.name)
+                    }
+                  } else {
+                    Image(systemName: "mappin.circle")
+                      .font(.largeTitle)
+                      .foregroundColor(Color.gray)
+                  }
+                }
+              }
+          }
+        }
+```
+
+There was a bug in which the annotation position was binding to the locations and so it would shift with the map.
+
+### Layout
+
+Carlyn is experimenting with layout:
+
+- Her code: https://github.com/carlynorama/LayoutTests
+
+- From objc.io https://talk.objc.io/episodes/S01E225-view-protocols-and-shapes
+
+- https://developer.apple.com/videos/play/wwdc2019/237/?time=876
+
+- The latest layout stuff forrm objc.io 
+
+- https://talk.objc.io/episodes/S01E318-inspecting-swiftui-s-layout-process
+
+
+### 360idev begins soon!
+
+https://360idev.com
+
+
+### Revisting a year old SwiftUI App
+
+Ray gave a quick review of a SwiftUI app we built a year ago.  It still compiles!  It was rendered using a state machine. Perhaps now it can use a tab controller instead of a custom view with a switch statement.
+
+
+### Form & Geometry Reader
+
+Geometry reader modifies the positions of the form.  This seems like a bug.
+
+
+### Transferable Protocol
+
+Continuing with the Avatar example from last week, it is easy to implement drag and drop (as one-liners) if you have types that are themselves transferable.
 
 ---
 
