@@ -4,11 +4,155 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.09.03
+## 2022.09.10
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
+---
 
+## 2022.09.03
+
+
+### Color (off-topic)
+
+Inspired by Peter's tinted computer glasses, we got on the subject of color filtering and color spaces.
+
+Carlyn notes that Animals can sense things that we cannot:
+
+https://www.penguinrandomhouse.com/books/616914/an-immense-world-by-ed-yong/
+
+Ray mentioned something about principal component analysis and how three vectors is enough to get most of the information.  Josh mentioned that some people have additional proteins that let them see more colors.
+
+
+### The Last 360iDev
+
+Ed reported about https://360idev.com. It was a good conference with a lot of informative talks that will hopefully eventually become public. Sadly, the organizers were unable to make a reasonable return on investment so this year will be the last one.
+
+There are not that many in-person conferences
+
+Other conferences:
+
+- https://www.iosdevuk.com/
+- https://2022.nsspain.com/
+- try! Swift
+
+
+### Fast SwiftUI Diffing
+
+Ed (inspired by a 360iDev talk) talked about how SwiftUI uses object diffing to re-render views.
+
+```swift
+struct P : Codable {
+  let a : Int
+}
+
+struct E : Equatable {
+  let a : String
+}
+
+struct C {
+  let a : [String:[any View]]
+}
+
+_isPOD(P.self)  // true, fast diffing
+
+_isPOD(E.self)  // false
+E.self is any Equatable.Type // true, medium speed diffing
+
+_isPOD(C.self)  // false
+C.self is any Equatable.Type // false, reflection based slower diffing
+```
+
+Aside:  `_isPod` is a private (subject to change method) in 
+https://github.com/apple/swift/blob/main/stdlib/public/core/Builtin.swift
+
+
+```swift
+/// Returns `true` if type is a POD type. A POD type is a type that does not
+/// require any special handling on copying or destruction.
+@_transparent
+public // @testable
+func _isPOD<T>(_ type: T.Type) -> Bool {
+  return Bool(Builtin.ispod(type))
+}
+```
+
+### Picker and Service Model Demo
+
+Carlyn gave some demos of new SwiftUI controls and using a service model.
+
+- https://gist.github.com/carlynorama/6b70884d35e5a46833e7d36247d9ff55 
+- https://github.com/carlynorama/SimpleServiceModel
+
+
+### Changing Axis Scale of of Swift Chart
+
+
+Using the IRIS machine learning dataset, Ray showed how to create a grid of plots similar to what R can do.  He used the `TabularData` framework to read in the CSV and display it with Swift charts.  The charts output was pretty good but the automatic scalebars have a strong bias for including zero.  You can customize it.
+
+
+```swift
+private func autoscale(_ name: String, paddingFactor: Double = 0.1) -> some ScaleDomain {
+  let data = dataFrame[name].compactMap { $0 as? Double }
+  guard let min = data.min(), let max = data.max() else { 
+    return 0.0 ... 1.0 
+  }
+  let size = max - min
+  return (min - size * paddingFactor) ... (max + size * paddingFactor)
+}
+```
+
+Then in the body of the view that includes the `Chart` view add these two modifiers.
+
+```swift
+Chart {
+   :
+}
+.chartXScale(domain: autoscale(xColumnName))
+.chartYScale(domain: autoscale(yColumnName))
+```
+
+### Link roundup
+
+You should subscribe to iOSDevWeekly.  It is a weekly newsletter that comes out every Friday.  Here are some interesting links from this week:
+
+- Swift Package Command Plugins [link](https://www.polpiella.dev/sourcery-swift-package-command-plugin/?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B574)
+
+- Xcode refactor Async Await [link](https://blog.eidinger.info/xcodes-refactoring-options-for-asyncawait?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B574)
+- Sharing SwiftUI code among Apple Platforms [link](https://www.jessesquires.com/blog/2022/08/19/sharing-code-in-swiftui-apps/?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B574)
+- Coordinate spaces [link](https://daringsnowball.net/articles/swiftui-coordinatespace/?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B574
+)
+- UIKit Pro Tips [link](https://blog.steveasleep.com/three-uikit-protips?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B574)
+
+
+Notes:
+
+- Talk from 360iDev about Swift Package Plugins: https://speakerdeck.com/designatednerd/generating-code-and-other-mischief-with-swift-package-manager-plugins-360idev-denver-co-august-2022
+- Interesting cross-platform framework https://www.scade.io
+
+### Functional ViewModels
+
+ViewModels can be thought as functions. This video about the architecture of the Kickstarter app is an excelent introduction to that: https://www.youtube.com/watch?v=uTLG_LgjWGA
+
+Josh took us on a journey of going from how Apple suggest view models be constructed to a totally function view of the world:
+
+#### Starting Version
+
+```swift
+TBD
+```
+
+#### Inputs and Outputs Made Clear
+
+```swift
+TBD
+```
+
+#### As a function
+
+```swift
+TBD
+```
 
 ---
 
