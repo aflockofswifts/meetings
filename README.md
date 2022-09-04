@@ -139,22 +139,214 @@ Josh took us on a journey of going from how Apple suggest view models be constru
 #### Starting Version
 
 ```swift
-TBD
+final class ViewModel: ObservableObject {
+    @Published var input1 = ""
+    @Published var input2 = ""
+    @Published private(set) var lowercased = ""
+    @Published private(set) var uppercased = ""
+    init() {
+        $input1.map(\.localizedLowercase).assign(to: &$lowercased)
+        $input2.map(\.localizedUppercase).assign(to: &$uppercased)
+    }
+}
+
+struct ContentView: View {
+    @StateObject private var viewModel = ViewModel()
+    var body: some View {
+        VStack(alignment: .leading) {
+            TextField("text1", text: $viewModel.input1)
+            Text(viewModel.lowercased)
+            TextField("text2", text: $viewModel.input2)
+            Text(viewModel.uppercased)
+            Spacer()
+        }
+        .padding()
+    }
+}
 ```
 
 #### Inputs and Outputs Made Clear
 
 ```swift
-TBD
+
+final class ViewModel: ObservableObject {
+
+    let input1: (String) -> Void
+    let input2: (String) -> Void
+
+    let subject1 = PassthroughSubject<String, Never>()
+    private let subject2 = PassthroughSubject<String, Never>()
+
+    @Published private(set) var lowercased = ""
+    @Published private(set) var uppercased = ""
+
+    init() {
+        input1 = subject1.send
+        input2 = subject2.send
+
+        subject1.map(\.localizedLowercase).assign(to: &$lowercased)
+        subject2.map(\.localizedUppercase).assign(to: &$uppercased)
+    }
+}
+
+struct ContentView: View {
+    @StateObject private var viewModel = ViewModel()
+    @State private var input1 = ""
+    @State private var input2 = ""
+    var body: some View {
+        VStack(alignment: .leading) {
+            TextField("text1", text: $input1)
+            Text(viewModel.lowercased)
+            TextField("text1", text: $input2)
+            Text(viewModel.uppercased)
+            Spacer()
+        }
+        .padding()
+        .onChange(of: input1, perform: viewModel.input1)
+        .onChange(of: input2, perform: viewModel.input2)
+    }
+}
 ```
 
 #### As a function
 
 ```swift
-TBD
+func viewModel(
+    input1: some Publisher<String, Never>,
+    input2: some Publisher<String, Never>
+) async ->  (
+    lowercased: some Publisher<String, Never>,
+    uppercased: some Publisher<String, Never>
+) {
+    (
+        lowercased: input1.map(\.localizedLowercase),
+        uppercased: input2.map(\.localizedUppercase)
+    )
+}
+
+struct ContentView: View {
+    State private var input1 = ""
+    State private var input2 = ""
+    private let subject1 = PassthroughSubject<String, Never>()
+    private let subject2 = PassthroughSubject<String, Never>()
+    @State private var lowercase = ""
+    @State private var uppercase = ""
+    var body: some View {
+        VStack(alignment: .leading) {
+            TextField("text1", text: $input1.binding)
+            Text(lowercase)
+            TextField("text1", text: $input2.binding)
+            Text(uppercase)
+            Spacer()
+        }
+        .padding()
+        .onChange(of: input1, perform: subject1.send)
+        .onChange(of: input2, perform: subject2.send)
+        .task {
+            let (lowercased, uppercased) = await viewModel(input1: $input1.publisher, input2: $input2.publisher)
+            Task { @MainActor in
+                for await value in lowercased.values {
+                    lowercase = value
+                }
+            }
+            Task { @MainActor in
+                for await value in uppercased.values {
+                    uppercase = value
+                }
+            }
+        }
+    }
+}
+```
+
+#### Simplifying subscriptions
+
+```swift
+func subscribe<Value: Sendable>(
+    _ publisher: some Publisher<Value, Never>,
+    observe: @escaping (Value) -> Void
+) {
+    Task { @MainActor in
+        for await value in publisher.values {
+            observe(value)
+        }
+    }
+}
+```
+
+#### Simplifying State publishers
+
+```swift
+@propertyWrapper
+struct PublishedState<Value>: DynamicProperty {
+    final class Projection: ObservableObject {
+        @Published var value: Value
+        var publisher: some Publisher<Value, Never>  {
+            $value
+        }
+        private(set) lazy var binding: Binding<Value> = {
+            .init(get: { self.value }, set: { self.value = $0 })
+        }()
+        init(value: Value) {
+            self.value = value
+        }
+    }
+    @StateObject var projection: Projection
+    var wrappedValue: Value {
+        get { projection.value }
+        nonmutating set { projection.value = newValue }
+    }
+    var projectedValue: Projection {
+        projection
+    }
+    init(wrappedValue: Value) {
+        let projection = Projection(value: wrappedValue)
+        _projection = .init(wrappedValue: projection)
+    }
+}
+```
+
+#### The final version
+
+```swift
+func viewModel(
+    input1: some Publisher<String, Never>,
+    input2: some Publisher<String, Never>
+) async ->  (
+    lowercased: some Publisher<String, Never>,
+    uppercased: some Publisher<String, Never>
+) {
+    (
+        lowercased: input1.map(\.localizedLowercase),
+        uppercased: input2.map(\.localizedUppercase)
+    )
+}
+
+struct ContentView: View {
+    @PublishedState private var input1 = ""
+    @PublishedState private var input2 = ""
+    @State private var lowercase = ""
+    @State private var uppercase = ""
+    var body: some View {
+        VStack(alignment: .leading) {
+            TextField("text1", text: $input1.binding)
+            Text(lowercase)
+            TextField("text1", text: $input2.binding)
+            Text(uppercase)
+            Spacer()
+        }
+        .padding()
+        .task {
+            let (lowercased, uppercased) = await viewModel(input1: $input1.publisher, input2: $input2.publisher)
+            subscribe(lowercased) { lowercase = $0 }
+            subscribe(uppercased) { uppercase = $0 }
+        }
+    }
+}
 ```
 
 ---
+
 
 ## 2022.08.27
 
