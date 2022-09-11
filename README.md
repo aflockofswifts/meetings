@@ -121,10 +121,11 @@ func levenshteinDistance(_ lhs: String, _ rhs: String) -> Int {
 (n-gram)[https://en.wikipedia.org/wiki/N-gram]  
 (Finding similar words with the NL framework)[https://developer.apple.com/documentation/naturallanguage/finding_similarities_between_pieces_of_text]  
 ### Algorithm books
-(The Algorithm Design Manual, 3rd Edition by Steven Skiena) [https://www.algorist.com]  
-!(preview)[https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=3030542556&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=algorist-20]
-(Introduction to Algorithms, Fourth Edition)[https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/]  
-!(preview)[https://mit-press-us.imgix.net/covers/9780262046305.jpg?auto=format&w=298&dpr=2&q=20]
+[The Algorithm Design Manual, 3rd Edition by Steven Skiena] (https://www.algorist.com)  
+![preview](https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=3030542556&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=algorist-20)  
+
+[Introduction to Algorithms, Fourth Edition](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/)  
+![preview](https://mit-press-us.imgix.net/covers/9780262046305.jpg?auto=format&w=298&dpr=2&q=20)
 
 ## 2022.09.03
 
