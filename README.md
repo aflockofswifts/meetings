@@ -4,11 +4,122 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.09.10
+## 2022.09.17
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
+## 2022.09.10
+
+### Levenshtein distance
+Josh presented project using the Levenshtein distance for fuzzy search.  We started with a naive implmentation of the [algorithm here](https://en.wikipedia.org/wiki/Levenshtein_distance):
+![preview](https://wikimedia.org/api/rest_v1/media/math/render/svg/6224efffbe9a4e01afbddeeb900bfd1b3350b335)
+And discussed how it can be implmented with generics or with `any StringProtocol`:
+```swift
+func lev<Word1: Collection, Word2: Collection>(
+    _ left: Word1,
+    _ right: Word2
+) -> Int where Word1.Element: Comparable, Word1.Element == Word2.Element  {
+    if right.isEmpty { return left.count }
+    if left.isEmpty { return right.count }
+    if left.first == right.first { return lev(left.dropFirst(), right.dropFirst()) }
+    return 1 + min(
+        lev(left.dropFirst(), right),
+        lev(left, right.dropFirst()),
+        lev(left.dropFirst(), right.dropFirst())
+    )
+}
+```
+### Wagner-Fischer
+After looking at the performance of the recursive algorithm, we looked at the (Wagner-Fischer)[https://en.wikipedia.org/wiki/Wagner–Fischer_algorithm] and saw how dynmaic programming could be used to memoize the repeative calculations and lead to a dramatic reduction in run time.
+![preview](https://wikimedia.org/api/rest_v1/media/math/render/svg/6224efffbe9a4e01afbddeeb900bfd1b3350b335)
+```swift
+
+func levMatrix(_ left: String, _ right: String) -> Int {
+    let leftIndices = left.indexArray
+    let rightIndices = right.indexArray
+    let rows = leftIndices.count + 1
+    let columns = rightIndices.count + 1
+    var matrix = Matrix(rows: rows, columns: columns, initialValue: 0)
+    (1..<rows).forEach { matrix[$0, 0] = $0 }
+    (1..<columns).forEach { matrix[0, $0] = $0 }
+    for row in 1..<rows {
+        for column in 1..<columns {
+            let substitutionCost = left[leftIndices[row - 1]] == right[rightIndices[column - 1]] ? 0 : 1
+            matrix[row, column] = min(
+                matrix[row - 1, column] + 1,
+                matrix[row, column - 1] + 1,
+                matrix[row - 1, column - 1] + substitutionCost
+            )
+        }
+    }
+    return matrix[rows - 1, columns - 1]
+}
+
+struct Matrix<Element> {
+    private(set) var contiguousRowMajorElements: [Element]
+    let rowCount: Int
+    let columnCount: Int
+    init(rows: Int, columns: Int, initialValue: Element) {
+        rowCount = rows
+        columnCount = columns
+        contiguousRowMajorElements = .init(repeating: initialValue, count: rows * columns)
+    }
+    subscript(row: Int, column: Int) -> Element {
+        get { contiguousRowMajorElements[row + column * rowCount] }
+        set { contiguousRowMajorElements[row + column * rowCount] = newValue }
+    }
+}
+
+private extension String {
+    var indexArray: [String.Index] {
+        Array(sequence(first: startIndex) { last in
+            let next = self.index(after: last)
+            return next == endIndex ? nil : next
+        })
+    }
+}
+```
+### Memory optimization
+Finally we looked at how we could discard the index array allocations and table allocation in favor of a single row optimization outlined (here)[https://www.baeldung.com/cs/levenshtein-distance-computation] and we discussed other possible optimizations, such as removing the commin prefixes and suffixes and static allocation of the row buffer.
+![preview](https://www.baeldung.com/wp-content/ql-cache/quicklatex.com-ca813035e10f8eb3a2cbde998aec1c33_l3.svg)
+```swift
+func levenshteinDistance(_ lhs: String, _ rhs: String) -> Int {
+    var left = lhs
+    var right = rhs
+    if right.count > left.count {
+        swap(&left, &right)
+    }
+    let height = left.count
+    let width = right.count
+    var row = (0..<width).map { $0 + 1 }
+    var leftIndex = left.startIndex
+    for y in 0..<height {
+        var previousDiagonal = y
+        var previous = y + 1
+        var rightIndex = right.startIndex
+        for x in 0..<width {
+            let top = row[x]
+            let substitutionCost = left[leftIndex] == right[rightIndex] ? 0 : 1
+            row[x] = min(
+                previous + 1,
+                top + 1,
+                previousDiagonal + substitutionCost
+            )
+            previous = row[x]
+            previousDiagonal = top
+            rightIndex = right.index(after: rightIndex)
+        }
+        leftIndex = left.index(after: leftIndex)
+    }
+    return row.last ?? 0
+}
+```
+### Additional fuzzy search algorithms
+(Bitap Algorithm)[https://en.wikipedia.org/wiki/Bitap_algorithm]
+(n-gram)[https://en.wikipedia.org/wiki/N-gram]
+(Finding similar words with the NL framework)[https://developer.apple.com/documentation/naturallanguage/finding_similarities_between_pieces_of_text]
 
 ## 2022.09.03
 
