@@ -13,9 +13,9 @@ All people and all skill levels are welcome to join.
 ## 2022.09.10
 
 ### Levenshtein distance
-Josh presented project using the Levenshtein distance for fuzzy search.  We started with a naive implmentation of the [algorithm here](https://en.wikipedia.org/wiki/Levenshtein_distance):
-![preview](https://wikimedia.org/api/rest_v1/media/math/render/svg/6224efffbe9a4e01afbddeeb900bfd1b3350b335)
-And discussed how it can be implmented with generics or with `any StringProtocol`:
+Josh presented project using the Levenshtein distance for fuzzy search.  We started with a naive implmentation of the [algorithm here](https://en.wikipedia.org/wiki/Levenshtein_distance):  
+![preview](https://wikimedia.org/api/rest_v1/media/math/render/svg/6224efffbe9a4e01afbddeeb900bfd1b3350b335)  
+And discussed how it can be implmented with generics or with `any StringProtocol`:  
 ```swift
 func lev<Word1: Collection, Word2: Collection>(
     _ left: Word1,
@@ -32,8 +32,8 @@ func lev<Word1: Collection, Word2: Collection>(
 }
 ```
 ### Wagner-Fischer
-After looking at the performance of the recursive algorithm, we looked at the (Wagner-Fischer)[https://en.wikipedia.org/wiki/Wagner–Fischer_algorithm] and saw how dynmaic programming could be used to memoize the repeative calculations and lead to a dramatic reduction in run time.
-![preview](https://wikimedia.org/api/rest_v1/media/math/render/svg/6224efffbe9a4e01afbddeeb900bfd1b3350b335)
+After looking at the performance of the recursive algorithm, we looked at the (Wagner-Fischer)[https://en.wikipedia.org/wiki/Wagner–Fischer_algorithm] and saw how dynmaic programming could be used to memoize the repeative calculations and lead to a dramatic reduction in run time.  
+![preview](https://wikimedia.org/api/rest_v1/media/math/render/svg/6224efffbe9a4e01afbddeeb900bfd1b3350b335)  
 ```swift
 
 func levMatrix(_ left: String, _ right: String) -> Int {
@@ -82,8 +82,8 @@ private extension String {
 }
 ```
 ### Memory optimization
-Finally we looked at how we could discard the index array allocations and table allocation in favor of a single row optimization outlined (here)[https://www.baeldung.com/cs/levenshtein-distance-computation] and we discussed other possible optimizations, such as removing the commin prefixes and suffixes and static allocation of the row buffer.
-![preview](https://www.baeldung.com/wp-content/ql-cache/quicklatex.com-ca813035e10f8eb3a2cbde998aec1c33_l3.svg)
+Finally we looked at how we could discard the index array allocations and table allocation in favor of a single row optimization outlined (here)[https://www.baeldung.com/cs/levenshtein-distance-computation] and we discussed other possible optimizations, such as removing the commin prefixes and suffixes and static allocation of the row buffer.  
+![preview](https://www.baeldung.com/wp-content/ql-cache/quicklatex.com-ca813035e10f8eb3a2cbde998aec1c33_l3.svg)  
 ```swift
 func levenshteinDistance(_ lhs: String, _ rhs: String) -> Int {
     var left = lhs
@@ -117,9 +117,9 @@ func levenshteinDistance(_ lhs: String, _ rhs: String) -> Int {
 }
 ```
 ### Additional fuzzy search algorithms
-(Bitap Algorithm)[https://en.wikipedia.org/wiki/Bitap_algorithm]
-(n-gram)[https://en.wikipedia.org/wiki/N-gram]
-(Finding similar words with the NL framework)[https://developer.apple.com/documentation/naturallanguage/finding_similarities_between_pieces_of_text]
+(Bitap Algorithm)[https://en.wikipedia.org/wiki/Bitap_algorithm]  
+(n-gram)[https://en.wikipedia.org/wiki/N-gram]  
+(Finding similar words with the NL framework)[https://developer.apple.com/documentation/naturallanguage/finding_similarities_between_pieces_of_text]  
 
 ## 2022.09.03
 
