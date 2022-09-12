@@ -12,6 +12,45 @@ All people and all skill levels are welcome to join.
 
 ## 2022.09.10
 
+### Meeting Miscellany
+
+#### Debugging JSON
+
+Ed says you can add this to your \~/.lldbinit file:
+
+```db
+command regex json 's/(.+)/expr let input = %1; print(String(data: try! JSONSerialization.data(withJSONObject: (input is String ? try! JSONSerialization.jsonObject(with: (input as! String).data(using: .utf8)!, options: []) : (input is Data ? (try! JSONSerialization.jsonObject(with: input as! Data, options: [])) : input as! Any)), options: [.prettyPrinted]), encoding: .utf8)!)/'
+```
+
+Franklin notes this blog post that describes something similar:
+
+- https://soffes.blog/debugging-json-data-in-lldb
+
+
+Josh notes that he uses this extension with debug logging:
+
+```swift
+extension Encodable {
+    var prettyPrinted: String {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        return (try? encoder.encode(self))
+            .flatMap { String(data: $0, encoding: .utf8) } ?? "\(self)"
+    }
+}
+```
+
+#### Stable Diffusion
+
+Ed is exploring art with AI:
+
+- https://replicate.com/blog/run-stable-diffusion-on-m1-mac
+
+Franklin notes:
+
+- https://www.pcgamer.com/ai-artist-who-won-competition-says-art-world-is-in-denial-about-the-tech/
+
+
 ### Levenshtein distance
 Josh presented project using the Levenshtein distance for fuzzy search.  We started with a naive implmentation of the [algorithm here](https://en.wikipedia.org/wiki/Levenshtein_distance):  
 ![preview](https://wikimedia.org/api/rest_v1/media/math/render/svg/6224efffbe9a4e01afbddeeb900bfd1b3350b335)  
@@ -32,7 +71,7 @@ func lev<Word1: Collection, Word2: Collection>(
 }
 ```
 ### Wagner-Fischer
-After looking at the performance of the recursive algorithm, we looked at the [Wagner-Fischer](https://en.wikipedia.org/wiki/Wagner–Fischer_algorithm) and saw how dynmaic programming could be used to memoize the repeative calculations and lead to a dramatic reduction in run time.  
+After looking at the performance of the recursive algorithm, we looked at the [Wagner-Fischer](https://en.wikipedia.org/wiki/Wagner–Fischer_algorithm) and saw how dynamic programming could be used to memoize (cache) the repetitive calculations and lead to a dramatic reduction in run time.  
 ![preview](https://wikimedia.org/api/rest_v1/media/math/render/svg/6224efffbe9a4e01afbddeeb900bfd1b3350b335)  
 ```swift
 
