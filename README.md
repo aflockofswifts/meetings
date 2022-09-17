@@ -4,9 +4,142 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.09.17
+## 2022.09.24
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.09.17
+
+
+### Sanatized Text
+
+View Model has two published values for raw input and "sanitized" value that gets put into a database, etc.
+
+```swift
+import SwiftUI
+import Combine
+
+final class InputViewModel: ObservableObject {
+    @Published var rawInput = ""
+    @Published private(set) var sanitizedInput = "" // sanitizedOutput, qualifiedInput, cleanedInput
+        
+    init() {
+        $rawInput
+            .print("Input - raw:")
+            .dropFirst()
+            .drop(while: { $0.isEmpty }) // regex builder to match string pattern
+            .removeDuplicates()
+            .assign(to: &$sanitizedInput)
+    }
+}
+```
+
+Example Usage:
+
+```swift
+struct ContentView: View {
+    
+    @StateObject var inputViewModel = InputViewModel()
+    
+    var body: some View {
+        HStack {
+            Spacer()
+            TextField("Enter Your Name", text: $inputViewModel.rawInput)
+                .font(.title2)
+            Spacer()
+        }
+        .padding()
+        .onAppear {
+            inputViewModel.rawInput = "Blob"
+        }
+        .onChange(of: inputViewModel.sanitizedInput) { newValue in
+            // Update value in some other store
+            print("Input - sanitized: \(newValue)", "-------------", terminator: "\n")
+        }
+    }
+}
+```
+
+### Task Inheritence
+
+We talked about what properties get inherited when you make a new task in various ways.  
+
+![Table of Inheritence](/materials/task-inheritance.png)
+
+Some playground code we messed aroudn with Playground code:
+
+```swift
+enum Storage {
+  @TaskLocal static var id: Int = 0
+}
+
+func compute() async throws -> Int {
+  print("compute", Storage.id)  
+  for i in 1 ... 100000000 {
+    
+    if i.isMultiple(of: 1000) {
+      await Task.yield()
+      try Task.checkCancellation()
+    }
+  }
+  return 42
+}
+
+async let x = compute()
+print(try await x)
+
+
+Storage.$id.withValue(10) {
+  print(Storage.id)   // 10
+  Task {
+    print(Storage.id) // 10
+  }
+  Task.detached {
+    print(Storage.id) // 0
+  }
+}
+```
+
+
+### WWDC Concerency Resources
+
+- Explore structured concurency: https://developer.apple.com/videos/play/wwdc2021/10134/
+- Swift concurrency: Behind the scenes: https://developer.apple.com/videos/play/wwdc2021/10254/
+- Visualize and optimize Swift concurrency: https://developer.apple.com/videos/play/wwdc2022/110350/
+- Discover concurrency in SwiftUI: https://developer.apple.com/videos/play/wwdc2021/10019/
+- Updating a sample app code: https://developer.apple.com/documentation/swift/updating_an_app_to_use_swift_concurrency
+
+### PointFree Concurrency
+
+- PointFree (past)  https://www.pointfree.co/episodes/ep190-concurrency-s-past-threads
+- PointFree (current) https://www.pointfree.co/episodes/ep191-concurrency-s-present-queues-and-combine
+- PointFree (future 1) https://www.pointfree.co/episodes/ep192-concurrency-s-future-tasks-and-cooperation
+- PointFree (future 2) https://www.pointfree.co/episodes/ep193-concurrency-s-future-sendable-and-actors
+- PointFree (future 3) https://www.pointfree.co/episodes/ep194-concurrency-s-future-structured-and-unstructured 
+
+
+### Links and Interesting News
+
+Josh's roundup:
+
+- Activity Kit for the Dynamic Island https://developer.apple.com/documentation/activitykit
+- What's in Swift 5.7 https://www.swift.org/blog/swift-5.7-released/?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B576#swift-evolution-appendix
+- New screen dimensions of iPhones https://hacknicity.medium.com/how-ios-apps-adapt-to-the-various-iphone-14-screen-sizes-b2504a39b58f
+- New HIG now with Activity Button https://developer.apple.com/design/human-interface-guidelines/inputs/action-button?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B576
+- UIHostingConfiguration for better SwiftUI/UIKit integration https://swiftsenpai.com/development/refresh-cells-uihostingconfiguration/?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B576
+- Understanding Type Erasure https://swiftrocks.com/whats-any-understanding-type-erasure-in-swift?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B576
+- SwiftUI Lab https://swiftui-lab.com
+
+
+### Automatic Memoization of Fibinachi and Levenshtein distance
+
+TBD
+
+### Fuzzy Matching UI using Levenshtein distance
+
+TBD
 
 ---
 
