@@ -187,7 +187,8 @@ final class Memoize2<Parameter1: Hashable, Parameter2: Hashable, Return> {
 ```
 ### Fuzzy Matching UI using Levenshtein distance
 
-TBD
+https://github.com/joshuajhomann/SymbolSearch
+![image](https://github.com/joshuajhomann/SymbolSearch/blob/main/preview.gif)
 
 ---
 
