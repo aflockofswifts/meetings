@@ -135,8 +135,56 @@ Josh's roundup:
 
 ### Automatic Memoization of Fibinachi and Levenshtein distance
 
-TBD
+The un-memoized fibbonacci function:
+```swift
+func fibonacci(_ value: Int) -> Int  {
+    value > 1
+        ? fibonacci(value - 1) + fibonacci(value - 2)
+        : value
+}
+```
 
+Generic Memoziation:
+```swift
+final class Memoize<Parameter: Hashable, Return> {
+    private var memo: [Parameter: Return] = [:]
+    let operation: (Memoize<Parameter, Return>, Parameter) -> Return
+    init(_ operation: @escaping (Memoize<Parameter, Return>, Parameter) -> Return) {
+        self.operation = operation
+    }
+    func callAsFunction(_ value: Parameter) -> Return {
+        let memoized = memo[value] ?? operation(self, value)
+        memo[value] = memoized
+        return memoized
+    }
+}
+```
+
+The memoized fibonacci function:
+```swift
+let fib = Memoize<Int, Int> { fib, value in
+    value > 1
+        ? fib(value - 1) + fib(value - 2)
+        : value
+}
+```
+
+Memoziation for higher airty functions:
+```swift
+final class Memoize2<Parameter1: Hashable, Parameter2: Hashable, Return> {
+    private var memo: [Parameter1: [Parameter2: Return]] = [:]
+    let operation: (Memoize2<Parameter1, Parameter2, Return>, Parameter1, Parameter2) -> Return
+    init(_ operation: @escaping (Memoize2<Parameter1, Parameter2, Return>, Parameter1, Parameter2) -> Return) {
+        self.operation = operation
+    }
+    func callAsFunction(_ value1: Parameter1, _ value2: Parameter2) -> Return {
+        let memoized = memo[value1]?[value2] ?? operation(self, value1, value2)
+        let dictionary = memo[value1] ?? [value2: memoized]
+        memo[value1] = dictionary
+        return memoized
+    }
+}
+```
 ### Fuzzy Matching UI using Levenshtein distance
 
 TBD
