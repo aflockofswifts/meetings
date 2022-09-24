@@ -4,9 +4,183 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.09.24
+
+## 2022.10.01
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.09.24
+
+### Conferences
+
+There are lots of in-person conferences happening in Europe. Not so much in the US
+
+### Functional Style
+
+Functions being mutated by button pushes.  Is it common?
+
+Functional programming stives to eliminate shared mutal state. If there are multiple clients mutating a function it is probably an anti-pattern.  In some context (such as mocking) it is convenient to pass (or set) mocked functions for testing.  Generally this is done up front at start-up time.
+
+### Passing Values and References
+
+`class` and `actor` are reference types.  When you pass these to other views in SwiftUI, they will be passed as reference types.
+
+### Blog Post from Icon Factory for  Swift 
+
+### GPS Saving Power 
+
+Bill is trying to figure out the best way to conserve GPS power for his app.  Ed suggested starting in low accuracy and switch to high accuracy when acceleration is detected.  It will take a lot of testing.
+
+https://developer.apple.com/documentation/corelocation/cllocationaccuracy
+
+### VIPER
+
+An architecture better off for UIKit (Objective-C). There is a lot of boilerplate for communications.
+
+https://www.objc.io/issues/13-architecture/viper/
+
+### Rotation Changes in iOS16
+
+In iOS16 you need to do something like this in your scene.
+
+```swift
+let windowScene = UIApplication.shared.windows.first!.windowScene!
+windowScene.requestGeometryUpdate(.iOS(interfaceOrientations:orientation))
+```
+
+### Brain Gears Demo from Allen King
+
+http://brain-gears.blogspot.com
+
+
+He is slowly converting the Factal Workbench from a large Objective-C / UIKit app over to Swift.  Peter is giving him some assistance.
+
+
+### `CopyTask`
+
+A demo for providing a long running, progress showing, cancellable task.
+
+The `CopyTask` type uses `AsyncStream` but could also be implemented using a Combine `CurrentValueSubject`.
+
+Here is the AsyncStream version:
+
+```swift
+final class CopyTask {  
+  var status: AsyncStream<FileCopyStatus>! = nil
+  private var task: Task<Void, Never>? = nil
+  private var continuation: AsyncStream<FileCopyStatus>.Continuation! = nil
+  private var access: any FileAccess
+
+  init(source: URL, destination: URL, access: any FileAccess) {
+    self.access = access
+    self.status = AsyncStream.init { continuation in
+      self.continuation = continuation
+      continuation.yield(.estimating)
+    }
+    task = Task {
+      do {
+        let totalSize = try await self.findSize(source)
+        try await self.recursiveCopy(source: source,
+                                     destination: destination,
+                                     total: totalSize)
+        self.continuation.yield(.complete(.init(current: totalSize, total: totalSize)))
+      } catch is CancellationError {
+        self.continuation.yield(.cancelled)
+      } catch {
+        self.continuation.yield(.error(error))
+      }
+      self.continuation.finish()
+    }
+  }
+  
+  private func findSize(_ url: URL) async throws -> Int64 {
+    let info = try await access.fileInfo(for: url)
+    if !info.isDirectory {
+      return info.size
+    }
+    func depthFirst(url: URL) async throws -> Int64 {
+      let dir = try await access.listDirectory(url: url)
+      var total: Int64 = 0
+      for file in dir {
+        if file.isDirectory {
+          total += try await depthFirst(url: url.appendingPathComponent(file.name))
+          try Task.checkCancellation()
+        } else {
+          total += file.size
+        }
+      }
+      return total
+    }
+    return try await depthFirst(url: url)
+  }
+  
+  func recursiveCopy(source: URL, destination: URL, total: Int64) async throws {
+    var current: Int64 = 0
+    let info = try await access.fileInfo(for: source)
+    if !info.isDirectory {
+      try await access.copyFile(source: source, destination: destination) { byteCount in
+        current += byteCount
+      }
+    } else {
+      func depthFirstCopy(source: URL, destination: URL) async throws {
+        let dir = try await access.listDirectory(url: source)
+
+        for file in dir {
+          let sourceURL = source.appendingPathComponent(file.name)
+          let destinationURL = destination.appendingPathComponent(file.name)
+          try Task.checkCancellation()
+          if file.isDirectory {
+            try await access.createDirectory(url: destinationURL)
+            try await depthFirstCopy(source: sourceURL,
+                                     destination: destinationURL)
+          } else {
+            try await access.copyFile(source: sourceURL, destination: destinationURL) {
+              byteCount in
+              current += byteCount
+            }
+            self.continuation.yield(.progress(.init(current: current, total: total)))
+          }
+        }
+      }
+      try await depthFirstCopy(source: source, destination: destination)
+    }
+  }
+  
+  func cancel() {
+    task?.cancel()
+  }
+  
+  @discardableResult
+  func complete() async throws -> FileCopyProgress {
+    var last: FileCopyStatus?
+    for await state in status {
+      last = state
+    }
+    guard let last = last else {
+      throw FileCopyError.unknownTransferFailure
+    }
+    switch last {
+    case .estimating, .progress(_):
+      throw FileCopyError.unknownTransferFailure
+    case .complete(let progress):
+      return progress // happy path
+    case .cancelled:
+      throw CancellationError()
+    case .error(let error):
+      throw error
+    }
+  }
+}
+```
+
+
+### Teaser: Task problems
+
+Josh showed us a sample project where there are two async processing streams that don't cancel correctlly when the view goes away. Part of the problem is the `@_implicitSelfCapture` of `Task`.  We will see the full solution next week.
+
+
 
 ---
 
