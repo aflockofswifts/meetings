@@ -11,7 +11,97 @@ All people and all skill levels are welcome to join.
 
 ---
 ## 2022.10.01
-## Lifetime of unstructured tasks
+
+### Displays, M1 vs M2
+
+Studio Display is pretty good.  Comparable to the LG 5k display but better build quality, audio, center stage.  Frank showed us his 40" 5k curved display.
+
+You might want to wait until the end of the month if you are in the market for a pro grade laptop as the M2 Pro, M2 Max, M2 Ultra are probably coming.
+
+Why do certain keys rub off?  If you are using an older butterfly keyboard and it has issues, you might be able to get Apple to fix it for free.
+
+### Stream Publisher Experiments
+
+Some experiments from Carlyn.  Here are the relevant repos:
+
+- https://github.com/carlynorama/NavigationExplorer 
+- https://github.com/carlynorama/StreamPublisherTests 
+
+### Decoding Errors from Ed
+
+Here is a function that Ed uses to figure out what is going wrong with a JSON decode:
+
+```swift
+func decodeResult<T:Decodable>(data:Data) -> T? {
+  let decoder = JSONDecoder()
+//    decoder.keyDecodingStrategy = .convertFromSnakeCase
+  do {
+    let object = try decoder.decode(T.self, from: data)
+    
+    print(object)
+    
+    return object
+
+  } catch DecodingError.dataCorrupted(let context) {
+      print(context)
+  } catch DecodingError.keyNotFound(let key, let context) {
+      print("Key '\(key)' not found:", context.debugDescription)
+      print("codingPath:", context.codingPath)
+  } catch DecodingError.valueNotFound(let value, let context) {
+      print("Value '\(value)' not found:", context.debugDescription)
+      print("codingPath:", context.codingPath)
+  } catch DecodingError.typeMismatch(let type, let context) {
+      print("Type '\(type)' mismatch:", context.debugDescription)
+      print("codingPath:", context.codingPath)
+  } catch {
+    print(error.localizedDescription)
+  }
+
+  return nil
+}
+```
+
+### Details about async let binding
+
+We looked at `async let` binding discussed here: https://github.com/apple/swift-evolution/blob/main/proposals/0317-async-let.md
+
+The main motivation is that it lets you run multiple tasks with different return types, collect the results and merge them together without the boiler plate that task groups have.
+
+If you never call `await` for a `async let` bound variable it will get cancelled and awaited when it goes out of scope.  Using _ also implies that it does that.  We looked at the effect of this with a simple example for a method that computes and prints pi.
+
+```swift
+import SwiftUI
+struct ContentView: View {
+  @State private var number = 0
+  func printPi() {
+    let toggle = sequence(first: -1.0) { -$0 }
+    let factor = 10_000_000.0
+    let series = stride(from: 3, to: factor, by: 2)
+    let final = zip(toggle, series)
+      .reduce(1.0) { accum, pair in
+        accum + pair.0 * 1/pair.1
+      } * 4
+    print(Date.now, final)
+  }
+  var body: some View {
+    VStack {
+      Button("Print π") {
+        Task {
+          async let a: () = printPi()
+          number += 1
+          await a
+        }
+
+      }.buttonStyle(.borderedProminent)
+      Text("\(number)")
+    }
+    .padding()
+  }
+}
+```
+
+
+### Lifetime of unstructured tasks
 
 We observed that subscribing to an `AsyncSequence` in a an unstructured `Task` in a `.task` modifier leads to a number of errors:
 
@@ -21,7 +111,7 @@ We observed that subscribing to an `AsyncSequence` in a an unstructured `Task` i
 
 ![problem](https://github.com/aflockofswifts/meetings/blob/main/materials/tasklife.png)
 
-```
+```swift
 
 let lifeCycleLogger = Logger(subsystem: "josh", category: "lifecycle")
 let outputLogger = Logger(subsystem: "josh", category: "output")
@@ -105,7 +195,8 @@ struct Modal: View {
 ```
 
 We observed how we can use [RAII](https://en.cppreference.com/w/cpp/language/raii) to scope the cancellation of a task to another object and also use a regular closure to discard the implicity retain of self, as well as to use the presence of a subscription to subscribe only once:
-```
+
+```swift
 @MainActor
 final class Lifetime {
     private(set) var subscriptions: [AnyCancellable] = []
@@ -150,7 +241,8 @@ final class Lifetime {
     }
 }
 ```
-```
+
+```swift
     func callAsFunction() async {
         lifeCycleLogger.log("\(Self.self)()")
         guard lifetime.subscriptions.isEmpty else {
@@ -170,6 +262,7 @@ Finally we looked at a reactive swift inspired solution using a publisher to sco
 
 
 ---
+
 ## 2022.09.24
 
 ### Conferences
