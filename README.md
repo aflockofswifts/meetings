@@ -5,12 +5,171 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join. 
 
 
-## 2022.10.01
+## 2022.10.08
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+## 2022.10.01
+## Lifetime of unstructured tasks
 
+We observed that subscribing to an `AsyncSequence` in a an unstructured `Task` in a `.task` modifier leads to a number of errors:
+
+* The `.task` modifier is scoped to the visibility of the view and is called each time the view appears and is canceled when the view disappears, such as when a child is pushed; this can cause multiple subscriptions.
+* The [trailing parameter](https://github.com/apple/swift/blob/main/stdlib/public/Concurrency/Task.swift) to `Task` is marked as [@_implicitSelfCapture](https://github.com/apple/swift/blob/main/docs/ReferenceGuides/UnderscoredAttributes.md) and this strongly captures `self`, even if you explicitly capture `[weak self]` if you fail to unwrap it correctly.
+* Unstructured tasks do not inherit the cancellation status from their parent, so its necessary to cancel them explicitly.
+
+![problem](https://github.com/aflockofswifts/meetings/blob/main/materials/tasklife.png)
+
+```
+
+let lifeCycleLogger = Logger(subsystem: "josh", category: "lifecycle")
+let outputLogger = Logger(subsystem: "josh", category: "output")
+
+@MainActor
+final class ViewModel: ObservableObject {
+
+    @Published var x = ""
+    @Published var y = ""
+
+    private let a = Timer
+        .publish(every: 1, on: .main, in: .common)
+        .autoconnect()
+        .map {_ in 1 }
+        .scan(0, +)
+        .prepend(0)
+        .map { "A: \($0)"}
+
+    private let b = Timer
+        .publish(every: 0.5, on: .main, in: .common)
+        .autoconnect()
+        .map {_ in 1 }
+        .scan(0, +)
+        .prepend(0)
+        .map { "B: \($0)"}
+
+    private var vmlifetime = VMLifetime()
+
+    deinit {
+        lifeCycleLogger.log("\(Self.self) DEINIT")
+    }
+
+    func callAsFunction(_ lifetime: some Lifetime) async {
+        Task {
+            for await value in a.values {
+                outputLogger.log("\(String(describing: value))")
+                x = value
+            }
+        }
+        Task {
+            for await value in b.values {
+                outputLogger.log("\(String(describing: value))")
+                y = value
+            }
+        }
+    }
+}
+
+struct Modal: View {
+    @StateObject private var viewModel = ViewModel()
+    @Binding var shouldShow: Bool
+    @State private var path = NavigationPath()
+    var body: some View {
+        NavigationStack(path: $path) {
+            VStack {
+                Text(viewModel.x)
+                Text(viewModel.y)
+                Button("Push") { path.append("Child")}
+            }
+            .font(.largeTitle)
+            .navigationTitle("Modal View Root")
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Button("Done") { shouldShow = false }
+                }
+            }
+            .navigationDestination(for: String.self) { text in
+                Text(text).navigationTitle(text)
+            }
+            .onAppear { lifeCycleLogger.log("onAppear - modal root") }
+            .onDisappear { lifeCycleLogger.log("onDisappear - modal root") }
+            .lifetime { lifetime in
+                lifeCycleLogger.log("Task begin")
+                await viewModel(lifetime)
+            }
+        }
+        .onAppear { lifeCycleLogger.log("onAppear - modal navigation") }
+        .onDisappear { lifeCycleLogger.log("onDisappear modal navigation") }
+    }
+}
+```
+
+We observed how we can use [RAII](https://en.cppreference.com/w/cpp/language/raii) to scope the cancellation of a task to another object and also use a regular closure to discard the implicity retain of self, as well as to use the presence of a subscription to subscribe only once:
+```
+@MainActor
+final class Lifetime {
+    private(set) var subscriptions: [AnyCancellable] = []
+    @discardableResult
+    func task<Value: Sendable>(
+        priority: TaskPriority? = nil,
+        operation: @Sendable @escaping () async -> Value
+    ) -> Task<Value, Never> {
+        let task = Task(priority: priority, operation: operation)
+        subscriptions.append(.init(task.cancel))
+        return task
+    }
+    @discardableResult
+    func task<Value: Sendable>(
+        priority: TaskPriority? = nil,
+        operation: @Sendable @escaping () async throws -> Value
+    ) -> Task<Value, Error> {
+        let task = Task(priority: priority, operation: operation)
+        subscriptions.append(.init(task.cancel))
+        return task
+    }
+    func assign<Values: AsyncSequence, Base: AnyObject, Value: Sendable>(
+        _ values: Values,
+        to keyPath: ReferenceWritableKeyPath<Base, Value>,
+        on object: Base,
+        onError: @escaping (Error) -> Void = { _ in }
+    ) where Values.Element == Value {
+        task { @MainActor [weak object] in
+            do {
+                for try await value in values {
+                    guard let object else { return }
+                    lifeCycleLogger.log("\(String(describing: value))")
+                    object[keyPath: keyPath] = value
+                }
+            } catch {
+                onError(error)
+            }
+        }
+    }
+    private func add(_ cancellable: AnyCancellable) {
+        subscriptions.append(cancellable)
+    }
+}
+```
+```
+    func callAsFunction() async {
+        lifeCycleLogger.log("\(Self.self)()")
+        guard lifetime.subscriptions.isEmpty else {
+            lifeCycleLogger.log("\(Self.self)() exited without subscribing")
+            return
+        }
+        lifetime.task { @MainActor [weak self, a] in
+            for await value in a.values {
+                lifeCycleLogger.log("\(String(describing: value))")
+                self?.x = value
+            }
+        }
+    }
+``` 
+
+Finally we looked at a reactive swift inspired solution using a publisher to scope the lifetime of the subscriptions to the lifetime of a viewmodifier.  That solution is a swift package contained [here](https://github.com/joshuajhomann/Lifetime).
+
+
+---
 ## 2022.09.24
 
 ### Conferences
