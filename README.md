@@ -5,11 +5,72 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join. 
 
 
-## 2022.10.08
+## 2022.10.15
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+## 2022.10.08
+## NBody with RWLock
+Josh showed a (project)[https://github.com/joshuajhomann/BruteForceNBody2d] using a rwlock to create a rendering pipeline
+### Read Write Locks
+We discussed locks:
+  *  (Locks, Thread Safety, and Swift: 2017 Edition)[https://www.mikeash.com/pyblog/friday-qa-2017-10-27-locks-thread-safety-and-swift-2017-edition.html]
+  * (os_unfair_lock_lock)[https://developer.apple.com/documentation/os/1646466-os_unfair_lock_lock]
+  * (OSAllocatedUnfairLock)[https://developer.apple.com/documentation/os/osallocatedunfairlock]
+  * (pthread_rwlock)[https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/pthread_rwlock_init.3.html]
+
+```
+final class ReadWriteLock {
+    private var lock: UnsafeMutablePointer<pthread_rwlock_t>
+    init() {
+        lock = UnsafeMutablePointer<pthread_rwlock_t>.allocate(capacity: 1)
+        pthread_rwlock_init(lock, nil)
+    }
+    deinit {
+        pthread_rwlock_destroy(lock)
+    }
+    func read(operation: () -> Void) {
+        pthread_rwlock_rdlock(lock)
+        defer { pthread_rwlock_unlock(lock) }
+        operation()
+    }
+    func write(operation: () -> Void) {
+        pthread_rwlock_wrlock(lock)
+        defer { pthread_rwlock_unlock(lock) }
+        operation()
+    }
+}
+
+let lock = ReadWriteLock()
+var a = 1
+
+Task {
+    lock.read {
+        print("read  \(Date.now)")
+        sleep(1)
+    }
+}
+Task {
+    lock.write {
+        print("write \(Date.now)")
+        sleep(5)
+    }
+}
+Task {
+    lock.read {
+        print("read 2 \(Date.now)")
+        sleep(1)
+    }
+}
+
+```
+### Simulation
+  *  (Verlet integration)[https://gereshes.com/2018/07/09/verlet-integration-the-n-body-problem/]
+  *  (N-Body simulation)[https://www.ccampo.me/general/javascript/kotlin/scala/java/2018/03/01/nbodyjs.html]
+
+!(image)[https://github.com/joshuajhomann/BruteForceNBody2d/blob/main/preview.gif]
+
 ## 2022.10.01
 
 ### Displays, M1 vs M2
