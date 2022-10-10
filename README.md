@@ -10,16 +10,57 @@ All people and all skill levels are welcome to join.
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
-## NBody with RWLock
+
+## 2022.10.8
+
+### Detecting Falls with iPhone
+
+(After a question about shake detection on Apple Watch.)
+https://github.com/jeradesign/falling-wilhelm
+
+### Leak in Navigation Stack
+
+- https://developer.apple.com/forums/thread/716804
+
+Carlyn's navigation experiments:
+
+https://github.com/carlynorama/NavigationExplorer
+
+### Debug Printing in SwiftUI
+
+We started out with this code from a post in the Swift forum about extra render passes with SwiftUI ObservableObject.
+
+```swift
+
+{ () -> EmptyView in
+  print("debug")
+  return EmptyView()
+}()
+```
+
+Josh showed us this method he made once. It can be used to print.
+
+
+```swift
+extension View {
+  func sideEffect(_ sideEffect: @escaping () -> Void) -> some View {
+    sideEffect()
+    return self
+  }
+}
+```
+
+
+### NBody with RWLock
 Josh showed a [project](https://github.com/joshuajhomann/BruteForceNBody2d) using a rwlock to create a rendering pipeline
-### Read Write Locks
+#### Read Write Locks
 We discussed locks:
   *  [Locks, Thread Safety, and Swift: 2017 Edition](https://www.mikeash.com/pyblog/friday-qa-2017-10-27-locks-thread-safety-and-swift-2017-edition.html)
   * [os_unfair_lock_lock](https://developer.apple.com/documentation/os/1646466-os_unfair_lock_lock)
   * [OSAllocatedUnfairLock](https://developer.apple.com/documentation/os/osallocatedunfairlock)
   * [pthread_rwlock](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/pthread_rwlock_init.3.html)
 
-```
+```swift
 final class ReadWriteLock {
     private var lock: UnsafeMutablePointer(pthread_rwlock_t)
     init[] {
@@ -64,11 +105,15 @@ Task {
 }
 
 ```
-### Simulation
+
+#### Simulation
   *  [Verlet integration](https://gereshes.com/2018/07/09/verlet-integration-the-n-body-problem/)
   *  [N-Body simulation](https://www.ccampo.me/general/javascript/kotlin/scala/java/2018/03/01/nbodyjs.html)
 
 ![image](https://github.com/joshuajhomann/BruteForceNBody2d/blob/main/preview.gif)
+
+---
+
 ## 2022.10.01
 
 ### Displays, M1 vs M2
