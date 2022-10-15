@@ -5,9 +5,47 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join. 
 
 
-## 2022.10.15
+## 2022.10.22
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.10.15
+
+### Links and News
+
+- Ask Apple: https://developer.apple.com/events/ask-apple/
+- The state of AR: https://arstechnica.com/gadgets/2022/10/apples-ar-vr-headset-will-scan-your-iris-when-you-put-it-on/
+- ARM Emulator for ASM https://cpulator.01xz.net/?sys=arm-de1soc
+- App Rubik's Cube: https://getgocube.com
+- Tool for code understanding: https://codeface.io
+- Massive Parallelism: https://www.theverge.com/2022/10/14/23404595/nvidia-rtx-408-12gb-unlaunch?scrolla=5eb6d68b7fedc32c19ef33b4
+
+
+### Distributed Actors
+
+Frank L. gave us a peek at some of the topics he covered in a workshop about distributed actors at FrenchKit.  He took a local application and converted into a distributed one.
+
+Some of the things he did:
+
+- Add keyword distributed to actor declaration
+
+Follow the compiler errors (and automatic fixits)
+
+- import Distributed
+- add distributed to methods and computed properties that need it
+- make things throwing
+- typealias the `ActorSystem`
+- make parameters serializable
+
+In the second part of his presentation, he created a custom ActorSystem using a package called MultipeerKit.
+
+Lots of details about how your own Actor system can customize serialization of types and more.
+
+Helpful hint: you can name your simulators Alice and Bob :D
+
+Reference: https://developer.apple.com/documentation/distributed/distributedactorsystem
 
 ---
 
