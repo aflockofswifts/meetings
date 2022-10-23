@@ -5,9 +5,102 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join. 
 
 
-## 2022.10.22
+## 2022.10.29
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2022.10.22
+
+### Top security vulnerabilities
+
+* We discussed [this list](https://www.youtube.com/watch?v=ELeZAKCN4tY&ab_channel=CppCon) of security vulnerablities from [this video](https://cwe.mitre.org/top25/archive/2022/2022_cwe_top25.html) and how Swift makes many of these errors impossible without opting into unsafe code.  
+
+### Functional programming
+* We discussed the Donald Knuth story from [this video](https://www.youtube.com/watch?v=M5HuOZ4sgJE&t=2129s&ab_channel=CppCon) and [this illustrated guide](https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html) to category theory.
+* We mob programmed this solution to the Knuth problem:
+```
+text
+    .lowercased()
+    .components(separatedBy: .lowercaseLetters.union(.init(charactersIn: "'")).inverted)
+    .filter { !$0.isEmpty }
+    .reduce(into: [String: Int]()) { dictionary, word in
+        dictionary[word, default: 0] += 1
+    }
+    .sorted { $0.value > $1.value }
+    .prefix(20)
+    .forEach { print($0) }
+```
+* We discussed use of `partition` vs `sort`:
+```
+let url = Bundle.main.url(forResource: "declaration", withExtension: "txt")
+let data = try! Data(contentsOf: url!)
+let text = String(data: data, encoding: .utf8)!
+
+var words = text
+    .lowercased()
+    .components(separatedBy: .lowercaseLetters.union(.init(charactersIn: "'")).inverted)
+    .filter { !$0.isEmpty }
+    .reduce(into: [String: Int]()) { dictionary, word in
+        dictionary[word, default: 0] += 1
+    }
+    .map { $0 }
+
+let pivot = words.partition { element in
+    element.value >= 19
+}
+
+words[pivot...]
+    .sorted { $0.value > $1.value }
+    .forEach { print($0) }
+```
+### ExtensionKit
+We began an example of an ISS tracker for extension kit using [this api](https://wheretheiss.at/w/developer) and [quicktype](https://app.quicktype.io/).  
+```
+import Foundation
+import MapKit
+
+struct SpaceStationLocation: Codable {
+    var name: String
+    var id: Int
+    var latitude, longitude: Double
+    var altitude, velocity: Double
+    var visibility: String
+    var footprint: Double
+    var timestamp: TimeInterval
+    var daynum, solarLat, solarLon: Double
+    var units: Unit
+
+    enum Unit: String, Codable {
+        case miles, kilometers
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case name, id, latitude, longitude, altitude, velocity, visibility, footprint, timestamp, daynum
+        case solarLat = "solar_lat"
+        case solarLon = "solar_lon"
+        case units
+    }
+
+}
+
+
+extension SpaceStationLocation {
+    var coordinate: CLLocationCoordinate2D {
+        .init(latitude: latitude, longitude: longitude)
+    }
+    var altitudeKilometers: Measurement<UnitLength> {
+        .init(value: altitude, unit: .kilometers)
+    }
+    var velocityKilometersPerHour: Measurement<UnitSpeed> {
+        .init(value: velocity, unit: .kilometersPerHour)
+    }
+    var date: Date {
+        .init(timeIntervalSince1970: timestamp)
+    }
+}
+```
 
 ---
 
