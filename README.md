@@ -20,7 +20,8 @@ All people and all skill levels are welcome to join.
 ### Functional programming
 * We discussed the Donald Knuth story from [this video](https://www.youtube.com/watch?v=M5HuOZ4sgJE&t=2129s&ab_channel=CppCon) and [this illustrated guide](https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html) to category theory.
 * We mob programmed this solution to the Knuth problem:
-```
+
+```swift
 text
     .lowercased()
     .components(separatedBy: .lowercaseLetters.union(.init(charactersIn: "'")).inverted)
@@ -32,8 +33,9 @@ text
     .prefix(20)
     .forEach { print($0) }
 ```
+
 * We discussed use of `partition` vs `sort`:
-```
+```swift
 let url = Bundle.main.url(forResource: "declaration", withExtension: "txt")
 let data = try! Data(contentsOf: url!)
 let text = String(data: data, encoding: .utf8)!
@@ -55,9 +57,12 @@ words[pivot...]
     .sorted { $0.value > $1.value }
     .forEach { print($0) }
 ```
+
 ### ExtensionKit
+
 We began an example of an ISS tracker for extension kit using [this api](https://wheretheiss.at/w/developer) and [quicktype](https://app.quicktype.io/).  
-```
+
+```swift
 import Foundation
 import MapKit
 
