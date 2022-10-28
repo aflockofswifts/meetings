@@ -58,9 +58,9 @@ words[pivot...]
     .forEach { print($0) }
 ```
 
-### ExtensionKit
+### WidgetKit
 
-We began an example of an ISS tracker for extension kit using [this api](https://wheretheiss.at/w/developer) and [quicktype](https://app.quicktype.io/).  
+We began an example of an ISS tracker for WidgetKit using [this api](https://wheretheiss.at/w/developer) and [quicktype](https://app.quicktype.io/).  
 
 ```swift
 import Foundation
