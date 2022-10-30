@@ -5,9 +5,109 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join. 
 
 
-## 2022.10.29
+## 2022.11.05
+
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+
+## 2022.10.29
+
+### Kodeko
+
+It started of as Ray Wenderlich's personal blog and evolved into a major mobile development website with hundreds of contributed. Ray had been looking to rename it for years and that time is finally now.  Read about the whole story here:
+
+- https://www.kodeco.com/36641071-introducing-kodeco-the-new-raywenderlich-com
+
+### Bridging between Combine and AsyncStream
+
+A quick cut might look like this:
+
+
+```swift
+import SwiftUI
+import PlaygroundSupport
+import Combine
+
+let publisher = CurrentValueSubject<Int, Error>(1)
+var subscription: AnyCancellable? = nil
+let stream = AsyncThrowingStream<Int, Error> { continuation in
+    subscription = publisher.sink(receiveCompletion: { completion in
+        switch completion {
+        case .finished: continuation.finish()
+        case let .failure(error): continuation.finish(throwing: error)
+        }
+    }, receiveValue: { value in
+        continuation.yield(with: .success(value))
+    })
+}
+```
+
+Carlyn brought up the fact that you might want to handle cancellation:
+
+```swift
+continuation.onTermination = { _ in
+                streamTask.cancel()
+                print("StreamTask Canceled")
+            }
+```
+
+She has some experiments that she shared here:  
+
+- https://github.com/carlynorama/StreamPublisherTests
+
+
+### Hosting a Website
+
+- Github pages
+- S3 bucket - more complicated but more options
+- Franklin suggested https://www.nearlyfreespeech.net
+
+### Building Documentation with DocC
+
+Specific question about including images in documentation.
+
+- https://www.swift.org/blog/swift-docc/
+- https://developer.apple.com/documentation/xcode/slothcreator_building_docc_documentation_in_xcode
+- https://developer.apple.com/documentation/docc/image
+- https://blog.swiftpackageindex.com/posts/auto-generating-auto-hosting-and-auto-updating-docc-documentation/
+
+
+### Systems Design
+
+A recommendation from Felipe C:
+
+https://www.youtube.com/playlist?list=PLaMN-JyH50OYAfxJEpiQTYTD-gxTf7x9d
+
+
+If you are really want to take interviewing seriously (Josh) it might be worth the cost:
+
+https://interviewing.io
+
+### Software Engineering
+
+Bjarne Stroustrup talks about C++ and software engineering
+
+https://www.youtube.com/watch?v=2BuJjaGuInI&ab_channel=CppCon
+
+
+### Continue work on ISS app
+
+- Finish the model (Using @dynamicMemberLookup and Keypaths to add properties to the existing model)
+- Start looking at the service to get locations
+- Using URLComponents to create a URL
+- Next week to do multiple requests to get named locations
+
+Homework (study this): 
+
+https://forums.swift.org/t/should-task-groups-inherit-actor/57547
+
+
+### Hint:
+
+![Table of Inheritence](/materials/task-inheritance.png)
 
 ---
 
