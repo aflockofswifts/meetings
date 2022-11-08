@@ -5,10 +5,44 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join. 
 
 
+## 2022.11.12
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
 ## 2022.11.05
 
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+### Equatable
+
+Allen King making progress in his app on equatable found this article useful: https://jayeshkawli.ghost.io/using-equatable/
+
+### Mastodon Viewer
+
+Carlyn is working on a Mastodon viewer:
+
+https://github.com/carlynorama/ActivityPubExplorer
+
+### Watch Gestures in the Background
+
+How can you make a gesture always available in the background. This may be impossible (by public API and Apple app store rules).  Josh suggested checking out the following:
+
+https://developer.apple.com/documentation/watchkit/background_execution
+
+
+### DocC Demo
+
+Ray gave a demostration of creating project documentation. There is a full (free) Kodeco tutorial that you can find here:
+
+https://www.kodeco.com/34919511-docc-tutorial-for-swift-getting-started
+
+
+In Ray's demo he created a "Flashcard" demo that he will be using in the coming weeks to demostrate things.
+
+### ISS App
+
+Josh continued his ISS demo app. He showed how to hookup the endpoint and elegantly show positions on the map that can be tapped for more details with a very small amount of code.  Next week he will explore reverse geocoding and async task groups in more detail.
 
 ---
 
