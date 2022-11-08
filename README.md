@@ -40,9 +40,33 @@ https://www.kodeco.com/34919511-docc-tutorial-for-swift-getting-started
 
 In Ray's demo he created a "Flashcard" demo that he will be using in the coming weeks to demostrate things.
 
+Here is a list of things you can doument:
+
+https://developer.apple.com/documentation/xcode/writing-symbol-documentation-in-your-source-files
+
+How the parser works:
+
+https://github.com/apple/swift/blob/main/docs/DocumentationComments.md
+
+
 ### ISS App
 
 Josh continued his ISS demo app. He showed how to hookup the endpoint and elegantly show positions on the map that can be tapped for more details with a very small amount of code.  Next week he will explore reverse geocoding and async task groups in more detail.
+
+
+#### Undefined behavior
+
+This undefined behavior warning in Xcode 14 is a false positive:
+
+https://www.donnywals.com/xcode-14-publishing-changes-from-within-view-updates-is-not-allowed-this-will-cause-undefined-behavior/
+
+
+#### Concurrent forEach
+
+We will discuss some of the gotchas here next week.
+
+https://www.swiftbysundell.com/articles/async-and-concurrent-forEach-and-map/
+
 
 ---
 
