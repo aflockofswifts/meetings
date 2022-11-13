@@ -131,7 +131,7 @@ Code TBD
 
 ### ParallelMap in the ISS example project
 
-Josh continued his epic IIS example. He showed how a naive version of parallelMap doesn't actually run in parallel and suffers from problems that it can't be cancelled.  To do this he leverages taskGroup and guarantees result order (same as input) using a lookup table.
+Josh continued his epic ISS example. He showed how a naive version of parallelMap doesn't actually run in parallel and suffers from problems that it can't be cancelled.  To do this he leverages taskGroup and guarantees result order (same as input) using a lookup table.
 
 Code TBD
 
