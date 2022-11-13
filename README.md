@@ -5,9 +5,137 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join. 
 
 
-## 2022.11.12
+## 2022.11.19
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+
+## 2022.11.12
+
+### Conferences and Getting Started
+
+At different points during the meeting we talked about conferences and getting started with Swift.
+
+
+#### New Conferences
+
+- Deep Dish Swift in Chicago https://deepdishswift.com
+- NY Swifty https://nyswifty.com
+
+Then there are some online ones: 
+
+### SwiftPM Autocomplete
+
+#### https://www.tryswift.co/world/
+
+Frank is giving his Distributed Actors workshop next week.
+
+If you are just getting started and have a CS background Josh and Ed recommend Stanford CS 193P.  Also, 100 days of SwiftUI.
+
+#### Getting a Job
+
+Some ideas (in no particular order):
+
+- https://www.builtinla.com
+- https://iosdevjobs.com
+- https://www.cybercoders.com
+
+
+### A Radio Button Control
+
+Ed worked on a custom radio button. The code he presented is simple but a little manual. Suggestions from the group (notably Josh) included following the API design of SwiftUI picker.  Maybe a topic for next time?
+
+Here's Ed's code:
+
+```swift
+import SwiftUI
+
+struct RadioOption {
+  let title : String
+  var isOn : Bool
+  
+  init(_ title: String, _ isOn: Bool) {
+    self.title = title
+    self.isOn = isOn
+  }
+}
+struct RadioButton: View {
+  @Binding var option : RadioOption
+  var tapped : (Bool) -> ()
+  var body: some View {
+    HStack {
+      Image(systemName: option.isOn ? "largecircle.fill.circle" : "circle")
+        .renderingMode(.original)
+        .resizable()
+        .aspectRatio(contentMode: .fit)
+        .frame(width: 32, height: 32)
+      Text(option.title)
+    }
+    .onTapGesture {
+      if !option.isOn {
+        option.isOn = true
+        tapped(true)
+      }
+    }
+  }
+}
+struct RadioChoice: View {
+  @Binding var choice1 : RadioOption
+  @Binding var choice2 : RadioOption
+  var changed : () -> ()
+
+  init(_ c1: Binding<RadioOption>, _ c2: Binding<RadioOption>, _ changed: @escaping ()->()) {
+    _choice1 = c1
+    _choice2 = c2
+    self.changed = changed
+  }
+  
+  var body: some View {
+    VStack(alignment: .leading, spacing: 20) {
+      RadioButton(option: $choice1) { _ in choice2.isOn = false; changed() }
+      RadioButton(option: $choice2) { _ in choice1.isOn = false; changed() }
+    }
+  }
+}
+
+struct RadioTest: View {
+  @State private var one = RadioOption("One", false)
+  @State private var two = RadioOption("Two", false)
+  @State private var text = "Select"
+  var body: some View {
+    VStack(alignment: .leading) {
+      Text(text)
+      RadioChoice($one, $two) {
+        text = one.isOn ? "One" : "Two"
+      }
+    }
+  }
+}
+
+struct RadioButton_Previews: PreviewProvider {
+  static var previews: some View {
+    RadioTest()
+  }
+}
+```
+
+
+
+### Decoding an Array of Failable elements
+
+Josh presented a technique for robustly decoding types that might have unexpected JSON in them. (Instead of flatMap of optionals return Result and then split into an array of values and failures.) 
+
+Code TBD
+
+### ParallelMap in the ISS example project
+
+Josh continued his epic IIS example. He showed how a naive version of parallelMap doesn't actually run in parallel and suffers from problems that it can't be cancelled.  To do this he leverages taskGroup and guarantees result order (same as input) using a lookup table.
+
+Code TBD
+
+This can then be put into the ISS project to reverse geolocate shuttle positions.
 
 ---
 
