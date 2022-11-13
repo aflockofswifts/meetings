@@ -135,7 +135,7 @@ Josh continued his epic IIS example. He showed how a naive version of parallelMa
 
 Code TBD
 
-This can then be put into the ISS project to reverse geolocate shuttle positions.
+This can then be put into the ISS project to reverse geolocate space station positions.
 
 ---
 
