@@ -127,13 +127,92 @@ struct RadioButton_Previews: PreviewProvider {
 
 Josh presented a technique for robustly decoding types that might have unexpected JSON in them. (Instead of flatMap of optionals return Result and then split into an array of values and failures.) 
 
-Code TBD
+```swift
+let json =
+"""
+    [
+        { "name": "a", "value": 1 },
+        { "name": "b", "value": "2" },
+        { "name": "c", "value": null },
+        { "name": "d" }
+    ]
+""".data(using: .utf8)!
+
+extension Result: Decodable where Success: Decodable, Failure == Error {
+    public init(from decoder: Decoder) throws {
+        self = Self { try .init(from: decoder) }
+    }
+}
+
+struct FallibleArray<Element: Decodable>: Decodable {
+    var values: [Element] = []
+    var failures: [String] = []
+    init(from decoder: Decoder) throws {
+        let results = try [Result<Element, Error>](from: decoder)
+        values.reserveCapacity(results.count)
+        for result in results {
+            switch result {
+            case let .success(value): values.append(value)
+            case let .failure(error): failures.append(Self.description(for: error))
+            }
+        }
+    }
+    private static func description(for error: Error) -> String {
+        switch error {
+        case let decodingError as DecodingError:
+            switch decodingError {
+            case let .typeMismatch(_, context),
+                 let .keyNotFound(_, context),
+                 let .valueNotFound(_, context): return "\(context.codingPath[0].stringValue): \(context.debugDescription)"
+            case .dataCorrupted: return String(reflecting: error)
+            }
+        default: return String(reflecting: error)
+        }
+    }
+}
+
+struct Example: Codable {
+    var name: String
+    var value: Int
+}
+
+let decoded = try! JSONDecoder().decode(FallibleArray<Example>.self, from: json)
+print(decoded.values.map(\.name))
+print(decoded.failures.joined(separator: "\n"))
+```
 
 ### ParallelMap in the ISS example project
 
 Josh continued his epic ISS example. He showed how a naive version of parallelMap doesn't actually run in parallel and suffers from problems that it can't be cancelled.  To do this he leverages taskGroup and guarantees result order (same as input) using a lookup table.
 
-Code TBD
+```swift
+extension Sequence {
+    func parallelMap<Transformed>(transform: @escaping (Element) async throws -> Transformed) async throws -> [Transformed] {
+        var lookup = [Int: Transformed]()
+        let count = (self as? any Collection)?.count
+        if let count {
+            lookup.reserveCapacity(count)
+        }
+        _ = try await withThrowingTaskGroup(of: (Int, Transformed).self) { group in
+            for (index, element) in self.enumerated() {
+                group.addTask {
+                    (index, try await transform(element))
+                }
+            }
+            for try await item in group {
+                lookup[item.0] = item.1
+            }
+        }
+        var transformed = [Transformed]()
+        if let count {
+            transformed.reserveCapacity(count)
+        }
+        return (0..<lookup.count).reduce(into: transformed) { accumulated, next in
+            accumulated.append(lookup[next]!)
+        }
+    }
+}
+```
 
 This can then be put into the ISS project to reverse geolocate space station positions.
 
