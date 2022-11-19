@@ -117,9 +117,9 @@ struct V_2: View {
     }
 }
 ```
-The final version use static member lookup to create a `RadioGroupStyle` that can be injected into the environment, obviating the need for a `ViewBuilder` when the pick item title is representable as a string.  It is a available as a (swift package)[https://github.com/joshuajhomann/RadioGroup].
+The final version use static member lookup to create a `RadioGroupStyle` that can be injected into the environment, obviating the need for a `ViewBuilder` when the pick item title is representable as a string.  It is a available as a [swift package](https://github.com/joshuajhomann/RadioGroup).
 
-![image](https://github.com/joshuajhomann/RadioGroup "Preview")
+![image](https://github.com/joshuajhomann/RadioGroup/raw/main/preview.gif "Preview")
 --
 
 ## 2022.11.12
