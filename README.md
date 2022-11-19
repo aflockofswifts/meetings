@@ -5,12 +5,122 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join. 
 
 
-## 2022.11.19
+## 2022.11.27
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+## 2022.11.19
 
+### Generic RadioGroup in SwiftUI
+Josh presented a solution to Ed's question from last week with a goal of meeting the following design criteria:
+* Declarative
+* Idiomatic
+* Expressive
+* Consistent
+* Extensible
+* Reusable
+* Composable
+The first draft was as follows:
+```swift
+struct RadioPicker<Item: Identifiable, ItemView: View>: View {
+    var items: [Item]
+    @Binding var selection: Item?
+    @ViewBuilder var content: (Item, Bool) -> ItemView
+    var body: some View {
+        ForEach(items) { item in
+            content(item, item.id == selection?.id).onTapGesture { selection = item }
+        }
+    }
+}
+
+struct Num: Identifiable {
+    var value: Int
+    var id: Int { value }
+}
+```
+Limitations of this version include a lack of consistency with the `List` api, the need for an `Identifiable` wrapper and possible repetative code with the obligator `ViewBuilder`.  
+The second draft makes the initializers consistent with `List` and drops the identifiable requirement when the user provides a `KeyPath` for the id:
+```swift
+
+struct V: View {
+    @State var selection: Num?
+    private let numbers = (1...5).map(Num.init(value:))
+    var body: some View {
+        VStack {
+            RadioPicker(items: numbers, selection: $selection) { item, isSelected in
+                Text("Item: \(item.value)")
+                    .padding()
+                    .background(isSelected ? Color.blue : Color.gray)
+                    .cornerRadius(8)
+            }
+           Text(selection.map { "You selected \($0.value)" } ?? "Select an Item")
+        }
+    }
+}
+
+
+struct RadioPicker2<Item, SomeHashable: Hashable, ItemView: View>: View {
+    private var items: [Item]
+    private var id: KeyPath<Item, SomeHashable>
+    @Binding private var selection: Item?
+    private var content: (Item, Bool) -> ItemView
+    var body: some View {
+        ForEach(items, id: id) { item in
+            content(item, item[keyPath: id] == selection?[keyPath: id]).onTapGesture { selection = item }
+        }
+    }
+    init(
+        _ items: [Item],
+        id: KeyPath<Item, SomeHashable>,
+        selection: Binding<Item?>,
+        @ViewBuilder content: @escaping (Item, Bool) -> ItemView
+    ) {
+        self.items = items
+        self.id = id
+        _selection = selection
+        self.content = content
+    }
+    init(
+        _ items: [Item],
+        selection: Binding<Item?>,
+        @ViewBuilder content: @escaping (Item, Bool) -> ItemView
+    ) where Item: Identifiable, Item.ID == SomeHashable {
+        self.init(items, id: \.id, selection: selection, content: content)
+    }
+}
+
+
+struct V_2: View {
+    @State var fruitSelection: String?
+    @State var numberSelection: Num?
+    private let fruit = ["Apple", "Orange", "Pear", "Bannana"]
+    private let numbers = (1...3).map(Num.init(value:))
+    var body: some View {
+        HStack {
+            RadioPicker2(fruit, id: \.self, selection: $fruitSelection) { fruit, isSelected in
+                Text(fruit)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(isSelected ? Color.accentColor : Color.secondary)
+                    .cornerRadius(8)
+            }
+        }
+        Text(fruitSelection.map { "You selected \($0)" } ?? "Select a fruit")
+        Divider()
+        RadioPicker2(numbers, selection: $numberSelection) { number, isSelected in
+            HStack {
+                Image(systemName: isSelected ? "checkmark.square" : "square")
+                Text(String(describing: number.value))
+            }
+        }
+    }
+}
+```
+The final version use static member lookup to create a `RadioGroupStyle` that can be injected into the environment, obviating the need for a `ViewBuilder` when the pick item title is representable as a string.  It is a available as a (swift package)[https://github.com/joshuajhomann/RadioGroup].
+
+![image](https://github.com/joshuajhomann/RadioGroup "Preview")
+--
 
 ## 2022.11.12
 
