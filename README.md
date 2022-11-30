@@ -106,8 +106,8 @@ Ed shared how to customize a view for swift previews using an environment variab
 ```
 
 ### WidgetKit
-Josh showed how to create a widget.  The code is availble [here.](https://github.com/joshuajhomann/)SpaceStationTracker]
-[image!](https://github.com/joshuajhomann/SpaceStationTracker/blob/main/preview.gif)]
+Josh showed how to create a widget.  The code is availble [here.](https://github.com/joshuajhomann/)  
+[image!](https://github.com/joshuajhomann/SpaceStationTracker/blob/main/preview.gif)
 
 ---
 ## 2022.11.19
