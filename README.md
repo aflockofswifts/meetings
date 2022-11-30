@@ -5,9 +5,109 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 All people and all skill levels are welcome to join. 
 
 
-## 2022.11.27
+## 2022.12.03
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+--
+
+## 2022.11.27
+
+### Diagrams
+Rainer showed how to programatically create flow charts and sequence diagrams with [PlantUML](https://plantuml.com):
+```
+@startuml BF Flow - State Diagram
+title BF Flow in plantUML
+hide empty description
+note right of Root: This is the starting point
+Root --> TermsAndConditions
+TermsAndConditions --> UserNameAndEmail
+UserNameAndEmail -> Phone
+Phone -> UserNameAndEmail
+UserNameAndEmail --> IconSelection
+IconSelection -> PointsCount
+PointsCount --> Root
+Root --> Welcome
+state Contest { 
+    state Artwork {
+    }
+    state Winners { 
+    }
+}
+Welcome -down-> Contest
+Artwork -down-> SpaceBuilder
+SpaceBuilder -left-> Profile
+Profile -up-> Welcome
+Welcome -left-> RunningCount
+RunningCount --> YourPoints
+YourPoints --> RunningCount
+@enduml
+```
+
+```
+stateDiagram-v2
+    Root --> Welcome : tap ENTER
+    Welcome --> Announcements
+    note right of Announcements : This is the note to the right.
+    Welcome --> Contest 
+    Contest --> Winners
+    Contest --> ShareToSocial
+    Contest --> CreateArtwork : Create_Art
+    CreateArtwork --> ArtBuilder : auto-open
+    ArtBuilder --> ShareArt
+    ShareArt --> CreateArtwork
+
+```
+
+```
+digraph mygraph {
+    // concentrate=true
+    layout="dot"
+    node [fontname="Helvetica,Arial,sans-serif"]
+    edge [fontname="Courier,Arial,sans-serif"]
+    node [shape=box];
+    "Root" -> {Welcome, "Terms and conditions"} 
+    "Points Count" -> Root
+    lc [label="UserName & Email", xlabel="external label on username"]
+    "Terms and conditions" -> lc
+    Phone [style=filled, fillcolor="red", constraint=false] 
+    lc -> "Icon Selection"
+    lc ->  Phone [dir=both] [label="edge label"]
+    "Icon Selection" -> "Points Count" [label="edge label", fontcolor="blue"] 
+    Welcome -> {"RunningCount", "Contest"}  [dir=both]
+    "RunningCount" -> {"Your Points"} [dir=both]
+    "Your Points" -> Welcome [constraint=false] 
+    Contest -> ArtBuilder -> ArtViewer -> Welcome
+    Contest [xlabel="label on Contest"]
+    note [label="root note", shape=note, penwidth=0.2, fillcolor=yellow, style="filled", height=0.001, margin=0.01, fontsize=10]
+    note -> Root [minlen=0.1, penwidth = 1.0, arrowhead=none, style="dashed", color="grey"]
+    Contest [shape=Mrecord, label="{Contest|Artwork|Winners}"]
+}
+```
+### Swift Previews
+Ed shared how to customize a view for swift previews using an environment variable:
+```swift
+	import SwiftUI
+	
+	struct TestView: View {
+	  var body: some View {
+	    if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+	      Text("Preview Text")
+	    } else {
+	      Text("Device Text")
+	    }
+	  }
+	}
+	
+	struct TestView_Previews: PreviewProvider {
+	  static var previews: some View {
+	    TestView()
+	  }
+	}
+```
+
+### WidgetKit
+Josh showed how to create a widget.  The code is availble [here.](https://github.com/joshuajhomann/)SpaceStationTracker]
+[image!](https://github.com/joshuajhomann/SpaceStationTracker/blob/main/preview.gif)]
 
 ---
 ## 2022.11.19
