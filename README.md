@@ -12,7 +12,7 @@ All people and all skill levels are welcome to join.
 ## 2022.12.03
 
 ### Functional Symmetry
-[image!](https://github.com/aflockofswifts/meetings/blob/main/materials/IMG_1363.PNG)
+![image](https://github.com/aflockofswifts/meetings/blob/main/materials/IMG_1363.PNG)
 We discussed how functors, applicatives, monads and related constructs can all be constructed as transforms of A's, B's arrows and F's and the fact that `filter`, `compactMap` and `flatMap` have the same shape, which is why `compactMap` was originally the same function as `flatMap` in earlier versions of swift; they are the same function with different choices for the Monads.  You can rewrite `filter` in terms of `compactMap` or in terms of `flatMap`
 ```swift
 print((0...10).prefix(10).filter { $0.isMultiple(of: 2)})
