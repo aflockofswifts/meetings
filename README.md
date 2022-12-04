@@ -11,6 +11,47 @@ All people and all skill levels are welcome to join.
 
 ## 2022.12.03
 
+### Functional Symmetry
+[image!](https://github.com/aflockofswifts/meetings/blob/main/materials/IMG_1363.PNG)
+We discussed how functors, applicatives, monads and related constructs can all be constructed as transforms of A's, B's arrows and F's and the fact that `filter`, `compactMap` and `flatMap` have the same shape, which is why `compactMap` was originally the same function as `flatMap` in earlier versions of swift; they are the same function with different choices for the Monads.  You can rewrite `filter` in terms of `compactMap` or in terms of `flatMap`
+```swift
+print((0...10).prefix(10).filter { $0.isMultiple(of: 2)})
+print((0...10).prefix(10).compactMap { i -> Int? in i.isMultiple(of: 2) ? i : nil })
+print((0...10).prefix(10).flatMap { $0.isMultiple(of: 2) ? [$0] : [] })
+```
+### Functor as a protocol
+We looked at how you can implment a functor as a protcol and the symmetry between the free function `fmap` which lifts a function from `A->B` to a function `FA->FB` and the instance method `map` which takes a `A->B` and returns `FB`.  With the implicit self parameter to the instance method it becomes `(A->B), FA -> FB` which is the same as the curried function `(A->B) -> FB -> FA`.
+```swift
+protocol Functor<A> {
+    associatedtype A
+    associatedtype FB: Functor = Self
+    associatedtype FA: Functor = Self
+    typealias B = FB.A
+    static func fmap(_ transform: @escaping  (A) -> B) -> (FA) -> FB
+    func fmap<T>(_ transform: @escaping (A) -> T) -> FB where T == FB.A
+}
+
+extension Optional: Functor {
+    typealias A = Wrapped
+    static func fmap(_ transform: @escaping  (A) -> B) -> (FA) -> FB {
+      { fa in
+          guard let a = fa else { return nil }
+          return transform(a)
+      }
+    }
+    static func pure(_ value: Wrapped) -> Self {
+        .some(value)
+    }
+    func fmap<B>(_ transform: @escaping (A) -> B) -> B? {
+        guard let self else { return nil }
+        return transform(self)
+    }
+}
+
+let v = Optional<Int>.fmap({ $0 * 2 })(5)
+let v2 = Optional<Int>.pure(5).fmap { $0 * 2 }
+```
+
 ### Advent of Code
 Josh showed his solution for day one of the (Advent of Code 2022)[https://adventofcode.com] and explained how it makes use of monads:
 ```swift
@@ -25,7 +66,7 @@ let total = sequence(state: Scanner(string: input)) { scanner in
 }
     .max()!
 ```
-You can find his complete set of solutions for the advent of code (here)[https://github.com/joshuajhomann/Advent-of-Code-2022]
+You can find his complete set of solutions for the advent of code [here](https://github.com/joshuajhomann/Advent-of-Code-2022)
 
 ## 2022.11.27
 
