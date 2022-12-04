@@ -4,11 +4,28 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-
-## 2022.12.03
+## 2022.12.10
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 --
+
+## 2022.12.03
+
+### Advent of Code
+Josh showed his solution for day one of the (Advent of Code 2022)[https://adventofcode.com] and explained how it makes use of monads:
+```swift
+let input = Bundle.main.url(forResource: "input", withExtension: "")
+    .flatMap { try? Data(contentsOf:$0) }
+    .flatMap { String(data: $0, encoding: .utf8) }!
+	
+let total = sequence(state: Scanner(string: input)) { scanner in
+    scanner.scanUpToString("\n\n").map { subarrayString in
+        sequence(state: Scanner(string: subarrayString)) { $0.scanInt() }.reduce(0, +)
+    }
+}
+    .max()!
+```
+You can find his complete set of solutions for the advent of code (here)[https://github.com/joshuajhomann/Advent-of-Code-2022]
 
 ## 2022.11.27
 
