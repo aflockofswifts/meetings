@@ -7,9 +7,88 @@ All people and all skill levels are welcome to join.
 ## 2022.12.10
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
---
+
+---
 
 ## 2022.12.03
+
+
+### Functional Design Patterns
+Monads are a functional design pattern with origins in category theory. Monads give us a tool for modelling effects. We went through the basics following some popular online posts including:
+
+- https://mokacoding.com/blog/functor-applicative-monads-in-pictures/
+- https://www.hackingwithswift.com/example-code/language/what-is-a-monad
+
+
+ASIDE: Don't confuse functors with function objects.
+
+```swift
+// This is a function object, not a functor.
+class ViewModel {
+  func callAsFunction() {
+    print("Hello")
+  }
+}
+
+let viewModel = ViewModel()
+viewModel() // prints Hello
+```
+
+- Functors: implement map
+- Applicative: implements lift and apply
+- Monad: implements flatMap
+
+Monads are special forms of applicatives.  Applicatives are special forms of functors.  Optionals, Arrays, Results, Publishers.
+
+
+#### Functor Examples
+```swift
+func compute(_ input: Int) -> Int {
+  input + 42
+}
+
+Optional<Int>(nil).map(compute(_:))
+[5].map { compute($0) }
+```
+
+#### Applicative Example
+
+```swift
+extension Optional {
+  func apply<ReturnType>(_ f: ((Wrapped) -> ReturnType)?) -> ReturnType? {
+    guard let f else { return nil }
+    return self.map(f)
+  }
+}
+
+extension Array {
+  func apply<ReturnType>(_ fs: [(Element) -> ReturnType]) -> [ReturnType] {
+    var result = [ReturnType]()
+    result.reserveCapacity(fs.count * self.count)
+    for f in fs {
+      for element in self.map(f) {
+        result.append(element)
+      }
+    }
+    return result
+  }
+}
+
+[3,2,3].apply([compute(_:), compute(_:)])
+```
+
+#### The Monadic Laws
+
+1. Left identity - flat mapping a monad with a function is the same as calling that function
+2. Right identity - flat mapping a lifted monad is the same as the monad
+3. Associativity - chaining operations is the same as nesting operations
+
+(You can find code examples in the Hacking with Swift)
+
+
+Tim Colson Suggested this reading:
+https://stackoverflow.com/questions/28139259/why-do-we-need-monads
+
 
 ### Functional Symmetry
 ![image](https://github.com/aflockofswifts/meetings/blob/main/materials/IMG_1363.PNG)
@@ -67,6 +146,16 @@ let total = sequence(state: Scanner(string: input)) { scanner in
     .max()!
 ```
 You can find his complete set of solutions for the advent of code [here](https://github.com/joshuajhomann/Advent-of-Code-2022)
+
+
+### Miscellaneous
+
+- https://arstechnica.com/information-technology/2022/12/apple-slices-its-ai-image-synthesis-times-in-half-with-new-stable-diffusion-fix/
+
+Why not test flight?
+
+- https://www.whynotestflight.com
+
 
 ## 2022.11.27
 
