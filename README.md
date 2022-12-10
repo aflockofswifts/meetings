@@ -152,7 +152,7 @@ You can find his complete set of solutions for the advent of code [here](https:/
 
 - https://arstechnica.com/information-technology/2022/12/apple-slices-its-ai-image-synthesis-times-in-half-with-new-stable-diffusion-fix/
 
-Why not test flight?
+Why no test flight?
 
 - https://www.whynotestflight.com
 
