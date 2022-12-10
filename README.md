@@ -4,9 +4,85 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.12.10
+## 2022.12.17
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+
+---
+
+## 2022.12.10
+
+
+### Swift Foundation Open Source
+
+Peter reports a big announcement on the Swift blog:
+
+https://www.swift.org/blog/future-of-foundation/
+
+
+- No more C libraries
+- More granular libraries
+- Unification of implementations
+- Open contribution process
+
+### Customizing Toggles
+
+
+You can customize SwiftUI toggle by making a `ToggleStyle`.
+
+```swift
+struct RadioToggleStyle: ToggleStyle {
+  func makeBody(configuration: Configuration) -> some View {
+      Button(action: {
+          configuration.isOn.toggle()
+            }) {
+              Image(systemName: configuration.isOn ? "circle.fill" : "circle")
+                .accessibilityLabel(configuration.isOn ? "On" : "Off")
+            }
+            .buttonStyle(.plain)
+    }
+}
+```
+
+Make specifying it feel natural:
+
+```swift
+extension ToggleStyle where Self == RadioToggleStyle {
+  static var radio: Self {
+    .init()
+  }
+}
+```
+
+Using it is as easy as:
+
+```swift
+      Toggle("The Toggle", isOn: $isChecked)
+        .toggleStyle(.radio)
+```
+
+### Functional Programming
+
+Monads delay the result of effects. Just as with `try/throws` and `async/await` you kick the responsibility up the ladder to the caller, essentially delaying the effect of errors/suspensions. Optionals, arrays, publishers, streams can be viewed as just this.
+
+It takes a change in thinking in going from imperative to functional and takes practice.  A good way to practice is with the advent of code exercises.  
+
+https://adventofcode.com
+
+
+
+### Crates and cranes!
+
+Josh took on a solution of the advent of code day five.
+
+https://adventofcode.com/2022/day/5
+
+
+You can see his solution here:
+
+https://github.com/joshuajhomann/Advent-of-Code-2022/blob/main/Advent.playground/Pages/Day%205.xcplaygroundpage/Contents.swift
+
 
 ---
 
