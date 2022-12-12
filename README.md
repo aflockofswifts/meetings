@@ -78,6 +78,54 @@ Josh took on a solution of the advent of code day five.
 
 https://adventofcode.com/2022/day/5
 
+The problem can be solved as two sub problems.
+Create the initial state by:
+1. Unfold the string into lines, up to the delimiter
+2. trasnform the lines into an array of tuples of (column, characters)
+3. reverse the sequence so we start from the bottom
+4. fold the tuples into an array of columns, which are each an array of characters
+
+```swift
+    let columns = sequence(state: scanner) { scanner -> String? in
+        scanner.scanUpToCharacters(from: .newlines).flatMap { $0 == " 1   2   3   4   5   6   7   8   9" ? nil : $0 }
+    }
+        .flatMap { line in
+            line
+                .enumerated()
+                .filter { $1.unicodeScalars.first.map(CharacterSet.uppercaseLetters.contains) ?? false }
+                .map { value in
+                    (column: (value.offset - 1) / 4, value: value.element)
+                }
+        }
+        .reversed()
+        .reduce(into: [[Character]](repeating: [], count: 9)) { columns, box in
+            columns[box.column].append(box.value)
+        }
+```
+Second, fold the moves into the initial state and extract the answer form the final state:
+```swift
+1. Unfold the rest of the string into a tuple of (quantity, from, to) by extracting the 3 integers from each line and ignoreing everything else
+2. Fold the sequence of moves into the initial state by removing quanity items from the end of the from array and placing them at the end of the to array
+3. Pluck out the last character from each column and join them into a String
+scanner.charactersToBeSkipped = .decimalDigits.inverted
+    return sequence(state: scanner) { scanner -> (quantity: Int, from: Int, to: Int)? in
+        guard let quantity = scanner.scanInt(),
+              let from = scanner.scanInt().map({ $0 - 1}),
+              let to = scanner.scanInt().map({ $0 - 1}) else {
+            return nil
+        }
+        return (quantity: quantity, from: from, to: to)
+    }
+    .reduce(into: columns) { columns, move in
+        let transfer = shouldReverse
+            ? columns[move.from].suffix(move.quantity).reversed()
+            : columns[move.from].suffix(move.quantity)
+        columns[move.to].append(contentsOf: transfer)
+        columns[move.from].removeLast(move.quantity)
+    }
+    .map { $0.last.map(String.init(describing:)) ?? " " }
+    .joined()
+```
 
 You can see his solution here:
 
