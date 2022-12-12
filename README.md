@@ -103,10 +103,10 @@ Create the initial state by:
         }
 ```
 Second, fold the moves into the initial state and extract the answer form the final state:
-```swift
 1. Unfold the rest of the string into a tuple of (quantity, from, to) by extracting the 3 integers from each line and ignoreing everything else
 2. Fold the sequence of moves into the initial state by removing quanity items from the end of the from array and placing them at the end of the to array
 3. Pluck out the last character from each column and join them into a String
+```swift
 scanner.charactersToBeSkipped = .decimalDigits.inverted
     return sequence(state: scanner) { scanner -> (quantity: Int, from: Int, to: Int)? in
         guard let quantity = scanner.scanInt(),
