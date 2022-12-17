@@ -4,9 +4,66 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.12.17
+
+
+
+## 2022.12.31
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+A Year In Review
+
+---
+
+## 2022.12.17
+
+### Tables, Geometry and Layout
+
+Rainer showed us his button layout demo. Peter suggested using 
+
+```swift
+VStack { 
+    LazyVGrid {} // Row 1
+    LazyVGrid {} // Row 2
+    LazyVGrid {} // Row 3
+            :
+}
+```
+
+Some layout alternatives and tools:
+
+- https://github.com/joshuajhomann/Radial
+- https://github.com/joshuajhomann/PopTip-SwiftUI
+
+
+### Charts
+
+Ed showed an example of charting. He needed to convert some dates to strings to prevent the graphing system from rearranging them.  If you want a basic intro to Swift Charts in iOS 16
+
+- https://www.kodeco.com/36025169-swift-charts-tutorial-getting-started
+
+
+### ChatGPT
+
+Emil showed an example of ChatGPT making a simple TODO list app in SwiftUI. It was pretty basic could then be iterated on.
+
+John showed a counter example where they asked it to generate a biography of their father. It got one thing correct and the rest of it just made up.
+
+We will probably see more AI tools in IDEs
+
+
+### SE Pitches and Proposals
+
+- https://forums.swift.org/t/pitch-swift-predicates/62000
+- https://forums.swift.org/t/pitch-observation/62051
+- https://github.com/apple/swift-evolution/blob/main/proposals/0382-expression-macros.md
+- https://github.com/apple/swift-evolution/blob/main/proposals/0381-task-group-discard-results.md
+- https://github.com/apple/swift-evolution/blob/main/proposals/0379-opt-in-reflection-metadata.md
+
+
+Swift Evolution will now approve Vision documents for large multi-proposal features.  A link from Bill.
+
+- https://forums.swift.org/c/evolution/18
 
 
 ---
