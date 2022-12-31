@@ -4,9 +4,6 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-
-
-
 ## 2022.12.31
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
@@ -47,7 +44,7 @@ Ed showed an example of charting. He needed to convert some dates to strings to 
 
 Emil showed an example of ChatGPT making a simple TODO list app in SwiftUI. It was pretty basic could then be iterated on.
 
-John showed a counter example where they asked it to generate a biography of their father. It got one thing correct and the rest of it just made up.
+John showed a counter example where they asked it to generate a biography of their father. It got one thing correct and the rest of it just made up (total BS).
 
 We will probably see more AI tools in IDEs
 
