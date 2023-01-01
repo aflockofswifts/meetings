@@ -4,11 +4,72 @@ We are a group of people excited by the Swift language. We meet each Saturday mo
 
 All people and all skill levels are welcome to join. 
 
-## 2022.12.31
-
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
-A Year In Review
+## 2022.12.31
+
+### Problems with Button Layout
+
+Rainer is having trouble with getting button layout to work like he wants.
+
+### Performance
+
+
+On rotation Ed was hitting a layout performance issue. The suggestion was to try Instruments to see where the computations were going.
+
+### AFOS-Process
+
+Implement a command line tool to process the AFOS readme file and reverse the summaries to appear in chronological order.
+
+- Argument Parser is nice
+- Used Regex Builder (trouble with ^ anchor matches)
+
+
+### Implementing cmap
+
+Josh gave a 2022 final treatise on functional thinking with a focus on comap.
+
+Some materials to get started:
+
+- https://www.pointfree.co It is a little pricey, but there is a good holiday discount of 25%.
+- https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/  Bartosz Milewski
+- http://learnyouahaskell.com
+- https://bow-swift.io/docs/
+- https://www.objc.io/books/functional-swift/
+
+
+Josh implemented cmap (contraMap):
+
+```swift
+struct Predicate<A> {
+    let satisfies: (A) -> Bool
+    func callAsFunction(_ x: A) -> Bool { satisfies(x) }
+}
+
+typealias F = Predicate // So it matches the Scala chart
+
+let isEqualToFive = Predicate { $0 == 5 }
+let isWordleWord = cmap(\String.count)(isEqualToFive)
+print(isWordleWord("Swift")) // true
+print(isWordleWord("Kotlin")) // false
+
+
+func isPoop(_ value: Int) -> Bool {
+    value.isMultiple(of: 2)
+}
+
+func contraMap<A, B, C> (
+    _ f: @escaping (A) -> 
+    transform: @escaping (B) -> A
+    ) -> (B) -> C {
+        f(transform($0))
+    }
+
+let isPoopString = contraMap(isPoop, transform: \String.count)
+print(isPoopString("Swift"))  // false
+print(isPoopString("Kotlin")) // true
+
+```
 
 ---
 
@@ -4993,7 +5054,7 @@ We will continue the discussion next week.
 
 ---
 
-## [2022.01.15](2022.01.15)
+## 2022.01.15
 
 ### Converting Combine to async/await
 
@@ -5001,7 +5062,7 @@ Continuing the example from last week, Josh converted the Magic app over to use 
 
 ---
 
-## [2022.01.08](2022-01-08)
+## 2022.01.08
 
 Happy New Year!  It was a first meeting of the year lots of people turned out.
 
