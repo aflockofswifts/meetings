@@ -59,7 +59,7 @@ func isPoop(_ value: Int) -> Bool {
 }
 
 func contraMap<A, B, C> (
-    _ f: @escaping (A) -> 
+    _ f: @escaping (A) -> C
     transform: @escaping (B) -> A
     ) -> (B) -> C {
         f(transform($0))
