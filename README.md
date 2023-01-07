@@ -99,7 +99,7 @@ enum JSON {
 }
 ```
 
-You can implement `Decodable` using a single value container. Naively it is a bunch of nested `do {} catch {}` blocks but it can be done quite susinctly by using a `Result` type and `flatMapError` to implement successive retries.
+You can implement `Decodable` using a single value container. Naively it is a bunch of nested `do {} catch {}` blocks but it can be done quite succinctly by using a `Result` type and `flatMapError` to implement successive retries.
 
 CODE TBD
 
