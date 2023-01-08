@@ -23,7 +23,23 @@ All people and all skill levels are welcome to join.
 You can write a contramap function on `CurrentValueSubject<Int>` to make functions
 that can send other types into the current value.
 
-CODE TBD
+```swift
+import Foundation
+import Combine
+
+extension CurrentValueSubject {
+    func contraMap<Value>(transform: @escaping (Value) -> Output) -> (Value) -> Void {
+      { [weak self] input in
+          self?.send(transform(input))
+      }
+    }
+}
+
+let subject = CurrentValueSubject<Int, Never>(0)
+let sendBool = subject.contraMap { (bool: Bool) in bool ? 1 : 0 }
+sendBool(true)
+print(subject.value)
+```
 
 ### Learning SwiftUI
 
@@ -101,6 +117,30 @@ enum JSON {
 
 You can implement `Decodable` using a single value container. Naively it is a bunch of nested `do {} catch {}` blocks but it can be done quite succinctly by using a `Result` type and `flatMapError` to implement successive retries.
 
-CODE TBD
+```swift
+enum JSON {
+    indirect case array([JSON])
+    indirect case dictionary([String: JSON])
+    case boolean(Bool)
+    case number(Double)
+    case string(String)
+    case null
+}
+
+extension JSON: Decodable {
+    init(from decoder: Decoder) throws {
+        self = try Result { try decoder.singleValueContainer() }
+            .flatMap { container in
+                container.decodeNil()
+                    ? .success(JSON.null)
+                    : Result { JSON.boolean(try container.decode(Bool.self)) }
+                        .flatMapError { _ in Result { JSON.number(try container.decode(Double.self)) } }
+                        .flatMapError { _ in Result { JSON.string(try container.decode(String.self)) } }
+                        .flatMapError { _ in Result { JSON.array(try container.decode([JSON].self)) } }
+                        .flatMapError { _ in Result { JSON.dictionary(try container.decode([String: JSON].self)) } }
+            }.get()
+    }
+}
+```
 
 ---
