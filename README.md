@@ -83,6 +83,8 @@ https://www.swift.org/swift-evolution/
 - SE-0384 Importing Forward Declared Objective-C Interfaces and Protocols
 - SE-0382 Expression Macros
 
+### Compression
+The new multicore APFS aware Apple Archive framework: https://developer.apple.com/documentation/applearchive
 
 ### Swift Collections
 
