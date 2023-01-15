@@ -1310,7 +1310,7 @@ We observed that subscribing to an `AsyncSequence` in a an unstructured `Task` i
 * The [trailing parameter](https://github.com/apple/swift/blob/main/stdlib/public/Concurrency/Task.swift) to `Task` is marked as [@_implicitSelfCapture](https://github.com/apple/swift/blob/main/docs/ReferenceGuides/UnderscoredAttributes.md) and this strongly captures `self`, even if you explicitly capture `[weak self]` if you fail to unwrap it correctly.
 * Unstructured tasks do not inherit the cancellation status from their parent, so its necessary to cancel them explicitly.
 
-![problem](https://github.com/aflockofswifts/meetings/blob/main/materials/tasklife.png)
+![problem](materials/tasklife.png)
 
 ```swift
 
