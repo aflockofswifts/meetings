@@ -10,9 +10,59 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.01.14
+## 2023.01.15
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.01.14
+
+### PointFree Dependency Injection
+
+A new library for dependency injection was announced this week by the folks at pointfree.co.  Josh gave us a quick tour of the library and an additions library:
+
+https://github.com/pointfreeco/swift-dependencies
+
+Peter posted this example of using the additions library:
+
+https://twitter.com/tgrapperon/status/1612698675356250114
+
+### Ed Launches Testflight
+
+Ed launched a private testfligt build for his new app. During the coarse of the meeting was able to find and fix an out of bounds crasher when there is no data. The power of testing in action.
+
+### Learning Swift
+
+Some of the tried and true:
+
+- https://cs193p.sites.stanford.edu
+- https://twostraws.gumroad.com/l/pro-swiftui
+
+### Async Result
+
+You can create an async init for result types to get clean monadic chaining instead of nested `do {} catch {}` blocks. Daniel and Josh showed us how!
+
+
+### CoreData
+
+Core Data is a deep subject. A good place to start:
+
+- https://developer.apple.com/documentation/coredata/setting_up_a_core_data_stack
+
+
+
+### Noise Generation
+
+GameKit although old and written in ObjectiveC, has API for creating "natural" noise often used for procedural terrain generation in games. 
+
+- https://developer.apple.com/documentation/gameplaykit/gknoisemap
+
+
+### Wurdle
+
+As part of another epic, multipart demo, Josh is implementing a version of the popular game in SwiftUI.  Today he created the basic model for Rows and Letters and Keys as well as the Status for each.
+
 
 ---
 
