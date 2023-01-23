@@ -330,7 +330,7 @@ https://stackoverflow.com/questions/28139259/why-do-we-need-monads
 
 
 ### Functional Symmetry
-![image](https://github.com/aflockofswifts/meetings/blob/main/materials/IMG_1363.PNG)
+![image](materials/IMG_1363.PNG)
 We discussed how functors, applicatives, monads and related constructs can all be constructed as transforms of A's, B's arrows and F's and the fact that `filter`, `compactMap` and `flatMap` have the same shape, which is why `compactMap` was originally the same function as `flatMap` in earlier versions of swift; they are the same function with different choices for the Monads.  You can rewrite `filter` in terms of `compactMap` or in terms of `flatMap`
 ```swift
 print((0...10).prefix(10).filter { $0.isMultiple(of: 2)})
@@ -1693,7 +1693,7 @@ struct ContentView: View {
 
 We talked about what properties get inherited when you make a new task in various ways.  
 
-![Table of Inheritence](/materials/task-inheritance.png)
+![Table of Inheritence](materials/task-inheritance.png)
 
 Some playground code we messed aroudn with Playground code:
 

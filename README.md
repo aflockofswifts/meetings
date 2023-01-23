@@ -10,9 +10,135 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.01.15
+
+## 2023.01.28
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.01.21
+
+
+### Layout with AsyncImage
+
+Jake was seeing a problem with `AsyncImage` where the transition animation would be cancelled when the async image loaded.  The image would appear at the destination without loading. Josh theorized that the problem was happening because its identity was changing. However, we could not seem to fix the problem by explicitly setting `id` on the views.
+
+One recommendation is to use a much more capable third party library like Nuke.
+
+- https://github.com/kean/Nuke
+
+
+### Dates
+
+Using Core Data to sort by date. Ed says, "`CalendarComponents` is your friend."  Trevor recommended this resource:  https://nsdateformatter.com/
+
+### Inspiration for UI
+
+- https://dribbble.com
+- https://twitter.com/_kavsoft?lang=en
+- Edward Tufte
+
+Jacey noted that SnapKit is also good (easy) way to layout views.
+
+- https://github.com/SnapKit/SnapKit
+
+
+### Sendable
+
+Sendable conformance will be one of the important areas to be aware of as come into Swift 6. You can enable strict concurrency warnings in your build settings. The default is minimal but you can use "targetted" to check your own code.
+
+When you enabled this checking, you will see warnings where an instance is passed across a concurrency domain and is not `Sendable`. For example:
+
+```swift
+func findInBackground(quadTree: QuadTree,
+                      region: CGRect) async -> Task<[CGPoint], Never> {
+  Task.detached {
+    quadTree.find(in: region) // WARNING: QuadTree is not Sendable
+  }
+}
+```
+
+You can mark `QuadTree` as `Sendable` to fix this warning. This will, in turn, lead to a warning that `Node`, the reference type, is not sendable. If you mark `Node` sendable you get more warnings. This is because the class contains multiple immutable stored properties that could get modified from another concurrency domain. In this case you can mark `Node` with `@unchecked Sendable` since you know that all mutation is protected by `isKnownUniquelyReferenced` and makes a deep copy if it is not unique. (Aka COW.) 
+
+
+### Benchmarks
+
+The collection-benchmark project allows you to create benchmarks where the time might be dependent on the size of the input.  We created a command-line target and included the benchmark package.
+
+- https://github.com/apple/swift-collections-benchmark
+
+
+We wrote the following benchmarks:
+
+```swift
+import CollectionsBenchmark
+import CoreGraphics.CGBase
+
+struct TestPoints {
+  let region: CGRect
+  let points: [CGPoint]
+  
+  init(size: Int) {
+    region = CGRect(origin: .zero, size: CGSize(width: size, height: size))
+    points = zip((0..<size).shuffled(), (0..<size).shuffled())
+      .map { CGPoint(x: $0.0, y: $0.1) }
+  }
+}
+
+
+var benchmark = Benchmark(title: "QuadTree Benchmarks")
+
+benchmark.registerInputGenerator(for: TestPoints.self) { size in
+  TestPoints(size: size)
+}
+
+
+benchmark.add(title: "QuadTree find",
+              input: TestPoints.self) { testPoints in
+  
+  let tree = QuadTree(region: testPoints.region, points: testPoints.points)
+  return { timer in
+    testPoints.points.forEach { point in
+          let searchRegion = CGRect(origin: point, size: .zero).insetBy(dx: -1, dy: -1)
+          blackHole(tree.find(in: searchRegion))
+        }
+  }
+}
+
+benchmark.addSimple(title: "Array<CGPoint> filter",
+                    input: TestPoints.self) { testPoints in
+  testPoints.points.forEach { point in
+    let searchRegion =  CGRect(origin: point, size: .zero).insetBy(dx: -1, dy: -1)
+    blackHole(testPoints.points.filter { candidate in
+      searchRegion.contains(candidate)
+    })
+  }
+}
+
+benchmark.main()
+```
+
+Then we ran the following commands arguments:
+
+```
+run QuadFindResult.json --cycles 1
+render QuadFindResults.json QuadFindResults.png
+```
+
+This produced the following results:
+
+![Benchmark Results for Find](materials/QuadFindResults.png)
+
+This is a log-log chart and you can see that the growth of the array implementation is linear.
+
+You can see the jump at 4 items which is where the QuadTree logic is kicking in.  I found that on my machine, I can boost this constant to 512 to make it always perform better than array.
+
+You can also use a special group file to automatically produce sets of benchmarks and multiple graphs.
+
+### Wurdle
+
+Josh continued working on the Wordle game example getting through a lot of the layout issues of the words and keyboard (adding return and backspace). 
 
 ---
 
@@ -20,7 +146,7 @@ All people and all skill levels are welcome to join.
 
 ### PointFree Dependency Injection
 
-A new library for dependency injection was announced this week by the folks at pointfree.co.  Josh gave us a quick tour of the library and an additions library:
+A new library for dependency injection was announced this week by the folks at pointfree.co. Josh gave us a quick tour of the library and an additions library:
 
 https://github.com/pointfreeco/swift-dependencies
 
