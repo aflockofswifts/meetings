@@ -139,7 +139,187 @@ You can also use a special group file to automatically produce sets of benchmark
 ### Wurdle
 
 Josh continued working on the Wordle game example getting through a lot of the layout issues of the words and keyboard (adding return and backspace). 
+```swift
+import SwiftUI
 
+extension Color {
+    static let darkGray = Color(#colorLiteral(red: 0.4784313725, green: 0.4823529412, blue: 0.4980392157, alpha: 1))
+    static let lightGray = Color(#colorLiteral(red: 0.8274509804, green: 0.8431372549, blue: 0.8549019608, alpha: 1))
+    static let darkGreen = Color(#colorLiteral(red: 0.4117647059, green: 0.6705882353, blue: 0.3803921569, alpha: 1))
+    static let darkYellow = Color(#colorLiteral(red: 0.7960784314, green: 0.7098039216, blue: 0.3137254902, alpha: 1))
+}
+
+struct Row: Hashable, Identifiable {
+    var id: Int
+    var letters: [Letter]
+}
+
+struct Letter: Hashable, Identifiable {
+    var id: Int
+    var character: Character
+    var status: Status
+    enum Status: Int, Comparable {
+        static func < (lhs: Letter.Status, rhs: Letter.Status) -> Bool { lhs.rawValue < rhs.rawValue }
+        case unguessed, wrong, wrongPosition, correct
+    }
+}
+
+@MainActor
+final class GameViewModel: ObservableObject {
+    @Published private(set) var words: [Row] = []
+    @Published private(set) var keys: [Row] = []
+    init() {
+        words = ["SWIFT", "CODER", "PLAYA", "     ", "     ", "     "]
+            .enumerated()
+            .map { word in
+                Row(
+                    id: word.offset,
+                    letters: word.element.enumerated().map { character in
+                        Letter(
+                            id: word.offset * 10 + character.offset,
+                            character: character.element,
+                            status: {
+                                switch character.element {
+                                case " ": return Letter.Status.unguessed
+                                case "O", "A": return .correct
+                                case "L": return .wrongPosition
+                                default: return .wrong
+                                }
+                            }()
+                        )
+                    }
+                )
+            }
+        $words
+            .map { rows in
+                let keys = rows
+                    .lazy
+                    .flatMap(\.letters)
+                    .reduce(into: [Character: Letter.Status]()) { accumulated, next in
+                        accumulated[next.character] = accumulated[next.character].map { max($0, next.status) } ?? next.status
+                    }
+                return ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
+                    .enumerated()
+                    .map { string in
+                        Row(
+                            id: string.offset,
+                            letters: string.element.enumerated().map { character in
+                                Letter(
+                                    id: string.offset * 100 + character.offset,
+                                    character: character.element,
+                                    status: keys[character.element] ?? .unguessed
+                                )
+                            }
+                        )
+                    }
+            }
+            .assign(to: &$keys)
+    }
+}
+
+struct ContentView: View {
+    @StateObject var viewModel = GameViewModel()
+    var body: some View {
+        GeometryReader { reader in
+            VStack(spacing: 36) {
+                Grid(alignment: .topLeading, horizontalSpacing: 12, verticalSpacing: 12) {
+                    ForEach(viewModel.words) { row in
+                        GridRow {
+                            ForEach(row.letters) { letter in
+                                LetterView(style: .word(letter))
+                            }
+                        }
+                    }
+                }
+                .frame(maxWidth: 600)
+                VStack (spacing: 12) {
+                    ForEach(viewModel.keys) { row in
+                        HStack(spacing: 8) {
+                            if viewModel.keys.last == row {
+                                LetterView(style: .keyImage("return"))
+
+                                keys(for: row)
+                                LetterView(style: .keyImage("delete.backward"))
+
+                            } else {
+                                keys(for: row)
+                            }
+                        }
+                    }
+                }
+            }
+            .padding()
+        }
+    }
+
+    private func keys(for row: Row) -> some View {
+        ForEach(row.letters) { letter in
+            LetterView(style: .key(letter))
+        }
+    }
+}
+
+struct LetterView: View {
+    var style: Style
+    enum Style {
+        case key(Letter), word(Letter), keyImage(String)
+    }
+    private let fontSize: CGFloat
+    private let aspectRatio: CGFloat
+    private let textColor: Color
+    private let backgroundColor: Color
+    private let outlineColor: Color
+
+    init(style: Style) {
+        self.style = style
+        switch style {
+        case .keyImage:
+            aspectRatio = 0.66 * 1.5
+            fontSize = 48
+            textColor = .black
+            backgroundColor = .lightGray
+            outlineColor = .clear
+        case let .key(letter):
+            aspectRatio = 0.66
+            fontSize = 48
+            (textColor, backgroundColor, outlineColor) = colors(for: letter, isKey: true)
+        case let .word(letter):
+            aspectRatio = 1
+            fontSize = 100
+            (textColor, backgroundColor, outlineColor) = colors(for: letter, isKey: false)
+        }
+        func colors(for letter: Letter, isKey: Bool) -> (Color, Color, Color) {
+            switch (letter.status, isKey) {
+            case (.unguessed, true): return (.black, .lightGray, .clear)
+            case (.unguessed, false): return (.black, .white, .black)
+            case (.correct, _): return (.white, .darkGreen, .clear)
+            case (.wrongPosition, _): return (.white, .darkYellow, .clear)
+            case (.wrong, _): return (.white, .darkGray, .clear)
+            }
+        }
+    }
+
+    var body: some View {
+        GeometryReader { proxy in
+            RoundedRectangle(cornerRadius: 8)
+                .strokeBorder(outlineColor, lineWidth: 4)
+                .background(RoundedRectangle(cornerRadius: 8).fill(backgroundColor))
+                .overlay {
+                    switch style {
+                    case let .keyImage(name):
+                        Image(systemName: name)
+                    case let .key(letter), let .word(letter):
+                        Text(String(describing: letter.character))
+                    }
+                }
+                .foregroundColor(textColor)
+                .font(.system(size: fontSize, weight: .bold))
+        }
+        .aspectRatio(aspectRatio, contentMode: .fit)
+    }
+}
+
+```
 ---
 
 ## 2023.01.14
