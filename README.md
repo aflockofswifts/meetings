@@ -10,10 +10,63 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
+## 2023.02.04
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
 
 ## 2023.01.28
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+### AsyncImage Fix
+
+Jake had an update to how he was able to fix the animation problem with `AsyncImage`. Here is the code:
+
+```swift
+AsyncImage(url: user.profileURL,
+           transaction: Transaction(animation: .default)) { phase in
+  switch phase {
+    case .success(let image):
+             image.resizable()
+                  .clipShape(Circle())
+                  .aspectRatio(contentMode: .fit)
+    default:
+            ZStack {
+              Circle().stroke(.black)
+                      .frame(width: 90, height: 90)
+              Image(systemName: "person")
+                      .font(.title.bold())
+                      .scaledToFill()
+            }
+    }                                  
+}.frame(width: 90, height: 90)
+```
+
+### Non-uniform shuffling
+
+Carlyn asked about the most Swifty way to enable non-uniform probability picking.
+
+Some suggestions from the group:
+
+- Look around in GameKit? (Perhaps look at this: https://www.youtube.com/watch?v=gXnuMk7AVwc)
+- Create an array with duplicates of the number of elements in the probablilty you want.
+- Create a special collection that vends the duplicates without actually hosting them in memory.
+
+A related topic:  https://en.wikipedia.org/wiki/Rejection_sampling
+
+
+### Speeding up Conformance Checking
+
+We reviewed this blog post about how you can re-order conformance records to get a 20% performance boost.
+
+-  https://www.emergetools.com/blog/posts/how-order-files-speed-up-protocols
+
+
+### Wurdle (Wordle Clone)
+
+Josh continued his epic presentation on a Wordle clone.  Attempted to make it work pretty. Namely, `GeometryReader` is not greedy and anchors things to the upper-left. You can work around it by adding a ZStack that contains a greedy view like Color.clear or Rectangle().hidden() to the ZStack.
+
+We used the `Layout` protocol which is a type of view that can explicitly control the layout of a view and its subviews. Josh created a AnchorInParentLayout that lets you align an arbitrary position (`UnitPoint`) with an arbitrary position of the subview(s). A view modifier makes it easy to use.
 
 ---
 
