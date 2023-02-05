@@ -10,6 +10,73 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
+
+## 2023.02.11
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+### Parsing RSS Feeds
+
+RSS is simple XML, so the the old XML Parser API should work.
+    
+- https://developer.apple.com/documentation/foundation/xmlparser
+
+Frank did some work on this previously. This project might help.
+
+- https://github.com/franklefebvre/XMLCoder
+
+Josh implemented a partial SVG reader where he didn't implement all of the callbacks but got the information that he was interested in.  See: https://github.com/joshuajhomann/SVGPasteBoard/blob/master/SVGPasteBoard/ContentView.swift
+
+
+### Using Custom Fonts
+
+Ed wants his custom fonts to play nicely with the OS (and respect dynamic type).
+
+Franklin mentioned:
+
+```swift
+@ScaledMetric(relativeTo: .largeTitle) var dynamicHeader1Size: CGFloat = 24
+```
+
+### iOS Podcast GPT
+
+- https://www.buzzsprout.com/1414396
+
+
+### Writing Apps with ChatGPT
+
+Emil reports that ChatGPT is helping him to get going with SwiftUI.  He has reproduced a major portion of his previous app in SwiftUI in a few days where the original took him months (as he was learning).
+
+Noting that some of the code is old (because ChatGPT was trained before 2021).  
+
+The licensing of the code is ambiguous.
+
+
+### Space, the final Frontier
+
+Carlyn mentioned that many of her space friends are excited about this new release:
+
+https://www.penguinrandomhouse.com/books/651844/critical-mass-by-daniel-suarez/
+
+
+### The Nature of Code 
+
+Carlyn has been working through these (knows the author) in the last couple of months:
+
+ - https://natureofcode.com/ 
+ - https://thecodingtrain.com/
+
+
+### Wordle Clone!
+
+Josh implemented all of the game logic for his wordle clone. He used a reducer that took inputs through a tap gesture recognizer and reduced the state, modifying two properties that drive the UI updates.
+
+Code TBD
+
+---
+
 ## 2023.02.04
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
