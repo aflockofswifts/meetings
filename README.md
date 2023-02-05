@@ -17,6 +17,8 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2023.02.04
+
 ### Parsing RSS Feeds
 
 RSS is simple XML, so the the old XML Parser API should work.
@@ -77,11 +79,6 @@ Code TBD
 
 ---
 
-## 2023.02.04
-
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
-
----
 
 ## 2023.01.28
 
