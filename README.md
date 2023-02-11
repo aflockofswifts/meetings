@@ -10,10 +10,82 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
+## 2023.02.18
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
 
 ## 2023.02.11
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+### Virtual Buddy
+
+A useful tool for creating clean installs. Frank will soon be making a pull request for linux VMs.
+
+- https://github.com/insidegui/VirtualBuddy
+- https://developer.apple.com/documentation/virtualization/installing_macos_on_a_virtual_machine
+
+### Smooth Data
+
+Common methods include moving averages, exponential smoothing, kernel smoothing, and splines. 
+
+We discussed a moving average which is probably the simplest.  You can do this with a queue.
+
+- https://github.com/apple/swift-collections/blob/main/Documentation/Deque.md
+
+
+### Passing Data
+
+Although not discussed on video, this was a side discussion in the chat.
+
+- https://www.bigmountainstudio.com/data
+- https://developer.apple.com/wwdc20/10040 
+
+### Facebook Engineering
+
+Discussion of the technology Facebook uses (C++, Obj-C++)   
+
+  - https://engineering.fb.com/2023/02/06/ios/facebook-ios-app-architecture/
+
+If you want to do hardcore Swift, Facebook might not be your first choice.
+
+### Cross Platform SwiftUI
+
+- https://www.scade.io
+
+Although they might only have a small subset of things done.
+
+### Swift on the Command Line (Scripting)
+
+Carlyn talked about work she is doing in VS Code and Swift
+
+- https://github.com/carlynorama/swift-scripting
+- https://github.com/carlynorama/tipsy-robot-swift
+
+
+Link mentioned in chat:
+
+- https://rderik.com
+
+
+A side topic to this was Swift on the Server:
+
+- https://vapor.codes
+- https://www.swift.org/sswg/
+- https://www.areweserveryet.org
+
+Frank mentioned that the biggest gotcha is differences between implementations on Linux and macOS. Several (Josh and Franklin) noting that this will eventually be solved when Foundation becomes pure Swift:
+
+- https://www.swift.org/blog/future-of-foundation/
+
+
+### Wordle Animation!
+
+Josh shows how animation can be brought into the wordle app with a little restructuring.  Shows the difference between implicit and explicit animation.
+
+https://github.com/joshuajhomann/Wordle
+
+
 
 ---
 
