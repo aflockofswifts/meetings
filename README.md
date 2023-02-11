@@ -75,7 +75,7 @@ Carlyn has been working through these (knows the author) in the last couple of m
 
 Josh implemented all of the game logic for his wordle clone. He used a reducer that took inputs through a tap gesture recognizer and reduced the state, modifying two properties that drive the UI updates.
 
-Code TBD
+https://github.com/joshuajhomann/Wordle
 
 ---
 
