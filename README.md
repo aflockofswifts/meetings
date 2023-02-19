@@ -10,9 +10,72 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.02.18
+
+## 2023.02.25
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+
+## 2023.02.18
+
+
+### Upcoming Conferences
+
+- https://www.tryswift.co/events/2023/nyc/
+
+
+### Edit Kit Pro
+
+From iOSDev weekly, Ed told us about https://digitalbunker.dev/editkit-pro/
+
+### URLSessionTaskDelegate
+
+Carlyn is doing some work on the 
+
+- https://developer.apple.com/documentation/foundation/urlsessiontaskdelegate
+- https://github.com/MastodonKit/MastodonKit
+- https://github.com/TootSDK/TootSDK
+- https://github.com/carlynorama/TrunkLine/blob/dev/Sources/TrunkLine/Mastodon/ServerSentEventListener.swift
+
+
+### Models 
+
+You can do a lot of work to cleanup models by declaring custom initializers.  (You don't have to expose ViewModels but can construct those internally.)  You can also use custom Codable to cleanup your code.
+
+- https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types
+- https://quicktype.io/
+
+
+### Tagged
+
+Ray revisited the `Identifier<Tag>` type that we looked at in November. The folks over at point free have a library that makes it easy to make unique little types.
+
+- https://github.com/pointfreeco/swift-tagged
+
+```swift
+import Tagged
+
+struct User {
+    var id: Tagged<Self, UUID>
+}
+```
+
+The point free guys have a whole series on modern SwiftUI development that you can check out on their blog.
+https://www.pointfree.co/blog
+
+
+### Swift Evolution Proposals
+
+- Attached Macros (https://forums.swift.org/t/se-0389-attached-macros/63165)
+- Expression Macros (https://forums.swift.org/t/se-0382-second-review-expression-macros/63064)
+- Convenience Async makeStream methods (https://forums.swift.org/t/se-0388-convenience-async-throwing-stream-makestream-methods/63139)
+
+### Unicode
+
+Swift Strings are unique in the way that they handle Unicode. Several examples from Josh about how mutation is handled with both `String` and bridged `NSString` and `NSMutableString`. Swift makes a defensive copy for you when assigning.
+
 
 ---
 
