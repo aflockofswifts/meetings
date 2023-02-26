@@ -10,8 +10,13 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-
 ## 2023.02.25
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.03.04
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
@@ -19,8 +24,147 @@ All people and all skill levels are welcome to join.
 
 
 ## 2023.02.18
+WieghtedStackView
+```swift
+import PlaygroundSupport
+import SwiftUI
 
+struct V: View {
+    var body: some View {
+        WeightedStackLayout(axis: .vertical, spacing: 0) {
+            Color.red.stack(weight: 7)
+            Color.green.stack(weight: 5)
+            Text("hi").background(Color.yellow)
+            Color.blue.stack(weight: 3)
+            Color.orange.stack(weight: 2)
+            Color.brown.stack(weight: 4)
+            Color.cyan.stack(weight: 3)
+        }
+            .frame(width: 400, height: 400)
+    }
+}
 
+PlaygroundPage.current.setLiveView(V())
+
+struct WeightedStackLayoutKey: LayoutValueKey {
+    static var defaultValue = 1.0
+}
+
+extension View {
+    func stack(weight: Double) -> some View {
+        layoutValue(key: WeightedStackLayoutKey.self, value: weight)
+    }
+}
+
+extension Layout.Subviews.Element {
+    var stackWeight: Double {
+        max(self[WeightedStackLayoutKey.self], 1e-6)
+    }
+}
+
+struct WeightedStackLayout: Layout {
+    var axis: Axis = .vertical
+    var spacing: CGFloat = 10
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        proposal.replacingUnspecifiedDimensions(by: .zero)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let totalSpace = CGFloat(subviews.count - 1) * spacing
+        let dimension = (axis == .vertical ? bounds.height : bounds.width) - totalSpace
+        let pointsPerWeight = dimension / subviews.lazy.map(\.stackWeight).reduce(0, +)
+        let weights = subviews.lazy.map(\.stackWeight).accumulated(0, +)
+        let points = zip(
+            weights.dropLast(),
+            weights.dropFirst()
+        ).enumerated().lazy.map { offset, element in
+            let (startWeight, endWeight) = element
+            let spaceBefore = spacing * CGFloat(offset)
+            let offset = axis == .vertical ? bounds.origin.y : bounds.origin.x
+            return (
+                start: startWeight * pointsPerWeight + spaceBefore + offset,
+                end: endWeight * pointsPerWeight + spaceBefore + offset
+            )
+        }
+        zip(subviews, points).forEach { view, point in
+            let distance = point.end - point.start
+            switch axis {
+            case .vertical:
+                view.place(
+                    at: .init(x: bounds.midX, y: point.start + distance / 2),
+                    anchor: .center,
+                    proposal: .init(width: bounds.width, height: distance)
+                )
+            case .horizontal:
+                view.place(
+                    at: .init(x: point.start + distance / 2, y: bounds.midY),
+                    anchor: .center,
+                    proposal: .init(width: distance, height: bounds.height)
+                )
+            }
+        }
+    }
+
+}
+
+struct LazyAccumulatedSequence<Accumulated>: LazySequenceProtocol {
+    private let _makeIterator: () -> Iterator
+    init<Element>(
+        underlying: some Sequence<Element>,
+        initial: Accumulated,
+        accumulate: @escaping (Accumulated, Element) -> Accumulated
+    ) {
+        _makeIterator = {
+            var iterator = underlying.makeIterator()
+            var nextAccumulated: Accumulated? = initial
+            return Iterator {
+                nextAccumulated.map { accumulated in
+                    nextAccumulated = iterator.next().map { next in
+                        accumulate(accumulated, next)
+                    }
+                    return accumulated
+                }
+            }
+        }
+    }
+    func makeIterator() -> Iterator { _makeIterator() }
+    struct Iterator: IteratorProtocol {
+        let _next: () -> Accumulated?
+        mutating func next() -> Accumulated? { _next() }
+    }
+}
+
+extension LazySequenceProtocol {
+    func accumulated<Accumulated>(
+        _ initial: Accumulated,
+        _ accumulate: @escaping (Accumulated, Element) -> Accumulated
+    ) -> LazyAccumulatedSequence<Accumulated> {
+        LazyAccumulatedSequence(underlying: self, initial: initial, accumulate: accumulate)
+    }
+}
+
+extension Sequence {
+    func accumulated<Accumulated>(
+        _ initial: Accumulated,
+        _ accumulate: (Accumulated, Element) throws -> Accumulated
+    ) rethrows -> [Accumulated] {
+        var current = initial
+        var accumulated = [Accumulated]()
+        accumulated.reserveCapacity(underestimatedCount + 1)
+        accumulated.append(current)
+        for element in self {
+            current = try accumulate(current, element)
+            accumulated.append(current)
+        }
+        return accumulated
+    }
+}
+
+print([1,2,3].accumulated(0, +))
+
+```
+---
 ### Upcoming Conferences
 
 - https://www.tryswift.co/events/2023/nyc/
@@ -76,6 +220,56 @@ https://www.pointfree.co/blog
 
 Swift Strings are unique in the way that they handle Unicode. Several examples from Josh about how mutation is handled with both `String` and bridged `NSString` and `NSMutableString`. Swift makes a defensive copy for you when assigning.
 
+```swift
+var a: String = "a"
+var b: UnsafeMutablePointer<String> = .init(&a)
+a = "b"
+print(a,b.pointee)
+
+var c: NSMutableString = "c"
+var d: NSString = c
+c = "d"
+print(c,d)
+
+@propertyWrapper
+struct Reference<Value> {
+    final class Wrapper<Value> {
+        var value: Value
+        init(value: Value) {
+            self.value = value
+        }
+    }
+    private var wrapper: Wrapper<Value>
+    var wrappedValue: Value {
+        get { wrapper.value }
+        set { wrapper.value = newValue }
+    }
+    init(wrappedValue: Value) {
+        wrapper = .init(value: wrappedValue)
+    }
+}
+
+var e = Reference(wrappedValue: "e")
+var f = e
+e.wrappedValue = "f"
+print(e.wrappedValue, f.wrappedValue)
+
+["âa", "áb", "àc", "ad", "äe"].lazy.map { string in
+    string.contains("a")
+}.forEach { print($0) }
+
+["âa", "z", "áb", "àc", "ad", "äe"].sorted { lhs, rhs in
+    lhs.lexicographicallyPrecedes(rhs)
+}.forEach { print($0) }
+
+["âa", "áb", "àc", "ad", "äe"].lazy.map { string in
+    string.localizedStandardContains("a")
+}.forEach { print($0) }
+
+["âa", "z", "áb", "àc", "ad", "äe"].sorted { lhs, rhs in
+    lhs.localizedCaseInsensitiveCompare(rhs) == .orderedAscending
+}.forEach { print($0) }
+```
 
 ---
 
