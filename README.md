@@ -10,11 +10,6 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.02.25
-
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
-
----
 
 ## 2023.03.04
 
@@ -22,9 +17,16 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2023.02.25
 
-## 2023.02.18
-WieghtedStackView
+### WeightedStackView
+
+
+Josh put together a new type of stack layout that lets each view communicate what weight it wants to the layout system. He wrote the logic for placing views in a functional style and utilized lazy sequences to avoid creation of temporary copies.
+
+See https://developer.apple.com/documentation/swift/lazysequenceprotocol
+
+
 ```swift
 import PlaygroundSupport
 import SwiftUI
@@ -164,7 +166,40 @@ extension Sequence {
 print([1,2,3].accumulated(0, +))
 
 ```
+
+### Deep linking in Apps
+
+Josh had an example:
+
+- https://github.com/joshuajhomann/PokemonNavigation
+
+### Learning AI
+
+General Neural Networks
+
+- https://www.youtube.com/watch?v=aircAruvnKk
+
+Running on you own computer
+
+- https://github.com/karpathy/nanoGPT
+
+
+Facebook's Large Language Model
+
+- https://ai.facebook.com/blog/large-language-model-llama-meta-ai/
+- https://github.com/facebookresearch/llama
+
+
+ChatGPT Client for iOS
+
+- https://github.com/adamrushy/OpenAISwift.git
+
+
 ---
+
+## 2023.02.18
+
+
 ### Upcoming Conferences
 
 - https://www.tryswift.co/events/2023/nyc/
