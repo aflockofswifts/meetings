@@ -43,7 +43,6 @@ Also recommended by Carlyn:
 
 ### Metal
 
-
 Josh created an Apple cross-platform app to show how to get Metal going in SwiftUI and created a `MetalView`. (Watch does not support metal yet.)
 
 Roughly based on:
@@ -58,8 +57,6 @@ Also see:
 You can see some amazing WebGL based demos at:
 
  - https://www.shadertoy.com
-
-
 
 ---
 
