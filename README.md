@@ -11,9 +11,55 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 
 
-## 2023.03.04
+## 2023.03.11
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.03.04
+
+### Confernces
+
+- Deep Dish Swift https://deepdishswift.com
+- Try Swift https://www.tryswift.co/events/2023/nyc/
+
+### Escaping Closures
+
+@escaping means they can be stored in a property and used as a callback later.
+
+- http://www.goshdarnclosuresyntax.com
+
+Also recommended by Carlyn:
+
+- https://www.hackingwithswift.com/quick-start/beginners/how-to-accept-functions-as-parameters
+
+
+### Generative AI for Game Assets
+
+- https://aiva.ai
+- https://www.scenario.com
+
+
+### Metal
+
+
+Josh created an Apple cross-platform app to show how to get Metal going in SwiftUI and created a `MetalView`. (Watch does not support metal yet.)
+
+Roughly based on:
+
+- https://medium.com/@warrenm/thirty-days-of-metal-day-1-devices-e371729d05ca
+
+Also see:
+
+- https://developer.apple.com/metal/Metal-Shading-Language-Specification.pdf
+
+
+You can see some amazing WebGL based demos at:
+
+ - https://www.shadertoy.com
+
+
 
 ---
 
