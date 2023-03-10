@@ -2529,7 +2529,7 @@ Presentation by Josh. Includes upgrade to CoinGecko example from previous weeks.
 - You can define your own UTTypes.
 - The protocol requires implementation of a single static method.
 - It uses a result builder so that you can prioritize formats you support.
-- Supports four representations: Data, File, Proxy, (I can't remember the last one ^^;; )
+- Supports four representations: Data, File, Proxy & Codable
 - Generally prioritize lossless formats first, lossy formats last.
 
 ```swift
