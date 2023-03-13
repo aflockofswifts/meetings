@@ -11,15 +11,54 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 
 
-## 2023.03.11
+## 2023.03.18
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
 
+## 2023.03.11
+### Whats new in Swift
+
+Swift 5.8 has been released to beta:
+- https://www.hackingwithswift.com/articles/256/whats-new-in-swift-5-8
+
+Also Swift 9 is on the way
+- https://forums.swift.org/t/swift-5-9-release-process/63557
+
+New actor proposal
+
+Frank's code for his talk about distributed actors:
+h-ttps://github.com/franklefebvre/DistributedActors-FrenchKit
+
+Question from Allen: how to we sync state between SwiftUI and Scenekit
+- Answer: have a single source of truth:
+```swift
+    final class ViewModel: ObsevableObject {
+        @Published var truth
+    ...
+    }
+```
+- share with SwiftUI with binding via the projected value of the `StateObject`:
+```
+   childview($viewmodel.binding)
+```
+- share with SceneKit with a publisher projected fromt he `@Published` property
+```
+   scene(viewmodel.$truth)
+```
+
+### Demo: ImageIO
+
+Josh went over the ImageIO library and using it to read files, and image meta data.  The full project is below:
+- https://github.com/joshuajhomann/ImageIOExample
+![preview](https://github.com/joshuajhomann/ImageIOExample/raw/main/preview.gif "ImageIOExample")
+
+---
+
 ## 2023.03.04
 
-### Confernces
+### Conferences
 
 - Deep Dish Swift https://deepdishswift.com
 - Try Swift https://www.tryswift.co/events/2023/nyc/
