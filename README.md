@@ -97,6 +97,11 @@ You can see some amazing WebGL based demos at:
 
  - https://www.shadertoy.com
 
+Project:
+- https://github.com/joshuajhomann/MetalExample
+
+![preview](https://github.com/joshuajhomann/MetalExample/blob/main/preview.png "MetalExample")
+
 ---
 
 ## 2023.02.25
