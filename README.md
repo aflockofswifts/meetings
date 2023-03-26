@@ -10,26 +10,129 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-
-## 2023.03.18
+## 2023.04.01
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
 
+## 2023.03.25
+
+### Swift Ecosystem
+
+Apple is now sponsoring the Swift Package Index.
+
+https://www.swift.org/blog/swift-package-index-developer-spotlight/
+
+
+### Github Changed Host Key
+
+- https://github.blog/2023-03-23-we-updated-our-rsa-ssh-host-key/
+
+
+### Using the Camera
+
+Jake working through some issues with purple errors and UIRepresentable.
+
+- https://www.kodeco.com/26244793-building-a-camera-app-with-swiftui-and-combine
+
+
+
+### What's Coming in Swift
+
+A pitch about type-safe predicates:
+
+- https://forums.swift.org/t/pitch-swift-predicates/62000
+
+Elide `some`:
+
+- https://forums.swift.org/t/pitch-elide-some-in-swift-6/63737
+
+
+Parameter Packs
+
+- https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+
+
+### TikTok Logo Effect: Metal Shaders in CoreImage
+
+The finished project:
+https://github.com/joshuajhomann/MetalCIFilter
+
+
+---
+
+## 2023.03.18
+
+### Swift Packages with C
+
+Carlyn gave us a demo on wrapping a C package with Swift Package Manager:
+
+- https://theswiftdev.com/how-to-call-c-code-from-swift/
+- https://github.com/carlynorama/NoiseMaker
+
+Also,
+
+- https://www.youtube.com/watch?v=6-0UaeJBumA
+
+### Debugging Updates
+
+- https://www.hackingwithswift.com/quick-start/swiftui/how-to-find-which-data-change-is-causing-a-swiftui-view-to-update
+
+### TikTok Logo Effect: Metal Shaders in CoreImage
+
+Josh began creating a sample App that lets you pick an image from your library
+and apply a color separating effect (think TikTok logo) on the image.
+This week he showed the main points:
+
+- Create a metal file
+- Add special flag -fcikernel to Other Metal Compiler Flags and Other Metal Linker Flags
+- Make the function extern "C" so metal can see it.
+
+```swift
+#include <metal_stdlib>
+#include <CoreImage/CoreImage.h>
+using namespace metal;
+
+extern "C" {
+    auto channelOffset(coreimage::sampler s, float2 redOffset, float2 greenOffset, float2 blueOffset) -> float4 {
+        auto index = s.coord();
+        return float4(
+            s.sample(index - redOffset).r,
+            s.sample(index - greenOffset).g,
+            s.sample(index - blueOffset).b,
+            s.sample(index).a
+        );
+    }
+}
+```
+
+Using the `-` to subract the offsets is arbitrary. (It could have been `+` too.)
+
+
+### Learning Shader Graphics:
+
+- https://github.com/markusmoenig/ShaderMania
+- https://hexler.net/kodelife
+- https://thebookofshaders.com/
+- https://gfxcourses.stanford.edu/cs248/winter22
+
+---
+
 ## 2023.03.11
-### Whats new in Swift
+
+### What's new in Swift
 
 Swift 5.8 has been released to beta:
 - https://www.hackingwithswift.com/articles/256/whats-new-in-swift-5-8
 
-Also Swift 9 is on the way
+Also Swift 5.9 is on the way
 - https://forums.swift.org/t/swift-5-9-release-process/63557
 
 New actor proposal
 
 Frank's code for his talk about distributed actors:
-h-ttps://github.com/franklefebvre/DistributedActors-FrenchKit
+https://github.com/franklefebvre/DistributedActors-FrenchKit
 
 Question from Allen: how to we sync state between SwiftUI and Scenekit
 - Answer: have a single source of truth:
