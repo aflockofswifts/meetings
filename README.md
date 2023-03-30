@@ -58,6 +58,7 @@ Parameter Packs
 
 The finished project:
 https://github.com/joshuajhomann/MetalCIFilter
+![preview](https://github.com/joshuajhomann/MetalCIFilter/blob/main/preview.gif)
 
 
 ---
