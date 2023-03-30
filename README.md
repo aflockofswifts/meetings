@@ -57,7 +57,8 @@ Parameter Packs
 ### TikTok Logo Effect: Metal Shaders in CoreImage
 
 The finished project:
-https://github.com/joshuajhomann/MetalCIFilter
+https://github.com/joshuajhomann/MetalCIFilter 
+
 ![preview](https://github.com/joshuajhomann/MetalCIFilter/blob/main/preview.gif)
 
 
