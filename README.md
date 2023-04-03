@@ -10,9 +10,54 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.04.01
+## 2023.04.08
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.04.01
+
+### Interfacing with C
+
+Carlyn is documenting her explorations into using C libraries from Swift.
+
+- https://github.com/carlynorama/UnsafeWrapCSampler
+- https://github.com/carlynorama/UnsafeExplorer
+
+### Swift One-liners
+
+Franklin brought to our attention that Swift can now be invoked with -e on the command line.
+
+- https://blog.eidinger.info/swift-e-runs-code-directly-from-the-command-line
+
+### What's New In Swift 5.8
+
+Josh gave us a tour of what is available in Swift 5.8.
+
+- https://www.hackingwithswift.com/articles/256/whats-new-in-swift-5-8
+
+### Morphology in Foundation
+
+Ray reminded us that you can say, `Text("\^[(count) items](inflect: true)")` and 
+items will be pluralized properly. It works for other languages too.
+
+- https://medium.com/geekculture/automatic-grammar-agreement-b953cbf5d101
+
+### Flocking Simulation (Boids)
+
+Josh started a presentation on implementing flocking using Timeline/Canvas in SwiftUI. Some background material:
+
+- http://www.red3d.com/cwr/papers/1987/SIGGRAPH87.pdf
+- http://www.red3d.com/cwr/papers/1999/gdc99steer.html
+- https://cs.stanford.edu/people/eroberts/courses/soco/projects/2008-09/modeling-natural-systems/boids.html
+
+His implementation used an unsafe to hold the `Boid` type to prevent reference count traffic. You can learn about that here:
+
+- https://www.kodeco.com/7181017-unsafe-swift-using-pointers-and-interacting-with-c
+
+
+Final Project: TDB
 
 ---
 
