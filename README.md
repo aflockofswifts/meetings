@@ -10,9 +10,105 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.04.08
+## 2023.04.15
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+## 2023.04.08
+
+
+### Discussions
+
+- Ed was lamenting the state of HealthKit documentation. In particular, using workouts is not well documented at all.
+- Activity tracking might be interesting.
+- Property wrapper projected values $.  It can be used to create a binding or get to a publisher depending on where you put it.
+- Be careful that you don't make your EnvironmentObjects too broad. Any view listening to it will need to rebuild for any change (more precisely when objectWillChange fires).
+
+
+### The PNG Format
+
+Carlyn is exploring the PNG format. She highly recommends the PNG book. Even though it is a little dated, it is extremely well written, informative, and funny.
+
+- http://www.libpng.org/pub/png/book/
+
+
+Her repos:
+
+- https://github.com/carlynorama/SwiftLIBPNG
+
+
+### Modern SwiftUI with sample app TimeKeep
+
+Ray is starting a series to talk about modern SwiftUI heavily influenced by 
+pointfree.co.  Together we are building a small app `TimeKeep` that lets you 
+track time for multiple projects.
+
+- Track the time for multiple projects simultaneously
+- Multiplatform (iOS, macOS, etc)
+- Highly testable
+- Use modern architection
+
+We started this week by building the basic domain and some helper extensions for dealing with
+dates.
+
+https://github.com/rayfix/TimeKeep/tree/main/TimeKeep
+
+
+#### Meeting inspired changes
+
+- Allen: Change the name of `Time` to `TimeEvent`.
+- Ed: Use `Calendar` method to tell if two dates are the same day. 
+- Josh: Use static member lookup instead of an enum for the filter predicate.
+
+### Mixing SwiftUI into UIKit
+
+Josh gave a great example of how to integrate Swift with UIKit and some of the pitfalls associated with that.
+
+```swift
+import Combine
+import SwiftUI
+import UIKit
+    
+import PlaygroundSupport
+    
+final class VM {
+    @Published var value = 0.0
+}
+    
+final class VC: UIViewController {
+    private let viewModel = VM()
+    private var subscription: AnyCancellable?
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        let label = UILabel()
+        let vm = viewModel
+        let button = UIButton(primaryAction: .init(image: .init(systemName: "arrow.counterclockwise"), handler: { _ in vm.value = 0.0 }))
+        let stack = UIStackView(arrangedSubviews: [
+            label,
+            button,
+            UIHostingController(rootView:
+                Slider(value: Binding<Double>(get: { vm.value }, set: { vm.value = $0 })).frame(idealWidth: 300)
+           ).view
+        ])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        view?.addSubview(stack)
+        NSLayoutConstraint.activate([
+            view.centerXAnchor.constraint(equalTo: stack.centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: stack.centerYAnchor)
+        ])
+        subscription = viewModel.$value.map(String.init(describing:))
+          .map { $0 as String? }.assign(to: \.text, on: label)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+    
+PlaygroundPage.current.setLiveView(VC())
+```
 
 ---
 
