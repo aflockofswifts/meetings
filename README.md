@@ -66,7 +66,7 @@ We will start putting up some UI.
 
 ### Mixing SwiftUI into UIKit
 
-Josh gave a great example of how to integrate Swift with UIKit and some of the pitfalls associated with that.
+Josh gave a great example of how to integrate Swift with UIKit and some of the pitfalls associated with that.  The example demonstrates that using a Binding from UIKit to SwiftUI works from UIKit -> SwiftUI but not from SwiftUI -> UIKit.  We will explore how to fix this next week.
 
 ```swift
 import Combine
