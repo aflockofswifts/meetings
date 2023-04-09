@@ -39,9 +39,7 @@ Her repos:
 
 ### Modern SwiftUI with sample app TimeKeep
 
-Ray is starting a series to talk about modern SwiftUI heavily influenced by 
-pointfree.co.  Together we are building a small app `TimeKeep` that lets you 
-track time for multiple projects.
+Ray is starting a series to talk about modern SwiftUI heavily influenced by https://pointfree.co.  Together we are building a small app `TimeKeep` that lets you track time for multiple projects.
 
 - Track the time for multiple projects simultaneously
 - Multiplatform (iOS, macOS, etc)
@@ -53,12 +51,18 @@ dates.
 
 https://github.com/rayfix/TimeKeep/tree/main/TimeKeep
 
+In the process we used point free library `Tagged` and `IdentifiedArrayOf` to model the domain as precisely as possible.
 
 #### Meeting inspired changes
 
 - Allen: Change the name of `Time` to `TimeEvent`.
 - Ed: Use `Calendar` method to tell if two dates are the same day. 
 - Josh: Use static member lookup instead of an enum for the filter predicate.
+
+#### Next week
+
+We will start putting up some UI.
+
 
 ### Mixing SwiftUI into UIKit
 
