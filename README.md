@@ -10,9 +10,126 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.04.15
+
+## 2023.04.29
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.04.22
+
+---
+
+## 2023.04.15
+
+### Recording iOS Demo Video
+
+- Assistive touch (but it leave some extra chrome that gets recorded)
+- Use "defaults write com.apple.iphonesimulator ShowSingleTouches 1" (josh)
+- https://support.screenpal.com/portal/en/kb/articles/show-finger-taps-when-recording-your-screen-on-ios (via Franklin)
+- https://youtu.be/DAXxgBo-Mr4 (via Franklin)
+
+
+### Evolution 
+
+Josh took us through some recent proposals.
+
+- `is case` https://github.com/apple/swift-evolution/pull/2007
+- Observability https://github.com/apple/swift-evolution/blob/main/proposals/0395-observability.md
+
+
+### TimeKeep
+
+We created a `ProjectTimer` and introduced the dependency for .now
+
+https://github.com/rayfix/TimeKeep/tree/main/TimeKeep
+
+### Mixing SwiftUI and UIKit (Part II)
+
+```swift
+import Combine
+import SwiftUI
+import UIKit
+
+import PlaygroundSupport
+    
+final class VM: ObservableObject {
+    @Published var value = 0.0
+}
+    
+final class VC: UIViewController {
+    @ObservedObject var viewModel = VM()
+    private var subscription: AnyCancellable?
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        let label = UILabel()
+        let vm = viewModel
+        let button = UIButton(primaryAction: .init(image: .init(systemName: "arrow.counterclockwise"), handler: { _ n vm.value = 0.0 }))
+        let slider = ViewBinding(\.value, on: vm) { $value in
+            Slider(value: $value).frame(idealWidth: 300)
+        }
+        let stack = UIStackView(arrangedSubviews: [
+            label,
+            button,
+            UIHostingController(rootView: slider).view
+        ])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        view?.addSubview(stack)
+        NSLayoutConstraint.activate([
+            view.centerXAnchor.constraint(equalTo: stack.centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: stack.centerYAnchor)
+        ])
+        subscription = viewModel.$value
+            .map(String.init(describing:)).map { $0 as String? }
+            .assign(to: \.text, on: label)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+    
+
+PlaygroundPage.current.setLiveView(VC())
+    
+struct ViewBinding<Target: ObservableObject, Value, Content: View>: View {
+    private let keypath: ReferenceWritableKeyPath<Target, Value>
+    @ObservedObject private var target: Target
+    private let content: (Binding<Value>) -> Content
+    
+    init(_ keypath: ReferenceWritableKeyPath<Target, Value>,
+         on target: Target,
+         @ViewBuilder content: @escaping (Binding<Value>) -> Content) {
+            self.keypath = keypath
+            _target = .init(wrappedValue: target)
+            self.content = content
+    }
+    var body: some View {
+        content($target[dynamicMember: keypath])
+    }
+}
+```
+
+This lets SwiftUI respond to changes from UIKit. The key difference is
+
+```swift
+let binding = Binding<Double>(get: { vm.value },
+                          set: { vm.value = $0 })                          
+let slider = Slider(value: binding).frame(idealWidth: 300)
+```
+
+versus:
+
+```swift
+let slider = ViewBinding(\.value, on: vm) { $value in
+  Slider(value: $value).frame(idealWidth: 300)
+}
+```
+
+---
 
 ## 2023.04.08
 
@@ -64,9 +181,9 @@ In the process we used point free library `Tagged` and `IdentifiedArrayOf` to mo
 We will start putting up some UI.
 
 
-### Mixing SwiftUI into UIKit
+### Mixing SwiftUI and UIKit
 
-Josh gave a great example of how to integrate Swift with UIKit and some of the pitfalls associated with that.  The example demonstrates that using a Binding from UIKit to SwiftUI works from UIKit -> SwiftUI but not from SwiftUI -> UIKit.  We will explore how to fix this next week.
+Josh gave a great example of how to integrate Swift with UIKit and some of the pitfalls associated with that.  The example demonstrates that using a Binding from UIKit to SwiftUI works but binding from SwiftUI to UIKit does not.  We will explore how to fix this next week.
 
 ```swift
 import Combine
