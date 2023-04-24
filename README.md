@@ -19,6 +19,96 @@ All people and all skill levels are welcome to join.
 
 ## 2023.04.22
 
+### Switching Between Different Xcodes
+
+John had some questions about Xcode versions. Alex said he used this app to help with the command line
+`xcode-select -s` stuff.  It is called https://www.xcodes.app
+
+### Architecture
+
+Some questions about architecture. There is some overhead to this solution but it puts you in a position to swap out the database implementation later.
+
+  - https://github.com/joshuajhomann/DatabaseFacade
+
+### Git Ignore
+
+- Xcode puts stuff in .git/info/exlude
+- John B. says https://github.com/github/gitignore/blob/main/Swift.gitignore
+
+### Converting Objective-C code to Swift
+
+Josh mentions:
+
+- https://swiftify.com/converter/code/
+
+
+### Wrapping PNG
+
+Carlyn came up with a way to wrap LibPNG and all of its setjump/longjump error handling.
+
+https://github.com/carlynorama/SwiftLIBPNG/blob/main/META.md
+
+The source will run (eventually) on Linux. She demo'ed it this week.
+
+
+### TimeKeep: Testing with @Dependency 
+
+Last week we created a project timer. This week we wrote tests for it.
+
+See https://github.com/rayfix/TimeKeep/tree/main/TimeKeep
+
+```swift
+import Dependencies
+import XCTest
+
+@testable import TimeKeep
+
+final class TimeKeepTests: XCTestCase, @unchecked Sendable {
+
+  var dateValue: Date = .now
+  
+  func testProjectTimer() {
+    var generator = DateGenerator { self.dateValue }
+    
+    let timer = withDependencies {
+      $0.date = generator
+    } operation: {
+      return ProjectTimer()
+    }
+    
+    XCTAssertFalse(timer.isRunning)
+    
+    timer.start()
+    XCTAssert(timer.isRunning)
+        
+    timer.stop()
+    XCTAssertFalse(timer.isRunning)
+    
+    dateValue += 1
+    
+    XCTAssertEqual(timer.elapsed, .zero)
+    
+    timer.start()
+    dateValue += 1
+    XCTAssertEqual(timer.elapsed, .seconds(1))
+    
+    dateValue += 3
+    XCTAssertEqual(timer.elapsed, .seconds(4))
+    
+    // A stopped timer should not record elapsed time.
+    timer.stop()
+    dateValue += 400
+    XCTAssertEqual(timer.elapsed, .seconds(4))
+  }
+}
+```
+
+### Golden Ratio
+
+Josh started with his project. He showed how you can overload operators in Swift to make beautiful syntax for defining golden ratio constants 1 ± √5
+
+
+
 ---
 
 ## 2023.04.15
@@ -92,7 +182,6 @@ final class VC: UIViewController {
     }
 }
     
-
 PlaygroundPage.current.setLiveView(VC())
     
 struct ViewBinding<Target: ObservableObject, Value, Content: View>: View {
