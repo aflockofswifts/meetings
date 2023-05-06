@@ -10,10 +10,199 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
+## 2023.05.06
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
 
 ## 2023.04.29
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+Frank showed how to use `NSViewRepresentable` to control window zooming on macOS with SwiftUI
+```swift
+//
+	//  NSWindowDemoApp.swift
+	//  NSWindowDemo
+	//
+	//  Created by Frank Lefebvre on 15/04/2023.
+	//
+	
+	import SwiftUI
+	import AppKit
+	
+	@main
+	struct NSWindowDemoApp: App {
+	    let imageWidth = 800.0
+	    let imageHeight = 600.0
+	    
+	    var body: some Scene {
+	        Window("Image", id: "main") {
+	            ContentView()
+	                .windowSize(idealWidth: imageWidth, idealHeight: imageHeight)
+	        }
+	    }
+	}
+	
+	struct WindowAccessor: NSViewRepresentable {
+	    let callback: (NSWindow) -> Void
+	    
+	    private class WindowDetectingView: NSView {
+	        private let callback: (NSWindow) -> Void
+	        
+	        init(_ callback: @escaping (NSWindow) -> Void) {
+	            self.callback = callback
+	            super.init(frame: .zero)
+	        }
+	        
+	        required init?(coder: NSCoder) {
+	            fatalError("init(coder:) has not been implemented")
+	        }
+	        
+	        override func viewDidMoveToWindow() {
+	            if let window {
+	                DispatchQueue.main.async {
+	                    self.callback(window)
+	                }
+	            }
+	        }
+	    }
+	    
+	    func makeNSView(context: Context) -> some NSView {
+	        WindowDetectingView(callback)
+	    }
+	    
+	    func updateNSView(_ nsView: NSViewType, context: Context) {
+	    }
+	}
+	
+	extension View {
+	    func windowSize(idealWidth: CGFloat, idealHeight: CGFloat) -> some View {
+	        modifier(WindowSizeModifier(idealWidth: idealWidth, idealHeight: idealHeight))
+	    }
+	}
+	
+	struct WindowSizeModifier: ViewModifier {
+	    let idealWidth: CGFloat
+	    let idealHeight: CGFloat
+	    @State private var zoomDelegate: WindowZoomDelegate?
+	    
+	    func body(content: Content) -> some View {
+	        content
+	            .background(WindowAccessor(callback: { window in
+	                if window.styleMask.contains(.fullSizeContentView) {
+	                    let savedFrame = window.frame
+	                    window.styleMask.remove(.fullSizeContentView)
+	                    window.setFrame(savedFrame, display: false)
+	                }
+	                update(window: window, idealWidth: idealWidth, idealHeight: idealHeight)
+	                zoomDelegate = WindowZoomDelegate(idealWidth: idealWidth, idealHeight: idealHeight, window: window)
+	                window.delegate = zoomDelegate
+	            }))
+	    }
+	    
+	    private func update(window: NSWindow, idealWidth: CGFloat, idealHeight: CGFloat) {
+	        window.contentAspectRatio = .init(width: idealWidth, height: idealHeight)
+	    }
+	}
+	
+	final class WindowZoomDelegate: NSObject, NSWindowDelegate {
+	    let idealWidth: CGFloat
+	    let idealHeight: CGFloat
+	    private weak var window: NSWindow?
+	    private weak var target: NSWindowDelegate?
+	    
+	    init(idealWidth: CGFloat, idealHeight: CGFloat, window: NSWindow) {
+	        self.idealWidth = idealWidth
+	        self.idealHeight = idealHeight
+	        self.window = window
+	        self.target = window.delegate
+	        super.init()
+	    }
+	    
+	    func windowWillUseStandardFrame(_ window: NSWindow, defaultFrame newFrame: NSRect) -> NSRect {
+	        guard let screenFrame = window.screen?.visibleFrame, let contentFrame = window.contentView?.frame else { return newFrame }
+	        let proposedContentRect = window.contentRect(forFrameRect: newFrame)
+	        let newWidth = min(idealWidth, proposedContentRect.width)
+	        let newHeight = min(idealHeight, proposedContentRect.height)
+	        var newOrigin = window.frame.origin
+	        let offset = contentFrame.height - newHeight
+	        newOrigin.y += offset
+	        newOrigin.y = max(newOrigin.y, screenFrame.minY)
+	        return window.frameRect(forContentRect: NSRect(x: newOrigin.x, y: newOrigin.y, width: newWidth, height: newHeight))
+	    }
+	    
+	    override func responds(to aSelector: Selector!) -> Bool {
+	        Self.instancesRespond(to: aSelector) || (target?.responds(to: aSelector) ?? false)
+	    }
+	    
+	    override func forwardingTarget(for aSelector: Selector!) -> Any? {
+	        target
+	    }
+	}
+}
+```
+
+Josh showed a similar playground using `UIViewRepresentable` and the `UIResponder` chain to walk up the chain and mutate a UIKit type from within SwiftUI:
+```swift
+import UIKit
+import SwiftUI
+import PlaygroundSupport
+
+struct ProxyView: UIViewRepresentable {
+    var onMoveToWindow: (UIView) -> Void
+    func makeUIView(context: Context) -> Proxy { .init() }
+    func updateUIView(_ proxy: Proxy, context: Context) {
+        proxy.onMoveToWindow = onMoveToWindow
+    }
+    final class Proxy: UIView {
+        var onMoveToWindow: ((UIView) -> Void)?
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            guard window != nil else { return }
+            backgroundColor = .clear
+            onMoveToWindow?(self)
+        }
+    }
+}
+
+extension View {
+    func modifyNavigationBar(perform: @escaping (UINavigationBar) -> Void) -> some View {
+        background(ProxyView {
+            sequence(first: $0) { $0.next }
+                .lazy
+                .compactMap { $0 as? UINavigationController }
+                .first { _ in true }
+                .map(\.navigationBar)
+                .map(perform)
+        })
+    }
+}
+
+struct V: View {
+    @ViewBuilder
+    var body: some View {
+        NavigationStack {
+            NavigationLink("Push me") {
+                Text("Color changed")
+                    .navigationTitle("I have a red bar")
+                    .modifyNavigationBar { bar in
+                        bar.titleTextAttributes = [.foregroundColor : UIColor.white]
+                        bar.backgroundColor = .red
+                    }
+            }
+            .navigationTitle("I have a blue bar")
+            .modifyNavigationBar { bar in
+                bar.prefersLargeTitles = false
+                bar.titleTextAttributes = [.foregroundColor : UIColor.systemYellow]
+                bar.backgroundColor = .blue
+            }
+        }
+        .navigationViewStyle(.stack)
+    }
+}
+
+PlaygroundPage.current.setLiveView(V())
+```
 
 ---
 
