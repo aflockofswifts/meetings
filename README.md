@@ -10,9 +10,79 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.05.06
+
+## 2023.05.20
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.05.13
+
+### Bard and Pong
+
+Josh tested out Google's AI Bard to make the game Pong. The result 
+kind of worked but was a little bit dicey in how it tried to render the view.
+
+ChatGPT seems to be better at writing Swift code at the moment but be sure to
+use 4, otherwise you get older, less idiomatic Swift.
+
+### Representing an optional as an array
+
+```swift
+import Foundation
+	
+let a: Int? = nil
+	
+extension Optional {
+    var asArray: [Wrapped] {
+        map { [$0] } ?? []
+    }
+}
+print(a.asArray)
+```
+
+Another alternative (TMTOWTDI):
+
+```swift
+[b].compactMap { $0 }
+```
+
+This approach is more "compact" (haha) but can require two allocations where the first way is always a single allocation.
+
+
+### Identifiable
+
+Watch out that you don't have duplicate IDs or you will confuse the pants off of SwiftUI.
+
+
+### Wheel of Fortune Demo
+
+Josh created a Wheel of Fortune using SwiftUI drawing groups for performance.  Rotations effect applied do the magic of creating wedges in the proper place and spinning the wheel.
+
+Repo: TBD
+
+---
+
+## 2023.05.06
+
+### Mojo from Chris Lattner
+
+It is like Python++
+
+- https://www.fast.ai/posts/2023-05-03-mojo-launch.html
+
+### Upcoming Conferences
+
+- https://www.swiftconf.to
+- https://www.tryswift.co
+
+
+### Spiral Example
+
+Josh created a epic spiral example and blew our minds with maximum irrationality. (ϕ)
+
+Repo: TBD
 
 ---
 
