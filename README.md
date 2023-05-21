@@ -11,9 +11,102 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 
 
-## 2023.05.20
+## 2023.05.27
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.05.20
+
+
+### Followups from Rainer
+
+- Two line buttons don't work well. Instead he needed to use a view with a tap gesture and was able to put it in nested scroll views.
+- Looking at using a base class and derived class instead of a protocol with associated types. Josh warned him it might not be as good as sticking with a protocol.
+- Using transform compositions to translate and rotate points.
+
+### Transitions From Ed
+
+Rather than using transitions mentioned last week, Ed pursued another solution. We worked on it together to simplify how it ran.
+
+Some notes: 
+
+
+```swift
+import SwiftUI
+
+struct BackImage: View {
+  let index: Int
+  let size: CGSize
+  @State var opacity = 0.0
+  var x: Double {
+    Double.random(in: 0..<1) * size.width - 60.0
+  }
+  var y: Double {
+    Double.random(in: 0..<1) * size.height - 60.0
+  }
+  var delay: TimeInterval {
+    0.001 * Double(index)
+  }
+  var body: some View {
+    Image(systemName: "star.fill")
+      .resizable()
+      .foregroundColor(index.isMultiple(of: 2) ? .blue : .yellow)
+      .frame(width: 120, height: 120)
+      .offset(x: x, y: y)
+      .opacity(opacity)
+      .animation(.easeIn.delay(delay).speed(0.25),
+                 value: opacity)
+      .task {
+        opacity = 1
+      }
+  }
+}
+
+struct BackView: View {
+  var body: some View {
+    GeometryReader { proxy in
+      ForEach(0..<250, id: \.self) { index in
+        BackImage(index: index, size: proxy.size)
+      }
+    }
+  }
+}
+```
+
+### Discussion about Tasks
+
+- https://developer.apple.com/videos/play/wwdc2021/10254/
+- https://github.com/apple/swift-evolution/blob/main/proposals/0392-custom-actor-executors.md
+
+### New Swift Project Structure
+
+Core team is still at the top with new Steering Groups and Workgroups.
+
+- https://www.swift.org/blog/evolving-swift-project-workgroups/
+
+
+### A Great Tutorial for The Composable Architecture
+
+Uses the Xcode tutorial format and explains The Composable Architecture.
+
+- https://pointfreeco.github.io/swift-composable-architecture/main/tutorials/meetcomposablearchitecture
+
+The tutorial technology is also interesting:
+
+- https://developer.apple.com/wwdc21/10235
+- https://developer.apple.com/documentation/xcode/slothcreator_building_docc_documentation_in_xcode
+
+### Macros are coming in Swift 5.9
+
+Kawasumi build an macro expression library called PowerAssert.
+
+### Type Erasure
+
+We taked about Type Erasure and opening existentials.
+
+- https://forums.swift.org/t/understanding-the-limitations-of-open-existential/65022/3
 
 ---
 
