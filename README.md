@@ -10,12 +10,198 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-
-## 2023.05.27
+## 2023.06.03
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
+## 2023.05.27
+
+Primary `associatedtype`s, existentials and opaque types: why you should care
+With a type that has primary associatedtypes we can use the existential `any` to erase the type at the contract level:
+```swift
+struct Item { }
+	
+	protocol Repository {
+	    func getItems() -> any Publisher<[Item], Never>
+	}
+	
+	
+	final class EmptyRepository: Repository {
+	    func getItems() -> any Publisher<[Item], Never> {
+	        Just([])
+	    }
+	}
+	
+	
+	final class NeverRepository: Repository {
+	    func getItems() -> any Publisher<[Item], Never> {
+	        Empty(completeImmediately: false)
+	    }
+	}
+	
+```
+But if we try the same thing with the opaque type it doesn't work because the compiler cannot infer a single concrete type for `some Publisher<Item, Never>`
+```swift
+	protocol Repository {
+        // This doesn't compile
+	    func getItems() ->  some Publisher<[Item], Never>
+	}
+	
+	
+	final class EmptyRepository: Repository {
+	    func getItems() -> some Publisher<[Item], Never> {
+	        Just([])
+	    }
+	}
+```
+The solution is to use a generic:
+```swift
+	protocol Repository {
+	    associatedtype GetItemPublisher: Publisher<[Item], Never>
+	    func getItems() -> GetItemPublisher
+	}
+	
+	
+	final class EmptyRepository: Repository {
+	    func getItems() -> some Publisher<[Item], Never> {
+	        Just([])
+	    }
+	}
+	
+	
+	final class NeverRepository: Repository {
+	    func getItems() -> some Publisher<[Item], Never> {
+	        Empty(completeImmediately: false)
+	    }
+	}
+```
+While either the existential or the associatedtype + opaque type work for types with primary associatedtypes like Publisher, only the associatedtype + opaque type works for types without primary associatedtypes like AsyncSequence:
+```swift
+protocol AsyncRepository<Element> {
+	    associatedtype Element
+	    associatedtype GetItemAsyncSequence: AsyncSequence where GetItemAsyncSequence.Element == Element
+	    func getItems() -> GetItemAsyncSequence
+	}
+	
+	struct AsyncEmptyRepository: AsyncRepository {
+	    typealias Element = [Item]
+	    func getItems() -> AsyncPrefixSequence<AsyncStream<[Item]>> {
+	        AsyncStream { [] }.prefix(1)
+	    }
+	}
+	
+	struct AsyncNeverRepository: AsyncRepository {
+	    typealias Element = [Item]
+	    func getItems() -> AsyncStream<[Item]> {
+	        AsyncStream { nil }
+	    }
+	}
+```
+
+### Stagemanger on the simulator
+* simctl: https://nshipster.com/simctl/
+* using simclt to enable stage manager `xcrun simctl spawn booted defaults write -g SBChamoisWindowingEnabled -bool true` :https://developer.apple.com/forums/thread/708567
+* open the HIG in Xcode: shift + cmd + H
+
+demo project: switching between SplitView and TabView based on iPadOS window size:
+```swift
+import SwiftUI
+
+struct ViewSizeEnvironmentKey: EnvironmentKey {
+    static var defaultValue: CGSize = .zero
+}
+
+extension EnvironmentValues {
+    var viewSize: CGSize {
+        get { self[ViewSizeEnvironmentKey.self] }
+        set { self[ViewSizeEnvironmentKey.self] = newValue }
+    }
+}
+
+struct MeasureModifier: ViewModifier {
+    let alignment: Alignment
+    func body(content: Content) -> some View {
+        GeometryReader { proxy in
+            content
+                .environment(\.viewSize, proxy.size)
+                .frame(width: proxy.size.width, height: proxy.size.height, alignment: alignment)
+        }
+    }
+}
+
+extension View {
+    func measure(alignment: Alignment = .center) -> some View {
+        modifier(MeasureModifier(alignment: alignment))
+    }
+}
+
+@MainActor
+final class ViewModel: ObservableObject {
+    @Published var selectedTab: String
+    @Published var selectedItem: String?
+    let items = ["star", "circle", "checkmark"]
+    init() {
+        selectedTab = items[0]
+        selectedItem = items[0]
+        $selectedTab.removeDuplicates().map { $0 as String? }.assign(to: &$selectedItem)
+        $selectedItem.removeDuplicates().compactMap { $0 }.assign(to: &$selectedTab)
+    }
+}
+
+enum Platform {
+#if os(macOS)
+    static let isMac = true
+#else
+    static let isMac = false
+#endif
+}
+
+struct RootView: View {
+    @StateObject private var viewModel = ViewModel()
+    @Environment(\.viewSize) private var viewSize
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    var body: some View {
+        if viewSize.width > 750 || Platform.isMac {
+            NavigationSplitView {
+                List(viewModel.items, id: \.self, selection: $viewModel.selectedItem) { item in
+                    Image(systemName: item)
+                }
+                .listStyle(.sidebar)
+            } detail: {
+                content(for: viewModel.selectedItem)
+            }
+
+        } else {
+            TabView(selection: $viewModel.selectedTab) {
+                ForEach(viewModel.items, id: \.self) { item in
+                    content(for: item)
+                        .tabItem { Image(systemName: item) }
+                        .tag(item)
+                }
+            }
+        }
+    }
+
+    func content(for item: String?) -> some View {
+        VStack {
+            Label(item ?? "no selection", systemImage: item ?? "").font(.largeTitle)
+            Text(String(describing: horizontalSizeClass))
+            Text(String(describing: verticalSizeClass))
+        }
+    }
+}
+
+struct ContentView: View {
+    var body: some View {
+        RootView().measure()
+    }
+}
+```
+![image](./preview/measure.gif "measure")
+
 
 ## 2023.05.20
 
@@ -153,7 +339,128 @@ Watch out that you don't have duplicate IDs or you will confuse the pants off of
 
 Josh created a Wheel of Fortune using SwiftUI drawing groups for performance.  Rotations effect applied do the magic of creating wedges in the proper place and spinning the wheel.
 
-Repo: TBD
+```swift
+
+final class WheelViewModel: ObservableObject {
+    @Published private(set) var items: [Item] = []
+    @Published private(set) var angle: Angle = .zero
+    @Published private(set) var winner = ""
+    private let names: [String]
+    private var winningIndex = 0
+    let arcLength: Double
+    init() {
+        let colors: [UIColor] = [#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1), #colorLiteral(red: 0.9058823529, green: 0.9058823529, blue: 0.9058823529, alpha: 1), #colorLiteral(red: 0.6434109211, green: 0.625438869, blue: 0.6250535846, alpha: 1),]
+        let url = Bundle.main.url(forResource: "list", withExtension: "csv")
+        let data = try! Data(contentsOf: url!)
+        let text = String(data: data, encoding: .utf8)!
+        names = text
+            .components(separatedBy: .newlines)
+            .filter { !$0.isEmpty }
+            .lazy
+            .map { $0.localizedCapitalized }
+            .reduce(into: Set<String>()) { $0.insert($1) }
+            .sorted(by: <)
+        let count = Double(names.count)
+        arcLength = (2 * .pi) / count
+        items = names
+            .enumerated()
+            .map { offset, name in
+                .init(
+                    name: name.description,
+                    color: Color(uiColor: colors[offset % colors.count]),
+                    rotation: .radians(Double(offset) * arcLength - 0.5 * .pi)
+                )
+            }
+    }
+
+    func tap() {
+        winningIndex = names.indices.randomElement() ?? 0
+        let remainder = fmod(angle.radians, 2.0 * .pi)
+        let revolutions = 2 * 2.0 * .pi + angle.radians
+        angle = .radians(revolutions - remainder - Double(winningIndex) * arcLength)
+        print("Winner: \(names[winningIndex])")
+    }
+
+    func showWinner() {
+        winner = names[winningIndex]
+    }
+
+    struct Item: Identifiable {
+        var id: String { name }
+        var name: String
+        var color: Color
+        var rotation: Angle
+    }
+}
+
+struct Wedge: View {
+    var title: String
+    var color: Color
+    var arcLength: Angle
+    var bounds: CGRect
+    var body: some View {
+        ZStack(alignment: .center) {
+            let center = CGPoint(x: bounds.midX, y: bounds.midY)
+            let radius = bounds.width / 2
+            let halfArcLength = Angle.radians(arcLength.radians * 0.5)
+            Path { path in
+                path.move(to: center)
+                path.addArc(
+                    center: center,
+                    radius: radius,
+                    startAngle: -halfArcLength,
+                    endAngle: halfArcLength,
+                    clockwise: false
+                )
+                path.closeSubpath()
+            }
+            .foregroundColor(color)
+            Text(title)
+                .offset(x: bounds.width / 3)
+                .position(x: bounds.midX, y: bounds.midY)
+        }
+    }
+}
+
+struct Wheel: View {
+    @StateObject private var viewModel: WheelViewModel = .init()
+    var body: some View {
+        ZStack {
+            GeometryReader { proxy in
+                let bounds = proxy.frame(in: .local)
+                ZStack(alignment: .center) {
+                    ForEach(viewModel.items) { item in
+                        Wedge(title: item.name, color: item.color, arcLength: .radians(viewModel.arcLength), bounds: bounds)
+                            .rotationEffect(item.rotation)
+                    }
+                }
+            }
+            .drawingGroup()
+            .padding()
+            .rotationEffect(viewModel.angle)
+            GeometryReader { proxy in
+                let bounds = proxy.frame(in: .local)
+                Wedge(
+                    title: "",
+                    color: .cyan.opacity(0.5),
+                    arcLength: .radians(viewModel.arcLength),
+                    bounds: bounds
+                )
+                    .rotationEffect(-.radians(0.5 * .pi))
+                    .blendMode(.sourceAtop)
+            }
+        }
+        .aspectRatio(1, contentMode: .fit)
+        .onTapGesture {
+            withAnimation(.easeInOut(duration: 8)) {
+                viewModel.tap()
+            }
+        }
+    }
+}
+
+PlaygroundPage.current.setLiveView(Wheel().frame(width: 800, height: 800))
+```
 
 ---
 
