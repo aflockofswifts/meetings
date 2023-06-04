@@ -10,12 +10,25 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.06.03
+## 2023.06.10
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
 
+## 2023.06.03
+
+### WWDC is next week!  some community event links:
+* https://developer.apple.com/wwdc23/beyond-wwdc/
+* https://github.com/twostraws/wwdc
+* https://wwdc.community
+
+### Lab registration: 
+* https://developer.apple.com/wwdc23/labs-and-activities/dashboard/upcoming/activities/register
+
+### Demo: detecting leaks in your app
+* github project: [Leak Detector](https://github.com/joshuajhomann/LeakDetector)  
+![image](https://github.com/joshuajhomann/LeakDetector/raw/main/preview.gif "leaks")
 ## 2023.05.27
 
 Primary `associatedtype`s, existentials and opaque types: why you should care
