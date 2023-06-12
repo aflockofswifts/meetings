@@ -10,9 +10,45 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.06.10
+
+## 2023.06.17
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.06.10
+
+### WWDC Roundup
+
+We talked about what we thought was cool from WWDC. This site collects notes from WW.
+
+ - https://wwdcnotes.com/events/wwdc23/
+
+
+Some Favorite features:
+
+  - TipKit (works with UIKit too)
+  - Macros (and all they enable)
+  - Xcode Documentation Previews
+  - Widgets, Siri Integration, Intents
+  - Logging Console in Xcode
+  - Better autocompletion
+  - Improvements to scroll views
+  - Sensitive Content Analysis
+
+  Josh is worried about how the new Observation feature in SwiftUI works with testing.
+
+
+### Vision Pro
+
+- https://podcasts.apple.com/us/podcast/apple-vision-pro-experiencing-the-future/id1001591696
+- https://daringfireball.net/2023/06/first_impressions_of_vision_pro_and_visionos
+
+
+### Cool New Presentation Software
+
+- https://ia.net/presenter
 
 ---
 
