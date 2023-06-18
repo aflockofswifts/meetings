@@ -11,11 +11,40 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 
 
-## 2023.06.17
+## 2023.06.24
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
+## 2023.06.17
+
+### Curve continuity
+Josh discussed [Squircles](https://en.wikipedia.org/wiki/Squircle) and C1 [continuity](https://en.wikipedia.org/wiki/Smoothness) and saw how the squircle differs from a rounded rect:
+```swift
+import SwiftUI
+import PlaygroundSupport
+
+struct V: View {
+    var body: some View {
+        RoundedRectangle(cornerRadius: 250, style: .circular)
+            .fill(.yellow)
+            .overlay(
+                RoundedRectangle(cornerRadius: 250, style: .continuous)
+                    .fill(.blue.opacity(0.5))
+            )
+            .aspectRatio(1, contentMode: .fill)
+            .padding()
+    }
+}
+
+PlaygroundPage.current.setLiveView(V())
+```
+![image](./preview/squircle.png "squircle")
+
+### Changes to timing animation timing functions in iOS 17
+Josh went through a  project demonstrating the new spring functions in iOS 17 https://github.com/joshuajhomann/AnimationCurves
+![image](https://github.com/joshuajhomann/AnimationCurves/raw/main/preview.gif)
 
 ## 2023.06.10
 
