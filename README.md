@@ -10,12 +10,25 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-
-## 2023.06.24
+## 2023.07.01
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
+## 2023.06.24
+
+### Whats new in animation for iOS 17
+* [phaseAnimator](https://developer.apple.com/documentation/swiftui/phaseanimator/)
+* [keyframeAnimator](https://developer.apple.com/documentation/swiftui/view/keyframeanimator(initialvalue:trigger:content:keyframes:))
+* [KeyframeTrack](https://developer.apple.com/documentation/swiftui/keyframetrack)
+* [CubicKeyframe](https://developer.apple.com/documentation/swiftui/cubickeyframe)
+* [SpringKeyframe](https://developer.apple.com/documentation/swiftui/springkeyframe)
+* [scrollTargetBehavior](https://developer.apple.com/documentation/swiftui/view/scrolltargetbehavior(_:))
+
+Download the project [here](https://github.com/joshuajhomann/PokemonAnimation)  
+![image](https://github.com/joshuajhomann/PokemonAnimation/raw/main/preview.gif)
+
 
 ## 2023.06.17
 
