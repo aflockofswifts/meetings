@@ -10,9 +10,34 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.07.01
+
+## 2023.07.08
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.07.01
+
+### Welcome Monty
+
+New to iOS programming. Currently doing a UDEMY course but several people say he would be
+better off https://www.hackingwithswift.com/100/swiftui
+
+Discussed his passion project: calendar app for cognitively impaired. Some advice:
+
+- Try out SwiftUI
+- Draw out your UI on paper
+- 100 days of SwiftUI https://www.hackingwithswift.com/100/swiftui
+- Guided Access https://support.apple.com/guide/ipad/guided-access-ipada16d1374/ipados
+- Apps to reference: https://9to5mac.com/2022/09/28/up-ahead-countdown-app-iphone/
+- 
+
+
+
+
+
+
 
 ---
 
