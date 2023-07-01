@@ -22,7 +22,7 @@ All people and all skill levels are welcome to join.
 ### Welcome Monty
 
 New to iOS programming. Currently doing a UDEMY course but several people say he would be
-better off https://www.hackingwithswift.com/100/swiftui
+better off doing 100 days of SwiftUI.
 
 Discussed his passion project: calendar app for cognitively impaired. Some advice:
 
@@ -31,12 +31,34 @@ Discussed his passion project: calendar app for cognitively impaired. Some advic
 - 100 days of SwiftUI https://www.hackingwithswift.com/100/swiftui
 - Guided Access https://support.apple.com/guide/ipad/guided-access-ipada16d1374/ipados
 - Apps to reference: https://9to5mac.com/2022/09/28/up-ahead-countdown-app-iphone/
-- 
+
+Tutorial: https://devtut.github.io/ios/eventkit.html
 
 
+### Realm and Mongo Atlas
+
+- https://atlasmadness.devpost.com
+- https://en.wikipedia.org/wiki/MongoDB_Inc
+- https://aws-quickstart.github.io/quickstart-mongodb-atlas/ — notes a three-node cluster minimum for a replica set for high availability, but it does not say it *must* be replicated across regions. 
+
+### Layout Problems with Geometry Reader
+
+Mark trying to make a list that can control row spacing. Attempts at using GeometryReader seemed to break lineLimit modifiers. He tried putting the GeometryReader in the overlay but it didn't help. Brainstorm advice was to not use List (and implement Edit functionality) or to use Layout.
+
+- https://www.swiftbysundell.com/articles/swiftui-layout-system-guide-part-2/
+- https://github.com/carlynorama/LayoutTests
+- https://developer.apple.com/documentation/swiftui/view/linelimit(_:reservesspace:)
+
+### PDF Multipage on Mac
+
+- https://www.hackingwithswift.com/quick-start/swiftui/how-to-render-a-swiftui-view-to-a-pdf
 
 
+### visionPro Meetup
 
+New meetup to start July 11, 2023. Online and in-person.
+
+https://www.meetup.com/vision-pro-developers/
 
 
 ---
