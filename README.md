@@ -10,10 +10,60 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
+## 2023.07.15
+
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
 
 ## 2023.07.08
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+### Working with Autolayout and Size Classes
+
+Emil Safier gave a talk a few years back:
+https://youtu.be/Hao5mA-sQbQ
+
+### Swiftful YouTube
+
+Humberto De La Cruz recommends a video series on YouTube called "Swiftful Thinking".
+
+### Vision Pro
+
+Remember there is a meetup group starting this Tuesday.
+
+https://www.meetup.com/vision-pro-developers/
+
+
+```swift
+    #if os(xrOS)
+      let minWidthX: CGFloat = 300
+    #else
+      let minWidthX = UIScreen.main.bounds.width
+    #endif
+```
+
+### Best Monitor to Buy
+
+Various suggestions from people.
+
+- https://www.nytimes.com/wirecutter/reviews/best-monitors/
+- https://www.amazon.com/gp/product/B078GVTD9N/
+- https://www.amazon.com/Philips-276E8VJSB-3840x2160-UltraNarrow-DispalyPort/dp/B07JXCR263?th=1
+- https://camelcamelcamel.com
+
+### How to Understand a Big Codebase
+
+- Understand the dependencies.
+- ASK Questions!
+- Find out what the intent is.
+- ASK Questions!
+
+
+### PuyoPuyo, Animation, Layout
+
+An epic example of how to do custom layout.
+
+Code: TBD.
 
 ---
 
