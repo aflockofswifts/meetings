@@ -10,11 +10,114 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.07.15
-
+## 2023.07.22
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
+
+---
+
+## 2023.07.15
+
+
+### New HTTP Types
+
+- https://github.com/apple/swift-http-types
+- https://www.swift.org/blog/introducing-swift-http-types/
+
+### Social Media for Developers
+
+- https://iosdev.space
+- https://ios-developers.slack.com
+
+### JSON Schema
+
+- https://json-schema.org
+
+A project that uses JSON Schema
+
+- https://www.swift.org/blog/introducing-swift-openapi-generator/
+
+
+### Universal Scene Description Demo
+
+Carlyn is implementing the USD format from scratch in Swift. You can find a flurry of blog posts on her blog: https://www.whynotestflight.com
+
+
+She showed this JavaScript library that does similar thing to what she wants to do: https://p5js.org
+
+A big part of the library is using ResultBuilder. Josh did a presentation on this last year. This is his template 
+
+```swift
+@resultBuilder
+    struct <#Name#>Builder {
+        typealias Expression = <#Expression#>
+        typealias Component = <#Component#>
+        typealias FinalResult = <#FinalResult#>
+    
+        static func buildBlock(_ components: Component...) -> Component {
+            buildArray(components)
+        }
+        static func buildExpression(_ expression: Expression) -> Component {
+    
+        }
+        static func buildOptional(_ component: Component?) -> Component {
+            component ?? <#empty#>
+        }
+        static func buildEither(first component: Component) -> Component {
+            component
+        }
+        static func buildEither(second component: Component) -> Component {
+            component
+        }
+        static func buildArray(_ components: [Component]) -> Component {
+    
+        }
+        static func buildLimitedAvailability(_ component: Component) -> Component {
+            component
+        }
+        static func buildFinalResult(_ component: Component) -> FinalResult {
+    
+        }
+    }
+
+```
+
+### Migratable Codable
+
+Ed had some discussion on making codable formats that can migrate. Here is code from Josh proposed:
+
+```swift
+final class A {
+        var integer: Integer
+        init(dictionary: [Swift.String: Any]) {
+            integer = .init(dictionary: dictionary.compactMapValues { $0 as? Int})
+        }
+        @dynamicMemberLookup
+        struct Integer {
+            var dictionary: [Swift.String: Int]  
+            subscript(dynamicMember member: Swift.String) -> Int {
+                dictionary[member] ?? 0
+            }
+        }
+        @dynamicMemberLookup
+        struct String {
+            var dictionary: [Swift.String: Swift.String]  
+            subscript(dynamicMember member: Swift.String) -> Swift.String {
+                dictionary[member] ?? ""
+            }
+        }
+}
+    
+let a = A(dictionary: ["a": "a", "b": 1])
+print(a.integer.b)
+```
+
+### Puyopuyo
+
+The demo continues showing, custom Layout, animation, state management, and more.
+
+---
 
 ## 2023.07.08
 
