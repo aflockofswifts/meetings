@@ -10,10 +10,77 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.07.22
+
+## 2023.07.29
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
+---
+
+## 2023.07.22
+
+### Discussion about CI
+
+- GitHub Actions
+- https://developer.apple.com/xcode-cloud/
+
+
+### Getting and Setting Colors
+
+Monty had a question about getting the hue, saturation, and brightness from a SwiftUI Color that he had already set.
+
+Josh used a playground to demonstrate the relationship between SwiftUI colors, CGColors, and UIColor. Some serious API archeology happening here! 😄
+
+```
+import SwiftUI
+import UIKit
+import PlaygroundSupport
+    
+    
+let swiftuiColor = Color(hue: 0.668944, saturation: 1.0, brightness: 0.267304)
+let cgColor = swiftuiColor.cgColor
+let uiColor = UIColor(cgColor: cgColor!)
+    
+var (h,s,v,a) = (CGFloat.zero,CGFloat(1.0),CGFloat(1.0),CGFloat(1.0))
+    
+print(uiColor.getHue(&h, saturation: &s, brightness: &v, alpha: &a))
+    
+print(h,s,v,a)
+```
+
+
+### Weather API
+
+Another question Monty had was about using WeatherKit to get sunrise and sunset.  You can use wheter kit to do this with SunEvents.  
+
+- https://developer.apple.com/videos/play/wwdc2022/10003/
+- https://betterprogramming.pub/wwdc22-get-started-with-weatherkit-202794853c01
+
+You can also use a free API:
+
+https://sunrise-sunset.org/api
+
+You can do your own "cleanroom" implementation that can be computed locally.
+
+- https://gml.noaa.gov/grad/solcalc/solareqns.PDF
+- https://github.com/ceeK/Solar
+
+
+### Vision Pro
+
+Unity beta release. A good article that explains what is possible with the different modes (RealityKit vs Unity)
+
+- https://arstechnica.com/gadgets/2023/07/unity-launches-visionos-beta-opening-the-doors-for-existing-apps-and-games/
+
+### Ad Hoc Database
+
+Ed took us on a journey about using dictionaries to implement fast lookup to a local database.
+
+We talked about everything from sets to the demise of C-style for loops.
+
+### Puyopuyo Continued
+
+Josh continued his epic example creating Puyo puyo in iOS17 SwiftUI, which will probably complete next week with the collapse of puyo towers! 😂
 
 ---
 
