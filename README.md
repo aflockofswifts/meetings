@@ -11,11 +11,17 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 
 
-## 2023.07.29
+## 2023.08.05
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
+## 2023.07.29
+
+### Puyo Puyo app
+Josh finished the Puyo Puyo app (code here)[https://github.com/joshuajhomann/PuyoPuyo]
+![preview](https://github.com/joshuajhomann/PuyoPuyo/blob/main/preview.gif)
 
 ## 2023.07.22
 
