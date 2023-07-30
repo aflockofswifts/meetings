@@ -20,7 +20,7 @@ All people and all skill levels are welcome to join.
 ## 2023.07.29
 
 ### Puyo Puyo app
-Josh finished the Puyo Puyo app (code here)[https://github.com/joshuajhomann/PuyoPuyo]
+Josh finished the Puyo Puyo app (code here)[https://github.com/joshuajhomann/PuyoPuyo]  
 ![preview](https://github.com/joshuajhomann/PuyoPuyo/blob/main/preview.gif)
 
 ## 2023.07.22
