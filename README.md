@@ -74,6 +74,68 @@ Bob notes:
 sudo xcodebuild -license
 ```
 
+### Using Reflection with Binding
+
+An extended example from Ed. We didn't figure it out during the meeting but Ed sent in the answer shortly after:
+
+```swift
+import SwiftUI
+import Combine
+import PlaygroundSupport
+
+struct M {
+  var a : Double?
+  var b : Double?
+  
+  static var props : [String] {
+    let mirror = Mirror(reflecting: M().self)
+    return mirror.children.compactMap { $0.label }
+  }
+}
+
+struct R {
+  var n : String
+  var r : Double?
+  func good() -> Bool {
+    r != nil && r! >= 2 && r! <= 3
+  }
+}
+
+class List : ObservableObject {
+  @Published var r : [R]
+  
+  init() {
+    let props = M.props
+    self.r = props.enumerated().map { i,p in
+      R(n: p, r: nil)
+    }
+  }
+}
+
+
+struct BView : View {
+  @StateObject private var list = List()
+  var body: some View {
+    VStack {
+      ForEach($list.r.indices, id:\.self) { i in
+        TextField(value: $list.r[i].r, format: .number, label: {Text(list.r[i].n)})
+          .textFieldStyle(.roundedBorder)
+          .padding()
+          .background(
+            RoundedRectangle(cornerRadius:10.0)
+              .fill(list.r[i].good() ? Color.green : Color.clear)
+          )
+      }
+    }
+  }
+}
+
+let view = BView()
+PlaygroundPage.current.setLiveView(view)
+```
+
+
+
 ### Apple Watches
 
 New ones are coming so you may want to wait for a price drop or the new model.
