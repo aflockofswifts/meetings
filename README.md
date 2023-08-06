@@ -18,6 +18,67 @@ All people and all skill levels are welcome to join.
 
 ## 2023.08.05
 
+### Result Builder Exploration
+
+https://gist.github.com/carlynorama/3e6765d4a87aaaf3fe2f69abb14764ca
+
+### Actors in Action
+
+```swift
+protocol PersistenceServiceProtocol: Actor {
+   func create(timestamp: Date)  throws -> Item
+   var count: Int { get throws }
+   ...
+}
+```
+
+This enforces actor semantics for conformance to the protocol. You don't have to add `async` everywhere even though methods can still suspend.
+
+### Centering Text and Circle
+
+Presented by Monty. The problem is that you want to center the view at 
+the center of the circle and have the text above it. Here is the solution 
+we arrived at:
+
+```swift
+ struct CircleView: View {
+   var body: some View {
+     Circle()
+       .fill(.yellow)
+       .frame(width: 40, height: 40)
+       .overlay(
+         Text("Yellow").fixedSize().offset(y: -40), 
+         alignment: .bottom)    
+    }
+}
+```
+
+Some notes:
+
+- Overlay keeps the Circle anchor at the center.
+- `fixedSize()` removes text clipping
+- A more general solution that was covered previously: https://github.com/joshuajhomann/Wordle/blob/main/Wordle/AnchorToParentLayout.swift
+
+
+### Conferences and meetings
+
+- https://s2023.siggraph.org/ (This week!)
+- iosdevhappyhour.slack.com
+- ios-developers.slack.com
+
+### License for command line tools
+
+Bob notes:
+
+```swift
+sudo xcodebuild -license
+```
+
+### Apple Watches
+
+New ones are coming so you may want to wait for a price drop or the new model.
+
+- https://www.apple.com/shop/product/MPA13AM/A/41mm-midnight-braided-solo-loop-size1
 
 
 ---
