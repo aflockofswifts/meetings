@@ -10,10 +10,15 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
+## 2023.08.12
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
 
 ## 2023.08.05
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
 
 ---
 
@@ -22,6 +27,74 @@ All people and all skill levels are welcome to join.
 ### Puyo Puyo app
 Josh finished the Puyo Puyo app (code here)[https://github.com/joshuajhomann/PuyoPuyo]  
 ![preview](https://github.com/joshuajhomann/PuyoPuyo/blob/main/preview.gif)
+
+
+### Timers
+
+Talked about timers and how to invalidate them. Some live code from Josh:
+
+```swift
+import SwiftUI
+import UIKit
+import PlaygroundSupport
+    
+    
+let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in
+    print(timer)
+}
+    
+timer.invalidate()
+```
+
+Some resources:
+
+- https://developer.apple.com/documentation/foundation/timer/2091889-scheduledtimer
+- https://www.hackingwithswift.com/articles/117/the-ultimate-guide-to-timer
+- https://sarunw.com/posts/timer-in-swiftui/
+
+Also, consider using a timeline view:
+
+- https://developer.apple.com/documentation/swiftui/timelineview
+
+
+### Getting a Preview in Playground
+
+```swift
+import SwiftUI
+import UIKit
+
+import PlaygroundSupport
+
+
+struct V: View {
+    var body: some View {
+        Color.red
+    }
+}
+    
+PlaygroundPage.current.setLiveView(V())
+```
+
+### Blog Posting
+
+Many options and opinions here.
+
+- GitHub Pages
+- Publish (all Swift and neat, but not designed for general usage)
+- https://micro.blog
+- Substack
+- https://getgrav.org
+- https://www.nearlyfreespeech.net
+- https://www.netlify.com
+- https://gohugo.io
+
+
+### USD
+
+Carlyn talks about her exploration with the USD file format.
+
+https://www.whynotestflight.com/excuses/hello-usd-part-16-swift-just-sipping-openusd-through...-a-pipe/
+
 
 ## 2023.07.22
 
