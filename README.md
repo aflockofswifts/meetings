@@ -134,13 +134,25 @@ let view = BView()
 PlaygroundPage.current.setLiveView(view)
 ```
 
-
-
 ### Apple Watches
 
 New ones are coming so you may want to wait for a price drop or the new model.
 
 - https://www.apple.com/shop/product/MPA13AM/A/41mm-midnight-braided-solo-loop-size1
+
+
+### The Composable Architection 1.0
+
+Released this week. 
+- https://pointfreeco.github.io/swift-composable-architecture/main/tutorials/meetcomposablearchitecture/
+
+
+### VisionPro Meetup
+
+Don't forget!
+
+- https://www.meetup.com/vision-pro-developers/events/294299473/
+
 
 
 ---
