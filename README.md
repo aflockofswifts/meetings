@@ -10,9 +10,79 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.08.12
+## 2023.08.19
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.08.12
+
+### ShapeStyle
+
+Josh put together an epic dmeo project to demostrate the many capabilities of ShapeStyle in SwiftUI. Link TBD.
+
+### Project IDX
+
+A new development enviornment for full stack developers by google. https://idx.dev
+
+[Ray: Go, Flutter, JS Python. Swift not even on the coming-soon list. 😅]
+
+### Bluetooth
+
+Rainer wondering about the security of a temperature sensor. The main risk is the actual app.
+
+Frank notes: For reverse engineering: Lightblue and BluefruitConnect (iPhone apps) can do the job.
+
+You can write your own App! CoreBluetooth.
+
+- https://github.com/jeradesign/BluetoothDump (example from John Brewer)
+- https://github.com/joshuajhomann/bluetooth (example from Josh Homann)
+
+A package that can make it easier to handle data according to Frank:
+
+- https://swiftpackageindex.com/QuickBirdEng/DataKit
+
+### Question: Reference copying
+
+```swift
+var a = someClass
+a = someClass.parent
+```
+
+The `a` is simply a referece that points to the same underlying object that someClass points to. What a references changes but the type itself is not mutated in this short example.
+
+### C++ Interop
+
+A cool set of links from carlyn who is exploring this for USD.
+
+- https://developer.apple.com/videos/play/wwdc2023/10172/
+- https://developer.apple.com/documentation/Swift/MixingLanguagesInAnXcodeProject 
+- https://developer.apple.com/documentation/swift/callingapisacrosslanguageboundaries
+- https://www.swift.org/documentation/cxx-interop/
+- https://www.swift.org/documentation/cxx-interop/project-build-setup/
+
+Also (work-in-progress):
+
+- https://github.com/carlynorama/CxxInteropLibrary
+- https://github.com/carlynorama/CppInteropSimplestXCode
+
+### Custom Layout
+
+- https://developer.apple.com/documentation/swiftui/composing_custom_layouts_with_swiftui
+
+### Macros
+
+- There are challenges.
+- You need to understand the AST.
+- https://github.com/apple/swift-syntax
+- https://swift-ast-explorer.com
+
+
+### RealityKit
+
+https://developer.apple.com/documentation/realitykit/modifying-realitykit-rendering-using-custom-materials
+
 
 ---
 
