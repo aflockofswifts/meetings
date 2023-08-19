@@ -10,9 +10,169 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.08.19
+
+## 2023.08.26
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.08.19
+
+### CardView
+
+We went on a random walk to create a `CardView` in SwiftUI. Some key learnings:
+
+- Alignment can give better performance using Spacer().
+- Use shapeStyle and semantic colors to make dark mode work well.
+- You can use `@Environment(\.colorScheme) var colorScheme` to do special things for `.dark` vs `.light` mode.
+
+```swift
+import SwiftUI
+
+struct CardView<Content: View>: View {
+  let size: Double
+  let title: String
+  let subtitle: String
+  let isSelectable: Bool
+  let isSelected: Bool
+  let isLiked: Bool
+  let radius = 10.0
+  @ViewBuilder var content: () -> Content
+  
+  @Environment(\.colorScheme) var colorScheme
+  
+  private var shadowColor: Color {
+    colorScheme == .dark ?
+    Color(red: 0.3, green: 0.3, blue: 0.3).opacity(0.8) :
+    Color(red: 0.9, green: 0.9, blue: 0.9).opacity(0.8)
+  }
+  
+  var body: some View {
+    ZStack {
+      Rectangle().foregroundStyle(.background)
+      content()
+        .padding(10)
+        .aspectRatio(contentMode: .fit)
+      VStack(alignment: .leading) {
+        Spacer()
+        HStack {
+          VStack(alignment: .leading) {
+            HStack(alignment: .firstTextBaseline) {
+              Text(title).bold(); Spacer();
+              Image(systemName: "heart.fill").foregroundColor(.red)
+                .opacity(isLiked ? 1 : 0)
+            }
+            Text(subtitle).font(.caption)
+          }
+          Spacer()
+        }
+        .padding()
+        .frame(width: size)
+        .background(Rectangle().foregroundStyle(.bar))
+      }
+    }
+    .overlay(alignment: .topTrailing) {
+      Image(systemName: "checkmark.circle.fill")
+        .font(.title)
+        .symbolRenderingMode(.multicolor)
+        .foregroundStyle(.white, .blue)
+        .padding(10)
+        .opacity(isSelectable ? 1 : 0)
+    }
+    .frame(width: size, height: size)
+    .cornerRadius(radius)
+    .shadow(color: .secondary,
+            radius: radius)
+  }
+}
+
+struct ContentView: View {  
+  var body: some View {
+    CardView(size: 230,
+             title: "Around the world",
+             subtitle: Date.now.formatted(),
+             isSelectable: false,
+             isSelected: true,
+             isLiked: true) {
+      Image(systemName: "globe").resizable()
+    }
+  }
+}
+
+struct ContentView_Previews: PreviewProvider {
+  static var previews: some View {
+    ContentView()
+  }
+}
+
+``` 
+### Infinite Loop Bug
+
+Franklin posed this question:
+
+ https://stackoverflow.com/questions/76902789/how-can-i-fix-screen-freezing-and-excessive-cpu-usage-when-attempting-to-impleme/76904182#76904182
+
+
+Josh showed that the problem could be fixed making `@ObservedObject` into `@StateObject`. Also:
+
+
+```swift
+    final class MyBadClass {
+        init() {
+            logger.log("\(String(describing: Self.self)) \(#function)")
+        }
+    }
+    
+    struct MyBadClassEnvironmentKey: EnvironmentKey {
+        static let defaultValue: MyBadClass = .init()
+        typealias Value = MyBadClass
+    }
+    
+    extension EnvironmentValues {
+        var expensive: MyBadClass {
+            self[MyBadClassEnvironmentKey.self]
+        }
+    }
+    
+    
+    final class Test: ObservableObject {
+        init() {
+            logger.log("\(String(describing: Self.self)) \(#function)")
+        }
+    }
+```
+
+
+### Swift C++ Integration
+
+In Swift, you can construct a Swift C++ std::string with the code std.string(swiftString)
+
+### Activity Classification
+
+Bill wanted an outline of how to do activity classification. Josh provided a quick explanation but there is a WWDC 2019 presentation about the very topic:
+
+- https://developer.apple.com/wwdc19/426
+
+
+### Interpolation
+
+Ed working on a simple interpolation algorithm for an (Ordered) dictionary. It probably works fine for what he wants it to do but might want to check out a more exhaustive solution (that uses SIMD):
+
+- https://developer.apple.com/documentation/accelerate/2896707-simd_mix
+
+
+### Stanford 2023
+
+From Hegarty
+
+- https://cs193p.sites.stanford.edu/2023
+
+### Animations
+
+You can do it at the website now:
+
+- https://www.lottielab.com/dashboard
 
 ---
 
