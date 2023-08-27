@@ -10,12 +10,199 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-
-## 2023.08.26
+## 2023.09.02
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
+## 2023.08.26
+
+### Layout Decimation
+
+We revisited Monty's question about removing views when they are overlapping.  Josh presented a solution using the new (Predicate)[https://developer.apple.com/documentation/foundation/predicate] type in Swift 5.7 and a custom SwiftUI Layout.  This code can be further optimized by implementing the caching methods on the Layout protocol as we have discussed in previous examples.  
+
+```swift
+import SwiftUI
+
+@Observable
+@MainActor
+final class ViewModel {
+    var items: [Item] = []
+    nonisolated init() { }
+    func callAsFunction() async {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .ordinal
+        items = (1...12).compactMap { value in
+            formatter.string(for:value).map { string in
+                Item(description: string)
+            }
+        }
+    }
+}
+
+extension ViewModel {
+    struct Item: Identifiable, Hashable, CustomStringConvertible {
+        var id: String { description }
+        var description: String
+    }
+}
+
+struct ContentView: View {
+    @State private var viewModel = ViewModel()
+    var body: some View {
+        ProportionalHorizontalLayout {
+            ForEach(viewModel.items) { item in
+                Text(String(describing: item)).font(.largeTitle)
+            }
+        }
+        .task { await viewModel() }
+    }
+}
+
+struct ProportionalHorizontalLayout: Layout {
+    var minimumSpacing: CGFloat = 10
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        proposal.replacingUnspecifiedDimensions(by: .zero)
+    }
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let frames = subviews.enumerated().map { index, view in
+            let size = view.sizeThatFits(.unspecified)
+            let proportion = Double(index) / Double(max(subviews.count - 1, 1))
+            return CGRect(
+                origin: .init(
+                    x: bounds.origin.x + bounds.width * proportion,
+                    y: bounds.origin.y + bounds.midY
+                )
+                , size: .zero
+            )
+                .insetBy(dx: -size.width / 2, dy: -size.height / 2)
+        }
+        
+        let decimation = [
+            #Predicate { _ in true },
+            #Predicate { $0 % 4 != 0 },
+            #Predicate { $0 % 3 != 0 },
+            #Predicate { $0 % 2 == 0 },
+            #Predicate { $0 % 3 == 0 },
+            #Predicate { $0 % 4 == 0 },
+            #Predicate { $0 % 6 == 0 },
+            #Predicate { _ in false }
+        ].lazy.compactMap { predicate in
+            try? subviews.indices.filter(predicate)
+        }
+
+        let bestFit = decimation.first { indicies in
+            zip(indicies, indicies.dropFirst()).allSatisfy { left, right in
+                frames[left].maxX + minimumSpacing < frames[right].minX
+            }
+        }.map(Set.init) ?? []
+
+        let nowhere = CGPoint(x: 1e12, y: 1e12)
+
+        for (index, view) in subviews.enumerated() {
+            let frame = frames[index]
+            view.place(
+                at: bestFit.contains(index) ? frame.origin : nowhere,
+                anchor: .topLeading,
+                proposal: .init(width: frame.size.width, height: frame.size.height)
+            )
+        }
+    }
+}
+```
+
+We discussed using closures as an alternative for pre Swift 5.7:  
+
+```swift
+let decimation = [
+    subviews.indices.lazy.filter { _ in true },
+    subviews.indices.lazy.filter { !$0.isMultiple(of: 4) },
+    subviews.indices.lazy.filter { !$0.isMultiple(of: 3) },
+    subviews.indices.lazy.filter { $0.isMultiple(of: 2) },
+    subviews.indices.lazy.filter { $0.isMultiple(of: 3) },
+    subviews.indices.lazy.filter { $0.isMultiple(of: 4) },
+    subviews.indices.lazy.filter { $0.isMultiple(of: 6) },
+    subviews.indices.lazy.filter { _ in false },
+]
+```
+
+### Interpolation
+
+We revisited Ed's question from last week about built in Swift methods for linear interpolation.  Josh showed an example using both the (mix)[https://developer.apple.com/documentation/accelerate/1425031-mix] function from Swift.Accelerate and the (VectorArithmetic)[https://developer.apple.com/documentation/swiftui/vectorarithmetic] protocol from SwiftUI.  
+
+```swift
+import Combine
+import SwiftUI
+import simd
+
+import PlaygroundSupport
+
+@Observable
+final class ViewModel {
+    private(set) var color: Color = .indigo
+    var alpha = 0.0
+    var method = Method.simd
+    enum Method: String, RawRepresentable, Identifiable, CustomStringConvertible, CaseIterable, Hashable {
+        case simd, vectorArithmetic, unitPoint
+        var id: String { rawValue }
+        var description: String { rawValue }
+    }
+    func onChange(_ colorScheme: ColorScheme) {
+        var environmentValues = EnvironmentValues()
+        environmentValues.colorScheme = colorScheme
+        let s = Color.indigo.resolve(in: environmentValues)
+        let d = Color.orange.resolve(in: environmentValues)
+        switch method {
+        case .simd:
+            let indigioRGBA = SIMD4(s.red,  s.green,  s.blue,  s.opacity)
+            let orangeRGBA = SIMD4(d.red,  d.green, d.blue,  d.opacity)
+            let rgba = mix(indigioRGBA, orangeRGBA, t: Float(alpha))
+            color = Color(red: Double(rgba.x), green: Double(rgba.y), blue: Double(rgba.z), opacity: Double(rgba.w))
+        case .vectorArithmetic:
+            self.color = Color(
+                red: Double(s.red.interpolated(towards: d.red, amount: alpha)),
+                green: Double(s.green.interpolated(towards: d.green, amount: alpha)),
+                blue: Double(s.blue.interpolated(towards: d.blue, amount: alpha)),
+                opacity: Double(s.opacity.interpolated(towards: d.opacity, amount: alpha))
+            )
+        case .unitPoint:
+            let t = UnitCurve.easeInOut.value(at: alpha)
+            self.color = Color(
+                red: Double(s.red.interpolated(towards: d.red, amount: t)),
+                green: Double(s.green.interpolated(towards: d.green, amount: t)),
+                blue: Double(s.blue.interpolated(towards: d.blue, amount: t)),
+                opacity: Double(s.opacity.interpolated(towards: d.opacity, amount: t))
+            )
+        }
+    }
+}
+
+struct V: View {
+    @State private var viewModel = ViewModel()
+    @Environment(\.colorScheme) var colorScheme
+    var body: some View {
+        Picker("Method", selection: $viewModel.method) {
+            ForEach(ViewModel.Method.allCases) { method in
+                Text(String(describing: method)).tag(method)
+            }
+        }
+        .pickerStyle(.segmented)
+        Slider(value: $viewModel.alpha)
+        Circle()
+            .fill(viewModel.color)
+            .onChange(of: viewModel.alpha) { _, _ in viewModel.onChange(colorScheme) }
+            .onChange(of: colorScheme) { _, _ in viewModel.onChange(colorScheme) }
+            .onChange(of: viewModel.method) { _, _ in viewModel.onChange(colorScheme) }
+    }
+}
+
+let v = V()
+PlaygroundPage.current.setLiveView(V())
+```
+
+### ShapeStyle continued
+Josh continued discussion of shape style and the new (Shader)[https://developer.apple.com/documentation/swiftui/shader] conformance in iOS 17 as well as the new (visualEffect)[https://developer.apple.com/documentation/swiftui/visualeffect?changes=_6] modifier.  We also touched on how shader makes use of the String verison of (@dynamicMemberLookup)[https://github.com/apple/swift-evolution/blob/main/proposals/0195-dynamic-member-lookup.md] and (@dynamicCallable)[https://github.com/apple/swift-evolution/blob/main/proposals/0216-dynamic-callable.md].  
 
 ## 2023.08.19
 
