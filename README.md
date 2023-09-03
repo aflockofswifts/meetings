@@ -10,9 +10,93 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.09.02
+
+## 2023.09.09
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.09.02
+
+### Shader Demo
+
+Josh showed us some amazing code that styles in SwiftUI with metal shader programmers that are dynamically called at runtime. Code TBD.
+
+
+### Improving Build Times
+
+From iOS Dev weekly:
+
+- https://www.manu.show/2023-08-18-improve-build-times-in-spm-packages-and-in-your-apps/
+
+### Followup on Decimation Code
+
+Monty was having trouble getting the code to run. Josh used the `#Predicate` macro in Swift 5.9.
+A non-macro version looks like this:
+
+```swift
+let decimation = [
+  subviews.indices.lazy.filter { _ in true },
+  subviews.indices.lazy.filter { !$0.isMultiple(of: 4) },
+  subviews.indices.lazy.filter { !$0.isMultiple(of: 3) },
+  subviews.indices.lazy.filter { $0.isMultiple(of: 2) },
+  subviews.indices.lazy.filter { $0.isMultiple(of: 3) },
+  subviews.indices.lazy.filter { $0.isMultiple(of: 4) },
+  subviews.indices.lazy.filter { $0.isMultiple(of: 6) },
+  subviews.indices.lazy.filter { _ in false },
+]
+  let bestFit = decimation.first { indicies in
+          zip(indicies, indicies.dropFirst())
+              .allSatisfy { left, right in
+              frames[left].maxX + minimumSpacing < frames[right].minX
+                  }
+          }.map(Set.init) ?? []
+```
+
+There were suggestions that he might be running into environment problems. Peter suggested he might want to clean up some of his disk space usage with this Apple Genius recommended application:
+
+- https://daisydiskapp.com
+
+### Embedded Swift
+
+A Vision document has been released on the Swift forum for using Swift in resource starved environments:
+
+- https://forums.swift.org/t/embedded-swift/67057
+
+### Keystrokes
+
+Allen was asking about how to get key presses in SwiftUI. There isn't really a good way to do it today but iOS 17 introduces a new modifier described in this article.
+
+https://www.hackingwithswift.com/quick-start/swiftui/how-to-detect-and-respond-to-key-press-events
+
+### Modelling Trees
+
+Ed showed us some code he was using to build a tree. There was a suggestion to conform to sequence to allow different traversals. (Breadth first, Depth first) rather than have recursive functions to do the job.  He might want 
+
+### Precise Domain Modelling
+
+We talked about precise domain modelling and making invalid states non-representable. Josh recommended we all watch:
+
+- https://www.youtube.com/watch?v=7UC7OUdtY_Q
+
+### Learning Swift
+
+The top (and free) choices are
+
+- https://cs193p.sites.stanford.edu
+- https://www.hackingwithswift.com/100/swiftui
+- https://developer.apple.com/tutorials/swiftui
+
+Also, a good resource for getting specific questions answered:
+
+- https://join.slack.com/t/swiftcodersla/shared_invite/zt-22cn00k47-KyUe9GQ49GlSazpJ5vifLA
+
+### Using C in your Swift
+
+Carlyn found another great example for using C in your Swift code:
+
+- https://github.com/apple/swift-nio
 
 ---
 
@@ -203,6 +287,8 @@ PlaygroundPage.current.setLiveView(V())
 
 ### ShapeStyle continued
 Josh continued discussion of shape style and the new (Shader)[https://developer.apple.com/documentation/swiftui/shader] conformance in iOS 17 as well as the new (visualEffect)[https://developer.apple.com/documentation/swiftui/visualeffect?changes=_6] modifier.  We also touched on how shader makes use of the String verison of (@dynamicMemberLookup)[https://github.com/apple/swift-evolution/blob/main/proposals/0195-dynamic-member-lookup.md] and (@dynamicCallable)[https://github.com/apple/swift-evolution/blob/main/proposals/0216-dynamic-callable.md].  
+
+---
 
 ## 2023.08.19
 
