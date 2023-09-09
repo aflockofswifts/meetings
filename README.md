@@ -21,8 +21,9 @@ All people and all skill levels are welcome to join.
 
 ### Shader Demo
 
-Josh showed us some amazing code that styles in SwiftUI with metal shader programmers that are dynamically called at runtime. Code TBD.
-
+Josh showed us some amazing code that styles in SwiftUI with metal shader programmers that are dynamically called at runtime.
+[ShapeStyle](https://github.com/joshuajhomann/ShapeStyle)
+![image](https://github.com/joshuajhomann/ShapeStyle/raw/main/preview.gif)
 
 ### Improving Build Times
 
