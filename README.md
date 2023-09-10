@@ -11,12 +11,133 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 
 
-## 2023.09.09
+## 2023.09.18
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+## 2023.09.09
 
+### Trees in Swift
+*  Rainer asked about Replacing (Alamofire)[https://github.com/Alamofire/Alamofire] with URL session. The consensus was to not keep Alamofire unless if you require some feature that it implements that URLSession cannot match such as previously SSL pinning, although Franklin noted that SSL pinning is now implemented on iOS via (App Transport Security)[https://blog.eidinger.info/infoplist-based-certificate-pinning-on-ios].
+*  Peter asked about making a background view interactive while displaying a keyboard on a sheet. Jane suggested, using (Popovers)[https://github.com/aheze/Popovers]. Josh suggested using an environment function to show an arbitrary view from the root view of the app as an overlay.
+
+Josh dived into an extended answer to Ed's question last week about lazy tree traversals in swift.  We looked at implementing a tree as an enum with associated types using indirect case to make the associated type storage a reference:  
+```swift
+enum Tree<Element> {
+    indirect case node(value: Element, children: [Self])
+    case leaf(value: Element)
+}
+
+let tree = Tree<Int>.node(value: 1, children: [
+    .node(value: 2, children: [
+        .leaf(value: 4),
+        .leaf(value: 5),
+        .leaf(value: 6)
+    ]),
+    .node(value: 3, children: [
+        .leaf(value: 7),
+        .leaf(value: 8)
+    ])
+])
+```
+Such trees are trivially `Codable`` as long as their `Elements`s are `Codable`:
+```swift
+extension Tree: Codable where Element: Codable { }
+
+let encoder = JSONEncoder()
+encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+let data = try! encoder.encode(tree)
+print(String(data: data, encoding: .utf8)!)
+```
+We discussed implementing tree traversals imperatively as a while loop, and implementing them lazily and declaratively as a `sequence`.  We also discussed the difference between breath first traversal and depth first traversal, as being the difference between a using a queue (FIFO) and a stack (LIFO).  For real world implementations use a real queue and not an array.
+```swift
+extension Tree {
+    var breadthFirstTraversal: some Sequence<Element> {
+        sequence(state: [self]) { queue in
+            guard !queue.isEmpty else { return nil }
+            switch queue.removeFirst() {
+            case let .leaf(value): return value
+            case let .node(value, children):
+                queue.append(contentsOf: children)
+                return value
+            }
+        }
+    }
+    var depthFirstTraversal: some Sequence<Element> {
+        sequence(state: [self]) { stack in
+            switch stack.popLast() {
+            case let .leaf(value): return value
+            case let .node(value, children):
+                stack.append(contentsOf: children.reversed())
+                return value
+            case .none: return nil
+            }
+        }
+    }
+}
+
+for value in tree.depthFirstTraversal {
+    print(value)
+}
+```
+An alternative implementation for a binary tree. Note for real world usage binary trees should be implemented as an array to optimize for cache coherency:
+```swift
+
+enum BinaryTree<Element: Hashable> {
+    indirect case node(value: Element, left: Self, right: Self)
+    case empty
+    static func leaf(_ value: Element) -> Self {
+        .node(value: value, left: .empty, right: .empty)
+    }
+    var isEmpty: Bool {
+        switch self {
+        case .node: false
+        case .empty: true
+        }
+    }
+}
+
+extension BinaryTree {
+    var breadthFirstTraversal: some Sequence<Element> {
+        sequence(state: [self]) { queue in
+            guard !queue.isEmpty else { return nil }
+            switch queue.removeFirst() {
+            case let .node(value, left, right):
+                if !left.isEmpty { queue.append(left) }
+                if !right.isEmpty { queue.append(right) }
+                return value
+            case .empty: return  nil
+            }
+        }
+    }
+    var depthFirstTraversal: some Sequence<Element> {
+        sequence(state: [self]) { stack in
+            switch stack.popLast() {
+            case let .node(value, left, right):
+                if !right.isEmpty { stack.append(right) }
+                if !left.isEmpty { stack.append(left) }
+                return value
+            case .empty, .none: return  nil
+            }
+        }
+    }
+}
+
+let binaryTree = BinaryTree<Int>.node(
+    value: 0, 
+    left: .node(
+        value: 1, 
+        left: .leaf(3), 
+        right: .leaf(4)
+    ),
+    right: .node(
+        value: 2, 
+        left: .leaf(5), 
+        right: .leaf(6)
+    )
+)
+```
 ## 2023.09.02
 
 ### Shader Demo
