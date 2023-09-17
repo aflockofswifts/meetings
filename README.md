@@ -10,10 +10,59 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-
-## 2023.09.18
+## 2023.09.23
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+### Swift State Machines
+
+We discussed the presentation by Cory Benfield about state machines: 
+https://www.youtube.com/watch?v=7UC7OUdtY_Q
+
+
+Some of the key points:
+
+- Name the states explicitly with an enum.
+- Put the enum into a struct and make the state private so you can control how it is initialized.
+- Make the transitions function calls on the state machine struct. (Avoid huge switch statements.)
+- Simplify common operations buy using protocols.
+
+### Side Journey into The Composable Architecture
+
+Speaking of state machines, the basic components of the composable architecture, "features" are built an awful lot like state machines. We talked about the elements of a TCA feature. You might want to check out their new videos on TCA 1.0.  The first one is free. 😉
+
+https://www.pointfree.co/episodes/ep243-tour-of-the-composable-architecture-1-0-the-basics
+
+### Core Data
+
+Looking for guidance about where the core data stack should live.
+
+A sample app that uses core data:
+
+- https://www.hackingwithswift.com/100/swiftui/53
+
+An example from Josh a while back using core data:
+
+https://github.com/joshuajhomann/Todo
+
+A good way is implement a service and inject with dependency injection:
+
+https://github.com/pointfreeco/swift-dependencies
+
+
+### Learning Swift
+
+The usual answers 😆:
+
+- https://www.hackingwithswift.com/100/swiftui
+- https://cs193p.sites.stanford.edu
+
+
+### Virtualization and Testing Betas
+
+- https://arstechnica.com/gadgets/2022/07/how-to-use-free-virtualization-apps-to-safely-test-the-macos-ventura-betas/
 
 ---
 ## 2023.09.09
@@ -23,6 +72,7 @@ All people and all skill levels are welcome to join.
 *  Peter asked about making a background view interactive while displaying a keyboard on a sheet. Jane suggested, using (Popovers)[https://github.com/aheze/Popovers]. Josh suggested using an environment function to show an arbitrary view from the root view of the app as an overlay.
 
 Josh dived into an extended answer to Ed's question last week about lazy tree traversals in swift.  We looked at implementing a tree as an enum with associated types using indirect case to make the associated type storage a reference:  
+
 ```swift
 enum Tree<Element> {
     indirect case node(value: Element, children: [Self])
@@ -41,7 +91,9 @@ let tree = Tree<Int>.node(value: 1, children: [
     ])
 ])
 ```
+
 Such trees are trivially `Codable`` as long as their `Elements`s are `Codable`:
+
 ```swift
 extension Tree: Codable where Element: Codable { }
 
@@ -81,7 +133,9 @@ for value in tree.depthFirstTraversal {
     print(value)
 }
 ```
+
 An alternative implementation for a binary tree. Note for real world usage binary trees should be implemented as an array to optimize for cache coherency:
+
 ```swift
 
 enum BinaryTree<Element: Hashable> {
