@@ -52,6 +52,10 @@ A good way is implement a service and inject with dependency injection:
 https://github.com/pointfreeco/swift-dependencies
 
 
+### Controlling the Simulator from the Command Line
+
+- https://nshipster.com/simctl/
+
 ### Learning Swift
 
 The usual answers 😆:
@@ -63,6 +67,8 @@ The usual answers 😆:
 ### Virtualization and Testing Betas
 
 - https://arstechnica.com/gadgets/2022/07/how-to-use-free-virtualization-apps-to-safely-test-the-macos-ventura-betas/
+
+PS: Remember that you can give feedback on broken stuff!
 
 ---
 ## 2023.09.09
