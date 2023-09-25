@@ -10,9 +10,103 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.09.23
+## 2023.09.30
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.09.23
+
+### Swift 5.9 Released
+
+Sites that give you Xcode version and Swift version.
+
+- https://swiftversion.net (more swift focused, evolution proposals)
+- https://xcodereleases.com (more xcode focused, Xcode release notes)
+
+When you open Xcode 15 it gives you this useful link about what's new this year:
+
+ - https://developer.apple.com/documentation/updates/wwdc2023
+
+### Streaming large data files
+
+Some talk about implementing a streaming system.
+
+- https://developer.apple.com/documentation/foundation/nsdata/readingoptions
+
+
+### Gestures
+
+Monty was having difficulty with tap and long tap gestures interfering. 
+Some background links to resolve:
+
+- https://developer.apple.com/documentation/swiftui/composing-swiftui-gestures
+- https://developer.apple.com/documentation/swiftui/view/highprioritygesture(_:including:)
+
+Josh's advice was to implement all of the delegate methods and print from there
+to see how the different gestures are interfering.
+
+- https://developer.apple.com/documentation/uikit/uigesturerecognizerdelegate
+
+
+Monty reported adding this fixed his problem:
+
+```swift
+func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, 
+                       shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool { true }
+```
+
+### Keyboard and Toolbars
+
+You can add toolbars to the keyboard since iOS 13.
+
+- https://www.hackingwithswift.com/quick-start/swiftui/how-to-add-a-toolbar-to-the-keyboard
+
+
+```swift
+    .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                  if focus {
+                    Spacer()
+                    Button {
+                      focus = false
+                    } label: {
+                      Text("Done")
+                    }
+                    .foregroundColor(.white)
+                    .buttonStyle(.borderedProminent)
+                  }
+                }
+              }
+```
+
+### Conference Report from Frank
+
+- https://www.iosdevuk.com
+- https://2023.nsspain.com
+- https://swiftconnection.io
+
+This talk on Image Processing was particularly great: https://www.youtube.com/watch?v=yB6kfGwfeXA
+    
+
+### Swift Talk at C++Now
+
+- https://www.youtube.com/watch?v=lgivCGdmFrw
+
+
+### Tree Data Structures
+
+- https://swiftpackageindex.com/search?query=tree+data+structure
+
+
+### TimeKeep App Revisited
+
+We will use the Composable Architecture and create the time keep app:
+
+- https://github.com/rayfix/TimeKeep
+
+Next week we will implement a feature.
 
 ---
 
