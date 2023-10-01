@@ -10,9 +10,67 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.09.30
+## 2023.10.07
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.09.30
+
+### TimeKeep Composable Architecture 
+
+We continued the slow development of the TimeKeep app and created our first composable architecture feature.  
+https://github.com/rayfix/TimeKeep
+
+A feature is a Reducer which contains:
+
+    - State
+    - Action
+    - Reducer body
+    - External dependencies injected with @Dependancy
+
+These are buisness logic that are highly configurable and testable. Imagine business logic that can be composed much like views can be composed in SwiftUI.
+
+In SwiftUI, the UI is driven by a `Store` which consists of a feature in an initial state. The view observes some of all of the state and reduces on it.  This is done using a ViewStore.  TestStores are special store types that can be used for testing.
+
+### Facetime using tvOS
+
+- https://support.apple.com/guide/tv/use-facetime-atvb3cced7cd/tvos
+
+### Old Man's 
+- https://apps.apple.com/us/app/old-mans/id1473496741
+
+
+### Testing Notifications
+
+Ed told us about many tools you can use to experiment with notifications:
+
+    1. Drag an .apns file with notification onto the simulator.
+    2. xcrun simctl push
+    3. Use web frontend icloud.developer.com
+    4. RocketSim
+
+### Airpods
+    
+Voice isolation is an iOS / MacOS feature.
+- https://www.macrumors.com/how-to/enable-voice-isolation-cellular-phone-calls/
+
+
+### Other thoughts about Composable Architecture
+
+Side effects.  Ray: I am not sure if these are so current.
+
+- https://github.com/pointfreeco/swift-composable-architecture/discussions/1145
+- https://www.pointfree.co/collections/composable-architecture/side-effects
+
+
+### Vision Pro and Unity
+
+Some discussion about how to get a simple HelloWorld app working with Xcode.
+
+- https://jera.com/blog/2023/9/unity-and-vision-pro-its-complicated
+- https://www.meetup.com/monthly-sf-game-development-community/
 
 ---
 
