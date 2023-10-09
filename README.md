@@ -10,9 +10,100 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.10.07
+
+## 2023.10.14
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.10.07
+
+### Comparing Combine, ObservableObject and Observation
+
+A presentation by Josh H. about the different systems for building apps. We started by reviewing a previous app that performed incremental search on a service that fetches Magick The Gathering cards. Then we built a new app using the `@Observable` macro for also doing search as you type.
+
+- https://github.com/joshuajhomann/MapSearchCompleter
+
+
+### Type Erasing AsyncStream
+
+Josh showed us why you can't easily type erase an AsyncStream: no primary associated type for the element. Here is he showed and how it doesn't really work with `any P`.  The error: `Member 'prefix' cannot be used on value of type 'any AsyncSequence'; consider using a generic constraint instead`.
+
+```swift
+    import PlaygroundSupport
+    PlaygroundPage.current.needsIndefiniteExecution = true
+    
+    protocol P {
+        associatedtype S: AsyncSequence where S.Element == Int
+        var s: S { get }
+    }
+    
+    final class Q: P {
+        let s: AsyncStream<Int>
+        init() {
+            var state = 0
+            s = AsyncStream {
+                defer { state += 1 }
+                return state
+            }
+        }
+    }
+    
+    func iterate<S: AsyncSequence>(s: S) async where S.Element == Int  {
+    
+    }
+    
+    Task {
+        let p: any P = Q()
+        for try await element in (p.s as any AsyncSequence).prefix(10) {
+            print(element)
+        }
+    }
+```
+
+### Types and Protocols
+
+Implementing generics
+
+https://www.reddit.com/r/rust/comments/7gkiie/implementing_swift_generics_video/
+
+
+Intro to protocol oriented programming
+
+- https://youtu.be/ekYdBcl3dzs?si=uu7qFb2lQAOWAA1A
+
+
+## Editors
+
+Ray was looking into TextKit2 this week and asking about editors.
+
+- https://github.com/qeude/SwiftDown
+- https://github.com/simonbs/Runestone
+
+Related:
+
+- https://developer.apple.com/documentation/foundation/attributedstring/instantiating_attributed_strings_with_markdown_syntax
+
+
+## Localization and CollectionViews
+
+This seems to be a good way to hook into assigning the focus view: use the delegate.
+
+https://developer.apple.com/documentation/uikit/uicollectionviewdelegate/1618066-indexpathforpreferredfocusedview
+
+### Celebrating Life on Earth
+
+At the beginning of the meeting we talked about the wonder of the world.
+
+Life on Earth is amazing.  A three minute video set to Hallelujah by the New York City Choir.
+
+- https://www.youtube.com/watch?v=wxX7Sa8WtuI
+
+An amazing book about biology and "sensors".
+
+- https://www.penguinrandomhouse.com/books/616914/an-immense-world-by-ed-yong/
+
 
 ---
 
@@ -28,9 +119,9 @@ A feature is a Reducer which contains:
     - State
     - Action
     - Reducer body
-    - External dependencies injected with @Dependancy
+    - External dependencies injected with @Dependency
 
-These are buisness logic that are highly configurable and testable. Imagine business logic that can be composed much like views can be composed in SwiftUI.
+These are business logic that are highly configurable and testable. Imagine business logic that can be composed much like views can be composed in SwiftUI.
 
 In SwiftUI, the UI is driven by a `Store` which consists of a feature in an initial state. The view observes some of all of the state and reduces on it.  This is done using a ViewStore.  TestStores are special store types that can be used for testing.
 
