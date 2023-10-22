@@ -86,6 +86,23 @@ Meetup
 - https://www.youtube.com/watch?v=GtJBS7B3eyM&t=43s
 
 
+### SwiftUI Companion
+
+Andrei F. finds this resource to be useful:
+
+- https://swiftui-lab.com/companion/
+
+Documentation and live code.
+
+### TCA Tutorials
+
+These written in beautiful DocC.  How did they do that Tim asks:
+
+- https://developer.apple.com/documentation/docc/tutorial-syntax
+- https://developer.apple.com/wwdc21/10235
+
+
+
 ### More practice with TCA
 
 We looked at the TimeKeep app a little more today.
