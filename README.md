@@ -19,9 +19,97 @@ All people and all skill levels are welcome to join.
 
 ## 2023.10.21
 
+### git Troubleshooting 
+
+A great flowchart for if you run into trouble:
+
+- http://justinhileman.info/article/git-pretty/
+
+
+### Xcode and AI
+
+- https://github.com/features/copilot
+- https://github.com/intitni/CopilotForXcode
+
+A humorous look at ChatGPT from Bob D.:
+
+- https://www.youtube.com/watch?v=dxxCPdcMcFw
+
+
+### Data Management in SwiftUI iOS 17
+
+PointFree has a deep dive series going on right now about observation:
+
+- https://www.pointfree.co/episodes/ep253-observation-the-present
+
+Another resource about Observation:
+
+- https://www.youtube.com/watch?v=wxJxpVEkEjw&t=377s
+
+
+We attempted using the environment to pass the data but it didn't seem to work with @Observable.
+A more traditional approach of just passing it in worked better.
+
+### Scanning Bar Codes
+
+This worked out well for Tim.
+
+- https://www.hackingwithswift.com/books/ios-swiftui/scanning-qr-codes-with-swiftui
+
+Bob D. notes this app uses it:
+
+- https://github.com/bobdel/16-Hot-Prospects/tree/main
+
+### Chargers
+
+John B. thinks this is a good one. 
+
+- https://www.apple.com/shop/product/HPZE2ZM/A/mophie-speedport-120-4-port-gan-wall-charger-120w
+
+
+### A Quick Tour of Flutter
+
+Ed took us on a quick tour of Flutter using InteliJ.  The language dart looks a lot like Java.  Heavy use of semicolons and closures all the way down.
+
+From Ed:
+
+"There are 2 parts - Dart and the Flutter frameworks.  There are several online sources to get the basics of Dart.  That was enough to get started, and I just googled for anything I needed - like optional parameters, enums, etc.  Flutter has a ton of examples and they’re enough to get started with setting up the environment and starting an app.  Then I just googled when I got stuck on something - there’s lots of examples out there and many packages that help with basic things."
+
+Georgi pointing out some large companies that use multi-platform frameworks.
+
+Uber
+
+- https://www.uber.com/blog/new-rider-app-architecture/
+
+Meetup
+
+- https://www.youtube.com/watch?v=GtJBS7B3eyM&t=43s
+
+
+### More practice with TCA
+
+We looked at the TimeKeep app a little more today.
 
 https://github.com/rayfix/TimeKeep
 
+
+You can go even further than we did than last week and eliminate the scratch variable by creating a custom
+binding:
+
+```swift
+  TextField("", text: viewStore.binding(
+            get: { $0.projects[id: project.id]?.name ?? "" },
+            send: { ProjectsListFeature.Action.updateProjectName(project.id, $0) }
+            ),
+            prompt: Text("Project Name")
+  )
+```
+
+Notice that to create a binding it is get/send and not get/set. The only way you can change app state in
+TCA is to send actions into the store.
+
+In the end, this is not a good idea.  You want to user to be able to pass through invalid states such as 
+blanking out the entire name before submitting a new one. So we reverted this change.
 
 ---
 
