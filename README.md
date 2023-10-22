@@ -11,9 +11,80 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 
 
-## 2023.10.14
+## 2023.10.28
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.10.21
+
+
+https://github.com/rayfix/TimeKeep
+
+
+---
+
+
+## 2023.10.14
+
+### Refactoring!
+
+Monty mentioned wanting to learn how to organize his code better and that 
+started a discussion about refactoring and testing
+
+A resource about refactoring:
+
+- https://martinfowler.com/books/refactoring.html
+
+You want to be able to unit test your code:
+
+- https://pragprog.com/titles/jrlegios/ios-unit-testing-by-example/
+
+
+This quick post by Paul Hudson:
+
+- https://www.hackingwithswift.com/store/testing-swift
+
+
+How to add testing to an existing target:
+
+- https://www.youtube.com/watch?v=9LRWgSP7lCU
+
+
+### New this week
+
+PointFree.co video nicely demonstrate how Observable object drives changes in SwiftUI
+
+- https://www.pointfree.co/episodes/ep252-observation-the-past 
+
+### Talks from NSSpain
+
+- https://vimeo.com/showcase/10672108
+
+Related to refactoring (and from NSSpain), bug-free by design:
+
+- https://vimeo.com/showcase/10672108/video/865647957
+
+
+### Presentation: TimeKeep
+
+We continued exploration of the TCA architecture by implementing the ability to 
+edit the apps "Project" names inline.  
+
+The work-in-progress repo:
+
+- https://github.com/rayfix/TimeKeep
+
+
+- Created our first Feature (reducer + views)
+- Created State and Action that are sub-types of the Reducer
+- Used Dependency injection for UUID
+- Used UIKit hack to let SwiftUI text field get first responder and select all.
+- Used `@BindingState` and `BindingAction<State>` so that we could adapt SwiftUI two-way bindings into a one way binding
+- Created a focus variable and used `bind` to connect it to from our state to our model
+- Created list view, store, and viewStore
+
 
 ---
 
