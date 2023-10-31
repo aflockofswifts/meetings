@@ -10,10 +10,92 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
+## 2023.11.04
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
 
 ## 2023.10.28
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+### Reading BarCodes
+
+Josh: Using AVFoundation to access video from Cameras is a 
+common iOS thing that you want to do. You should check
+out these sample code from Apple:
+
+- https://developer.apple.com/documentation/vision/vndetectbarcodesrequest
+- https://developer.apple.com/documentation/avfoundation/capture_setup/avcambarcode_detecting_barcodes_and_faces
+
+
+### Functional Optics
+
+Franklin:
+
+- https://theswiftdev.com/lenses-and-prisms-in-swift/
+
+
+### ProTip: Don't put Views in your Observable Objects
+
+### Use Logs
+
+Logs are pretty great. You should use them. You can learn about them here:
+
+- https://www.avanderlee.com/debugging/oslog-unified-logging/
+- https://developer.apple.com/wwdc23/10226
+- https://github.com/joshuajhomann/Logging
+
+The **Console** app makes a pretty good viewer 
+
+### Use Calendar
+
+The Temporal Axis of Space-Time - Dave DeLong https://vimeo.com/865876497
+
+### The Composable Architecture
+
+We continued our experiments with the composable architecture. We implemented
+testing for our Add Project flow. See https://github.com/rayfix/TimeKeep
+
+```swift
+  @MainActor
+  func testAddProject() async {
+    let store = TestStore(initialState: ProjectsListFeature.State(projects: [])) {
+      ProjectsListFeature()
+    } withDependencies: { values in
+      values.uuid = .incrementing
+    }
+    
+    let project = Project(id: .init(UUID(0)), name: "Project", timeEvents: [], isActive: true)
+    
+    await store.send(.addButtonTapped)  { state in
+      state.projects = [project]
+    }
+    await store.receive(.editProjectName(project)) { state in
+      state.projectName = "Project"
+      state.focus = .project(project.id)
+    }
+    store.assert { state in
+      XCTAssert(state.isAddDisabled)
+    }
+    await store.send(.set(\.$projectName, "Study Swift")) { state in
+      state.projectName = "Study Swift"
+    }
+    
+    store.assert { state in
+      XCTAssert(state.isAddDisabled)
+    }
+    
+    await store.send(.editProjectNameSubmit) { state in
+      state.focus = nil
+      state.projects = [Project(id: .init(UUID(0)), name: "Study Swift", timeEvents: [], isActive: true)]
+      state.projectName = ""
+    }
+    store.assert { state in
+      XCTAssertFalse(state.isAddDisabled)
+    }
+  }
+```
+
 
 ---
 
