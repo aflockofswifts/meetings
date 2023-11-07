@@ -10,9 +10,55 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.11.04
+## 2023.11.11
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.11.04
+
+### MacBook Pro M3/Pro/Max
+
+It is a compelling upgrade. 
+
+- https://daringfireball.net/2023/11/the_2023_m3_macbook_pros
+
+We talked about how to decide whether to upgrade or not and
+a discussion about how to make a sustainable career doing iOS
+development and consulting followed. 
+
+Carlyn was looking for resources similar to other industries such as:
+
+- https://graphicartistsguild.org/  
+- https://www.asmp.org/
+
+
+The consensus seemed to be that there are not a lot of great resources out there as there is in other industries.
+
+A talk about the business side of contracting:
+
+- https://appdevcon.nl/session/tips-and-tricks-for-independent-contracting/
+
+-   https://blog.curtisherbert.com/slopes-diaries-43-chasing-a-goldilocks-business/
+
+Alex L. gave us some insight as to what he does including preparing for equipment failure.
+
+### Collection View Handling
+
+Rainer had a question about how to handle table views inside a collection view. He was fairly convinced, however, that a compositional collection would not work for his use case.
+
+Alex mention this Paul Hudson:
+
+- https://www.youtube.com/watch?v=SR7DtcT61tA
+
+### Layout
+
+Monty was trying to adapt Josh's layout solution to a case where the items spacing were not uniform. We looked a little bit at the code and tried to see why the text was clipping. We tried a couple of experiments without luck. Running short on time so will look into it again next week.
+
+### The Composable Architecture
+
+We took a few minutes to see about composing features. We will investigate it more in future weeks.
 
 ---
 
