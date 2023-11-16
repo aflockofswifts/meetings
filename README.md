@@ -10,9 +10,49 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
-## 2023.11.11
+
+## 2023.11.18
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.11.11
+
+### Fixing Layout
+
+Josh refactored Monty's layout code to work properly.  In addition to converting over to a stateful filter algorithm that is O(n) instead of O(n^2) as a result of calling `contains()` on an array type, he also fixed the bug that was causing text truncation. This was due to looking into the views array at the wrong index and thus using the wrong bounds for different methods.  The original code from Monty is here:
+
+https://github.com/MontyHarper/CalendarTests.git
+
+You can see the diffs (as a pull request from Josh):
+
+https://github.com/MontyHarper/CalendarTests/pull/2/commits/34be937e8e643473dbca138898cb6a64a6b545b2
+
+### Indie Developer Finances
+
+Carlyn continued her exploration of the financial side of indie development making this spreadsheet to compute costs and how they result in profits/losses.
+
+- https://docs.google.com/spreadsheets/d/1mM009MW_9w4BP-I9t3YEBZc6BtQFq5rRaxlOKwBveVA/
+
+
+Josh made a recommendation to talk to some Indie devs that are actually making a go of it at this meetup:
+
+- https://www.meetup.com/core-coffee-a-catch-up-for-ios-and-macos-developers/
+
+Alternately, it might be useful (if doing a poll) to reach out on the slack channel.
+
+- https://ios-developers.slack.com
+
+
+### Composable Architecture
+
+We gave a quick look at the Case Studies app to show how features can be composed.  Here are the main points:
+
+- You can keep the `State` of other reducers in your reducer.
+- You can use the `Scope() { ChildReducer() }` reducer building in a parent reducer to pair down the state and specify a routing `Action` and then put the child reducer into the parents reducer body.
+- In the view you can use the scope operator on a store to widdle down the state to just what you need and pass the view in.
+
 
 ---
 
