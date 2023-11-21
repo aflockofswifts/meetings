@@ -78,6 +78,46 @@ Implementation wise, these things might help:
 
 Josh gave a demo of a RealityKit app and showed how to mix SwiftUI components inside and outside of a RealityView volume.
 
+
+John Brewer showed us a non-vision pro version of his lunar lander app.
+
+- https://developer.apple.com/documentation/gamecontroller/gcvirtualcontroller
+
+
+### Odds and Ends
+
+
+#### New Apple Framework: Memory Mapped I/O
+
+-  https://github.com/apple/swift-mmio
+
+#### SwiftUI MasterClass on Udemy
+
+Great assets. Uses text-to-speech for most of the course.
+
+- https://www.udemy.com/course/swiftui-masterclass-course-ios-development-with-swift/
+
+#### VisionPro DevCamp
+
+Anticipates the release of hardware.
+
+- https://visiondevcamp.org
+
+#### Game Controller
+
+- https://developer.apple.com/documentation/gamecontroller/gcvirtualcontroller
+
+#### Visualizing Data
+
+Some links from Carlyn about data.
+
+- https://www.youtube.com/watch?v=MIZXqC1-VLc
+
+There is a paid course coming up during the summer:
+
+- https://cereg.risd.edu/search/publicCourseSearchDetails.do?method=load&courseId=1029093
+
+
 ---
 
 ## 2023.11.11
