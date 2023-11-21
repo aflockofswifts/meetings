@@ -11,9 +11,72 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 
 
-## 2023.11.18
+## 2023.11.25
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.11.18
+
+### Review Typed Throws Proposal
+
+There is a new Swift Evolution proposal runing to the end of the month that introduces typed throws.
+
+https://github.com/apple/swift-evolution/blob/main/proposals/0413-typed-throws.md
+
+The solution is very elegant for creating generic code and it does away with rethrows by introducing another generic.
+
+```swift
+// Normal throwing function 
+func compute() throws -> Int
+// Can be written equivalently
+func compute() throws(any Error) -> Int
+```
+
+```swift
+// Non-throwing function 
+func compute() -> Int
+// Can be written equivalently
+func compute() throws(Never) -> Int
+```
+
+But now:
+
+```swift
+func compute() throws(ComputeError) -> Int
+```
+
+Now the compiler can type check exactly what gets thrown and no dynamic allocation is needed.
+
+An important point made in the proposal, however, is that most code should prefer the previous form since most errors do not need to be exhastively type checked and it makes evolving the implementation of the function easier.
+
+### Scroll View
+
+Rainer talked about his plan for solving his scroll view problem. Maybe we will see the solution next week?
+
+Andy R. suggested that layout guides might help:
+
+- https://useyourloaf.com/blog/easier-scrolling-with-layout-guides/
+  
+- https://developer.apple.com/documentation/uikit/uiscrollview/2865772-framelayoutguide
+  
+- https://developer.apple.com/documentation/uikit/uiscrollview/2865870-contentlayoutguide
+
+
+### Demo of the Scheduling App
+
+Monty gave a demo of the time app that he has been working on. The app looked pretty great and we gave some suggestions that he may look into.
+
+Implementation wise, these things might help:
+
+- https://developer.apple.com/documentation/foundation/relativedatetimeformatter
+- https://developer.apple.com/documentation/uikit/uiapplication/1622944-willenterforegroundnotification
+
+
+### RealityKit
+
+Josh gave a demo of a RealityKit app and showed how to mix SwiftUI components inside and outside of a RealityView volume.
 
 ---
 
