@@ -15,6 +15,53 @@ All people and all skill levels are welcome to join.
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
+Josh showed how to make an `AsyncStream` from a `@Observable` class based on this [article](https://nilcoalescing.com/blog/ObservationFrameworkOutsideOfSwiftUI/?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B637).  
+```swift
+
+@MainActor
+@Observable
+final class ViewModel {
+    var value = 0.0
+    private(set) var label = ""
+    func callAsFunction() async {
+        for await element in AsyncStream(observing: self, keyPath: \.value) {
+            label = element.formatted(.percent.precision(.fractionLength(0...2)))
+        }
+    }
+}
+
+@MainActor
+struct ContentView: View {
+    @State var viewModel = ViewModel()
+    var body: some View {
+        @Bindable var viewModel = viewModel
+        Slider(value: $viewModel.value)
+        Text(viewModel.label).task { await viewModel() }
+    }
+}
+
+extension AsyncStream {
+    init<Base: AnyObject>(observing base: Base, keyPath: KeyPath<Base, Element>) {
+        let (output, input) = Self.makeStream(of: Element.self, bufferingPolicy: .bufferingNewest(1))
+        self = output
+        @Sendable
+        func subscribe() {
+            _ = withObservationTracking {
+                base[keyPath: keyPath]
+            } onChange: { [weak base] in
+                DispatchQueue.main.async { [weak base] in
+                    guard let base else { return }
+                    input.yield(base[keyPath: keyPath])
+                    subscribe()
+                }
+            }
+        }
+        input.yield(base[keyPath: keyPath])
+        subscribe()
+    }
+}
+```
+
 ---
 
 ## 2023.11.18
