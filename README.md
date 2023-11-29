@@ -11,9 +11,46 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 
 
-## 2023.11.25
+## 2013.12.02
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.11.25
+
+### SwiftUI ViewBuilder Idiom
+
+We talked about view APIs and how to make them more idiomatic SwiftUI.
+
+```swift
+struct MyView<Content: View>: View {
+  let name: String
+  let content: () -> Content
+  init(name: String, @ViewBuilder content: @escaping () -> Content) {
+    self.name = name
+    self.content = content
+  }
+  var body: some View {
+    HStack {
+      Text(name)
+      Spacer()
+      content()
+    }
+  }
+}
+
+```
+
+### Visualization Links
+
+- Wolfe & Horowitz, https://search.bwh.harvard.edu/new/pubs/Deployment_of_Visual_Attent.pdf
+
+Colin Ware: 
+  - https://www.youtube.com/watch?v=JamUlnJRoW4
+  - https://shop.elsevier.com/books/information-visualization/ware/978-0-12-812875-6
+
+### Observable Streams
 
 Josh showed how to make an `AsyncStream` from a `@Observable` class based on this [article](https://nilcoalescing.com/blog/ObservationFrameworkOutsideOfSwiftUI/?utm_campaign=iOS%2BDev%2BWeekly&utm_medium=email&utm_source=iOS%2BDev%2BWeekly%2BIssue%2B637).  
 ```swift
@@ -61,6 +98,14 @@ extension AsyncStream {
     }
 }
 ```
+
+### Game Controllers
+
+Some links from Georgi D. and John B.:
+
+- https://developer.apple.com/documentation/gamecontroller/
+- https://developer.apple.com/videos/play/wwdc2021/10081/
+- https://developer.apple.com/documentation/gamecontroller/supporting_game_controllers
 
 ---
 
