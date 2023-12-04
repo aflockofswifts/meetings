@@ -11,9 +11,59 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 
 
-## 2013.12.02
+## 2023.12.09
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2013.12.02
+
+### Advent of Code
+
+Begininng this month, from December 1 to December 25, the advent of code is running. Each day two related coding challenges are released. The challenges are hard but they can be incredibly useful for learning the fundamentals of programming. Josh, who participated last year, encouraged everyone to participate at some level even if you just do a couple of challenges.
+
+- https://adventofcode.com
+
+
+There is a special Swift package setup for solving problems.
+
+- https://forums.swift.org/t/advent-of-code-2023/68749
+
+
+### SwiftUI
+
+- https://swiftwithmajid.com/2023/10/17/mastering-preview-macro-in-swift/
+
+
+John B. is going through a Udemy class. The projects have great assets and it often goes on sale for $20 or less.
+
+### RealityKit
+
+Some code that John B. used to update SwiftUI
+
+```swift
+func update(context: SceneUpdateContext) {
+  #if os(visionOS)
+          context.entities(matching: PoorMansPhysicsSystem.query, updatingSystemWhen: .rendering).forEach { entity in
+              update(entity: entity, context: context)
+          }
+  #else
+          context.scene.performQuery(Self.query).forEach { entity in
+              update(entity: entity, context:context)
+          }
+  #endif
+      }
+```
+
+> **Note**: You might also be able to use TimelineView to handle updates.
+
+
+### RealityKit Example
+
+Josh continued his RealityKit example. We reviewed the previous project and looked at how you can integrate SwiftUI into the system.
+
+
 
 ---
 
