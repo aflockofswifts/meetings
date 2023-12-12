@@ -11,11 +11,48 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 
 
-## 2023.12.09
+## 2023.12.16
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ---
+
+## 2023.12.09
+
+### RealityKit/SwiftUI Architecture
+
+The feature presentation was Josh's RealityKit/SwiftUI architecture example.
+
+Source code TBD.
+
+
+### Apple Machine Learning
+
+Apple annouced an open source machine learning.
+
+- https://github.com/ml-explore/mlx
+
+The standard ml framework which can do a lot but not train LLMs is:
+
+- https://developer.apple.com/documentation/createml
+
+
+### Share Sheet in SwiftUI
+
+Conform your type to transferable and then pass it to a `ShareLink` view.
+
+- https://developer.apple.com/documentation/SwiftUI/ShareLink
+
+
+### Advent of Code
+
+Still going! (See below.)
+
+Carlyn found a quirk in the Range type.
+
+- https://gist.github.com/carlynorama/782f5a0f4699e99b2121f0a0874003cb
+
+
 
 ## 2013.12.02
 
