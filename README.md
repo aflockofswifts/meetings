@@ -23,7 +23,7 @@ All people and all skill levels are welcome to join.
 
 The feature presentation was Josh's RealityKit/SwiftUI architecture example.
 
-Source code TBD.
+[Source code](https://github.com/joshuajhomann/Reality)
 
 
 ### Apple Machine Learning
