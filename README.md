@@ -48,7 +48,7 @@ Conform your type to transferable and then pass it to a `ShareLink` view.
 
 Still going! (See below.)
 
-Carlyn found a quirk in the Range type.
+Carlyn found a quirk in the Range type. There is a performance cliff if you ask if one range contains another.
 
 - https://gist.github.com/carlynorama/782f5a0f4699e99b2121f0a0874003cb
 
