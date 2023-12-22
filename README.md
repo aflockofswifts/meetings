@@ -28,7 +28,42 @@ All people and all skill levels are welcome to join.
 
 Josh showed how the semantics of flatMap are different in the different frameworks. Combine is a merge map where structured concurrency acts as a concatenation.
 
-Code TBD
+```swift
+import Combine
+import Foundation
+import Swift
+
+
+func makeCounter(start: Int, count: Int, interval: Double = 1.0) -> some Publisher<Int, Never> {
+    Timer.publish(every: interval, on: .main, in: .common).autoconnect().map { _ in 1 }.scan(start, +).prefix(count - 1).prepend(start)
+}
+
+
+let c = makeCounter(start: 0, count: 3, interval: 0.1).map { value in
+    makeCounter(start: value * 3, count: 3)
+}.switchToLatest().sink {
+    print("Combine: \($0)")
+}
+
+func makeAsyncCounter(start: Int, count: Int, interval: Double = 1.0) -> AsyncStream<Int> {
+    var state = start
+    return AsyncStream {
+        guard state < start + count else { return nil }
+        defer { state += 1 }
+        if state == start {
+            return state
+        }
+        try? await Task.sleep(for: .seconds(interval))
+        return state
+    }
+}
+
+Task {
+    for await value in (0..<3).publisher.values.switchMap({ makeAsyncCounter(start: $0 * 3, count: 3) }) {
+        print("Async \(value)")
+    }
+}
+```
 
 ### Going Pro
 
