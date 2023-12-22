@@ -10,10 +10,89 @@ All people and all skill levels are welcome to join.
 - [2021 Meetings](2021/README.md)
 - [2022 Meetings](2022/README.md)
 
+## 2023.12.30
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2023.12.23
+
+- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
 
 ## 2023.12.16
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+### Feature Presentation - Combine vs Structured Concurrency
+
+Josh showed how the semantics of flatMap are different in the different frameworks. Combine is a merge map where structured concurrency acts as a concatenation.
+
+Code TBD
+
+### Going Pro
+
+Congratulations to Monty, who finished a Udemy nano-degree in iOS programming. Where to go from here to get an actual iOS job? 
+
+Meet other developers:
+
+- https://www.iosdevhappyhour.com
+
+Some interesting resources for job hunting.
+
+- https://builtin.com
+- https://www.levels.fyi
+- https://www.teamblind.com
+
+Of course there are also the usual suspects including LinkedIn, recruiters, etc.
+
+
+### On-boarding Flows
+
+In UIKit you can replace the window. In SwiftUI you need to do it as an if/else/switch statement in the view.
+
+Andy spoke favorably of using the coordinator pattern which delegates navigation responsibility to another object other than your views so they can be reused more easily.
+
+- https://quickbirdstudios.com/blog/coordinator-pattern-in-swiftui/
+- https://github.com/erikdrobne/SwiftUICoordinator
+- https://github.com/QuickBirdEng/XCoordinator
+
+UIKit (e.g. ViewController) resources:
+
+- https://khanlou.com/2015/01/the-coordinator/ 
+- https://khanlou.com/2015/10/coordinators-redux/
+- https://davedelong.com/blog/2017/11/06/a-better-mvc-part-2-fixing-encapsulation/
+- https://khanlou.com/2015/10/coordinators-redux/
+- https://davedelong.com/blog/2017/11/06/a-better-mvc-part-2-fixing-encapsulation/
+
+
+### Multiplatform Support Using CloudKit
+
+Depending on the amount of data you have and what your cross platform requirements are, here are the APIs of interest.
+
+- https://developer.apple.com/documentation/foundation/nsubiquitouskeyvaluestore
+- https://developer.apple.com/documentation/coredata/nspersistentcloudkitcontainer
+- https://developer.apple.com/documentation/cloudkit/ckrecord
+
+If you need to sync videos/images consider using external data storage:
+
+- https://developer.apple.com/documentation/coredata/nsattributedescription/1498295-allowsexternalbinarydatastorage
+
+### visionOS App
+
+Ed demo'ed his latest creation in immersive experiences.
+
+
+### Advent of Code and Hashmap
+
+One of the Advent of Code problems was around the topic of hashing.
+
+https://adventofcode.com/2023/day/15
+
+A useful resource that Carlyn found posted on Redit:
+
+- https://craftinginterpreters.com/hash-tables.html
+
 
 ---
 
