@@ -62,11 +62,9 @@ UIKit (e.g. ViewController) resources:
 - https://khanlou.com/2015/01/the-coordinator/ 
 - https://khanlou.com/2015/10/coordinators-redux/
 - https://davedelong.com/blog/2017/11/06/a-better-mvc-part-2-fixing-encapsulation/
-- https://khanlou.com/2015/10/coordinators-redux/
-- https://davedelong.com/blog/2017/11/06/a-better-mvc-part-2-fixing-encapsulation/
 
 
-### Multiplatform Support Using CloudKit
+### Multi-platform Support Using CloudKit
 
 Depending on the amount of data you have and what your cross platform requirements are, here are the APIs of interest.
 
