@@ -18,8 +18,51 @@ All people and all skill levels are welcome to join.
 
 ## 2023.12.23
 
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+Alan gave us an update on his project.  You can read about it [here](http://brain-gears.blogspot.com/p/home_4.html).  
 
+Andrei asked about adding an appdelegate to detect when the app is backgrounded.  Josh suggested using the [didEnterBackground](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622997-applicationdidenterbackground) and [willEnterForeground](https://developer.apple.com/documentation/uikit/uiapplication/1622944-willenterforegroundnotification) notifications.  
+
+John asked about MVVM in SwiftUI and we looked at moving the logic out of a login view into a view model.
+
+Josh reviewed an old [Angry Birds](https://github.com/joshuajhomann/AngryBirdsClone) project in spritekit as an inspriation for a VisionOS game.  
+
+We began altering previous [visionOS project](https://github.com/joshuajhomann/Reality) to add game controller support:
+```swift
+@Observable
+final class GameControllerService {
+    private(set) var currentController: GCController?
+    private(set) var buttonDown = true
+    private(set) var leftStick: SIMD2<Float> = .zero
+    private(set) var rightStick: SIMD2<Float> = .zero
+    let subscriptions = Subscriptions()
+    init() {
+         subscriptions += merge(
+            NotificationCenter.default
+                .notifications(named: .GCControllerDidBecomeCurrent)
+                .compactMap { $0.object as? GCController }
+                .removeDuplicates(),
+            NotificationCenter.default
+                .notifications(named: .GCControllerDidDisconnect)
+                .map { _ in nil }
+        )
+         .removeDuplicates(by: { $0 === $1 })
+         .with(unretained: self)
+         .onMainSubscribe { service, controller in
+             service.currentController?.extendedGamepad?.buttonA.valueChangedHandler = nil
+             service.currentController?.extendedGamepad?.leftThumbstick.valueChangedHandler = nil
+             service.currentController?.extendedGamepad?.rightThumbstick.valueChangedHandler = nil
+             guard let pad = controller?.extendedGamepad  else { return }
+             pad.buttonA.valueChangedHandler = { [weak service] _, _ , pressed in
+                 guard service?.buttonDown != pressed else { return }
+                 service?.buttonDown = pressed
+             }
+             pad.leftThumbstick.valueChangedHandler = { [weak service] _, x, y in service?.leftStick = .init(x,y) }
+             pad.rightThumbstick.valueChangedHandler = { [weak service] _, x, y in service?.rightStick = .init(x,y) }
+             service.currentController = controller
+         }
+    }
+}
+```
 ---
 
 ## 2023.12.16
