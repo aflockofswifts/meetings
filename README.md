@@ -11,9 +11,27 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 - [2023 Meetings](2023/README.md)
 
-## 2024.01.13
+## 2024.01.20
 
 - **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+
+---
+
+## 2024.01.13
+
+### Questions and Discusssion
+
+#### VisonOS
+Paul Hudson is running a [VisionOS course](https://ti.to/hacking-with-swift/unwrap-live-2024).  
+Apple's [VisonOS news release](https://developer.apple.com/news/?id=8fppguuh).  
+
+#### OS Log
+We discussed OSLog and how to use the console app using this [example](https://github.com/joshuajhomann/Logging).   
+![preview](https://github.com/joshuajhomann/Logging/raw/master/preview.png). 
+
+#### MVVM
+We discussed MVVM using this [example](https://github.com/joshuajhomann/Magic-Browser-SwiftUI).  
+![MVVM](materials/MVVM.png)
 
 ---
 
