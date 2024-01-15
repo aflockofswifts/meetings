@@ -2,7 +2,7 @@
 ![Flock](materials/flock.jpg)
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
-All people and all skill levels are welcome to join. 
+All people and all skill levels are welcome to join. **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ## Archives
 
@@ -11,11 +11,9 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 - [2023 Meetings](2023/README.md)
 
-## 2024.01.20
-
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
-
 ---
+
+## Previous Meeting Notes
 
 ## 2024.01.13
 
