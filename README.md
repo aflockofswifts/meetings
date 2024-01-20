@@ -44,6 +44,8 @@ Other resources:
 
 - https://www.youtube.com/watch?v=1GcU70xZ-P8
 
+Generating your xcode project from scratch, or updating it from the command line: [Xcodeproj](https://github.com/CocoaPods/Xcodeproj)
+
 ### Questions and Discusssion
 
 
@@ -67,7 +69,8 @@ https://www.pointfree.co/blog/posts/129-perception-a-back-port-of-observable
 Josh also gave us a link to an article that goes into depth about Observation:
 
 - https://fatbobman.com/en/posts/mastering-observation/
-
+[Perception](https://github.com/pointfreeco/swift-perception) back ported to older iOS versions and bridged to Observable in iOS 17+.  
+Apple swift [source code](https://github.com/apple/swift/blob/main/stdlib/public/Observation/Sources/Observation/ObservationTracking.swift) for observation tracking.  
 
 ## 2024.01.13
 
