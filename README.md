@@ -13,7 +13,61 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ---
 
-## Previous Meeting Notes
+## Notes
+
+## 2024.01.20
+
+### Presentation: Plugin Explorer
+
+Carlyn presented findings about how to implement plugin commands.
+
+The repo for the PluginExplorer is found here:
+
+https://github.com/carlynorama/PluginExplorer
+
+WWDC references:
+
+- https://developer.apple.com/wwdc22/110359
+- https://developer.apple.com/wwdc22/110401
+
+Swift Package Manager:
+
+- https://github.com/apple/swift-package-manager/
+
+The Original Pitch and Proposal:
+
+- https://forums.swift.org/t/pitch-package-manager-command-plugins/53172
+
+- https://github.com/apple/swift-evolution/blob/main/proposals/0332-swiftpm-command-plugins.md
+
+Other resources:
+
+- https://www.youtube.com/watch?v=1GcU70xZ-P8
+
+### Questions and Discusssion
+
+
+#### Apple Vision Pro Pre-orders
+
+The process was a little bumpy but it sounded like everyone that wanted to get one was able to. It seems like the backlog now is only about a month.
+
+#### Device Disposal
+
+Apple has special equipment to disassemble devices so the materials can be properly recycled.
+
+https://www.apple.com/environment/
+
+#### Perception and Observation:
+
+Josh showed us a new framework from pointfree.co that backports Observable by taking inspiration from the Swift open source library which uses system private interfaces (aka `_spi(SwiftUI)`) to implement observation. 
+
+https://www.pointfree.co/blog/posts/129-perception-a-back-port-of-observable
+
+
+Josh also gave us a link to an article that goes into depth about Observation:
+
+- https://fatbobman.com/en/posts/mastering-observation/
+
 
 ## 2024.01.13
 
