@@ -15,6 +15,67 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.01.27
+
+### Optimization Presentation
+
+Josh walked us through the documents in the Swift repo https://github.com/apple/swift/blob/main/docs/OptimizationTips.rst
+
+
+### Questions and Discussion
+
+#### Supporting in-app Purchases and Verifying Certificates
+
+You can stand up your own server or use one of these services:
+
+- https://www.revenuecat.com
+- https://www.purchasely.com
+
+If you are a small shop, you might just choose on-device verification knowing that it will be possible some to crack.
+
+#### Bug in Form HStack's
+
+Here is the sample project from Monty.
+
+https://github.com/MontyHarper/Bug-With-Form-HStack-ForEach.git
+
+
+#### Working with JSON
+
+- https://jsonlint.com
+- https://quicktype.io
+
+
+You could write your own viewer:
+
+- https://swiftwithmajid.com/2020/09/02/displaying-recursive-data-using-outlinegroup-in-swiftui/
+
+
+#### Editing Notifications
+
+- https://developer.apple.com/documentation/usernotifications/modifying_content_in_newly_delivered_notifications/
+
+
+#### Schemes are XML!
+
+Carlyn has been hacking schemes from the command line.
+
+- https://github.com/carlynorama/BuildPluginExampleTarget/tree/main/.swiftpm/xcode/xcshareddata/xcschemes
+
+#### Computer History
+
+It was the 40th anniverary of the Mac this week.
+
+- https://computerhistory.org/events/insanely-great/
+
+
+#### RayTracing
+
+Ray is starting the Ray Tracing challenge. Here are some good resources for Ray Tracing:
+
+- https://pbr-book.org
+- http://raytracerchallenge.com
+
 ## 2024.01.20
 
 ### Presentation: Plugin Explorer
