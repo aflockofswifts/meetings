@@ -15,6 +15,76 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.02.03
+
+### Safari Extension in Swift
+
+Carlyn took us on a voyage exploring web extensions. It is a little tricky to setup if you want your extension to talk to your app.
+
+- https://www.whynotestflight.com/excuses/getting-started-with-safari-web-extensions/
+
+- https://www.whynotestflight.com/excuses/but-whats-a-plain-web-extension/
+
+### Sequences Presentation
+
+Josh gave a short presentation on iterating through grid composed of two grids.
+
+```swift
+func lazyCartesianProduct<X: Sequence, Y: Collection>(_ x: X, _ y: Y) -> some Sequence<(X.Element, Y.Element)> {
+        x.lazy.flatMap { x in y.lazy.map { y in (x, y) } }
+    }
+    
+func cartesianProduct<X: Sequence, Y: Collection>(_ x: X, _ y: Y) -> some Sequence<(X.Element, Y.Element)> {
+    sequence(state: (
+        column: x.makeIterator(),
+        row: y.makeIterator(),
+        currentColumn: Optional<X.Element>.none
+    )) { state in
+        state.currentColumn = state.currentColumn ?? state.column.next()
+        let y = state.row.next() ?? {
+            state.currentColumn = state.column.next()
+            state.row = y.makeIterator()
+            return state.row.next()
+        }()
+        return state.currentColumn.flatMap { x in y.map { y in (x, y) } }
+    }
+}
+```
+
+It is also interesting to look at the product type defined in the algorithms library:
+
+- https://github.com/apple/swift-algorithms/blob/main/Sources/Algorithms/Product.swift
+
+### Connect3D Available in the Store 🥳
+
+Ed released an Apple Vision Pro app. Congratulations! Quite an accomplishment considering he developed it all without hardware.
+
+https://apps.apple.com/us/app/connect3d-spatial/id6476113222
+
+
+### Questions and Discussion
+
+#### Apple Vision Pro Day
+
+John and Ed attended the meeting using AVP. We had fun seeing their avatars and getting a firsthand description of the platform.
+
+- https://support.apple.com/en-ca/HT213949
+
+
+#### AI and Software Development
+
+How is it changing what people are doing?
+
+- https://www.kodeco.com/44206375-kodeco-podcast-putting-ai-to-use-in-software-development-v2-s2-e3
+
+
+It is possible that the code quality is better for other languages such as Python and C++ because the corpus is larger.
+
+
+
+
+
+
 ## 2024.01.27
 
 ### Optimization Presentation
