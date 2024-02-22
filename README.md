@@ -15,15 +15,115 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.02.24
+
+---
+
+## 2024.02.17
+
+### Presentation: Transforms and SwiftUI
+
+Josh took us through an example of using transforms, matrix multiplication and
+how homogeneous coordinates work to produce affine transforms. Discussion of 
+column-based vs row-based transforms.
+
+Carlyn notes this tutorial series:
+
+- https://www.3blue1brown.com/lessons/linear-transformations
+
+Peter notes this Tech note from Apple about transforming images:
+
+- https://developer.apple.com/documentation/accelerate/applying_geometric_transforms_to_images
+
+### Questions and Discussion
+
+#### New SwiftUI Field Guide
+
+- https://www.swiftuifieldguide.com
+
+#### Swift System
+
+Cross platform abstractions for file access, etc.
+
+- https://github.com/apple/swift-system
+
+
+For example, Swift NIO uses System as a dependency.
+
+#### Underscored attributes
+
+What do they all mean? Find out here:
+
+- https://github.com/apple/swift/blob/main/docs/ReferenceGuides/UnderscoredAttributes.md
+
+---
+
+## 2024.02.10
+
+### Questions and Discussion
+
+#### Apple Vision Pro
+
+Lots of discussion about virtual avatars, Zoom implementation, bugs, etc.
+
+Frank shared this top 10 app list:
+
+- https://www.youtube.com/watch?v=AeSK-Ilmu38
+
+Humberto shared this best app for teens. 😂
+
+- https://x.com/aaditsh/status/1754219177089675287?s=20
+
+Discussion of Polyspatial 
+
+- https://apps.apple.com/us/app/lego-builders-journey/id1441636691?platform=appleVisionPro
+
+Discussion of Godot
+
+- https://apps.apple.com/us/app/defend-cow-castle/id6476968953
+
+
+- https://github.com/kevinw/GodotVision
+
+
+#### Swift Collections
+
+There is a new release of Swift collections (1.1) that now includes `Heap` `BitSet` `BitArray` `TreeSet` and `TreeDictionary`
+
+- https://github.com/apple/swift-collections
+
+
+#### Code Organization and Tracing Tools
+
+How to name SwiftUI files:
+
+- https://scottsmithdev.com/screen-vs-view-in-swiftui
+
+Log function names with `#function`
+
+Also, Josh notes:
+
+```swift
+let _ = Self._printChanges()
+```
+
+- https://developer.apple.com/documentation/os/logger
+
+
+---
+
 ## 2024.02.03
 
-### Safari Extension in Swift
+###
+
+#### Safari Extension in Swift
 
 Carlyn took us on a voyage exploring web extensions. It is a little tricky to setup if you want your extension to talk to your app.
 
 - https://www.whynotestflight.com/excuses/getting-started-with-safari-web-extensions/
 
 - https://www.whynotestflight.com/excuses/but-whats-a-plain-web-extension/
+
 
 ### Sequences Presentation
 
