@@ -17,6 +17,67 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## 2024.02.24
 
+### Presentation: Generalized Pagination
+
+Josh started project for handling pagination in a generalized way.
+
+- Use an enumeration to handle loading, loaded(Content), error, empty states.
+- Use https://pointfree.co `@CasePathable` to ergonomically handle the enum states.
+- Make a generic type to handle the content and getting the next set of data.
+- Make the pagination type conform to `RandomAccessCollection` and friends by projecting the underlying content array.
+- Make a pagination manager using an actor that accepts closures for fetching data and synchronizing fetching calls and publishing result via an async stream. 
+
+Source code TBD.
+
+### Questions and Discussion
+
+#### Swift 6 and Swift Evolution
+
+Swift 6 branch was announced meaning 5.10 and Swift 6 are being developed together.
+
+- https://github.com/apple/swift-evolution
+
+
+An alternative view of evolution sorted by status:
+
+- https://www.swift.org/swift-evolution/
+
+Some recent proposals highlighted by Josh:
+
+- https://github.com/apple/swift-evolution/blob/main/proposals/0421-generalize-async-sequence.md
+
+
+#### Implementing a `with` method
+
+Allows mutation of a builder type were the final built type may be declared with a let.
+
+
+#### Mojo
+
+Performance analysis of Mojo looking specifically at TCO (tail call optimization) in recursive functions.
+
+- https://www.modular.com/blog/mojo-vs-rust-is-mojo-faster-than-rust
+
+
+With regard to optimization and debugging we discussed looking at output from godbolt.com.
+
+- https://github.com/apple/swift/blob/main/docs/DebuggingTheCompiler.md
+
+```sh
+(lldb) p getFunction()->dump()
+```
+
+Georgi shared this link:
+
+- https://trinhngocthuyen.com/posts/tech/how-a-swift-file-is-compiled/
+
+#### PKL 
+
+A configuration language that plays nicely with Swift types and others.
+
+https://pkl-lang.org/
+
+
 ---
 
 ## 2024.02.17
