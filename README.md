@@ -40,8 +40,7 @@ These include:
 
 Josh showed several additional examples including several examples of how you can run into problems with view model isolation. The conversation then turned to state management more generally comparing different approaches.  We also talked about task inheritance and structured concurrency more generally.  Memorize this:
 
-https://github.com/aflockofswifts/meetings/blob/main/2022/materials/task-inheritance.png
-
+![Task Inheritence](https://github.com/aflockofswifts/meetings/blob/main/2022/materials/task-inheritance.png?raw=true)
 
 ---
 
