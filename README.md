@@ -15,6 +15,36 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.03.02
+
+### Questions and Discussion
+
+#### Apple AirPods and Vision Pro
+
+Rainer notes that AirPod Pros give amazing sound for the small package they are in. He was wondering how they compare to Vision Pro. The consensus seemed to be that Vision Pro audio is better than AirPod Pro audio but not as good as AirPod Max audio.
+
+#### Concurrency Isolation
+
+We went through the points in https://www.massicotte.org/intro-to-isolation 
+
+These include:
+
+  - You can determine isolation from a types declaration
+  - Sometimes you have to look at base types to get the answer
+  - When you await you can change isolation
+  - Closures can inherit isolation
+  - You can opt out of isolation
+  - Protocols can specify isolation and it has tricky consequences
+  - SwiftUI only specifies the body property as `@MainActor` which can be confusing
+  - Turn on complete checking to find out where your data races might be.
+
+Josh showed several additional examples including several examples of how you can run into problems with view model isolation. The conversation then turned to state management more generally comparing different approaches.  We also talked about task inheritance and structured concurrency more generally.  Memorize this:
+
+https://github.com/aflockofswifts/meetings/blob/main/2022/materials/task-inheritance.png
+
+
+---
+
 ## 2024.02.24
 
 ### Presentation: Generalized Pagination
