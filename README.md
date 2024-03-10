@@ -15,6 +15,56 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.03.09
+
+### Questions and Discussion
+
+There were other other discussions about working remotely in teams, getting experience at hackathons and working on open source PRs.
+
+#### Performance
+
+We looked at a performance problem in an app.  First we looked at it with insturments and found that the main loop was running with 98% CPU, a battery destroyer. It was hard to figure out in insturments exactly why this was happening but it did eventually lead us to the SwiftUI `View` that was re-rendering.
+
+Then we insturmented this view with:
+
+```swift
+    let _ = Self._printChanges()
+```
+
+After closer inspection, we found that the view was using a geometry reader and then putting that into the view as an environment object. That would cause the view to re-render causing the whole cycle to repeat in a tight loop.
+
+Josh's suggestion was to use a environment value instead:
+
+Create a windowSize value that can be inserted into the environment.:
+
+```swift
+    extension EnvironmentValues {
+        var windowSize: CGSize {
+            get { self[SizeEnvironmentKey.self] }
+            set { self[SizeEnvironmentKey.self] = newValue }
+        }
+    }
+```
+
+Create a method that you can set the size with (from something like a geometry reader).
+
+```swift    
+    extension View {
+        func insertSizeIntoEnvironment(_ size: CGSize) -> some View {
+            environment(\.windowSize, size)
+        }
+    }
+```
+
+Any view can get access to the size with this:
+
+```swift
+@Environment(\.windowSize) private var size
+```
+
+This would prevent the rapid invalidation of views caused by constantly updating the environment object.
+
+
 ## 2024.03.02
 
 ### Questions and Discussion
