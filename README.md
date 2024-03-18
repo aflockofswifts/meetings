@@ -15,6 +15,49 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.03.16
+
+### Presentation: Custom Encoders
+
+Carlyn took us on a guided tour of writing a custom encoder.
+
+- https://www.whynotestflight.com/excuses/how-do-custom-encoders-work/
+- https://www.whynotestflight.com/excuses/and-what-can-i-make-a-custom-encoder-do/
+
+Frank also previously presented about this topic:
+
+- https://github.com/franklefebvre/slides/blob/master/2018-10-11-CocoaHeadsParis-codable-xml.pdf
+
+
+### Questions and Discussion
+
+#### Apple Vision Pro
+
+John B showed us a demo of one of his Apple Vision Pro app. He also gave us a link to an app that he is currently working on.
+
+- https://jera.com/bluebird
+
+There is an upcoming Apple Vision Pro in-person conference:
+
+- https://www.eventbrite.com/e/visiondevcamp-tickets-849184312137
+
+
+#### Swift News
+
+Playdate
+
+- https://www.swift.org/blog/byte-sized-swift-tiny-games-playdate/
+
+Parameter packs
+
+- https://www.swift.org/blog/pack-iteration/
+
+
+#### Swift Hardware
+
+- https://madmachine.io
+
+
 ## 2024.03.09
 
 ### Questions and Discussion
