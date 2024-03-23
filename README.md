@@ -15,6 +15,212 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.03.23
+
+### Presentation: Actor reentrancy
+
+We looked at the issue of actor reentrancy which is discussed at length in the original Actor proposal: https://github.com/apple/swift-evolution/blob/main/proposals/0306-actors.md#actor-reentrancy
+
+We did this by creating the original code example and then running as a unit test repeatedly.
+
+Once we got to a failing state we implemented a Swift concurrency friendly Semaphore based on the open source library: https://github.com/groue/Semaphore/blob/main/Sources/Semaphore/AsyncSemaphore.swift 
+
+Then we changed the test code so that it generated deadlocks. The complete example:
+
+```swift
+import XCTest
+
+enum Judgement {
+  case noIdea, goodIdea, badIdea
+}
+
+typealias Decision = Judgement
+
+
+public final class AsyncSemaphore: @unchecked Sendable {
+  
+  private var count: Int
+  
+  init(count: Int) {
+    precondition(count >= 0)
+    self.count = count
+  }
+  
+  private let _lock = NSRecursiveLock()
+  private func lock() {
+    _lock.lock()
+  }
+  private func unlock() {
+    _lock.unlock()
+  }
+  private class Suspension: @unchecked Sendable {
+    enum State {
+      case suspended(CheckedContinuation<Void, Never>)
+    }
+    var state: State
+    init(state: State) {
+      self.state = state
+    }
+  }
+  private var suspensions: [Suspension] = []
+  
+  deinit {
+    precondition(suspensions.isEmpty)
+  }
+  
+  public func wait() async {
+    lock()
+    count -= 1
+    if count >= 0 {
+      unlock()
+      return
+    }
+    await withCheckedContinuation { continuation in
+      let s = Suspension(state: .suspended(continuation))
+      suspensions.insert(s, at: 0)
+      unlock()
+    }
+  }
+  
+  @discardableResult
+  public func signal() -> Bool {
+    lock()
+    count += 1
+    switch suspensions.popLast()?.state {
+    case .suspended(let continuation):
+      unlock()
+      continuation.resume()
+      return true
+    default:
+      unlock()
+      return false
+    }
+  }
+}
+
+actor Person {
+  var friend: Person?
+  var opinion: Decision = .noIdea
+  let semaphore = AsyncSemaphore(count: 1)
+  
+  func tell(_ opinion: Judgement, heldBy person: Person) async {
+    
+    if .random() {
+      if opinion == .goodIdea {
+        _ = await person.thinkOfABadIdea()
+      } else {
+        _ = await person.thinkOfAGoodIdea()
+      }
+    }
+    
+  }
+  
+  init(friend: Person? = nil, opinion: Decision) {
+    self.friend = friend
+    self.opinion = opinion
+  }
+  
+  func thinkOfAGoodIdea() async -> Decision {
+    await semaphore.wait()    
+    defer {
+      semaphore.signal()
+    }
+    opinion = .goodIdea
+    await friend?.tell(opinion, heldBy: self)
+    return opinion
+  }
+  
+  func thinkOfABadIdea() async -> Decision {
+    await semaphore.wait()
+    defer {
+      semaphore.signal()
+    }
+    opinion = .badIdea
+    await friend?.tell(opinion, heldBy: self)
+    return opinion
+  }
+}
+
+final class Reent2Tests: XCTestCase {
+  func testRace() async {
+    let friend = Person(friend: nil, opinion: .noIdea)
+    let person = Person(friend: friend, opinion: .noIdea)
+
+    // deadlock!
+
+    let a = await person.thinkOfAGoodIdea()
+    XCTAssertEqual(Judgement.goodIdea, a)
+      
+    let idea = await person.thinkOfABadIdea()
+    XCTAssertEqual(Judgement.badIdea, idea)
+  }
+
+}
+```
+
+A followup would be to see how to find the deadlock introduced with the locks in this way.
+
+### Questions and Discussion
+
+#### Interfacing to C and C++
+
+Ed is working on protein folding visualization for Apple Vision Pro and wants to interface with some existing libraries that load pdb files. Carlyn gave him some advice about that:
+
+https://www.whynotestflight.com/excuses/but-some-of-my-best-friends-are-c/
+
+Also, these two repos:
+
+- https://github.com/carlynorama/UnsafeExplorer/tree/471f563afe223e41c0a29e4dc5e4253508fa46ce
+
+- https://github.com/carlynorama/UnsafeWrapCSampler
+
+Another particular is working with fixed size C arrays that come back as tuples:
+
+- https://github.com/carlynorama/FixedSizeCollection/blob/main/Sources/FixedSizeCollection/TupleLove.swift
+
+Another treat was learning about Monty other endeavors.
+
+- https://montyharper.com/track/2216372/what-is-the-shape-of-the-molecule
+
+
+#### App Architecture
+
+Allen had a question about how to take his App model object and use it with SwiftUI.
+
+We talked about the new Observable macro and how you can use it to target older versions of iOS.
+
+https://www.pointfree.co/blog/posts/129-perception-a-back-port-of-observable
+
+#### Vision Dev Camp
+
+Coming up next week. Ed and John will both be there.
+
+- https://www.eventbrite.com/e/visiondevcamp-tickets-849184312137
+
+
+#### Date and Time
+
+There was a lot of chat discussion about date and time.
+
+- https://www.donnywals.com/formatting-dates-in-swift-using-date-formatstyle-on-ios-15/
+
+- https://swiftpackageindex.com/davedelong/time/1.0.1/documentation/time
+
+- https://developer.apple.com/documentation/foundation/date/iso8601formatstyle
+
+#### Fixing SwiftData Initialization Error
+
+Monty was having trouble with his SwiftData app.
+
+The hypothesis is that he needed to add a config. i.e.
+
+```swift
+let schema = Schema([
+                Item.self,
+            ])
+            let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+```
+
 ## 2024.03.16
 
 ### Presentation: Custom Encoders
@@ -28,7 +234,6 @@ Frank also previously presented about this topic:
 
 - https://github.com/franklefebvre/slides/blob/master/2018-10-11-CocoaHeadsParis-codable-xml.pdf
 
-
 ### Questions and Discussion
 
 #### Apple Vision Pro
@@ -40,7 +245,6 @@ John B showed us a demo of one of his Apple Vision Pro app. He also gave us a li
 There is an upcoming Apple Vision Pro in-person conference:
 
 - https://www.eventbrite.com/e/visiondevcamp-tickets-849184312137
-
 
 #### Swift News
 
