@@ -15,6 +15,83 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.03.30
+
+### Presentation: ViewModel as a Function
+
+Josh presented how to write a view model as a single function. Writing code in this style enhances local reasoning and testability. Thinking of the logic in this way (even if you use a different framework) can help influence how you write code in a positive way.
+
+```swift
+typealias Input = (
+  increaseFirst: AnyPublisher<Void, Never>,
+  increaseSecond: AnyPublisher<Void, Never>
+)
+typealias Output = (
+  firstValue: AnyPublisher<String, Never>,
+  secondValue: AnyPublisher<String, Never>,
+  total: AnyPublisher<String, Never>
+)
+typealias AddViewModel = (Input) -> Output
+
+final class AddViewController: UIViewController {
+    private var subscriptions: Set<AnyCancellable> = []
+    init(viewModel: AddViewModel) {
+        super.init(nibName: nil, bundle: nil)
+        let firstInputSubject = PassthroughSubject<Void, Never>()
+        let secondInputSubject = PassthroughSubject<Void, Never>()
+        let outputs = viewModel((
+          increaseFirst: firstInputSubject.eraseToAnyPublisher(),
+            increaseSecond: secondInputSubject.eraseToAnyPublisher()
+    ))
+
+... continued
+```
+
+To code efficiently in this style, you'll need to build some infrastructure (e.g. `with` and `bind`) or bring it into your code with a Swift Package.
+
+### Presentation: Date Parsing
+
+Carlyn presented about dates and scanning text which she has written extensively about during the last week!
+
+- https://www.whynotestflight.com/excuses/date-parsing.-nose-wrinkle./
+
+- https://www.whynotestflight.com/excuses/wait-how-do-i-scan-text-again/
+
+Some other resources that were mentioned:
+
+Formatting in general:
+
+- https://goshdarnformatstyle.com
+
+Dave Delong on points in space and time:
+
+- https://vimeo.com/865876497
+
+### Questions and Discussion
+
+### Apple Vision Pro Conference
+
+Ed was speaking to us live from an Apple Vision Pro hackathon. He had some questions about Multipeer connectivity and 3D.
+
+- https://github.com/carlynorama/SketchPad
+
+### SwiftData
+
+Monty is learning how to use SwiftData and had some questions about making relationships. I debugging, Josh suggested making his view @MainActor and changing one of his optional arrays to be just an empty array.
+
+Resource:
+
+- https://www.hackingwithswift.com/quick-start/swiftdata/how-to-create-one-to-many-relationships
+
+
+### SwiftIO Embedded Playground
+
+Ray mentioned that he bought a SwiftIO kit.
+
+https://madmachine.io
+
+---
+
 ## 2024.03.23
 
 ### Presentation: Actor reentrancy
@@ -220,6 +297,8 @@ let schema = Schema([
             ])
             let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 ```
+
+---
 
 ## 2024.03.16
 
