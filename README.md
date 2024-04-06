@@ -15,6 +15,70 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.04.06
+
+### Presentation: Ordering Async Work
+
+Josh showed us an outline for a solution to order async work. It uses an actor to organize (and protect) a list of prioritized sendable closures that it can execute using a disguardable task group. It uses the `Heap` structure from Swift Collection to establish the work order and an async stream to feed in and process work.
+
+- https://github.com/apple/swift-collections/blob/main/Documentation/Heap.md
+
+### Discussions and Questions
+
+#### Conferences
+
+Upcoming conferences in Europe.
+
+- https://swiftconnection.io
+- https://2023.nsspain.com
+- https://www.iosdevuk.com
+
+Frank L. (just back from try! Swift Tokyo) notes:
+
+Tickets are not on sale for NSSpain yet, but the dates are known. September 18-20th. Swift Connection is September 23-24, and there's Server-Side Swift in London on September 26-27.
+
+#### Privacy Manifest
+
+Peter was noting problems showing up on the app store complaining about privacy manifest files. The consensus seemed to be that there was an error in one of the third party packages being used.
+
+- https://developer.apple.com/support/third-party-SDK-requirements/
+- https://developer.apple.com/documentation/bundleresources/privacy_manifest_files
+
+#### Inlinable vs inline(\_\_always) vs \_transparent
+
+- https://github.com/apple/swift/blob/main/docs/ReferenceGuides/UnderscoredAttributes.md
+
+
+#### Breaking out of nested loops
+
+- https://www.hackingwithswift.com/example-code/language/how-to-break-out-of-multiple-loop-levels-using-labeled-statements
+
+In the end, the code didn't need the label.
+
+
+#### Testing Framework
+
+Might be an interesting topic for future discussion.
+
+- https://github.com/apple/swift-testing
+
+#### ~Copyable
+
+This is an interesting beast. Carlyn notes:
+
+- https://github.com/apple/swift-evolution/blob/main/proposals/0427-noncopyable-generics.md
+
+```
+                 any ~Copyable
+                 /         \
+                /           \
+     Any == any Copyable   <all purely noncopyable types>
+          |
+  <all copyable types>
+```
+
+---
+
 ## 2024.03.30
 
 ### Presentation: ViewModel as a Function
