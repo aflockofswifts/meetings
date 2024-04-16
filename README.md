@@ -15,6 +15,85 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.04.13
+
+### Presentation: SwiftUI Layout
+
+Josh showed the details of how SwiftUI layout works
+by creating a custom layout that inspects the calls
+of the layout system. Code TBD
+
+Also see:
+
+- https://developer.apple.com/documentation/swiftui/layoutvaluekey
+
+#### Fixing up Geometry Reader
+
+As a bonus side-topic, Josh showed how to "fix" how layout of a geometry reader works.
+
+```swift
+var body some View {
+  let _ = Self._printChanges()
+  GeometryReader { geometry in
+    VStack {
+      Image (systemName: "globe")
+        .imageScale(.large)
+      Text ("Hello, world!")
+        .padding()
+    }
+    .frame(
+        width: geometry.size.width, 
+        height: geometry.size.height, 
+        alignment: .center)
+    }
+}
+```
+
+#### Format
+
+Bonus topic about how to format numbers.
+
+https://goshdarnformatstyle.com
+
+
+#### Swift Talk Reimplements SwiftUI
+
+- https://talk.objc.io/collections/swiftui-layout-explained
+
+### Questions and Discussion
+
+#### One More Thing
+
+A new AltWWDC/Alt-Conf/Layers Inspired Conference happening WWDC week.
+
+- https://omt-conf.com
+
+#### Scheduling Background Work
+
+Mark asking about how to schedule background work.
+
+- https://developer.apple.com/documentation/swiftui/scene/backgroundtask(_:action:)
+
+
+#### Assembly Language
+
+Carlyn posting three links on assembly:
+
+* https://www.youtube.com/watch?v=in-UY_EyI14&list=PL2EF13wm-hWAlQe87UB2HV0SVhBXFpXbn
+  
+* https://cpulator.01xz.net
+  
+* Assembly Language & Computer Architecture from MIT 6.172 Performance Engineering of Software Systems, Fall 2018 https://www.youtube.com/watch?v=L1ung0wil9Y
+
+Also,
+
+- https://www.youtube.com/watch?v=in-UY_EyI14&list=PL2EF13wm-hWAlQe87UB2HV0SVhBXFpXbn
+
+
+#### Async From a Low Level
+
+- https://www.youtube.com/watch?v=H_K-us4-K7s
+
 ## 2024.04.06
 
 ### Presentation: Ordering Async Work
