@@ -49,6 +49,53 @@ var body some View {
 }
 ```
 
+```swift
+struct InspectorLayout: Layout {
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let size = subviews.first?.sizeThatFits(proposal) ?? .zero
+        print(
+        """
+        \(subviews.first?[LayoutNameKey.self] ?? ""):
+        Received proposal: width \(proposal.width.proposalDescription) height: \(proposal.height.proposalDescription)
+        Returning \(size)
+        """
+        )
+        return size
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        subviews.forEach {
+            print("placing \(subviews.first?[LayoutNameKey.self] ?? ""): width: \(proposal.width.proposalDescription) height: \(proposal.height.proposalDescription)")
+            $0.place(at: .init(x: bounds.midX, y: bounds.midY), anchor: .center, proposal: proposal)
+        }
+    }
+}
+
+
+private struct LayoutNameKey: LayoutValueKey {
+    static let defaultValue = "[unnamed view]"
+}
+
+extension View {
+    func inspectLayout(name: some CustomStringConvertible) -> some View {
+        InspectorLayout() {
+            layoutValue(key: LayoutNameKey.self, value: String(describing: name))
+        }
+    }
+}
+
+private extension Optional where Wrapped == CGFloat {
+    var proposalDescription: String {
+        map {
+            switch $0 {
+            case .infinity: "max"
+            case .zero: "min"
+            default: "custom \(self!)"
+            }
+        } ?? "ideal"
+    }
+}
+```
 #### Format
 
 Bonus topic about how to format numbers.
@@ -98,10 +145,82 @@ Also,
 
 ### Presentation: Ordering Async Work
 
-Josh showed us an outline for a solution to order async work. It uses an actor to organize (and protect) a list of prioritized sendable closures that it can execute using a disguardable task group. It uses the `Heap` structure from Swift Collection to establish the work order and an async stream to feed in and process work.
+Josh showed us an outline for a solution to order async work. It uses an actor to organize (and protect) a list of prioritized sendable closures that it can execute using a discardable task group. It uses the `Heap` structure from Swift Collection to establish the work order and an async stream to feed in and process work.
 
 - https://github.com/apple/swift-collections/blob/main/Documentation/Heap.md
 
+```swift
+import Foundation
+import HeapModule
+
+actor AsyncPriorityWorkQueue<Priority: Comparable & Sendable, Output> {
+    private let maxConcurrentElements: Int
+    private let postWorkNotification: AsyncStream<Void>.Continuation
+    private var concurrentItems = 0
+    private var subscriptions = Subscriptions()
+    private var priorityQueue = Heap<Work>()
+    init(of output: Output.Type, priorityOfType: Priority.Type = Int.self, maxConcurrentElements: Int) {
+        self.maxConcurrentElements = maxConcurrentElements
+        let (workNotifications, postWorkNotification) = AsyncStream.makeStream(of: Void.self, bufferingPolicy: .unbounded)
+        self.postWorkNotification = postWorkNotification
+        subscriptions += Task {
+            await withDiscardingTaskGroup { [weak self] group in
+                for await _ in workNotifications {
+                    while let work = await self?.dequeueWork() {
+                        group.addTask {
+                            await work.operation()
+                            postWorkNotification.yield()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private func dequeueWork() -> Work? {
+        concurrentItems < maxConcurrentElements
+            ? priorityQueue.popMax()
+            : nil
+    }
+    private func enqueue(priority: Priority, operation: @escaping @Sendable () async -> Void) {
+        priorityQueue.insert(.init(priority: priority, operation: operation))
+        postWorkNotification.yield()
+    }
+    func perform(priority: Priority, operation: @escaping @Sendable () async throws -> Output) async throws -> Output {
+        try await withCheckedThrowingContinuation { [weak self] continuation in
+            Task { [weak self] in
+                await self?.enqueue(priority: priority) {
+                    continuation.resume(with: await Result {
+                        async let value = operation()
+                        return try await value
+                    })
+                }
+            }
+        }
+    }
+}
+
+extension AsyncPriorityWorkQueue {
+    struct Work: Comparable, Sendable  {
+        let id = UUID()
+        var priority: Priority
+        var operation: @Sendable () async -> Void
+        static func < (lhs: Self, rhs: Self) -> Bool { lhs.priority < rhs.priority }
+        static func == (lhs: Self, rhs: Self) -> Bool { lhs.id == rhs.id }
+    }
+}
+
+extension Result where Failure == Error {
+    init(_ operation: () async throws -> Success) async {
+        do { self = .success(try await operation()) } catch { self = .failure(error) }
+    }
+}
+
+final class Subscriptions {
+    private var cancellations: [() -> Void] = []
+    deinit { cancellations.forEach { $0() } }
+    static func += <Value, Failure>(lhs: Subscriptions, rhs: Task<Value, Failure>) { lhs.cancellations.append(rhs.cancel) }
+}
+```
 ### Discussions and Questions
 
 #### Conferences
@@ -165,14 +284,20 @@ This is an interesting beast. Carlyn notes:
 Josh presented how to write a view model as a single function. Writing code in this style enhances local reasoning and testability. Thinking of the logic in this way (even if you use a different framework) can help influence how you write code in a positive way.
 
 ```swift
+
+import Combine
+import UIKit
+
+import PlaygroundSupport
+
 typealias Input = (
-  increaseFirst: AnyPublisher<Void, Never>,
-  increaseSecond: AnyPublisher<Void, Never>
+    increaseFirst: AnyPublisher<Void, Never>,
+    increaseSecond: AnyPublisher<Void, Never>
 )
 typealias Output = (
-  firstValue: AnyPublisher<String, Never>,
-  secondValue: AnyPublisher<String, Never>,
-  total: AnyPublisher<String, Never>
+    firstValue: AnyPublisher<String, Never>,
+    secondValue: AnyPublisher<String, Never>,
+    total: AnyPublisher<String, Never>
 )
 typealias AddViewModel = (Input) -> Output
 
@@ -183,11 +308,52 @@ final class AddViewController: UIViewController {
         let firstInputSubject = PassthroughSubject<Void, Never>()
         let secondInputSubject = PassthroughSubject<Void, Never>()
         let outputs = viewModel((
-          increaseFirst: firstInputSubject.eraseToAnyPublisher(),
+            increaseFirst: firstInputSubject.eraseToAnyPublisher(),
             increaseSecond: secondInputSubject.eraseToAnyPublisher()
-    ))
+        ))
+        with(UIStackView(arrangedSubviews: [
+            UIButton(type: .roundedRect, primaryAction: .init(title: "Increase First") { _ in firstInputSubject.send() }),
+            UIButton(type: .roundedRect, primaryAction: .init(title: "Increase Second") { _ in secondInputSubject.send() }),
+            with(UILabel()) { label in
+                outputs.firstValue.sink { [label] value in label.text = value }.store(in: &subscriptions)
+            },
+            with(UILabel()) { label in
+                 outputs.secondValue.sink { [label] value in label.text = value }.store(in: &subscriptions)
+            },
+            with(UILabel()) { label in
+                outputs.total.sink { [label] value in label.text = value }.store(in: &subscriptions)
+            }
+        ])) { stack in
+            stack.translatesAutoresizingMaskIntoConstraints = false
+            stack.axis = .vertical
+            stack.alignment = .leading
+            view.addSubview(stack)
+            NSLayoutConstraint.activate([
+                view.centerXAnchor.constraint(equalTo: stack.centerXAnchor),
+                view.centerYAnchor.constraint(equalTo: stack.centerYAnchor)
+            ])
+        }
+    }
+    @available(*, unavailable)
+    required init?(coder: NSCoder) { fatalError("")}
+}
 
-... continued
+
+func addViewModel(_ input: Input)-> Output {
+    let firstValue = input.increaseFirst.map { _ in 1 }.scan(0, +).prepend(0)
+    let secondValue = input.increaseSecond.map { _ in 1 }.scan(0, +).prepend(0)
+    return (
+        firstValue: firstValue.map(String.init(describing:)).eraseToAnyPublisher(),
+        secondValue: secondValue.map(String.init(describing:)).eraseToAnyPublisher(),
+        total: Publishers.CombineLatest(firstValue, secondValue)
+            .map(+)
+            .map(String.init(describing:))
+            .eraseToAnyPublisher()
+    )
+}
+
+PlaygroundPage.current.setLiveView(AddViewController(viewModel: addViewModel))
+
 ```
 
 To code efficiently in this style, you'll need to build some infrastructure (e.g. `with` and `bind`) or bring it into your code with a Swift Package.
