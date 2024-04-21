@@ -15,13 +15,123 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+### Presentation: Swift Package Manager
+
+Carlyn showed us a new command line tool she is working on for managing her many Swift Packages.
+
+```
+  - https://github.com/carlynorama/TemplatePackageToolLibrary
+```
+
+### Presentation: Maps and SwiftUI
+
+Frank showed us how to implement a map today in SwiftUI. His implementation let us put down points of interest with a long tap in pure SwiftUI.
+
+```swift
+import SwiftUI
+import MapKit
+  
+struct POI: Identifiable {
+  let id = UUID().uuidString
+  var location: CLLocationCoordinate2D
+      
+  init(coordinate: CLLocationCoordinate2D) {
+    location = coordinate
+  }
+      
+  init(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+    location = .init(latitude: latitude, longitude: longitude)
+  }
+}
+
+struct ContentView: View {
+  @State private var points: [POI] = [
+          .init(latitude: 48.85, longitude: 2.33),
+          .init(latitude: 48.87, longitude: 2.38)
+      ]
+      
+  var body: some View {
+      MapReader { mapProxy in
+          Map {
+            ForEach(points) { point in
+                Marker(coordinate: point.location) {
+                    Image(systemName: "globe")
+                }
+            }
+          }.onLongPressGestureWithLocation { point in
+            if let coordinate = mapProxy.convert(point, from: .local) {
+                  points.append(.init(coordinate: coordinate))
+            }
+        }
+    }
+  }
+}
+
+struct LongPressGestureWithLocation: ViewModifier {
+  private var perform: (CGPoint) -> Void
+  @State private var location: CGPoint?
+      
+  init(perform: @escaping (CGPoint) -> Void) {
+    self.perform = perform
+  }
+      
+  @ViewBuilder
+  func body(content: Content) -> some View {
+    content
+      .gesture(DragGesture(minimumDistance: 0)
+      .onChanged { value in
+          location = value.location
+      }
+      .simultaneously(with: LongPressGesture()
+      .onEnded { done in
+          if done, let location {
+            perform(location)
+          }
+        })
+      )
+    }
+  }
+  
+extension View {
+  func onLongPressGestureWithLocation(perform: @escaping (CGPoint) -> Void) -> some View {
+    modifier(LongPressGestureWithLocation(perform: perform))
+  }
+}
+```
+
+Related resources:
+
+- https://developer.apple.com/documentation/mapkit/mapreader
+- https://developer.apple.com/documentation/swiftui/coordinatespace
+
+We came to the consensus that you need UIKit to implement full gesture capabilities:
+
+- https://developer.apple.com/documentation/uikit/uigesturerecognizer
+
+### Presentation: SwiftUI Layout
+
+Josh continued to review the details of SwiftUI layout. Most of the code was presented in the previous week with special attention this week put on `fixedSize`.
+
+Related resource:
+
+- https://www.neilmacy.co.uk/blog/swiftui-button-equal-sizing
+
+
+### Discussion and Questions
+
+#### Swift for C++ Practitioners
+
+- https://www.douggregor.net
+
+---
+
 ## 2024.04.13
 
 ### Presentation: SwiftUI Layout
 
 Josh showed the details of how SwiftUI layout works
 by creating a custom layout that inspects the calls
-of the layout system. Code TBD
+of the layout system. 
 
 Also see:
 
@@ -48,6 +158,9 @@ var body some View {
     }
 }
 ```
+
+Here is the code for the inspector:
+
 
 ```swift
 struct InspectorLayout: Layout {
