@@ -60,7 +60,7 @@ In this SPI podcast, Holly Borla notes that the transition to Swift 6 shouldn't 
 
 #### AI
 
-A ton of research materials from Georgi with regard to RAG:
+A ton of research materials from Georgi with regard many advanced attribution topics (including Revtrival Augmented Generation [RAG]):
 
 - https://arxiv.org/abs/2404.07143
 - https://arxiv.org/pdf/2211.00593
