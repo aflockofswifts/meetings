@@ -15,6 +15,68 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.04.27
+
+### Questions and Discussion
+
+#### LLDB Debugging
+
+You can use the LLDB prompt in Xcode that comes up when you hit a breakpoint in the console window.
+
+- https://stackoverflow.com/questions/19748866/how-to-print-the-contents-of-a-memory-address-using-lldb
+
+As an example:
+
+```
+memory read -s1 -fu -c10000 0xb0987654 --force
+```
+
+- https://lldb.llvm.org/use/tutorial.html
+
+
+LLDB Basics in 11 Minutes
+
+- https://www.youtube.com/watch?v=v_C1cvo1biI
+
+
+#### Computers
+
+Some shows about how computers are awesome
+
+-   https://www.pbs.org/show/crash-course-computer-science/
+- https://www.bbc.co.uk/programmes/p00kjq6d/episodes/guide
+
+
+#### Swift 6 
+
+In this SPI podcast, Holly Borla notes that the transition to Swift 6 shouldn't be as bad as many people are fearing.
+
+- https://swiftpackageindexing.transistor.fm/episodes/43-now-i-m-worried-our-metrics-aren-t-correct-with-special-guest-holly-borla
+
+
+#### Glow Shine Effect
+
+- https://uvolchyk.medium.com/making-things-glow-and-shine-with-swiftui-80448c560f88
+
+#### AI
+
+A ton of research materials from Georgi with regard to RAG:
+
+- https://arxiv.org/abs/2404.07143
+- https://arxiv.org/pdf/2211.00593
+- https://arxiv.org/pdf/2403.13187
+- https://huggingface.co/blog/mlabonne/merge-models
+
+- Understanding GPT https://www.youtube.com/watch?v=wjZofJX0v4M
+
+Ed noting that Apple released some on-device models.
+
+- Ed on Microsoft's VASA-1 https://www.microsoft.com/en-us/research/project/vasa-1/
+
+---
+
+## 2024.04.20
+
 ### Presentation: Swift Package Manager
 
 Carlyn showed us a new command line tool she is working on for managing her many Swift Packages.
