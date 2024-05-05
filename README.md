@@ -15,6 +15,23 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.05.04
+
+### Topics Discussed
+
+- Dependency injection how and why
+
+- Swift Evolution: Synchronous Mutex Exclusion Lock
+
+    - https://github.com/apple/swift-evolution/blob/main/proposals/0433-mutex.md
+
+- Solving coding challenges with idiomatic Swift
+
+    - https://github.com/apple/swift-collections
+    - https://github.com/apple/swift-algorithms
+    
+---
+
 ## 2024.04.27
 
 ### Questions and Discussion
