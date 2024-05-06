@@ -19,17 +19,83 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ### Topics Discussed
 
-- Dependency injection how and why
+- Dependency injection how and why.  
+Monty asked about making his dates and times testable:
+```swift
+import Foundation
+
+protocol SystemServiceProtocol {
+    var now: Date { get }
+}
+
+final class SystemService: SystemServiceProtocol {
+    var now: Date {
+        .now
+    }
+}
+
+final class MockSystemService: SystemServiceProtocol {
+    var now: Date = .distantPast
+}
+```
+We also discussed remote configuration and making a debug menu and debugService
 
 - Swift Evolution: Synchronous Mutex Exclusion Lock
 
     - https://github.com/apple/swift-evolution/blob/main/proposals/0433-mutex.md
+Mark asked about making the lock checkable.  We discussed adding a wrapper to to this:
+```swift
+@dynamicMemberLookup
+struct Flagged<Wrapped> {
+    var isLocked: Bool
+    var wrapped: Wrapped
+    subscript<Value>(dynamicMember dynamicMember: WritableKeyPath<Self, Value>) -> Value {
+        self[dynamicMember: dynamicMember]
+    }
+}
+```
 
 - Solving coding challenges with idiomatic Swift
-
+    - https://leetcode.com/discuss/general-discussion/460599/blind-75-leetcode-questions
     - https://github.com/apple/swift-collections
     - https://github.com/apple/swift-algorithms
-    
+
+```swift
+func two(sum target: Int, from values: [Int]) -> (Int, Int)? {
+    let lookup = values.enumerated().reduce(into: [Int: [Int]]()) { accumulated, next in
+        accumulated[next.element, default: []].append(next.element)
+    }
+    return values.print().enumerated().lazy.compactMap { (index, value) -> (Int, Int)? in
+        guard let other = lookup[target - value], let otherIndex = other.last, otherIndex != index else { return nil }
+        return (index, otherIndex)
+    }
+    .first
+}
+```
+
+Peter asked about a print for Sequence mirroring Combine's print operator.  We looked at the general form:
+```swift
+extension Sequence {
+    func sideEffect(_ effect: (Element) -> Void) -> some Sequence<Element> {
+        map { value in
+            effect(value)
+            return value
+        }
+    }
+}
+```
+and the specific solution:
+```swift
+extension Sequence where Element: CustomStringConvertible {
+    func print() -> some Sequence<Element> {
+        sideEffect { Swift.print(String(describing: $0)) }
+    }
+}
+```
+
+Carlyn shared two free computer science courses:
+  - https://ocw.mit.edu/courses/6-172-performance-engineering-of-software-systems-fall-2018/
+  - https://www.cs.cornell.edu/courses/cs6120/2020fa/self-guided/
 ---
 
 ## 2024.04.27
