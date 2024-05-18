@@ -15,6 +15,123 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.05.11
+
+We looked at the transform matching parts animation in [Manim](https://docs.manim.community/en/stable/reference/manim.animation.transform_matching_parts.TransformMatchingShapes.html)  
+We started recreating this by making a Bezier Curve.  First a [quadratic](https://www.desmos.com/calculator/mbgwndpeeh):
+```swift
+struct QuadraticBezierCurve {
+    typealias Point = SIMD2<Double>
+    typealias Vector = SIMD3<Double>
+    typealias Matrix = matrix_double3x3
+    private let x: Vector
+    private let y: Vector
+    static let matrix = Matrix(rows: [
+        .init(1, -2,  1),
+        .init(0,  2, -2),
+        .init(0,  0,  1)
+    ])
+    init(start: Point, control: Point, end: Point) {
+        x = Vector(start.x, control.x, end.x)
+        y = Vector(start.y, control.y, end.y)
+    }
+    init(start: CGPoint, control: CGPoint, end: CGPoint) {
+        x = Vector(start.x, control.x, end.x)
+        y = Vector(start.y, control.y, end.y)
+    }
+    func callAsFunction(_ t: Double) -> Point {
+        let powerSeries = Vector(1, t, t*t)
+        let scaleVector = Self.matrix * powerSeries
+        let xProduct = scaleVector * x
+        let yProduct = scaleVector * y
+        return Point(xProduct.sum(), yProduct.sum())
+    }
+    func cgPoint(at t: Double) -> CGPoint {
+        let point = self(t)
+        return .init(x: point.x, y: point.y)
+    }
+}
+```
+
+and then a [Cubic](https://www.desmos.com/calculator/ebdtbxgbq0):
+```swift
+struct CubicBezierCurve {
+    typealias Point = SIMD2<Double>
+    typealias Vector = SIMD4<Double>
+    typealias Matrix = matrix_double4x4
+    private let x: Vector
+    private let y: Vector
+    static let matrix = Matrix([
+        .init(1, -3,  3, -1),
+        .init(0,  3, -6,  3),
+        .init(0,  0,  3, -3),
+        .init(0,  0,  0,  1)
+    ])
+    init(start: Point, control1: Point, control2: Point, end: Point) {
+        x = Vector(start.x, control1.x, control2.x, end.x)
+        y = Vector(start.y, control1.y, control2.y, end.y)
+    }
+    init(start: CGPoint, control1: CGPoint, control2: CGPoint, end: CGPoint) {
+        x = Vector(start.x, control1.x, control2.x, end.x)
+        y = Vector(start.y, control1.y, control2.y, end.y)
+    }
+    func callAsFunction(_ t: Double) -> Point {
+        let powerSeries = Vector(1, t, t*t, t*t*t)
+        let scaleVector =  powerSeries * Self.matrix
+        let xProduct = scaleVector * x
+        let yProduct = scaleVector * y
+        return Point(xProduct.sum(), yProduct.sum())
+    }
+    func cgPoint(at t: Double) -> CGPoint {
+        let point = self(t)
+        return .init(x: point.x, y: point.y)
+    }
+}
+```
+
+then demonstrating that we can trace the same path as SwiftUI and use that path to drive an animation position:
+```swift
+struct ContentView: View {
+    var body: some View {
+        GeometryReader { proxy in
+            let size = proxy.size
+            let points: [CGPoint] = [
+                .init(x: 0, y: size.height),
+                .init(x: 0, y: size.height * 0.33),
+                .init(x: size.width, y: size.height * 0.33),
+                .init(x: size.width, y: size.height),
+            ]
+            let cubic = CubicBezierCurve(start: points[0], control1: points[1], control2: points[2], end: points[3])
+            Canvas { context, size in
+                let path = Path { path in
+                    path.move(to: points[0])
+                    path.addCurve(to: points[3], control1: points[1], control2: points[2])
+                }
+                context.stroke(path, with: .foreground, style: .init(lineWidth: 2))
+                stride(from: 0.0, through: 1.0, by: 0.1).forEach { t in
+                    let center = cubic.cgPoint(at: t)
+                    context.fill(Path { path in
+                        path.addArc(center: center, radius: 10, startAngle: .zero, endAngle: .radians(.pi * 2), clockwise: true)
+                    }, with: .color(.red))
+                }
+            }
+            TimelineView(.animation) { timeline in
+                Canvas { context, size in
+                    let t = fmod(timeline.date.timeIntervalSince(.distantPast), 5) / 5
+                    let center = cubic.cgPoint(at: t)
+                    context.fill(Path { path in
+                        path.addArc(center: center, radius: 10, startAngle: .zero, endAngle: .radians(.pi * 2), clockwise: true)
+                    }, with: .color(.green))
+                }
+            }
+        }
+    }
+}
+```
+![Flock](materials/bezier.gif)
+
+[Matrix form of a quadratic bezier](https://blog.demofox.org/2016/03/05/matrix-form-of-bezier-curves/)  
+[Matrix form of a cubic bezier](https://pomax.github.io/bezierinfo/#matrix)
 ## 2024.05.04
 
 ### Topics Discussed
