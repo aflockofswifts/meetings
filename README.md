@@ -27,6 +27,8 @@ Swift replica of the [Manim](https://docs.manim.community/en/stable/reference/ma
 [Core Text Programming Guide](https://developer.apple.com/library/archive/documentation/StringsTextFonts/Conceptual/CoreText_Programming/Introduction/Introduction.html)  
 [iOS Text](https://developer.apple.com/library/archive/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/Introduction/Introduction.html) 
 
+![Flock](materials/anagram.gif)
+
 ```swift
 import SwiftUI
 import simd
