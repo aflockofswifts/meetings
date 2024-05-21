@@ -15,6 +15,245 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 
 ## Notes
 
+## 2024.05.18
+
+### Accessibility
+https://developer.apple.com/documentation/accessibility/performing-accessibility-audits-for-your-app  
+https://nfb.org/programs-services/center-excellence-nonvisual-access/blind-users-innovating-and-leading-design  
+https://a11y-guidelines.orange.com/en/mobile/ios/wwdc/nota11y/2023/2310035/  
+
+Swift replica of the [Manim](https://docs.manim.community/en/stable/reference/manim.animation.transform_matching_parts.TransformMatchingShapes.html) transform matching parts animation.  
+
+[Core Text Programming Guide](https://developer.apple.com/library/archive/documentation/StringsTextFonts/Conceptual/CoreText_Programming/Introduction/Introduction.html)  
+[iOS Text](https://developer.apple.com/library/archive/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/Introduction/Introduction.html) 
+
+```swift
+import SwiftUI
+import simd
+
+@Observable
+final class AnagramViewModel {
+    let sourcePathsAndRects: [(CGPath, CGRect)]
+    let destinationPathAndRects: [(CGPath, CGRect)]
+    var sourceWidth: CGFloat {
+        sourcePathsAndRects.last?.1.maxX ?? .zero
+    }
+    let source = "I am Lord Voldemort"
+    let destination = "Tom Marvolo Riddle"
+    let sourceIndexToDestinationIndex: [Int : Int]
+    let lineHeight: Double
+    init() {
+        let normalizedSource = source.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil).replacingOccurrences(of: " ", with: "")
+        let normalizedDestination = destination
+            .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil).replacingOccurrences(of: " ", with: "")
+        var destinationIndices = normalizedDestination.enumerated().reversed().reduce(into: [Character: [Int]]()) { accumulated, next in
+            accumulated[next.element, default: []].append(next.offset)
+        }
+        sourceIndexToDestinationIndex = normalizedSource.enumerated().reduce(into: [Int: Int]()) { accumulated, next in
+            let target = destinationIndices[next.element]?.popLast()
+            accumulated[next.offset] = target
+        }
+        let font = UIFont.preferredFont(forTextStyle: .largeTitle)
+        lineHeight = font.lineHeight
+        sourcePathsAndRects = source.glyphs(applying: font)
+        destinationPathAndRects = destination.glyphs(applying: font)
+    }
+}
+
+struct ContentView: View {
+    @State private var t = 0.0
+    @State var viewModel = AnagramViewModel()
+    var body: some View {
+        Slider(value: $t)
+        TimelineView(.animation) { context in
+            let curve = UnitCurve.easeInOut
+            let t = curve.value(at: abs(fmod(context.date.timeIntervalSince1970, 4) / 2 - 1))
+            Canvas {
+                context,
+                size in
+                context.transform = .init(scaleX: 1, y: -1)
+                    .translatedBy(x: size.width/2, y: -size.height/2)
+                let xOffset = viewModel.sourceWidth / 2
+                for (index, (path, rect)) in viewModel.sourcePathsAndRects.enumerated() {
+                    let (destinationPath, destinationRect) = viewModel.sourceIndexToDestinationIndex[index].map { index in
+                        viewModel.destinationPathAndRects[index]
+                    } ?? (nil, nil)
+                    var point: SIMD2<Double>
+                    if let destinationRect {
+                        let height = (rect.minX - destinationRect.minX) / 2.5
+                        let curve = CubicBezierCurve(
+                            start: .init(rect.minX, rect.minY),
+                            control1: .init(rect.minX, rect.minY + height),
+                            control2: .init(destinationRect.minX, destinationRect.minY  + height),
+                            end: .init(destinationRect.minX, destinationRect.minY)
+                        )
+                        point = curve(t)
+                    } else {
+                        point = .init(rect.minX, rect.minY)
+                    }
+                    point.x -= xOffset
+                    var pathContext = context
+                    pathContext.transform = pathContext.transform
+                        .translatedBy(x: point.x, y: point.y)
+                    pathContext.stroke(Path(path), with: .color(Color.red.opacity(1-t)))
+                    guard let destinationPath else { continue }
+                    var destinationPathContext = context
+                    destinationPathContext.transform = destinationPathContext.transform
+                        .translatedBy(x: point.x, y: point.y)
+                    destinationPathContext.fill(Path(destinationPath), with: .color(Color.black.opacity(t)))
+                }
+            }
+            Canvas { context, size in
+                context.transform = .init(scaleX: 1, y: -1)
+                    .translatedBy(x: size.width/2, y: -size.height/2)
+                let xOffset = viewModel.sourceWidth / 2
+                for (index, (path, rect)) in viewModel.sourcePathsAndRects.enumerated() {
+                    let (destinationPath, destinationRect) = viewModel.sourceIndexToDestinationIndex[index].map { index in
+                        viewModel.destinationPathAndRects[index]
+                    } ?? (nil, nil)
+                    let rectMin = (destinationRect.map { destinationRect in
+                        simd_mix(rect.minX, destinationRect.minX, t)
+                    } ?? rect.minX) - xOffset
+
+                    var pathContext = context
+                    pathContext.transform = pathContext.transform
+                        .translatedBy(x: rectMin, y: 0)
+                    pathContext.fill(Path(path), with: .color(Color.black.opacity(1 - t)))
+                    guard let destinationPath else { return }
+                    var desintationPathContext = context
+                    desintationPathContext.transform = desintationPathContext.transform
+                        .translatedBy(x: rectMin, y: 0)
+                    desintationPathContext.fill(Path(destinationPath), with: .color(Color.black.opacity(t)))
+                }
+            }
+        }
+        Canvas { context, size in
+            context.transform = .init(scaleX: 1, y: -1)
+                .translatedBy(x: size.width/2, y: -size.height/2)
+            let xOffset = viewModel.sourceWidth / 2
+            for (path, rect) in viewModel.sourcePathsAndRects {
+                var pathContext = context
+                pathContext.transform = pathContext.transform
+                    .translatedBy(x: rect.minX - xOffset, y: 0)
+                pathContext.fill(Path(path), with: .color(Color.black))
+                var squareContext = context
+                squareContext.transform = squareContext.transform
+                    .translatedBy(x: -xOffset, y: 0)
+                squareContext.stroke(Path(roundedRect: rect, cornerSize: .zero), with: .color(Color.red))
+            }
+        }
+    }
+}
+
+extension String {
+    func glyphs(applying font: UIFont) -> [(CGPath, CGRect)] {
+        let attributedString = NSAttributedString(string: self, attributes: [.font: font])
+        let line = CTLineCreateWithAttributedString(attributedString)
+        return (CTLineGetGlyphRuns(line) as? [CTRun]).map { runs in
+            runs.flatMap { run in
+                let count = CTRunGetGlyphCount(run)
+                var advances = [CGSize](repeating: .zero, count: count)
+                CTRunGetAdvances(run, CFRangeMake(0, count), &advances)
+                var transform = CGAffineTransform.identity
+                let paths = [CGGlyph](unsafeUninitializedCapacity: count) { buffer, allocatedCount in
+                    CTRunGetGlyphs(run, CFRange(), buffer.baseAddress!)
+                    allocatedCount = count
+                }.lazy.map { glyph in
+                    CTFontCreatePathForGlyph(font as CTFont, glyph, &transform)
+                }
+                return zip(
+                    paths,
+                    advances.map(\.width).scanMap(initial: 0.0) { x, width in
+                        defer { x += width }
+                        return CGRect(x: x, y:font.descender + font.leading, width: width, height: font.lineHeight)
+                    }
+                )
+                .compactMap { paths, rect in paths.map { ($0, rect) } }
+            }
+        } ?? []
+    }
+}
+
+extension Sequence {
+    func scanMap<State, Transformed>(
+        initial: consuming State,
+        transform: @escaping (inout State, Element) -> Transformed
+    ) -> some Sequence<Transformed> {
+        sequence(state: (accumulated: initial, iterator: self.makeIterator())) { state in
+            state.iterator.next().map { element in
+                transform(&state.accumulated, element)
+            }
+        }
+    }
+}
+
+struct QuadraticBezierCurve {
+    typealias Point = SIMD2<Double>
+    typealias Vector = SIMD3<Double>
+    typealias Matrix = matrix_double3x3
+    private let x: Vector
+    private let y: Vector
+    static let matrix = Matrix([
+        .init(1, -2,  1),
+        .init(0,  2, -2),
+        .init(0,  0,  1)
+    ])
+    init(start: Point, control: Point, end: Point) {
+        x = Vector(start.x, control.x, end.x)
+        y = Vector(start.y, control.y, end.y)
+    }
+    init(start: CGPoint, control: CGPoint, end: CGPoint) {
+        x = Vector(start.x, control.x, end.x)
+        y = Vector(start.y, control.y, end.y)
+    }
+    func callAsFunction(_ t: Double) -> Point {
+        let powerSeries = Vector(1, t, t*t)
+        let scaleVector = powerSeries * Self.matrix
+        let xProduct = scaleVector * x
+        let yProduct = scaleVector * y
+        return Point(xProduct.sum(), yProduct.sum())
+    }
+    func cgPoint(at t: Double) -> CGPoint {
+        let point = self(t)
+        return .init(x: point.x, y: point.y)
+    }
+}
+
+struct CubicBezierCurve {
+    typealias Point = SIMD2<Double>
+    typealias Vector = SIMD4<Double>
+    typealias Matrix = matrix_double4x4
+    private let x: Vector
+    private let y: Vector
+    static let matrix = Matrix([
+        .init(1, -3,  3, -1),
+        .init(0,  3, -6,  3),
+        .init(0,  0,  3, -3),
+        .init(0,  0,  0,  1)
+    ])
+    init(start: Point, control1: Point, control2: Point, end: Point) {
+        x = Vector(start.x, control1.x, control2.x, end.x)
+        y = Vector(start.y, control1.y, control2.y, end.y)
+    }
+    init(start: CGPoint, control1: CGPoint, control2: CGPoint, end: CGPoint) {
+        x = Vector(start.x, control1.x, control2.x, end.x)
+        y = Vector(start.y, control1.y, control2.y, end.y)
+    }
+    func callAsFunction(_ t: Double) -> Point {
+        let powerSeries = Vector(1, t, t*t, t*t*t)
+        let scaleVector = powerSeries * Self.matrix
+        let xProduct = scaleVector * x
+        let yProduct = scaleVector * y
+        return Point(xProduct.sum(), yProduct.sum())
+    }
+    func cgPoint(at t: Double) -> CGPoint {
+        let point = self(t)
+        return .init(x: point.x, y: point.y)
+    }
+}
+```
+
+
 ## 2024.05.11
 
 We looked at the transform matching parts animation in [Manim](https://docs.manim.community/en/stable/reference/manim.animation.transform_matching_parts.TransformMatchingShapes.html)  
