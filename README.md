@@ -2,7 +2,8 @@
 ![Flock](materials/flock.jpg)
 We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
 
-All people and all skill levels are welcome to join. **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+All people and all skill levels are welcome to join.  
+**RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
 ## Archives
 
@@ -14,6 +15,176 @@ All people and all skill levels are welcome to join. **RSVP**: https://www.meetu
 ---
 
 ## Notes
+## 2024.06.01
+
+### Making a quartiles generator:
+![image](materials/quartiles.png)
+```swift
+import SwiftUI
+
+@Observable
+@MainActor
+final class WordViewModel: ObservableObject {
+    var searchTerm: String = "" {
+        didSet { update() }
+    }
+    private(set) var words: [Word] = []
+    private(set) var selectedWords: [Word] = []
+    private(set) var solutions: [Word] = []
+    private var allWords: [Word] = []
+    private var fourSyllableWords: [Word] = []
+    func load() async {
+        async let makeWords = Word.makeFromFewestSyllables()
+        allWords = await makeWords
+        async let makeFourSyllableWords = {
+            await allWords.filter { $0.syllables.count == 4 }
+        }()
+        fourSyllableWords = await makeFourSyllableWords
+        await updateWords()
+    }
+    func select(_ word: Word) {
+        selectedWords.append(word)
+        update()
+    }
+    func delete(at offsets: IndexSet) {
+        selectedWords.remove(atOffsets: offsets)
+        update()
+    }
+    private func update() {
+        Task { await updateWords() }
+    }
+    private func updateWords() async {
+        let term = searchTerm
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil)
+        let usedSyllables = selectedWords.reduce(into: Set<String>()) { accumulated, word in
+            word.syllables.forEach { accumulated.insert($0) }
+        }
+        async let availableWords = {
+            let fourSyllableWordsWithUnusedSyllables = await self.fourSyllableWords.filter {
+                $0.syllables.intersection(usedSyllables).isEmpty
+            }
+            return fourSyllableWordsWithUnusedSyllables
+        }()
+        let fourSyllableWordsWithUnusedSyllables = await availableWords
+        if term.isEmpty {
+            words = fourSyllableWordsWithUnusedSyllables
+        } else {
+            async let filteredWords = {
+                fourSyllableWordsWithUnusedSyllables.filter { $0.description.hasPrefix(term) }
+            }()
+            words = await filteredWords
+        }
+        async let makeSolutions = {
+            let allWords = await self.allWords
+            return allWords.filter { $0.syllables.isSubset(of: usedSyllables) && $0.syllables.count > 1}
+        }()
+        solutions = await makeSolutions
+    }
+}
+
+@MainActor
+struct ContentView: View {
+    var viewModel = WordViewModel()
+    var body: some View {
+        NavigationSplitView(columnVisibility: .constant(.all)) {
+            NavigationStack {
+                @Bindable var vm = viewModel
+                List(viewModel.words) { word in
+                    HStack {
+                        Text(word.description)
+                        Text(word.syllableDescription).foregroundStyle(.secondary)
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture { viewModel.select(word) }
+                }
+                .navigationTitle("Available Words")
+                .searchable(text: $vm.searchTerm)
+            }
+        } content: {
+            List {
+                ForEach(viewModel.selectedWords) { word in
+                    HStack {
+                        Text(word.description)
+                        Text(word.syllableDescription).foregroundStyle(.secondary)
+                    }
+                }
+                .onDelete(perform: viewModel.delete(at:))
+            }
+            .navigationTitle("Selected Words")
+        } detail: {
+            List(viewModel.solutions) { word in
+                HStack {
+                    Text(word.description)
+                    Text(word.syllableDescription).foregroundStyle(.secondary)
+                }
+            }
+            .navigationTitle("Solutions")
+        }
+        .task { await viewModel.load() }
+    }
+}
+
+import OSLog
+
+let signposter = OSSignposter(subsystem: "com.josh.quartilesolver", category: "signposts")
+
+struct Word: CustomStringConvertible, Identifiable, Hashable, Sendable {
+    var id: String { description }
+    var description: String
+    var syllableDescription: String
+    var syllables: Set<String>
+}
+
+extension Word {
+    static func makeFromFewestSyllables() -> [Word] {
+        func stringsFromFile(name: String) -> [String] {
+            Bundle.main.url(forResource: name, withExtension: "json")
+                .flatMap { try? Data(contentsOf: $0) }
+                .flatMap { try? JSONDecoder().decode([String].self, from: $0) } ?? []
+        }
+        let words = stringsFromFile(name: "words")
+        let syllables = Set(stringsFromFile(name: "syllables"))
+        let longest = syllables.lazy.map(\.count).max()
+        let start = Date()
+        let wordSignpostID = signposter.makeSignpostID()
+        let signpostWordState = signposter.beginInterval("Words", id: wordSignpostID)
+        let validWords = words.reduce(into: [Word]()) { validWords, candidate in
+            var suffix = candidate
+            var foundSyllables: [String] = []
+            while !suffix.isEmpty {
+                let found = stride(from: min(5, candidate.count), to: 0, by: -1)
+                    .lazy
+                    .compactMap { window in
+                        let prefixCandidate = String(suffix.prefix(window))
+                        return syllables.contains(prefixCandidate) ? prefixCandidate : nil
+                    }
+                    .first
+                guard let found else { return }
+                foundSyllables.append(found)
+                suffix = String(suffix.dropFirst(found.count))
+                let foundSyllablesSet = Set(foundSyllables)
+                if suffix.isEmpty, foundSyllablesSet.count == foundSyllables.count {
+                    validWords.append(.init(description: candidate, syllableDescription: foundSyllables.joined(separator: "•"), syllables: foundSyllablesSet))
+                }
+            }
+        }
+        signposter.endInterval("Words", signpostWordState)
+        return validWords
+    }
+}
+```
+## 2024.05.25
+
+### Dates and Times
+* We discussed using Calendar to determine when a given date is the same day as another date: 
+https://developer.apple.com/documentation/foundation/nscalendar/1417649-isdate 
+https://yourcalendricalfallacyis.com 
+https://vimeo.com/865876497 
+
+### Modernizing code
+We took a look at modernizing this project: https://github.com/joshuajhomann/AsciiFilter
+![image](https://github.com/joshuajhomann/AsciiFilter/blob/master/preview.gif)
 
 ## 2024.05.18
 
