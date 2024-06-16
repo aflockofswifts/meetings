@@ -15,6 +15,94 @@ All people and all skill levels are welcome to join.
 ---
 
 ## Notes
+
+## 2024.06.15
+
+A review of WWDC 2024. We talked about our favorite features announced at the event. It is going to be an exciting year as they roll out many of the features later this summer. Many of the announced features are not yet included in the first beta.
+
+Lots of great Swift content this year:
+
+#### VisionPro
+
+The Talk Show was apparently shot for an immersive experience on VisionPro.
+
+https://apps.apple.com/app/theater-the-future-of-cinema/id6502666560
+
+#### Noncopyable
+
+- https://developer.apple.com/wwdc24/10170
+
+Also performance of Swift by John McCall
+
+- https://mastodon.social/deck/@rjmccall@hachyderm.io/112610472391266815
+
+#### Swift Testing
+
+- https://developer.apple.com/wwdc24/10179
+
+To name just a few.
+
+#### AI Stuff
+
+Some things discussed:
+
+- https://ia.net/topics/turning-the-tables-on-ai
+
+- https://www.lighton.ai/blog/llm-glossary-6/turning-up-the-heat-the-role-of-temperature-in-generative-ai-49
+
+#### Greater standardization?
+
+The platforms state of the union referred to Swift as a successor to C++. Are we moving toward greater standardization outside of Apple.
+
+- https://github.com/swiftlang
+
+Other topics included embedded Swift and Swift being used in other environments.
+
+
+---
+
+## 2024.06.08
+
+### Discussion
+
+#### WWDC
+
+Events happening next week:
+
+- https://github.com/twostraws/wwdc
+- https://wwdc.community
+
+Lots of rumors about AI. What will they license from OpenAI?
+
+- https://openai.com/index/gpt-4o-and-more-tools-to-chatgpt-free/
+
+Interesting side note from carlyn:
+
+- https://www.scientificamerican.com/article/why-writing-by-hand-is-better-for-memory-and-learning/
+
+
+#### Outline Group
+
+- https://developer.apple.com/documentation/swiftui/outlinegroup
+
+#### Swift Concurrency 
+
+Steadily making headway on reducing the false positive rate:
+
+- https://www.massicotte.org/concurrency-swift-6-se-0414
+
+#### Inserting images into test 
+
+https://www.hackingwithswift.com/example-code/system/how-to-insert-images-into-an-attributed-string-with-nstextattachment
+
+### Presentation
+
+We talked about algorithms and the Swift standard library. In particular, Josh led us through how the sort() algorithm has evolved and become a stable sort. Much of the discussion was based on the information in this blog post:
+
+https://ohmyswift.com/blog/2019/09/29/swift-5-replaces-introsort-with-timsort-in-the-sort-method/
+
+---
+
 ## 2024.06.01
 
 ### Making a quartiles generator:
