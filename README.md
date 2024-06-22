@@ -16,6 +16,139 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.06.22
+
+### Presentation: Random Numbers (Josh)
+
+
+Josh showed us how to make a simple random number generator. You can use this for deterministic testing, for example.
+
+```swift
+struct MockRandom: RandomNumberGenerator {
+        let source: [UInt64] = [1,2,3,4,5,6]
+        var index = 0
+        mutating func next() -> UInt64 {
+            defer { index += 1 }
+            return source[index % source.count]
+        }
+    }
+```
+
+The C++ standard library implements several random number generators.  You can leverage those using C++ interop in Swift:
+
+```swift
+import CxxStdlib
+
+struct Mersenne: RandomNumberGenerator {
+    private var generate = std.mt19937_64()
+    init(seed: Double = 0) {
+        self(seed: seed)
+    }
+    mutating func next() -> UInt64 {
+        generate()
+    }
+    mutating func callAsFunction(seed: Double) {
+        generate.seed(seed.bitPattern)
+    }
+}
+```
+
+From a few years back, a native Swift random number generator:
+
+https://gist.github.com/rayfix/656d044c87dfc059ad301d378fe28e33
+
+#### Sneak peak for next week: Mesh Gradient
+
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    @State private var size = 10.0
+    var body: some View {
+        MeshGradient(width: 3, height: 3, points: points(), colors: [Color.red, .green, .blue, .yellow, .purple, .orange, .brown, .cyan, .indigo])
+    }
+    func points() -> [SIMD2<Float>] {
+        let width = 3
+        let height = 3
+        return (0..<width).flatMap { x in
+            (0..<height).map { y in
+                .init(
+                    x: Float(x) / Float(width - 1),
+                    y: Float(y) / Float(height - 1)
+                )
+            }
+        }
+    }
+}
+```
+
+### onGeometryChange
+
+We looked at the new modifier `onGeometryChange`
+
+https://developer.apple.com/documentation/swiftui/view/ongeometrychange(for:of:action:)-6tl7p?changes=_2
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        VStack {
+            Image(systemName: "globe")
+                .imageScale(.large)
+                .foregroundStyle(.tint)
+                .background(GeometryReader { proxy in
+                    Color.clear.onAppear {
+                        print(proxy.size)
+                }
+            })
+            .onGeometryChange(for: CGSize.self, of: \.size) { size in
+                        print(size)
+                    }
+                Text("Hello, world!")
+         }
+         .padding()
+     }
+ }
+```
+
+### What's new in Swift
+
+- https://developer.apple.com/documentation/updates/swiftui
+- https://www.whatsnewinswift.com/?from=5.10&to=6.0
+
+Not including evolution changes:
+
+- https://docs.swift.org/swift-book/documentation/the-swift-programming-language/revisionhistory
+
+### count(where:) is finally released!
+
+Consider this:
+
+```swift
+print(a.lazy.filter { $0.isMultiple(of: 2) }.reduce(0) { total, _ in total + 1 } )
+```
+
+That is now the much clearer:
+
+```swift
+a.count { $0.isMultiple(of: 2) }
+```
+
+### Feature Flags
+
+A handy website that keeps track upcoming and experimental feature flags in Swift. (They may require a special toolchain build.)
+
+- https://flags.swiftythemes.com
+
+### Swift Data issues
+
+Bob was having some Swift Data issues. He thinks he can show us something more complete in a future meetup.
+
+### Launch Hang
+
+Allan was running into a launch hang with his Factal app. We gave him several areas for him to look into. Hopefully, he can narrow down what is happening and let us know next week.  Topics discussed included clearing user defaults, deleting derived, running instruments, and git bisect.
+
+---
+
 ## 2024.06.15
 
 A review of WWDC 2024. We talked about our favorite features announced at the event. It is going to be an exciting year as they roll out many of the features later this summer. Many of the announced features are not yet included in the first beta.
