@@ -16,6 +16,56 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.06.29
+
+### Presentation: Mesh Gradient (Josh)
+
+Josh continued his discussion of the new MeshGradient. He pointed out
+some of the sharp edges in this new API. Thinking about these issues deeply--how 
+to make an API easy to understand and hard to misuse is a key to good software
+engineering. Thinking about issues like this separates coding (just getting the 
+job done) from engineering where next level concerns are top of mind.
+
+He was able to create the basics of a mesh gradient editor where you can 
+manipulate the bezier control points in real time. Future discussion may include
+animation of these control points.
+
+Code: TBD
+
+### Q: Using the Camera in SwiftUI
+
+You can't really use the live camera without dropping down into AVFoundation
+and using UIKit. There are lots of resources about this:
+
+- https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-select-pictures-using-photospicker
+- https://www.youtube.com/watch?v=T7wf4DGPCHs
+- https://github.com/rorodriguez116/Camera-SwiftUI
+- https://developer.apple.com/documentation/avfoundation/capture_setup/avcam_building_a_camera_app
+- https://developer.apple.com/documentation/avfoundation/capture_setup/avcambarcode_detecting_barcodes_and_faces
+- https://www.hackingwithswift.com/books/ios-swiftui/instafilter-introduction
+
+### Presentation: What's new in SwiftUI for iOS 18
+
+Josh took us through the Hacking with Swift rundown.
+
+- https://www.hackingwithswift.com/articles/270/whats-new-in-swiftui-for-ios-18
+
+As part of the discussion, we talked about targetting older platforms.
+
+This podcast sometimes talks about install bases:
+
+- https://www.relay.fm/radar
+
+Also, some statistics:
+
+- https://www.statista.com/statistics/565270/apple-devices-ios-version-share-worldwide/
+
+- https://developer.apple.com/support/app-store/
+
+- https://gs.statcounter.com/ios-version-market-share/all/united-states-of-america
+
+---
+
 ## 2024.06.22
 
 ### Presentation: Random Numbers (Josh)
