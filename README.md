@@ -30,7 +30,191 @@ He was able to create the basics of a mesh gradient editor where you can
 manipulate the bezier control points in real time. Future discussion may include
 animation of these control points.
 
-Code: TBD
+Code:
+```swift
+import SwiftUI
+import CxxStdlib
+
+
+@Observable
+final class ViewModel: ObservableObject {
+    var color: Color = .white
+    private(set) var mesh: MeshGradient.Model
+    private(set) var points: [MeshPoint]
+    var width: Int
+    var height: Int
+    init() {
+        let width = 4
+        let height = 4
+        let points = ViewModel.makePoints(width: width, height: height)
+        mesh = .init(width: width, height: height, points: points)
+        self.width = width
+        self.height = height
+        self.points = points
+
+    }
+    private static func makePoints(width: Int, height: Int) -> [MeshPoint] {
+        (0..<width).flatMap { x in
+            (0..<height).map { y in
+                MeshPoint(
+                    id: .init(x: x, y: y),
+                    location: .init(
+                        x: Float(x) / Float(width - 1),
+                        y: Float(y) / Float(height - 1)
+                    ),
+                    color: .random
+                )
+            }
+        }
+    }
+    func set(location: SIMD2<Float>, for id: MeshPoint.ID) {
+        guard let index = points.firstIndex(where: { $0.id == id}) else { return }
+        points[index].location = location
+        mesh = .init(width: width, height: height, points: points)
+    }
+}
+
+extension Color {
+    static var random: Self {
+        .init(
+            red: Double.random(in: 0..<1),
+            green: Double.random(in: 0..<1),
+            blue: Double.random(in: 0..<1)
+        )
+    }
+}
+
+struct ContentView: View {
+    @State private var showInspector = true
+    @State private var showPoints = true
+    @StateObject var viewModel = ViewModel()
+    @State private var selectedPointID: MeshPoint.ID?
+    enum Space: Hashable {
+        case gradient
+    }
+    var body: some View {
+        GeometryReader { proxy in
+            Rectangle()
+                .foregroundStyle(MeshGradient(viewModel.mesh))
+                .coordinateSpace(name: Space.gradient)
+                .overlay(alignment: .topLeading) {
+                    if showPoints {
+                        ForEach(viewModel.points) { point in
+                            Circle()
+                                .background(Circle().foregroundStyle(point.id == selectedPointID ? Color.accentColor : Color.white).padding(-2))
+                                .foregroundStyle(point.color)
+                                .frame(width: 20, height: 20)
+                                .offset(
+                                    x: CGFloat(point.location.x) * proxy.size.width - 10,
+                                    y: CGFloat(point.location.y) * proxy.size.height - 10
+                                )
+                                .onTapGesture {
+                                    selectedPointID = point.id
+                                }
+                                .gesture(DragGesture(minimumDistance: 1, coordinateSpace: .named(Space.gradient))
+                                    .onChanged { gesture in
+                                        guard let selectedPointID else { return }
+                                        let unitPoint = SIMD2<Float>(
+                                            x: Float(gesture.location.x / proxy.size.width),
+                                            y: Float(gesture.location.y / proxy.size.height)
+                                        )
+                                        viewModel.set(location: unitPoint, for: selectedPointID)
+                                    }
+                                )
+                        }
+                    }
+                }
+        }
+        .onTapGesture {
+            selectedPointID = nil
+        }
+        .inspector(isPresented: $showInspector) {
+            Form {
+                Toggle("Show points", isOn: $showPoints)
+            }
+        }
+    }
+    func points() -> [SIMD2<Float>] {
+        let width = 3
+        let height = 3
+        return (0..<height).flatMap { y in
+            (0..<width).map { x in
+                .init(
+                    x: Float(x) / Float(width - 1),
+                    y: Float(y) / Float(height - 1)
+                )
+            }
+        }
+    }
+}
+
+extension MeshGradient {
+    struct Model {
+        var width: Int
+        var height: Int
+        var points: [SIMD2<Float>]
+        var colors: [Color]
+    }
+    init(width: Int = 3, height: Int = 3, seed: Double) {
+        var generator = Mersenne(seed: seed)
+        self = .init(
+            width: width,
+            height: width,
+            points: stride(from: Float.zero, through: 1, by: 1 / (Float(width) - 1)).flatMap { x in
+                stride(from: Float.zero, through: 1, by: 1 / (Float(height) - 1)).map { y in
+                    SIMD2<Float>(x: x, y: y)
+                }
+            },
+            colors: (0..<(width * height)).map { _ in generator.color() }
+        )
+    }
+    init(_ model: Model) {
+        self = .init(width: model.width, height: model.height, points: model.points, colors: model.colors)
+    }
+}
+
+extension MeshGradient.Model {
+    init(width: Int, height: Int, points: some Collection<MeshPoint>) {
+        self.width = width
+        self.height = height
+        assert(width * height == points.count)
+        self.points = points.map(\.location)
+        self.colors = points.map(\.color)
+    }
+}
+
+struct MeshPoint: Identifiable, Hashable {
+    var id: SIMD2<Int>
+    var location: SIMD2<Float>
+    var color: Color
+}
+
+struct Mersenne: RandomNumberGenerator {
+    private var generate = std.mt19937_64()
+    init(seed: Double = 0) {
+        self(seed: seed)
+    }
+    mutating func next() -> UInt64 {
+        generate()
+    }
+    mutating func callAsFunction(seed: Double) {
+        generate.seed(seed.bitPattern)
+    }
+    mutating func double(in range: Range<Double>) -> Double {
+        Double.random(in: range, using: &self)
+    }
+    mutating func float(in range: Range<Float>) -> Float {
+        Float.random(in: range, using: &self)
+    }
+    mutating func color() -> Color {
+        .init(red: double(in: 0..<1), green: double(in: 0..<1), blue: double(in: 0..<1))
+    }
+    mutating func unitSIMD2() -> SIMD2<Float> {
+        SIMD2<Float>(x: float(in: 0..<1), y: float(in: 0..<1))
+    }
+}
+
+```
 
 ### Q: Using the Camera in SwiftUI
 
