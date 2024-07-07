@@ -16,6 +16,115 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.07.06
+
+### Presentation: Maps in SwiftUI (Frank)
+
+Previously, Frank showed us how to use MapKit from SwiftUI. The only way to get a long press gesture
+and be able to pinch and zoom a map was to drop down to UIViewRepresentable.  This year, with iOS 18,
+you can now use UIKit gestures in your SwiftUI so it makes implementing long press features a lot easier.
+
+Starting with an abstraction for a point-of-interest:
+
+```swift
+struct POI: Identifiable {
+        let id = UUID().uuidString
+        var location: CLLocationCoordinate2D
+        
+        init(coordinate: CLLocationCoordinate2D) {
+            location = coordinate
+        }
+        
+        init(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+            location = .init(latitude: latitude, longitude: longitude)
+        }
+    }
+```
+
+You can use this SwiftUI view:
+
+```swift
+struct ContentView: View {
+        @State private var points: [POI] = [
+            .init(latitude: 48.85, longitude: 2.33),
+            .init(latitude: 48.87, longitude: 2.38)
+        ]
+        
+        var body: some View {
+            MapReader { mapProxy in
+                Map {
+                    ForEach(points) { point in
+                        Marker(coordinate: point.location) {
+                            Image(systemName: "globe")
+                        }
+                    }
+                }.onLongPress { point in
+                    if let coordinate = mapProxy.convert(point, from: .global) {
+                        points.append(.init(coordinate: coordinate))
+                    }
+                } cancel: {
+                    _ = points.popLast()
+                }
+            }
+        }
+    }
+```
+
+To implement the modifier `onLongPress` do this:
+
+```swift
+struct LongPressGesture: UIGestureRecognizerRepresentable {
+        let perform: (CGPoint) -> Void
+        let cancel: () -> Void
+    
+        func makeUIGestureRecognizer(context: Context) -> some UIGestureRecognizer {
+            UILongPressGestureRecognizer()
+        }
+        
+        func handleUIGestureRecognizerAction(_ recognizer: UIGestureRecognizerType, context: Context) {
+            switch recognizer.state {
+            case .began:
+                perform(recognizer.location(in: nil))
+            case .cancelled:
+                cancel()
+            default:
+                break
+            }
+        }
+    }
+```  
+
+With a modifier:
+
+```swift
+extension View {
+        func onLongPress(perform: @escaping (CGPoint) -> Void, cancel: @escaping () -> Void) -> some View {
+            gesture(LongPressGesture(perform: perform, cancel: cancel))
+        }
+    }  
+```
+
+### Presentation: Mesh Gradient Animation (Josh)
+
+Josh continued his epic presentation of mesh gradients by creating a full on lava lamp style animation.
+
+Source code: TBD.
+
+### Discussion: What's new in Swift 6?
+
+What is the best way to find out what all the changes are?
+
+- https://youtu.be/aCbh9LmIZTI?si=3h40iZailxoxv2x_
+- https://www.hackingwithswift.com/articles/270/whats-new-in-swiftui-for-ios-18
+
+### How do you type ∆ on a mac?
+
+- Option J on a US keyboard (Option d is ∂)
+
+Frank notes that on a French keyboard Option d is also ∂, but option shift d is ∆. Makes more sense, indeed!
+
+---
+
 ## 2024.06.29
 
 ### Presentation: Mesh Gradient (Josh)
