@@ -16,6 +16,113 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.07.13
+
+### Presentation: Noncopyable Types (Ray)
+
+We looked at some of the motivations of non-copyable types. The key benefit 
+is precise lifetime control which also means that the compiler doesn't have
+to put things on the heap (which is intrinsically more expressive and less
+predictable).
+
+Here are some resources:
+
+A WWDC talk "Consume noncopyable types in Swift":
+
+- https://developer.apple.com/wwdc24/10170
+
+
+Evolution Proposals
+
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0390-noncopyable-structs-and-enums.md
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0427-noncopyable-generics.md
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0437-noncopyable-stdlib-primitives.md
+
+
+Documentation
+
+- https://developer.apple.com/documentation/Swift/Copyable
+
+
+We used a playground to mess around with:
+
+```swift
+struct Tracker: ~Copyable {
+  var count: Int128 = 0
+  
+  init() {
+    // write a file
+  }
+  
+  consuming func cancel() {
+    // delete the file
+    discard self
+  }
+  
+  deinit {
+    // delete the file
+  }
+}
+
+func test() {
+  let t = Optional(Tracker())
+}
+
+func compute0<T>(_ value: borrowing T) {
+  
+}
+
+func compute<T: ~Copyable>(_ value: borrowing T) {
+  
+}
+compute("blob")
+compute(Tracker())
+
+
+
+struct UDT {
+  var value = ""
+  
+  borrowing func method1(param: borrowing String)  {
+    print(copy param)
+  }
+  consuming func method2(param: consuming String)  {
+    param += "1"
+    print(param)
+  }
+  mutating func method3(param: inout String) {
+    
+  }
+}
+var hello = "hello"
+UDT().method2(param: hello)
+print(hello)
+```
+### Question: Proper Navigation
+
+It is not a good idea to put views into your model objects. Keep the models
+pure and build the models around them.  An example from Josh last year:
+
+https://github.com/joshuajhomann/PokemonNavigation
+
+
+### Question: Using Apple Maps instead of Google Maps
+
+- https://developer.apple.com/documentation/mapkit/mapkit_for_appkit_and_uikit/mapkit_overlays
+- https://developer.apple.com/documentation/mapkit/mktileoverlay
+
+### Question: Crash in Swift Data?
+
+In the log, the crash is coming from:
+
+`ModelContext._processRecentChanges(validate:)`
+
+Very difficult to debug. Might consider trying to get a syslog if QA can reproduce it.
+
+- https://developer.apple.com/bug-reporting/profiles-and-logs/
+
+---
+
 ## 2024.07.06
 
 ### Presentation: Maps in SwiftUI (Frank)
