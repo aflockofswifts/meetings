@@ -16,6 +16,46 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.07.20
+
+### Presentation: Noncopyable Types (Ray)
+
+We covered what we talked about last week in the form of a "whiteboard interview" style format.
+
+- 1. What problem do non-copyable types solve? 
+    - precise lifetime control
+- 2. What does ~Copyable mean when you use on an enum or struct?
+    - non copyable
+- 3. What does ~Copyable mean you use it on a protocol or generic constraint?
+    - not necessarily copyable
+- 4. Why is it hard to use non-copyable types with the standard library?
+    - most protocols are built for Copyable types
+- 5. What types in the standard library support non-copyable types?
+    - Optional, Result, unsafe pointer
+- 6. What does it mean to consume a value instead of copying it?
+    - Lifetime is reliqueshed
+- 7. What is the difference between borrowing, consuming and inout parameters?
+    - readonly, write, taken in and then given back
+- 8. When must parameters be marked borrowing, consuming or inout?
+    - When they are non-copyable types
+- 9. When and why would you mark a method consuming?
+    - When you want to end the lifteime of the object
+- 10. What types can contain a non-copyable type?
+    - non-copyable types or classes (which are only copied by reference)
+- 11. How do you support both copyable and non-copyable generic types?
+    - First create a ~Noncopyable and then add a Copyable extension
+- 12. What does discard do?
+    - Stops tracking lifetime and prevents deinit from being called.
+
+### Dynamic Options
+
+Joe Graf had an interesting problem about accessibility and how to present options in a contextual menu. It mostly stumped us.
+
+- https://revealapp.com/news/introducing-the-accessibility-workspace/    
+- https://www.kodeco.com/7180554-ios-accessibility-in-swiftui-tutorial-part-1-getting-started
+
+---
+
 ## 2024.07.13
 
 ### Presentation: Noncopyable Types (Ray)
