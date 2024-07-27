@@ -16,6 +16,63 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.07.27
+
+### Presentation: Container Views in iOS18 (Josh)
+
+Josh showed how to implement a container view using the new APIs in iOS18. Code TBD.
+
+### Question: Identified
+ 
+ You can wrap your type in an identified type that uses a UUID as an id. Or use the position in the index of the array to uniquely identify it.
+
+UUIDs are guaranteed unique in time and space and you can allocate 10^7 / second and not expect a collision.
+
+ - https://datatracker.ietf.org/doc/html/rfc4122
+
+ Josh showed a nice way to compact huge numbers using `radix`:
+
+
+ ```swift
+import Foundation
+let value = UInt64.random(in: 0 ... .max)
+print(String(value, radix: 36, uppercase: true))
+ ```
+
+### Hot tip: Automatic line breaks in Xcode
+
+Go over a function and press Control-M.  It will put each argument on a separate line.
+
+### Question: Video Services
+
+Peter wondering about what 3rd party services are good. Some brainstorming:
+
+- https://www.agora.io/
+- https://productcoalition.com/10-best-video-calling-apis-to-integrate-into-android-ios-and-web-apps-e2c6627f3bf
+
+
+Vinage, Sendbird, Daily.co, 100ms, Jitsi, Zoom SDK, SignalWire
+
+### Question: Migrating to Swift 6
+
+Watch the WWDC2024 Video from Ben Cohen:
+
+- https://developer.apple.com/wwdc24/10169
+
+Look at the migration guide:
+
+- https://www.swift.org/migration/documentation/migrationguide/
+
+### Heap Performance
+
+From this WWDC video:
+
+- https://developer.apple.com/videos/play/wwdc2024/10173/
+
+
+`weak` is 10x and `unowned` is 4x the cost of a strong reference. Use `unowned(unsafe)` at your own risk as getting it wrong means undefined behavior.
+
+
 ## 2024.07.20
 
 ### Presentation: Noncopyable Types (Ray)
