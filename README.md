@@ -39,7 +39,7 @@ let value = UInt64.random(in: 0 ... .max)
 print(String(value, radix: 36, uppercase: true))
  ```
 
-### Hot tip: Automatic line breaks in Xcode
+### Xcode tip: Automatic line breaks
 
 Go over a function and press Control-M.  It will put each argument on a separate line.
 
