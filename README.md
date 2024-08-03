@@ -16,7 +16,7 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
-## 2024.08.28
+## 2024.08.03
 
 ### Discussion: Distribute an App
 
