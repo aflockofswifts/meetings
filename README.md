@@ -16,6 +16,94 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.08.28
+
+### Discussion: Distribute an App
+
+Ray asked about how to distribute an app to a limited audience. The problem with doing a TestFlight build is that the app expires. In this case, an unlisted app works better.
+
+Also, for syncing data, you might just want to go with `NSUbiquitousKeyValueStore` instead of iCloud syncing. However, there is a 1MB 1024 key limitation to this approach. 
+
+- https://developer.apple.com/documentation/foundation/nsubiquitouskeyvaluestore
+
+
+### Discussion: Detecting Key Press Events
+
+- https://www.hackingwithswift.com/quick-start/swiftui/how-to-detect-and-respond-to-key-press-events
+
+The official documentation:
+
+- https://developer.apple.com/documentation/swiftui/view/onkeypress(_:action:)
+
+### Discussion: UIViewRepresentable
+
+Josh gave us a quick rundown about how to create 2-way bindings in representable types.
+
+```swift
+import SwiftUI
+    import PlaygroundSupport
+    struct V: UIViewRepresentable {
+        @Binding var text: String
+        func makeUIView(context: Context) -> some UIView {
+            let view = UITextField()
+            view.text = text
+            view.delegate = context.coordinator
+            return view
+        }
+        func updateUIView(_ uiView: UIViewType, context: Context) {
+            (uiView as! UITextField).text = text
+            
+            context.coordinator.text = text
+        }
+        func makeCoordinator() -> Delegate {
+            .init($text)
+        }
+    }
+
+    final class Delegate: NSObject, UITextFieldDelegate {
+        @Binding var text: String
+        init(_ binding: Binding<String>) {
+            _text = binding
+        }
+        func textFieldDidEndEditing(_ textField: UITextField) {
+            text = textField.text ?? ""
+        }
+    }
+
+    struct W: View {
+        @State var text = "hello"
+        var body: some View {
+            VStack {
+                Text(text).foregroundStyle(.red)
+                Button("Reset") { text = "hello"}
+                V(text: $text)  
+            }
+            .font(.largeTitle)
+        }
+    }
+    PlaygroundPage.current.setLiveView(W())
+```
+
+### Discussion: Creating a Generic Loading View
+
+Andrei had a question about using animating a loading view.  When views come in and out of the view
+hierarchy, you want to use `.transition` and not `.animation`.
+
+Josh had previously shown an example of doing this generically:
+
+- https://github.com/joshuajhomann/Shimmer
+
+### Discussion: Getting Symbols from Crash Logs
+
+- https://forums.developer.apple.com/forums/thread/673057
+- https://developer.apple.com/documentation/xcode/diagnosing-issues-using-crash-reports-and-device-logs
+- https://developer.apple.com/documentation/xcode/building-your-app-to-include-debugging-information
+
+### Discussion: Mac projects require dev account?
+
+It seems like Xcode (and previews in particular) are very chatty if you try to build a Mac app without a team.
+
+
 ## 2024.07.27
 
 ### Presentation: Container Views in iOS18 (Josh)
