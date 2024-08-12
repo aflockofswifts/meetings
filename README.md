@@ -16,6 +16,106 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.08.10
+
+### Presentation: Ownership and Sendability (Josh)
+
+Josh talked about some of the new ownership keywords following up on previous discussions of ownership. Many of these keywords are not needed in day-to-day but become important when you are trying to vent high performance Swift packages.  For example:
+
+- `consuming`: Mark a parameter consuming when the function will take ownership of the type and drop the reference count before returning.
+- `borrowing`: Mark a parameter borrowing when the function will not worry about dropping the reference count before returning.
+
+Here is an example of using `sending` 
+
+```swift
+final class A: CustomStringConvertible {
+    var value: Int = 0
+    var description: String { "A\(value)" }
+}
+struct ContentView: View {
+    var body: some View {
+        VStack {
+            Image(systemName: "globe")
+                .imageScale(.large)
+                .foregroundStyle(.tint)
+            Text("Hello, world!")
+        }
+        .padding()
+        .task {
+            let a = A()
+            var b = B()
+            await b(a)
+        }
+    }
+}
+
+func x<T: CustomStringConvertible>(_ a: T) async {
+    print(a)
+}
+
+actor B {
+    func callAsFunction<T: CustomStringConvertible>(_ value: sending T) {
+        print(value)
+    }
+}
+```
+
+### Discussion: @Observable
+
+Bob was working on a chart to explain how to use the observable macro which makes 
+the type conform to `Observation.Observable`. Be careful not to use the words
+"observed object" because they are too easily confused with the old protocol
+ObservedObject.
+
+Also, from Ed:
+
+- https://developer.apple.com/documentation/swiftui/migrating-from-the-observable-object-protocol-to-the-observable-macro
+
+### Followup discussion:
+
+Instead of using UITextFieldDelegate (as we did last week) we can use UIControl::addAction.
+
+```swift
+import SwiftUI
+
+import PlaygroundSupport
+struct V: UIViewRepresentable {
+  @Binding var text: String
+  func makeUIView(context: Context) -> some UIView {
+    let view = UITextField()
+    view.addAction(UIAction { [weak view] _ in text = view?.text ?? "" }, 
+                   for: .editingChanged)
+    view.text = text
+    return view
+  }
+      
+  func updateUIView(_ uiView: UIViewType, context: Context) {
+     (uiView as! UITextField).text = text
+    }
+  }
+    
+struct W: View {
+    @State var text = "hello"
+    var body: some View {
+        VStack {
+          Text(text).foregroundStyle(.red)
+          Button("Reset") { text = "hello"}
+          V(text: $text)
+        }
+        .font(.largeTitle)
+    }
+}
+
+PlaygroundPage.current.setLiveView(W())
+```
+
+### Xcode problems
+
+Be careful not to run out of disk space. You may need to delete and reinstall simulators if you get into a bad state.
+
+https://apps.apple.com/us/app/devcleaner-for-xcode/id1388020431?mt=12
+
+
 ## 2024.08.03
 
 ### Discussion: Distribute an App
