@@ -16,6 +16,51 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.08.17
+
+### Presentation: Migration to Swift 6 (Josh)
+
+Continuing from last week, Josh guiding us through sendability and other concurrency topics in the official migration guide.
+
+- https://www.swift.org/migration/documentation/migrationguide/
+
+
+### Discussion
+
+#### Shipping an App
+
+Ray is trying to ship an unlisted app. First, you need to go through the normal app review process. He is using a private CloudKit container to share data to the three different devices that will run the app. There was some discussion about sharing records.
+
+- https://developer.apple.com/documentation/coredata/sharing_core_data_objects_between_icloud_users
+
+
+#### Cancelling an animation if SwiftUI
+
+Create a transaction that disables animation and then set some properties with it. It will instantly cancel any in-flight animations and update the model.
+
+```swift
+var transaction = Transaction(animation: .linear(duration: 0))
+transaction.disablesAnimations = true
+withTransaction(transaction) { viewModel.stop() }
+```
+
+#### ScrollView Tricks
+
+Ed is making a new app to track fitness stats over arbitrary times and trying to make scroll views work in SwiftUI.
+
+- https://developer.apple.com/documentation/uikit/uiscrollviewdelegate/1619385-scrollviewwillenddragging
+- https://developer.apple.com/documentation/swiftui/scrollphase/decelerating
+
+#### Maintaining Swift Compiler Versions
+
+A cross platform command line tool that lets you manage Swift versions.
+
+- https://forums.swift.org/t/introducing-swiftly-a-new-swift-toolchain-installer-and-manager/67254
+- https://github.com/swiftlang/swiftly
+
+---
+
+
 ## 2024.08.10
 
 ### Presentation: Ownership and Sendability (Josh)
