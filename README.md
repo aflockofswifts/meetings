@@ -16,6 +16,40 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.08.25
+
+### Presentation: Migration to Swift 6 (Josh)
+
+Josh continued his review Swift 6 migration this week going over the guide:
+
+- https://www.swift.org/migration/documentation/migrationguide/
+
+Also, this chart always comes in helpful:
+
+- https://github.com/aflockofswifts/meetings/blob/main/2022/materials/task-inheritance.png
+
+### Discussion
+
+Josh talked about a strategy for transitioning between combine and between async sequences. Combine offers multi-client observation so it is still useful.  Here is a proposed property wrapper that lets you get at both:
+
+```swift
+@propertyWrapper
+struct Streamable<Wrapped> {
+  private var value: CurrentValueSubject<Wrapped, Never>
+  var wrappedValue: CurrentValueSubject<Wrapped, Never> {
+    value
+  }
+  var projectedValue: some AsyncSequence<Wrapped, Never> {
+    value.values
+  }
+  init(wrappedValue: Wrapped) {
+    value = wrappedValue
+  }
+}
+```
+
+---
+
 ## 2024.08.17
 
 ### Presentation: Migration to Swift 6 (Josh)
@@ -59,7 +93,6 @@ A cross platform command line tool that lets you manage Swift versions.
 - https://github.com/swiftlang/swiftly
 
 ---
-
 
 ## 2024.08.10
 
