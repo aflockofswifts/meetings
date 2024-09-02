@@ -16,6 +16,55 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.08.31
+
+### Presentation: Migration to Swift 6 (Josh)
+
+We continued the discussion on migrating to modern, concurrency safe Swift.
+
+- https://www.swift.org/migration/documentation/migrationguide/
+
+Specifically:
+
+- https://www.swift.org/migration/documentation/swift-6-concurrency-migration-guide/incrementaladoption
+
+
+Another post going into depth about ownership:
+
+- https://infinum.com/blog/swift-ownership/
+
+
+### Presentation: Modern App Architecture (Josh)
+
+![Concurrency aware app](materials/arch-with-concurrency.png)
+
+### Cool Links
+
+Lots of discussion and cool links from the week.
+
+
+### New Swift Pitch for inout and borrow
+
+- https://forums.swift.org/t/pitch-borrow-and-inout-declaration-keywords/62366
+
+
+### How Diffusion Models and LLMs work:
+
+- https://www.youtube.com/watch?v=UZDiGooFs54
+
+Also 3 Blue 1 Brown:
+
+- https://www.youtube.com/watch?v=eMlx5fFNoYc
+
+
+### Recreating Apps:
+
+- https://seanallen.teachable.com/p/portfolio-project
+- https://www.hackingwithswift.com/plus/remaking-apps
+
+
+---
+
 ## 2024.08.25
 
 ### Presentation: Migration to Swift 6 (Josh)
