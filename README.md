@@ -16,6 +16,150 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.09.14
+
+### Pong Event
+
+From Carlyn.
+
+- https://www.eventbrite.com/e/avoid-missing-ball-tickets-999778443237
+
+Ed Fries of Supercade was the speaker. See https://www.supercademuseum.org
+
+### How to estimate an app?
+
+We talked about what to tell someone when they come to you with a great app idea. Here were some key points:
+
+- You need a blueprint to build a building.
+- Phase 0 of a project is just about collecting requirements and making wireframes.
+- Don't underestimate the effort required. It is always more than you think.
+- "Ideas are cheap, execution is everything."
+- If they don't want to learn to do it themselves, consider pitching to VCs. 
+
+### ChartRun - New App
+
+Try it out.
+
+- https://apps.apple.com/app/chartrun/id6670346978
+
+### Presentation
+
+Josh took us through the pitfalls of lifetime with SwiftUI. Close examination of @State, @StateObject, @ObservableObject.
+
+We started to create a property wrapper called @Once to be used with @Observable and make sure expensive view model inits don't get called repeatedly.
+
+---
+
+## 2024.09.14
+
+### Animation in SwiftUI
+
+Ed was having problems with one of his animations and Josh referred him to this previous example:
+
+- https://github.com/joshuajhomann/Bejeweled/blob/master/Shared/Animation.swift
+
+### Draggable in SwiftUI
+
+There are serval shortcomings in SwiftUI. Here is some sample code (via Joe) to demostrate the issues:
+
+```swift
+import SwiftUI
+    
+struct ContentView: View {
+    @State private var selection: Set<Int> = []
+    private let colors = [Color.green, .yellow, .orange, .red, .purple, .blue]
+    let range: Range = 0..<42
+    var body: some View {
+        ScrollView {
+            VStack {
+                Text("Select count \(selection.count)")
+                    .padding(10)
+            }.background(colors[selection.count%colors.count])
+            .cornerRadius(10.0)
+
+            LazyVGrid(columns: .init(repeating: .init(), count: 6)) {
+                ForEach(range) { i in
+                    ZStack {
+                        let shape = RoundedRectangle(cornerRadius: 16)
+                        shape
+                            .strokeBorder(selection.contains(i) ?  Color.black : .clear, lineWidth: 3)
+                            .background(shape.fill(colors[i%colors.count]))
+                            .frame(idealWidth: 80, idealHeight: 80)
+                            .onTapGesture {
+                                if !selection.insert(i).inserted {
+                                    selection.remove(i)
+                                }
+                            }
+                            .draggable(String(describing: selection)){
+                                RoundedRectangle(cornerRadius: 16)
+                                    .strokeBorder(Color.white)
+                                    .frame(width:100, height: 100)
+                                    .background(colors[selection.count%colors.count])
+                                    .id("id\(selection.count)")
+                                    .overlay(alignment: .topLeading){
+                                        Text("\(selection.count)")
+                                    }
+                                }
+                            .dropDestination(for: String.self){ element, location in
+                                selection.removeAll()
+                                return true
+                            }.id("id\(i)-\(selection.count)")
+                        Text("\(selection.count)")
+                    }    
+                }
+            }
+        }
+    }
+}
+```
+
+### Recovering from Failures
+
+You should define a function like this to handle unexpected problems. Note the use of @autoclosure to defer execution.
+
+```swift
+func recoverFailure<Value>(
+        message: String,
+        file: StaticString = #file,
+        line: UInt = #line,
+        value: @autoclosure () -> Value
+    ) -> Value {
+    #if DEBUG
+        fatalError(message)
+    #else
+        reportErrorToServer()
+        return value()
+    #endif
+}
+```
+
+Alternatively,
+
+```swift
+infix operator ?!: NilCoalescingPrecedence
+
+func ?!<Value, MyError: Error>(lhs: Value?, rhs: @autoclosure () -> MyError) throws (MyError) -> Value {
+    guard let lhs else { throw rhs() }
+    return lhs
+}
+
+struct ContentView: View {
+    var a: Int? = 0
+    var body: some View {
+        Text("A")
+    }
+    func A() throws (CustomError) {
+        print(try a ?! CustomError.message("a is nil"))
+    }
+}
+    
+enum CustomError: Error {
+    case message(String)
+}
+```
+
+---
+
 ## 2024.08.31
 
 ### Presentation: Migration to Swift 6 (Josh)
