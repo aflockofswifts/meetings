@@ -47,7 +47,65 @@ Try it out.
 Josh took us through the pitfalls of lifetime with SwiftUI. Close examination of @State, @StateObject, @ObservableObject.
 
 We started to create a property wrapper called @Once to be used with @Observable and make sure expensive view model inits don't get called repeatedly.
+```swift
+import SwiftUI
 
+struct ContentView: View {
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 3)) { _ in
+            let _ = print("-----------\(Date.now)-----------")
+            V()
+        }
+    }
+}
+
+struct V: View {
+    var vm = VM("naked var")
+    @State var vm0 = VM("@State")
+    @StateObject var vm1 = VM("@StateObject")
+    @Once var vm2 = VM("@Once")
+    @State var vm3 = Once(wrappedValue: VM("State Once"))
+    var body: some View {
+        Text(vm.text)
+        Text(vm0.text)
+        Text(vm1.text)
+        Text(vm2.text)
+        Text(vm3.wrappedValue.text)
+    }
+}
+
+#Preview {
+    ContentView()
+}
+
+@Observable
+final class VM: ObservableObject {
+    var text: String
+    init(_ text: String) {
+        self.text = text
+        print("init with \(text)")
+    }
+}
+
+@propertyWrapper
+struct Once<Wrapped: Observation.Observable> {
+    private final class Reference<Value: Observation.Observable> {
+        lazy var value: Value = makeValue()
+        private let makeValue: () -> Value
+        init(makeValue: @escaping () -> Value) {
+            self.makeValue = makeValue
+        }
+    }
+    private let reference: Reference<Wrapped>
+    var wrappedValue: Wrapped {
+        reference.value
+    }
+    init(wrappedValue: @escaping @autoclosure () -> Wrapped) {
+        reference = .init(makeValue: wrappedValue)
+    }
+}
+
+```
 ---
 
 ## 2024.09.14
