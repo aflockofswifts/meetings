@@ -16,6 +16,57 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.09.21
+
+### Presentation: Types (Peter W)
+
+Peter took us on a guided tour of Alex Ozun's SwiftCraft 2024 talk. The only guarantee that underdesired changes don't get fixed is the compiler--use it!
+
+- https://www.youtube.com/watch?v=cCZ00b_RNyc
+
+This is from his blog https://swiftology.io
+
+From a few years back: Cory Benfield - Building State Machines
+
+-  https://www.youtube.com/watch?v=7UC7OUdtY_Q
+
+
+### Presentation Modern SwiftUI Architecture (Josh):
+
+Josh continued going over his @Once property wrapper to avoid the re-initialization problem. 
+
+As an aside, Jesse Squires talked about the same problem (albeit with a different solution).
+
+- https://www.jessesquires.com/blog/2024/09/09/swift-observable-macro/
+
+
+### Other videos from SwiftCraftUK 
+- https://www.youtube.com/@SwiftCraftUK/videos
+
+
+### Finding problems with build
+
+- https://git-scm.com/docs/git-bisect
+
+- https://developer.apple.com/wwdc24/10171
+
+
+### Tabs in iOS 18 have changed 
+
+- https://developer.apple.com/documentation/swiftui/tabviewstyle/tabbaronly
+
+
+### Cool Upcoming Pitches
+
+- https://forums.swift.org/t/integer-generic-parameters/74181
+
+
+### Apple Dev Events in Cupertino (October 2 and October 23): 
+
+https://developer.apple.com/events/
+
+
+
 ## 2024.09.14
 
 ### Pong Event
