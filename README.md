@@ -16,6 +16,42 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.09.28
+
+### Announcement: Swift and Java
+
+Swift/Java interoperability
+
+- https://x.com/SwiftLang/status/1839328831200809217
+- https://github.com/swiftlang/swift-java
+
+This happened at the Server Side Swift conference in 
+London: https://www.serversideswift.info
+
+
+### Logging (OSLog)
+
+Peter was wondering about best practices for redaction of non-strings using logging.
+
+- https://developer.apple.com/wwdc23/10226
+- https://developer.apple.com/documentation/os/oslogprivacy
+- https://developer.apple.com/wwdc20/10168
+
+If OSLog doesn't work out, consider Swift Log with a custom backend. You can bootstrap the logger differently at startup.
+
+- https://swiftpackageindex.com/apple/swift-log
+
+
+### Presentation: iOS18 TabView (Josh)
+
+You should strongly consider using the new TabView since it gives you a lot of standard behavior for free across all of Apple's platforms.
+
+- https://developer.apple.com/documentation/swiftui/enhancing-your-app-content-with-tab-navigation
+- https://developer.apple.com/wwdc24/10147
+- https://developer.apple.com/documentation/swiftui/tabview
+
+---
+
 ## 2024.09.21
 
 ### Presentation: Types (Peter W)
