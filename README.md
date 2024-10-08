@@ -16,6 +16,65 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.10.05
+
+The videos from the Server Side Swift conference in London are out. They are hosted on YouTube but here is a nice listing of all of them.
+
+- https://www.serversideswift.info/videos/
+
+
+We talked a little bit about cross platform development.
+
+### Logging 
+
+Bob D has been exploring logging, signposts and Instruments. He brought all of his knowledge together in this gist that you can use as a quick start in your projects:
+
+    
+- https://gist.github.com/bobdel/8baab707f7532fa61994a1718b96aa8f
+
+### Podcasts and AI
+
+From Bob, Ed and Georgi
+
+- https://atp.fm/607
+- https://overcast.fm/+AATRbUt3Vg4
+- https://overcast.fm/+AATRbWv_gsM
+- https://blog.google/technology/ai/notebooklm-audio-overviews/
+- https://huggingface.co/spaces/gabrielchua/open-notebooklm
+
+### MapKit in SwiftUI   
+
+Ed reports that doing detailed map overlays
+is now possible in SwiftUI. The documentation isn't great but it works.
+
+Bob mentioned this learning resource.
+    
+- https://seanallen.teachable.com/p/dub-dub-grub-swiftui-mapkit-cloudkit
+
+
+### NASA Hackathon
+
+Georgi D is thinking about a reality kit app that can show a large number of objects.
+
+- http://astria.tacc.utexas.edu/AstriaGraph/
+
+
+### Debugging Swift exceptions in iOS 18
+
+Mark was trying to understand the source of Swift exceptions in the startup flow of his app that started in iOS 18. (They seem to be happening in storyboard loading. Our consensus was that he can probably safely ignore these.)
+
+Also, this nugget from Joe:
+
+```swift
+NSSetUncaughtExceptionHandler { exception in
+    print(exception)
+    print(exception.callStackSymbols)
+}
+```
+
+---
+
+
 ## 2024.09.28
 
 ### Announcement: Swift and Java
