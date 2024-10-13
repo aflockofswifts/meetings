@@ -16,6 +16,87 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.10.12
+
+### Becoming a Trader on iTunes Connect
+
+- https://developer.apple.com/help/app-store-connect/manage-compliance-information/manage-european-union-digital-services-act-trader-requirements/
+
+
+### Getting Screenshots with a Bezel
+
+You can use the resources available from Apple and use an image editor. Sketch also has device templates.
+
+Alex shared:
+- https://simrecorder.antran.app/
+
+### Sendable
+
+Based on this post by Matt Massicotte
+
+- https://mastodon.social/@mattiem/113293307468772472
+
+```swift
+try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+  // You cannot use UNUserNotificationCenter's async methods, because the type is non-Sendable.
+  // However, the completionHandler version also isn't correctly annotated. Adding @Sendable
+  // isn't critical in this specific example, but the block is executed on a background thread. So,
+  // in the general case, it's definitely needed.
+  UNUserNotificationCenter.current().add(request) { @Sendable error in
+   if let error {
+    continuation.resume(throwing: error)
+   } else {
+    continuation.resume()
+   }
+ }
+}
+```
+
+We looked at the general problem of async methods on non-sendable classes. We explored using `LockIsolated` from pointfree.co vs using an actor. Peter expressed concern that using a lock violates the guarantee of Swift's async system of forward progress and we went through Josh's previous example of running work in an async queue. 
+
+Bob recommended this presentation by Tim Condon on Sendable:
+
+- https://www.youtube.com/watch?v=9RgvESMaO1M
+
+Another concurrency pattern that John B keyed us in on:
+
+- https://en.wikipedia.org/wiki/Communicating_sequential_processes
+
+
+### Swift Servers
+
+- https://blog.vapor.codes/posts/the-future-of-vapor/
+- https://swiftonserver.com/whats-new-in-hummingbird-2/
+
+
+### `removeFirst()` and `popFirst()`.
+
+- https://developer.apple.com/documentation/swift/array/removefirst()
+- https://developer.apple.com/documentation/swift/collection/popfirst()
+
+With removeFirst the collection cannot be empty or the app will trap. `popFirst()` returns an optional that will be `nil` if empty.
+
+
+### Git Programs
+
+- https://retcon.app
+- https://git-fork.com
+
+
+### Swift Cheatsheets
+
+```swift
+init() {
+  UITextField.appearance().clearButtonMode = .whileEditing
+}
+```
+
+- https://github.com/jeradesign/0jeradoc/blob/main/SwiftCheatSheet.md
+
+- https://github.com/jeradesign/0jeradoc/blob/main/SwiftUICheatSheet.md
+
+---
+
 ## 2024.10.05
 
 The videos from the Server Side Swift conference in London are out. They are hosted on YouTube but here is a nice listing of all of them.
