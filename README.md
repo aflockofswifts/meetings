@@ -16,6 +16,90 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.10.19
+
+### Adding inner and drop shadows to Text
+
+Rainer was looking at how he could accomplish this. It turns out that iOS16 has an easy way to get it done. Franklin shared these links:
+
+- https://designcode.io/swiftui-handbook-inner-shadow
+
+Also, the TextRenderer protocol introduced in WWDC 2024 
+
+- https://fatbobman.com/en/posts/creating-stunning-dynamic-text-effects-with-textrender/
+
+### Code completion
+
+Peter experimented around with different code completion. There are several settings available in Xcode:
+
+```none
+Xcode menu File -> Settings -> Text Editing -> Editing
+```
+
+### Swift Package Umbrella Header
+
+From https://github.com/orchetect/TimecodeKit/blob/main/Package.swift
+
+In the Package.swift
+
+```swift
+    ...
+    targets: [
+        // umbrella target
+        .target(
+            name: "TimecodeKit",
+            dependencies: ["TimecodeKitCore", "TimecodeKitAV", "TimecodeKitUI"]
+        ),
+        :
+    ],
+    ...
+```
+
+Then one source file:
+
+```swift
+@_exported import TimecodeKitCore
+@_exported import TimecodeKitAV
+@_exported import TimecodeKitUI
+```
+
+
+### Doug Gregor talks C++ and Swift
+
+- https://adspthepodcast.com/2024/05/24/Episode-183.html
+
+
+Prediction for WWDC. Embedded Swift will be a way to program the GPU.
+
+In the meantime, it is pretty easy to use metal from Swift:
+
+- https://github.com/twostraws/Inferno
+
+
+John showed us his brain app that he got going for Vision Pro recently.
+
+- https://jera.com/brain
+
+Some awesome GPU demos this week:
+- https://www.shadertoy.com/
+
+Ocean view rendered entirely in shader:
+- https://www.shadertoy.com/view/Ms2SD1
+
+This cool Unity 6 demo from John:
+- https://unity.com/demos/fantasy-kingdom
+
+
+### Hackathon
+
+John also programmed a Vision Pro "finger gun" for the Ludum Dare hackathon.
+
+- https://jera.com/fingergun
+- https://ludumdare.com
+
+
+---
+
 ## 2024.10.12
 
 ### Becoming a Trader on iTunes Connect
