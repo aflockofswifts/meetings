@@ -16,6 +16,124 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.10.26
+
+
+### Server Side Swift
+
+There seems to be quite a bit of interest in the group about Server
+Side Swift.
+
+- https://www.serversideswift.info/videos/
+
+Ray did a quick demo of building creating a new Vapor app with the 
+Vapor Toolkit which you can install on the Mac with `brew install vapor`.
+
+We discovered that opening the manifest file, Package.swift it creates
+a .swiftpm folder that contains an xcode subfolder that Xcode uses to
+save project information such as scheme settings. The .swiftpm director
+is listed in .gitignore so that it doesn't appear in diffs.
+
+### Magic Main Actor
+
+We reviewed this blog post by Ole Begemann describing how Dispatch.main.async
+is a hack in them compler (Sema) to know about @MainActor.
+
+- https://oleb.net/2024/dispatchqueue-mainactor/
+
+
+### Abstract Database
+
+We have talked about this previously:
+
+- https://github.com/joshuajhomann/DatabaseFacade
+- https://github.com/aflockofswifts/meetings/tree/main/2022#hacking-database-facade
+
+SwiftData @Query's leak the implementation to the view.
+
+Anoter modern approach to using CoreData is to wrap things into an actor and use a custom executor with a serial queue.
+
+- https://www.swift.org/migration/documentation/swift-6-concurrency-migration-guide/incrementaladoption 
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0392-custom-actor-executors.md
+
+```swift
+actor LandingSite {
+  private let queue = DispatchSerialQueue(label: "something")
+    
+  nonisolated var unownedExecutor: UnownedSerialExecutor {
+    queue.asUnownedSerialExecutor()
+  }
+}
+```
+
+### Animation with UIKit/SwiftUI
+
+From Josh Homann.
+
+```swift
+import SwiftUI
+import UIKit
+import PlaygroundSupport
+    
+struct V: View {
+    @State var scale = 1.0
+    var action: () -> Void
+    var body: some View {
+        Color.red.frame(width: 500, height: 500)
+            .scaleEffect(scale)
+            .onTapGesture {
+                withAnimation {
+                    scale = scale == 1.0 ? 0.5 : 1.0
+                }
+            action()
+        }
+    }
+}
+
+final class VC: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let action = { [weak self] in
+            let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
+                self?.present(alert, animated: true)
+        }
+        let hosted = UIHostingController(rootView: V(action: action))
+        hosted.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(hosted.view)
+        NSLayoutConstraint.activate([
+            view.centerXAnchor.constraint(equalTo: hosted.view.centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: hosted.view.centerYAnchor),
+        ])
+    }
+}
+    
+struct BounceScaleAnimation: AnimatableModifier {
+    var proportion: CGFloat
+    var scale: CGFloat
+    private var adjustedProportion: CGFloat {
+        proportion < 0.5 ? 2 * proportion : (1 - 2 * (proportion - 0.5))
+    }
+    
+    nonisolated var animatableData: CGFloat {
+        get { proportion }
+        set { proportion = newValue }
+    }
+    
+    func body(content: Content) -> some View {
+        content
+            .scaleEffect(1 + (scale - 1) * adjustedProportion)
+    }
+}
+    
+extension View {
+    func bounceScaleAnimation(proportion: CGFloat, scale: CGFloat) -> some View {
+        modifier(BounceScaleAnimation(proportion: proportion, scale: scale))
+    }
+}
+```
+
+---
+
 ## 2024.10.19
 
 ### Adding inner and drop shadows to Text
