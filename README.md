@@ -16,8 +16,112 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
-## 2024.10.26
+## 2024.11.02
 
+### Refactoring
+
+We talked about the importance of breaking your code into
+modules.  It can be hard to do in an established code base
+that doesn't have a clear set of dependencies.
+
+### Embedded Swift
+
+Carlyn continues to experiment with embedded Swift. The 
+latest foray is with Swift Pico.
+
+- https://github.com/carlynorama/swift-pico-w-hello
+
+There are Apple examples here:
+
+- https://github.com/apple/swift-embedded-examples/
+
+A company that sells a Swift ready development environment:
+
+- https://madmachine.io
+
+Apple 
+
+- https://en.wikipedia.org/wiki/ESP32
+
+### The Swift Ecosystem
+
+We talked about how Swift can be extended to other domains and the
+popularity of Swift.
+
+- https://www.tiobe.com/tiobe-index/
+
+We talked about Swift 6 concurrency and how the tools and knowledge 
+needs to catch up in the same way optionals did at the introduction
+of Swift.
+
+
+### Copilot for Xcode
+
+Ed is experimenting with Copilot for Xcode.  There are a lot of steps
+in setting up and you need to get all of them right or it won't work.
+
+- https://github.blog/changelog/2024-10-29-github-copilot-code-completion-in-xcode-is-now-available-in-public-preview/
+
+
+Example from Copilot:
+
+```swift
+func generateFibonacciSequence(n: Int) -> [Int] {
+    guard n > 0 else { return [] }
+    var sequence = [0, 1]
+    if n == 1 { return [0] }
+    if n == 2 { return sequence }
+    
+    for _ in 2..<n {
+        let nextNumber = sequence[sequence.count - 1] + sequence[sequence.count - 2]
+        sequence.append(nextNumber)
+    }
+        
+    return sequence
+}
+    
+let fibonacciSequence = generateFibonacciSequence(n: 10)
+print(fibonacciSequence) // Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+```
+
+Then, asking it to optimize:
+
+```swift
+func generateFibonacciSequence(n: Int) -> [Int] {
+    guard n > 0 else { return [] }
+    var sequence = [0, 1]
+    if n == 1 { return [0] }
+    
+    for i in 2..<n {
+        sequence.append(sequence[i - 1] + sequence[i - 2])
+    }
+        
+    return sequence
+}
+```
+
+Example using Xcode's native code completion:
+
+```swift
+// A function that generates the fibonacci sequence
+func fibonacci(_ n: Int) -> [Int] {
+    guard n >= 0 else { return [] }
+    var result: [Int] = []
+    var a: Int = 0
+    var b: Int = 1
+    for _ in 0..<n {
+        result.append(a)
+        (a, b) = (b, a + b)
+    }
+    return result
+}
+```
+
+Ed tried refining the prompts and was able to produce various versions.
+
+---
+
+## 2024.10.26
 
 ### Server Side Swift
 
