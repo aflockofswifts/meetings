@@ -16,6 +16,84 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.11.09
+
+### CoreData Swift 6 and Concurrency
+
+Ray was trying to make a presentation about core data and Swift 6
+concurrency but ran out of time trying to get it to not compile for
+Swift 6.  He will try again next week.  Useful flag for debugging 
+concurrency for core data: 
+
+```
+-com.apple.CoreData.ConcurrencyDebug 1
+```
+
+It will immediately halt the code if there is a problem.
+
+### Instruments
+
+An interesting eight session online course coming up by James Dempsey.
+
+- https://swift-virtuoso.com
+
+Looks great. Also,
+
+- https://developer.apple.com/tutorials/instruments
+
+### Cleaning the Mac
+
+- https://daisydiskapp.com
+- Look at Settings -> General -> Storage
+- Unix command
+
+```bash
+sudo du -sh * |sort -rhk1 |head -n 10
+    Password:
+    230G    Library
+     99G    Parallels
+     21G    Pictures
+     14G    Developer
+    9.5G    Movies
+    5.5G    Documents
+    3.2G    Projects
+    1.9G    Downloads
+    526M    Music
+     19M    Desktop
+```
+
+Bob notes: Clean my Mac is probably the most common utility for zapping space. https://macpaw.com
+
+### Problem with Overobserving
+
+Peter was trying to figure out his way around a problem over observing.
+
+- https://developer.apple.com/forums/thread/767980
+
+
+Ray says this might be relavant:
+
+- https://www.pointfree.co/episodes/ep254-observation-the-gotchas
+
+Also, Bob notes:
+
+- https://nsscreencast.com/episodes/584-swiftui-task-bug
+
+
+### Evolution
+
+Josh walked us through some of the things coming in Swift 6.1.
+
+- Raw identifiers
+- Package traits
+- Regex lookbehind assertions
+- Span: Save Access to Contiguous Storage
+- Nonescapable Types
+
+See more here: https://www.swift.org/swift-evolution/
+
+---
+
 ## 2024.11.02
 
 ### Refactoring
