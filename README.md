@@ -16,6 +16,131 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.11.16
+
+### Algorithm Fun
+
+John B. posed a leet coder problem to us to talk about.
+
+- https://leetcode.com/problems/longest-common-prefix/description/
+
+His solutions:
+
+- https://github.com/jeradesign/LongestPrefix
+
+Here is what co-pilot came up with:
+
+```swift
+    
+func longestCommonPrefix(_ strs: [String]) -> String {
+    guard let firstStr = strs.first else { return "" }
+    
+    var prefix = firstStr
+    
+    for str in strs {
+        while !str.hasPrefix(prefix) {
+            prefix = String(prefix.dropLast())
+            if prefix.isEmpty { return "" }
+        }
+    }
+    
+    return prefix
+}
+```
+A second attempt with copilot with string indexing:
+
+```swift
+func longestCommonPrefix(_ strs: [String]) -> String {
+    guard let firstStr = strs.first else { return "" }
+    
+    for i in 0..<firstStr.count {
+        let index = firstStr.index(firstStr.startIndex, offsetBy: i)
+        let char = firstStr[index]
+        
+        for str in strs {
+            if i >= str.count || str[index] != char {
+                return String(firstStr[..<index])
+            }
+        }
+    }
+    
+    return firstStr
+}
+```
+
+Josh came up with a solution that mapped each string type to iterators:
+
+```swift
+import PlaygroundSupport
+
+class Solution {
+    func longestCommonPrefix(_ strs: [String]) -> String {
+        guard let firstString = strs.first else { return "" }
+        var firstIterator = strs.first?.makeIterator()
+        var iterators = strs.dropFirst().map { $0.makeIterator() }
+        var count = 0
+        while true {
+            guard let nextCharacter = firstIterator?.next() else { break }
+            guard iterators.indices.allSatisfy({ iterators[$0].next() == nextCharacter }) else { break }
+            count += 1
+        }
+        let endIndex = firstString.index(firstString.startIndex, offsetBy: count)
+        return String(firstString[..<endIndex])
+    }
+}
+
+let solution = Solution()
+
+print(solution.longestCommonPrefix([String]()))
+print(solution.longestCommonPrefix(["Sphynx"]))
+print(solution.longestCommonPrefix(["Sphynx", "Sphblack", "Sphquartz", "Sphjudge"]))
+```
+
+This was added to https://github.com/jeradesign/LongestPrefix/tree/josh
+
+
+### Fixing Layout
+
+Looking at an example from Allen where there isn't enough horizontal space and funny things start happening to the text.
+
+`fixedSize()` on `Text` returns the ideal size and ignores the proposed size of the parent. That said, it might get clipped or overrun the bounds if it is too big to fit.
+
+Josh proposed an anylayout solution. You can read about it here:
+
+- https://sarunw.com/posts/swiftui-anylayout/
+
+Another proposal (sorry, I don't remember who originally proposed), Bob posted:
+
+- https://www.hackingwithswift.com/quick-start/swiftui/how-to-create-an-adaptive-layout-with-viewthatfits
+
+
+## Using SwiftUI from within UIKit Navigation
+
+Peter shared his approach with us:
+
+- https://github.com/PeterWu9/TestNavigationUIKit/tree/main
+
+It addresses the problems with SwiftUI that he brought up last week and has some nice modular properties.
+
+Josh mentioned another approach we looked at previously using a `ProxyView`:
+
+- https://github.com/joshuajhomann/SpaceStationTracker/blob/main/SpaceStationTracker/Shared/SpaceStationLocationService.swift
+
+### Debugging
+
+Doing some print debugging.
+
+- https://sarunw.com/posts/how-to-do-print-debugging-in-swiftui/
+
+Also useful from John B:
+
+```swift
+po [[UIWindow keyWindow] _autolayoutTrace]
+```
+
+---
+
+
 ## 2024.11.09
 
 ### CoreData Swift 6 and Concurrency
