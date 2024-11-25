@@ -16,6 +16,104 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.11.23
+
+    
+### Buidling the Swift Toolchain
+
+
+Instructions can be found here:
+
+- https://github.com/swiftlang/swift/blob/main/docs/HowToGuides/GettingStarted.md
+
+
+If you want to contribute to Swift, you need to do your pull from SSH. You need to set that up with
+github:
+    
+-  https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+
+
+Just looking at the git history can be useful. A great tool is gitup.
+    
+
+- https://gitup.co
+
+A brief digression into Linux.
+
+- https://www.whynotestflight.com/excuses/that-new-ubuntu-smell/
+    
+
+### Coding
+
+John B gave us a coding challenge to look at which detects balanced parenthesis.
+
+Here is the work of co-pilot:
+
+```swift
+    func isValidParentheses(_ s: String) -> Bool {
+        var stack = [Character]()
+        let matchingParentheses: [Character: Character] = [")": "(", "]": "[", "}": "{"]
+        
+        for char in s {
+            if char == "(" || char == "[" || char == "{" {
+                stack.append(char)
+            } else if char == ")" || char == "]" || char == "}" {
+                if stack.isEmpty || stack.removeLast() != matchingParentheses[char] {
+                    return false
+                }
+            }
+        }
+        
+        return stack.isEmpty
+    }
+    
+    // Example usage:
+    print(isValidParentheses("()[]{}")) // true
+    print(isValidParentheses("([{}])")) // true
+    print(isValidParentheses("(]"))     // false
+    print(isValidParentheses("([)]"))   // false
+    print(isValidParentheses("{[]}"))   // true
+```
+
+Other thoughts: make the API take some StringProtocol. AKA
+`func isValid<S: StringProtocol>(_ s: S) -> Bool`
+    
+
+Go all the way down to the bare metal:
+
+- https://nandgame.com/
+
+
+### Frank is Speaking at a Arctic Conference!
+
+- https://arcticonference.com
+
+Comes complete with a ski trip!    
+    
+
+### Embedded Swift
+
+    https://www.waveshare.com/esp32-c6-zero.htm
+    https://forums.swift.org/t/embedded-swift-example-projects-for-arm-and-risc-v-microcontrollers/71066/13
+    
+
+### Swift Evolution
+    
+New monthly newsletter
+- https://www.fline.dev/swift-evolution-monthly-may-november-2024/
+
+    
+An app to track proposals
+- https://apps.apple.com/us/app/proposal-monitor/id6449445305
+    
+
+### Looking for Feedback on Approachability of Data Race Safety
+    
+- https://forums.swift.org/t/prospective-vision-improving-the-approachability-of-data-race-safety/76183
+    
+
+---
+
 ## 2024.11.16
 
 ### Algorithm Fun
