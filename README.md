@@ -16,6 +16,66 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2024.11.30
+
+### How to get a transcript 
+- https://goodsnooze.gumroad.com/l/macwhisper
+    
+
+### Retry and Deadline in Swift Concurrency
+
+- https://forums.swift.org/t/introducing-retry-and-deadline-resiliency-in-swift-concurrency/76290
+
+
+### Swift Data
+    
+
+We talked about some of the characteristics of Swift Data. One of its shortcomings is how it requires
+you to put things in the view layer.
+
+Incidentally, pointfree has been talking about using GRDB in their screencasts.
+
+- https://www.pointfree.co/episodes/ep302-sqlite-grdb
+    
+
+### Dynamic Island
+
+Joe encountered an unfortunate behavior that when you hide the home indicator is *also* hides the 
+dynamic island. Something to post feedback about.
+
+Hide with this API:
+
+- https://developer.apple.com/documentation/uikit/uiviewcontroller/2887510-prefershomeindicatorautohidden
+    
+
+Interestingly, others reporting this problem:
+
+- https://github.com/Automattic/pocket-casts-ios/issues/1644
+    
+
+The workaround is to not hide the home indicator. :]
+
+    
+### Understanding SwiftUI
+
+Some good high-level resources:
+
+- https://www.swiftuifieldguide.com
+    
+- https://swiftui-lab.com/companion/
+
+
+You can discover things using the "Library" feature in Xcode (Command + Shift + L)
+
+Learn by doing. For example, work through some tutorials, 100 days of SwiftUI, etc.    
+    
+
+### AttributedString
+    
+There is a lot of power there now because it gets rid of lots of the cruft associated with NSAttributedString
+
+---
+
 ## 2024.11.23
 
     
