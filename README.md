@@ -16,6 +16,233 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+
+## 2024.12.14
+
+
+### Follow up: Carlyn Resolved
+
+    https://github.com/carlynorama/swift-cmake
+    Ray Fix:😃
+    
+### Hex Grids
+
+Ed created a game using hex grids. Asked about how to represent hex grids with coordinates.
+
+Various ideas including a previous example the group talked about in 2022
+
+https://www.redblobgames.com/grids/hexagons/
+
+
+Carlyn mentioned cube coordinates. They have several advantages although Frank pointed out that they are not unique.
+
+- https://backdrifting.net/post/064_hex_grids
+    
+
+### Validating on the Device
+
+Follow the latest guidelines.
+
+- https://developer.apple.com/documentation/appstorereceipts/validating_receipts_on_the_device
+    
+However if you have a small audience you might not want to worry about it.
+
+### Converting to PowerPoint?
+
+Easy to convert to pdf
+
+- https://developer.apple.com/library/archive/documentation/2DDrawing/Conceptual/DrawingPrintingiOS/GeneratingPDF/GeneratingPDF.html
+
+Use a Java library? Swift-Java is still experimental.    
+
+- https://github.com/swiftlang/swift-java/tree/main
+
+Use markdown instead?    
+
+- https://marp.app
+
+Use a SwiftUI library?
+
+- https://github.com/joshdholtz/DeckUI
+
+Use a google docs API?
+    
+- https://developers.google.com/slides/api/guides/overview
+
+Use Automator to create a keynote?
+    
+- https://discussions.apple.com/thread/252521413?sortBy=rank
+  
+
+### Slang
+
+The Khronos Group has launched the Slang Initiative, an open-source shading language and compiler. Slang, developed by NVIDIA, offers modular code development, portable deployment, and neural computation capabilities, making it valuable for real-time graphics developers.  Basically tries to be the write once, deploy everywhere (including Metal) shading language.
+
+- https://www.khronos.org/news/press/khronos-group-launches-slang-initiative-hosting-open-source-compiler-contributed-by-nvidia
+
+### SDL
+
+"Simple DirectMedia Layer is a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL/Direct3D/Metal/Vulkan. It is used by video playback software, emulators, and popular games including Valve's award winning catalog and many Humble Bundle games."
+    
+- https://wiki.libsdl.org/SDL2/FrontPage
+
+### Advent of Code
+
+Josh presented a couple of problems from this years advent of code. It is good to learn language features and algorithms. Even if you don't do all of the problems, you can probably learn things working on it.    
+
+- https://adventofcode.com
+    
+
+
+- https://forums.swift.org/t/advent-of-code-2024/76301
+    
+
+```swift
+let input =
+#"""
+3   4
+4   3
+2   5
+1   3
+3   9
+3   3
+"""#
+    
+
+var (left, right) = sequence(state: Scanner(string: input)) { scanner in
+    scanner.scanInt().flatMap { left in scanner.scanInt().map { right in (left, right) }}
+}.reduce(into: ([Int](), [Int]())) { accumulated, next in
+    accumulated.0.append(next.0)
+    accumulated.1.append(next.1)
+}
+left.sort(by: <)
+right.sort(by: <)
+let total = zip(left, right)
+    .lazy
+    .map { ($0 - $1).magnitude }
+    .reduce(0, +)
+
+print(total)
+```
+
+#### Another question
+
+```swift
+import RegexBuilder
+    
+let input = #"xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"#
+
+let expression = Regex {
+   let number = TryCapture(OneOrMore(.digit)) { Int($0) }
+    "mul("
+    number
+    ","
+    number
+    ")"
+}
+
+let total = input
+    .matches(of: expression)
+    .lazy
+    .map { $0.1 * $0.2 }
+    .reduce(0, +)
+
+print(total)
+```
+
+You could use a literal regex (from carlyn): 
+
+```swift
+let mulRegEx = #/mul\((\d{1,3}),(\d{1,3})\)/#
+func sumFromData(input:String, pattern:Regex<(Substring, Substring, Substring)>) -> Int {
+    let matches = input.matches(of:pattern)
+    return matches.reduce(0, { partialResult, match in
+        partialResult + (Int(match.1)! * Int(match.2)!)
+    })
+}
+
+let p1 = sumFromData(input: test0, pattern: mulRegEx)
+
+let withCommands = #/(?<mul>mul\((?<a>\d{1,3}),(?<b>\d{1,3})\))|(?<off>don't\(\))|(?<on>do\(\))/#
+```    
+
+A fun-looking regex game site Frank mentioned in the chat:
+
+- https://regexcrossword.com
+
+---
+
+## 2024.12.07
+
+
+### Concurrency Step-by-step
+
+A series of blog posts by Matt Massicote. Ray waked through the first one.
+
+- https://www.massicotte.org/step-by-step-network-request
+    
+
+There were some comments about how the example is somewhat contrived and the CGImage is probably not
+the right abstraction to use for a SwiftUI App when AsyncImage is available.
+
+Josh, among other comments, reminded us about the lifetime of the task modifier.
+
+- https://github.com/aflockofswifts/meetings/blob/main/2022/README.md#lifetime-of-unstructured-tasks
+
+
+
+### Xcode Pro-tip
+
+From John B.:
+
+`xed .` will open an Xcode project in the current directory, favoring the workspace, if present.
+
+
+### Experiments 
+
+Led by Josh
+    
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        Text("hello")
+            .task {
+                MainActor.assertIsolated()
+                await b()
+                print("task")
+            }
+    }
+    nonisolated func a() async {
+        MainActor.assertIsolated() // ASSERT
+        print("a")
+    }
+}
+    
+func b() async {
+    MainActor.assertIsolated()
+    print("a")
+}
+```
+
+### Categorizing SwiftUI API
+
+Bob showed us a live doc he is working on.
+
+- https://bobdel.craft.me/91ukc9xxK2vJVn
+
+
+### Getting LSP to work with VSCode
+
+Carlyn running into issues.  (Update: carlyn figured out the problem, see repo in next week's notes)
+
+- https://www.pwsacademy.org/posts/swift-vscode.html
+    
+- https://github.com/swiftlang/sourcekit-lsp/blob/main/Documentation/Configuration%20File.md
+    
+
+---
+
 ## 2024.11.30
 
 ### How to get a transcript 
