@@ -92,7 +92,7 @@ extension Array {
 }
 ```
 Josh created a `Layout` in SwiftUI to begin visualizing the Grid2D.  
-![layout](/materials/grid.png)
+![layout](materials/grid.png)
 ```swift
 struct ContentView: View {
     var body: some View {
