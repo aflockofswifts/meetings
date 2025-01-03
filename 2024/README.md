@@ -19,7 +19,7 @@ All people and all skill levels are welcome to join.
 
 ## 2024.12.28
 
-Ed is looking at making a swift web server in ![humming bird](https://github.com/hummingbird-project/hummingbird).  
+Ed is looking at making a swift web server in [humming bird](https://github.com/hummingbird-project/hummingbird).  
 
 ### Presentation
 Josh updated the code for the Grid2D type to add a depth first traversal.  
@@ -149,13 +149,13 @@ struct BoardPosition: LayoutValueKey {
 
 ### Demo Ed's hexagon game
 * Ed demonstrated his hexagon game
-* Josh suggested using GameKit's ![GKStrategist](https://developer.apple.com/documentation/gameplaykit/gkstrategist) to implement the ai
+* Josh suggested using GameKit's [GKStrategist](https://developer.apple.com/documentation/gameplaykit/gkstrategist) to implement the ai
 
 ### Q&A
-* we revisting using a proxy view to inspect the unerlying UIView/NSView hierarchy from within SwiftUI. ![Frank's code](https://github.com/aflockofswifts/meetings/tree/main/2023#20230429)
-* Helia had a question about inspecting the headers with ![starscream](https://github.com/daltoniam/Starscream)
+* we revisting using a proxy view to inspect the underlying UIView/NSView hierarchy from within SwiftUI. ![Frank's code](https://github.com/aflockofswifts/meetings/tree/main/2023#20230429)
+* Helia had a question about inspecting the headers with [starscream](https://github.com/daltoniam/Starscream)
   * We discussed getting a working CURL request and transposing it into swift
-  * Ed suggested ![using charles](https://stackoverflow.com/questions/33090087/how-to-inspect-websocket-traffic-with-charlesproxy-for-ios-simulator-devices)
+  * Ed suggested [using charles](https://stackoverflow.com/questions/33090087/how-to-inspect-websocket-traffic-with-charlesproxy-for-ios-simulator-devices)
 
 ### Presentation
 * Josh went through creating a 2D grid data structure using SIMD2 as the index.
