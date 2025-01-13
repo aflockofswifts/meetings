@@ -17,9 +17,59 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
-## 2025.1.10
+## 2025.01.18
 
-## 2025.1.3
+
+---
+
+## 2025.01.10
+
+### Debugging SceneKit Audio
+
+We spent some time debugging a problem with a SceneKit app that was leaking audio players.
+
+### Animating Text
+
+Rainer was trying to animate text along a Bézier curve.
+
+Josh reminded us of this project example from last year:
+
+- https://github.com/aflockofswifts/meetings/tree/main/2024#20240518
+
+Also, a Primer on Bézier curves: https://pomax.github.io/bezierinfo/
+    
+
+Rainer noted that the example he was trying to emulate: 
+
+- https://github.com/objcio/S01E166-geometry-effects
+  
+
+His code here:
+  
+- https://github.com/minsOne/custom-ui-prototype-in-swiftui
+  
+
+### Continuing the Mine Sweeper Example
+
+This week we looked at a serious performance problem in what we built so far.
+Changing the color of a handful of tile taking almost a second to perform.
+
+A nice video from Ben Cohen about Fast Safe Mutable State:
+
+- https://www.youtube.com/watch?v=BXJIIQ-B4-E
+    
+
+An internal way to do in-place mutation:
+
+- https://jano.dev/apple/2024/12/10/Modify-and-Yield.html
+- https://forums.swift.org/t/modify-accessors/31872
+    
+
+But the biggest performance win was had by using a properly identifiable type in the ForEach statement of the grid.
+
+---
+
+## 2025.01.03
 
 ### A functional solution to Ed's game
   * Ed is making a game where he needs to match n distinct items in a row.  Josh offered a solution in functional swift:
