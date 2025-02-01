@@ -17,8 +17,36 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2025.02.01
+
+
+---
+
+## 2025.01.25
+
+- How to share resources among multiple Swift packages.
+- Continued working on Mine Sweeper
+
+---
+
 ## 2025.01.18
 
+### Making CoW Types Sendable
+
+We modernized a small app to Swift 6. Making a type CoW and isolating all mutation
+allows you to declare a type sendable. The mutable state is not shared so these 
+properties can be marked sendable (unsafe).
+
+### Performance
+
+Measure the performance of a new collection type using the Swift performance package.
+
+https://www.swift.org/blog/benchmarks/
+
+
+### Mine Sweeper
+
+Continued the mine sweeper example.
 
 ---
 
