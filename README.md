@@ -19,6 +19,57 @@ All people and all skill levels are welcome to join.
 
 ## 2025.02.01
 
+### Resources and SwiftPM
+
+- Peter was able to make a common target that other targets could depend on.
+
+Exciting announcement Carlyn let us know about is that Swift Build (used by Xcode)
+is, as of today, an open source technology. It will support Windows and Linux.
+
+- https://forums.swift.org/t/evolving-swiftpm-builds-with-swift-build/77596/2
+
+Also, the official announcement:
+
+https://www.swift.org/blog/the-next-chapter-in-swift-build-technologies/
+
+We looked at conditional package inclusion. You can conditionalize based on
+platform but it doesn't look like there are too many other options.
+
+An example from Mihaela:
+
+```swift
+    .product(name: "ResChatHouUIKit", package: "ResChatHouUIKit", condition: .when(platforms: [.iOS])),
+                    .product(name: "ResChatUIKit", package: "ResChatUIKit", condition: .when(platforms: [.iOS])),
+                    .product(name: "ResChatHouAppKit", package: "ResChatHouAppKit", condition: .when(platforms: [.macOS])),
+                    .product(name: "ResChatAppKitUI", package: "ResChatAppKitUI", condition: .when(platforms: [.macOS])),
+                    ]
+            ),
+```
+
+### Swift Playgrounds App
+
+Now supports Swift 6.  You may need to remove previous versions.
+- https://apps.apple.com/us/app/swift-playground/id1496833156?mt=12
+
+### Hex Tac Toe
+
+Ed is working on his game hex-tac-toe.  Lots of suggestions for how to improve.
+
+
+### Other random stuff
+
+It is an open source airdrop thing but written in Flutter:
+
+- https://localsend.org
+
+Josh demo'ed LLMs including deepseek on your local machine:
+
+- https://ollama.com/library/deepseek-r1
+    
+
+You can run in from within a UI too that supports many models.
+
+- https://chatboxai.app/en
 
 ---
 
