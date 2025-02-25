@@ -17,6 +17,329 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2025.02.22
+
+### Concurrency in Legacy Code
+
+Questions from Rainer about how to use concurrency effectively in legacy code.
+
+We talked about where things run and how the default might change in future versions
+of Swift.
+
+
+Link from Peter:
+
+- https://developer.apple.com/documentation/swift/mainactor/assertisolated(_:file:line:)
+
+Examples from Josh:
+
+```swift
+struct A {
+    //@MainActor
+    nonisolated func a() {
+        Task {
+            MainActor.assertIsolated()
+        }
+    }
+}
+
+Task {
+     A().a()
+}
+
+
+```
+
+Instead of falling back to using Combine (which bring tech debt with it), a suggestion from Josh to make
+simple abstractions to avoid creating Tasks everywhere.
+
+    
+```swift
+extension AsyncSequence where Failure == Never {
+    func subscribe<Unretained: AnyObject>(withUnretained object: Unretained, onNext: @escaping (Unretained, Element) -> Void) -> Task<Void, Never> {
+        Task { [weak object] in
+            for await value in self {
+                guard let object else { return }
+                onNext(object, value)
+            }
+        }
+    }
+}
+```
+
+Can be used like this:
+
+```swift
+actor A {
+    var subscription: Task<Void, Never>?
+     func a()  {
+         let (output, input) = AsyncStream.makeStream(of: Int.self, bufferingPolicy: .bufferingNewest(1))
+         subscription = output.subscribe(withUnretained: self) { unretained, value in
+             print(unretained, value)    
+         }
+         input.yield(1)
+         input.yield(2)
+         input.yield(3)
+    }
+}
+```
+ 
+### Protocol Composition   
+
+- https://developer.apple.com/documentation/swiftui/viewbuilder/buildeither(first:)
+
+
+### File System
+
+This came up in the context of Peter's custom image caching problem.
+
+Some notes from Carlyn:
+
+- https://www.whynotestflight.com/excuses/how-to-do-some-basic-file-handling/
+- https://forums.swift.org/t/what-is-the-best-way-to-work-with-the-file-system/71020/17
+- https://github.com/apple/swift-nio-examples/blob/4bd02d14e6309bbd722b64f6de17855326aa1145/backpressure-file-io-channel/Sources/BackpressureChannelToFileIO/FileIOChannelWriteCoordinator.swift#L17 
+- https://github.com/apple/swift-nio/tree/5f60ceeca072475252ca1ad747bd1156a370fe5d/Sources/NIOFileSystem
+  
+
+Using custom executors (Josh)
+
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0392-custom-actor-executors.md
+- https://www.swift.org/migration/documentation/swift-6-concurrency-migration-guide/incrementaladoption
+    
+
+```swift
+actor LandingSite {
+    private let queue = DispatchSerialQueue(label: "something")
+
+    nonisolated var unownedExecutor: UnownedSerialExecutor {
+        queue.asUnownedSerialExecutor()
+    }
+    
+    func acceptTransport(_ transport: PersonalTransportation) {
+        // this function will be running on queue
+    }
+}
+```
+    
+10:35:09 From carlyn to Everyone:
+    private func appendData(data: Data) throws {
+        let fileHandle = try FileHandle(forWritingTo: storageUrl)
+        fileHandle.seekToEndOfFile()
+        fileHandle.write(data)
+        fileHandle.closeFile()
+      }
+
+Creating a custom global actor:
+
+```swift
+@globalActor actor SharedActor {
+  static let shared = SharedActor()
+}
+    
+@SharedActor final class A { }
+@SharedActor final class B { }
+```
+
+- Actor all implicitly conform to the Actor protocol https://developer.apple.com/documentation/swift/actor
+- Swift Concurrency and Instruments https://developer.apple.com/videos/play/wwdc2022/110350
+
+### Delphi Style Components
+
+Starting with Package definitions. From MJ
+
+```swift
+// Dependency grouping
+enum Dependencies {
+    static var common: [Target.Dependency] {
+        [
+            .product(name: "Difference", package: "Difference"),
+            .product(name: "LifetimeTracker", package: "LifetimeTracker"),
+        ]
+    }
+}
+
+    .target(
+         name: "SharedModels",
+         dependencies:
+            Dependencies.common + [
+                "AutomaticSettings",
+            ]
+    ),
+```    
+
+These ideas come from:
+
+- https://www.swiftystack.com/curriculum
+    
+
+Related: 
+
+```swift
+@_exported import PackageName
+```
+
+For details see:
+
+- https://github.com/swiftlang/swift/blob/main/docs/ReferenceGuides/UnderscoredAttributes.md
+    
+
+### Interesting Links
+    
+
+- New Junior Developers Can’t Actually Code: https://nmn.gl/blog/ai-and-learning
+- Cybersecurity and AI https://cset.georgetown.edu/publication/cybersecurity-risks-of-ai-generated-code/
+- Swift Navigation https://github.com/pointfreeco/swift-navigation
+    
+
+### Ed's Hex Tac Toe in Beta Review
+
+Hex Tac Toe is waiting for Apple beta review.  Anyone else want to be 
+on the beta, send your Apple email (DM).  I have all the ones from before.
+
+
+---
+
+
+## 2025.02.15
+
+Peter worked on a caching system for an app and wanted feedback for
+how it could be improved. The basic app is here:
+
+https://github.com/PeterWu9/Recipes
+
+
+A recommendation from Josh to use the headers in the HTTP response headers:
+
+- https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+    
+Also related:
+- https://developer.apple.com/documentation/foundation/nsurlcache
+    
+- Async file reading https://losingfight.com/blog/2024/04/22/reading-and-writing-files-in-swift-asyncawait/
+
+### SwiftUI View Builders
+
+
+View builder returns some View which is a container view like `ConditionalContent`.
+
+```swift    
+struct W: View {
+    let a: Int
+    @ViewBuilder
+    var body: some View {
+        switch a {
+        case ..<0: Text("Negative")
+        case 0: Text("Zero")
+        case 1... : Color.green
+        default: EmptyView()
+      }
+    }
+}
+```
+    
+
+### SwiftUI Navigation Bug
+
+Joe shared this SwiftUI navigation bug:
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        NavigationStack {
+            NavigationLink {
+                Text("Do not tap back, you'll regret it")
+                    .toolbarBackground(.visible, for: .navigationBar)
+                    .toolbarBackground(Color.orange, for: .navigationBar)
+                    .toolbarColorScheme(.dark, for: .navigationBar)
+            } label: {
+                VStack {
+                    Text("First page is the sweetest")
+                }               
+                .padding()
+            }
+            .navigationTitle("First Page")
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(Color.orange, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
+        }
+    }
+}
+```
+
+### Sequencing Animations    
+    
+
+Sample from Josh:
+
+```swift
+    withAnimation(animation, completionCriteria: .logicallyComplete) {
+                operation()
+            } completion: {
+                continuation.resume()
+            }
+```
+
+
+### Swift Blog gRPC 2
+    
+-  https://www.swift.org/blog/grpc-swift-2/
+    
+
+---
+
+## 2025.02.08
+
+### Discussions
+
+- Creating a multi-platform framework bundle. https://developer.apple.com/documentation/xcode/creating-a-multi-platform-binary-framework-bundle/
+    
+
+- Integer generic parameters are going to be a thing. https://github.com/swiftlang/swift-evolution/blob/main/proposals/0452-integer-generic-parameters.md
+    
+- New InlineArray type. https://github.com/swiftlang/swift-evolution/blob/main/proposals/0453-vector.md
+    
+- Transferable protocol
+    https://developer.apple.com/documentation/CoreTransferable/Transferable
+    
+
+### Assistive Technology
+
+- App Intents https://developer.apple.com/videos/play/wwdc2024/10134/
+- Guided Access https://www.theseniorlist.com/cell-phones/assistive-access/
+- https://www.ninjaone.com/blog/ipad-kiosk-mode/
+    
+09:57:53 From Josh Homann to Everyone:
+    Request sharing in FaceTime: https://support.apple.com/guide/iphone/request-give-remote-control-a-facetime-call-iph5d70f34a3/ios
+    
+
+### Hacking Problem
+    
+
+Puzzle from John Brewer
+
+```swift
+var test3 = [-1, 1, 2, 3, 4, -1, -9, -6, 10, 1, -5]
+print(largestSumSpan(array: test3)) // [10, 1]
+var test4 = [-1, 1, 2, 3, 4, -1, -9, -6, 8, 1, -5]
+print(largestSumSpan(array: test4)) // [1, 2, 3, 4]
+```
+What is the best idiomatic Swift to handle this?
+
+```swift    
+print(missingPair([1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1]))
+9
+```
+
+There is a "trick" to this one which to xor all of the bits.
+
+Related book
+    
+- https://www.amazon.com/Hackers-Delight-2nd-Henry-Warren-dp-0321842685/dp/0321842685/ref=dp_ob_title_bk
+    
+
+---
+
+
 ## 2025.02.01
 
 ### Resources and SwiftPM
