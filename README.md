@@ -17,6 +17,200 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2025.03.01
+
+
+### FOSDEM
+
+There were a lot of Swift topics presented at this years FOSDEM (Free Open Source Developers European Meeting) that have been
+organized for viewing here:
+
+- https://swiftlang.github.io/event-fosdem/
+
+### SwiftUI Fundamentals
+
+A new book about SwiftUI from Natalia Panferova of nilcoalecing is available. Bob DeLaurentis says that it does a great job in 
+explaining some of the subtleties of the framework.
+
+- https://books.nilcoalescing.com/swiftui-fundamentals
+    
+
+### Electronic Readers
+
+This led to a discussion about books and apps for reading ebooks.
+
+- Remarkable: https://remarkable.com  (https://www.amazon.com/dp/B0CZ9VFQ2P)
+- Meebook ebook reader    
+- https://www.amazon.ae/AZMXDVP-Meebook-P78-Adjustable-Micro-SD/dp/B09Q37DFJ7
+- https://www.liquidtext.net
+- Boox Palma: https://shop.boox.com/products/palma
+- https://supernote.com/products/supernote-nomad
+
+
+
+### Forward Progress and Concurrency
+
+Led by Peter and Josh, we discussed concurrency and the tools to guarantee forward progress.
+
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0433-mutex.md
+
+
+To visualize / test restricting cooperative thread pool:  https://alejandromp.com/development/blog/limit-swift-concurrency-cooperative-pool/
+
+A key insight is the ability to use `LIBDISPATCH_COOPERATIVE_POOL_STRICT=1` to make sure forward progress is always being made.
+
+This is the thread on forum that goes in-depth on lock ownership and safety in using across suspension point https://forums.swift.org/t/incremental-migration-to-structured-concurrency/54939/5
+    
+
+Assert that you are on a specific queue https://developer.apple.com/documentation/dispatch/dispatchprecondition(condition:)
+    
+10:33:29 From Mihaela MJ to Everyone:
+    https://github.com/siteline/swiftui-introspect
+
+
+### New Isolation Guarantees
+    
+Josh gave us a tour of proposal 0461 and how it makes things more similar between sync and async methods.
+
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0461-async-function-isolation.md
+    
+
+```swift
+import Foundation
+    
+final class Q {
+    func sync() {
+        MyActor.assertIsolated()
+        print("synchronous Q")
+    }
+    nonisolated func nonSync() async {
+        MyActor.assertIsolated()
+        print("asynchronous Q")
+    }
+}
+    
+@MyActor
+final class P {
+    var q = Q()
+    func doStuff() async {
+        q.sync()
+        async let v = q.nonSync()
+        let _ = await v
+    }
+}
+    
+@globalActor
+actor MyActor: GlobalActor {
+    static let shared = MyActor()
+    private init() { }
+}
+    
+Task {
+    let p = await P()
+    await p.doStuff()
+}
+```
+
+
+
+### Making UI around Command line
+
+Some useful tools!
+
+- https://forums.swift.org/t/review-sf-0007-introducing-swift-subprocess/70337   
+- https://github.com/apple/swift-argument-parser
+    
+
+Also, some code from Carlyn:
+
+```swift
+@discardableResult
+func shellOneShot(_ command: some StringProtocol) throws -> String {
+   let task = Process()
+   let pipe = Pipe()
+       
+   task.standardOutput = pipe
+   task.standardError = pipe
+   task.arguments = ["-c", command]
+       
+   //task.currentDirectoryURL
+   //task.qualityOfService
+   //task.environment = ProcessInfo.processInfo.environment
+       
+   task.standardInput = nil
+   task.executableURL = URL(fileURLWithPath: "/bin/zsh")
+   try task.run()
+       
+   let data = pipe.fileHandleForReading.readDataToEndOfFile()
+   let output = String(data: data, encoding: .utf8)!
+       
+   task.waitUntilExit()
+    
+   if task.terminationStatus == 0 || task.terminationStatus == 2 {
+     return output
+   } else {
+     print(output)
+     throw CustomProcessError.unknownError(exitCode: task.terminationStatus)
+   }
+}
+
+@discardableResult
+func runProcess(_ tool:URL, arguments:[some StringProtocol] = [], workingDirectory:URL? = nil) throws -> String {
+    let task = Process()
+    let pipe = Pipe()
+        
+    task.standardOutput = pipe
+    task.standardError = pipe
+    task.arguments = arguments
+        
+    if let workingDirectory {
+        task.currentDirectoryURL = workingDirectory
+    }
+    //task.qualityOfService
+    //task.environment
+    
+    task.standardInput = nil
+    task.executableURL = tool
+    try task.run()
+        
+    let data = pipe.fileHandleForReading.readDataToEndOfFile()
+    let output = String(data: data, encoding: .utf8)!
+        
+    task.waitUntilExit()
+    
+    if task.terminationStatus == 0 || task.terminationStatus == 2 {
+      return output
+    } else {
+      print(output)
+      throw CustomProcessError.unknownError(exitCode: task.terminationStatus)
+    }
+    }
+
+enum CustomProcessError: Error {
+  case unknownError(exitCode: Int32)
+}
+```
+
+### Apple Vision Pro Meeting
+
+Apparently there was an interesting (mostly non-code meeting) by Apple last week about
+how to develop "experiences" of vision pro. Ed atteneded online and John B was there in-person.
+Four sessions over the course of the day.
+
+Apparently they had a demo where they showed how to render the experience of being on the moon.
+
+```none
+    Environment metrics
+    Geometry: 20K-500K total triangles
+    View: -100K triangles per camera angle
+    Memory: Less than 250MB total texture data
+    Entities: Under 200 draw calls
+    Materials: Unlit with custom shader effects
+```
+    
+---
+
+
 ## 2025.02.22
 
 ### Concurrency in Legacy Code
