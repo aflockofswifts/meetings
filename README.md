@@ -17,6 +17,150 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2025.03.08
+
+
+### Instruments
+
+James Dempsey has a new online course that teaches the ins and outs of Apple Instruments:
+
+- https://swift-virtuoso.com
+
+Also, there is a new Processor Trace Instrument that uses low level hardward on the M4 and iPhone 16 to collect very detailed metrics about performance.
+
+https://developer.apple.com/documentation/xcode/analyzing-cpu-usage-with-processor-trace?changes=la
+    
+
+### OpenAI on Xcode
+Chatgpt Xcode: https://help.openai.com/en/articles/10119604-work-with-apps-on-macos
+    
+
+### Running a VM on macOS
+
+    macOS VM: https://arstechnica.com/gadgets/2022/07/how-to-use-free-virtualization-apps-to-safely-test-the-macos-ventura-betas/
+    
+
+### Syncing across devices
+    
+- NSUnibiquitousKeyValueStore https://developer.apple.com/documentation/foundation/nsubiquitouskeyvaluestore
+- CKAsset to sync user data: https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/AddingAssetsandLocations/AddingAssetsandLocations.html#//apple_ref/doc/uid/TP40014987-CH6-SW2
+    
+
+### URL Encoding Game State    
+
+Ways to crunch down the JSON so it can be URL encoded.
+
+- https://www.whynotestflight.com/excuses/how-do-custom-encoders-work/    
+- https://github.com/SomeRandomiOSDev/CBORCoding
+- https://cbor.io/impls.html
+- https://msgpack.org
+
+Using a server:    
+
+A large infrastructure:
+
+- https://www.swift.org/blog/how-swifts-server-support-powers-things-cloud/
+
+
+Smaller deployments:
+
+- https://fosdem.org/2025/schedule/event/fosdem-2025-4592-your-first-aws-lambda-function/
+- https://rambo.codes/posts/2021-12-06-using-cloudkit-for-content-hosting-and-feature-flags
+
+
+### Industry Compensation
+
+- https://newsletter.pragmaticengineer.com/p/trimodal    
+- https://www.levels.fyi/t/software-engineer?countryId=254
+    
+
+### Presentation (Josh): Removing @StateObject
+
+Previously, Josh demostrated how SwiftUI can use Combine to achieve lazy initialization
+and prevent repeated re-initialization of a view model of a view in a timeline view
+using StateObject.
+
+Inspired by this blog post:
+
+- https://fatbobman.com/en/posts/lazy-initialization-state-in-swiftui/
+    
+
+Josh created a special property wrapper ViewModel that does the same thing and means 
+you don't need to use StateObject or derive from Combine's ObservableObject.
+
+
+```swift
+import SwiftUI
+import PlaygroundSupport
+    
+PlaygroundPage.current.setLiveView(ContentView())
+    
+struct ContentView: View {
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 3)) { _ in
+            let _ = print("-----------\(Date.now)-----------")
+            V()
+        }
+    }
+}
+    
+struct V: View {
+    var vm = VM("naked var")
+    @State var vm0 = VM("@State")
+    @ViewModel var vm1 = VM("@ViewModel")
+    var body: some View {
+        Text(vm.text)
+        Text(vm0.text)
+        Text(vm1.text)
+    }
+}
+    
+@Observable
+final class VM {
+    var text: String
+    init(_ text: String) {
+        self.text = text
+        print("Init \(text)")
+    }
+    deinit {
+        print("Deinit \(text)")
+    }
+}
+```    
+
+Here is the property wrapper:
+
+```swift
+@propertyWrapper
+struct ViewModel<Wrapped: AnyObject & Observable>: DynamicProperty {
+    @State private var reference: Reference
+    var wrappedValue: Wrapped {
+        reference.value
+    }
+    var projectedValue: Bindable<Wrapped> {
+        reference.bindable
+    }
+    init(wrappedValue make: @autoclosure @escaping () -> Wrapped) {
+        _reference = State(wrappedValue: Reference(make))
+    }
+}
+    
+extension ViewModel {
+    final class Reference {
+        private var viewModel: Wrapped?
+        private let makeViewModel: () -> Wrapped
+        lazy var value: Wrapped = makeViewModel()
+        lazy var bindable = { Bindable(value) }()
+        init(_ make: @escaping () -> Wrapped) {
+            makeViewModel = make
+        }
+    }
+}
+```    
+
+
+---
+
 ## 2025.03.01
 
 
