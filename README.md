@@ -17,8 +17,114 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
-## 2025.03.08
+## 2025.03.15
 
+### Discussion 
+
+How to cleanup space on your disk.
+
+#### Daisydisk
+- https://apps.apple.com/us/app/daisydisk/id411643860?mt=12
+- https://daisydiskapp.com    
+
+
+#### Hyperspace to delete duplicates
+
+- https://hypercritical.co/hyperspace/
+
+#### OmniDiskSweeper
+
+- A free app from OmniGroup: 
+
+- https://www.omnigroup.com/more
+    
+### Presentation: Recent Swift Evolution Topics
+
+MutableSpan: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0467-MutableSpan.md
+
+To understand borrowing and consuming we looked at some of the 
+
+```swift
+static func embiggened(_ value: [Int]) -> [Int] {
+    var mutableValue = value
+    for index in mutableValue.indices {
+        mutableValue[index] += 1
+    }
+    return mutableValue
+}
+
+static func embiggened(byBorrowing value: borrowing [Int]) -> [Int] {
+    var mutableValue = copy value
+    for index in mutableValue.indices {
+        mutableValue[index] += 1
+    }
+    return mutableValue
+}
+static func embiggen(byExclusiveBorrow value: inout [Int]) {
+    for index in value.indices {
+        value[index] += 1
+    }
+}
+static func embiggen(byConsuming value: consuming [Int]) -> [Int] {
+    for index in value.indices {
+        value[index] += 1
+    }
+    return consume value
+}
+    
+let a = [1, 2, 3]
+let b = embiggen(byConsuming: a)
+print(a,b)
+```    
+
+### Presentation: Replacing Combine with Modern Concurrency
+
+Josh continued with a topic from last week about how to replace combine
+with modern Swift concurrency. This week Josh created a `Pipe` abstraction
+to allow multiple observers of a sent value (much like notification center).
+
+```swift
+import Foundation
+import Synchronization
+    
+public final class Pipe<Value: Sendable>: Sendable, AsyncSequence {
+    public typealias Stream = AsyncStream<Element>
+    public typealias AsyncIterator = Stream.AsyncIterator
+    public typealias Element = Value
+    private let lockedContinuations: Mutex<[UUID: Stream.Continuation]>
+    private let replayCount: Int
+    public init(replay: Int = 0) {
+        replayCount = replay
+        lockedContinuations = .init([:])
+    }
+    deinit {
+        lockedContinuations.withLock { continuations in
+            continuations.values.forEach { $0.finish() }
+        }
+    }
+    public func send(_ value: Value) {
+        lockedContinuations.withLock { continuations in
+            continuations.values.forEach { $0.yield(value) }
+        }
+    }
+    
+    public func makeAsyncIterator() -> AsyncIterator {
+        let (stream, continuation) = Stream.makeStream(of: Element.self,
+                bufferingPolicy: .bufferingNewest(replayCount))
+        let id = UUID()
+        continuation.onTermination = { [weak self] _ in
+            self?.lockedContinuations.withLock { $0[id] = nil }
+        }
+        lockedContinuations.withLock { $0[id] = continuation }
+        return stream.makeAsyncIterator()
+    }
+}
+```    
+
+
+---
+
+## 2025.03.08
 
 ### Instruments
 
