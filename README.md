@@ -17,6 +17,84 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2025.03.22
+
+### Discussion
+
+Ray shared a recent experience with upgrading XCTest to Swift Testing.
+The migration was straightforward in Xcode and there is a good migration
+guide.
+
+- https://developer.apple.com/documentation/testing/migratingfromxctest
+    
+
+### Swift Evolution
+
+Related to Swift testing, this proposal means you can use a short description with spaces and punctuation 
+as the name of your test:
+
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0451-escaped-identifiers.md
+
+Josh also taked about a new addition to the language which lets you better hide implementation details.
+  
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0409-access-level-on-imports.md
+
+
+### Swift Packages    
+
+Talked about modularization.
+
+You can set the library type to statically or dynamically link packages. 
+
+https://developer.apple.com/documentation/packagedescription/product/library(name:type:targets:)
+    
+
+CoreData in packages needs to be handled specially: https://ishabazz.dev/blog/2020/7/5/using-core-data-with-swift-package-manager
+    
+
+### Other discussion
+    
+From Ed returning integers as a blob of bytes:
+
+```swift
+extension FixedWidthInteger {
+  var data: Data {
+    let data = withUnsafeBytes(of: self) { Data($0) }
+    return data
+  }
+}
+```
+
+From Josh (another way to deserialize)
+
+```swift
+enum JSON {
+    indirect case array([JSON])
+    indirect case dictionary([String: JSON])
+    case boolean(Bool)
+    case number(Double)
+    case string(String)
+    case null
+}
+    
+extension JSON: Decodable {
+    init(from decoder: Decoder) throws {
+        self = try Result { try decoder.singleValueContainer() }
+            .flatMap { container in
+                container.decodeNil()
+                    ? .success(JSON.null)
+                    : Result { JSON.boolean(try container.decode(Bool.self)) }
+                        .flatMapError { _ in Result { JSON.number(try container.decode(Double.self)) } }
+                        .flatMapError { _ in Result { JSON.string(try container.decode(String.self)) } }
+                        .flatMapError { _ in Result { JSON.array(try container.decode([JSON].self)) } }
+                        .flatMapError { _ in Result { JSON.dictionary(try container.decode([String: JSON].self)) } }
+             }.get()
+    }
+}
+```    
+
+---
+
 ## 2025.03.15
 
 ### Discussion 
