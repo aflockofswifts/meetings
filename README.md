@@ -17,6 +17,90 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2025.03.29
+
+### Instruments
+
+A new video tutorial from Apple about instruments. 90 minutes long.
+
+- https://developer.apple.com/tutorials/instruments
+
+### Swift 6: What am I missing?
+
+If you go to the evolution website:
+
+- https://www.swift.org/swift-evolution/
+    
+You can apply the filters "Implemented" and then the versions you are interested in
+such as Swift 6, Swift 6.1, Swift 6.2 to see what features are available.
+
+### Vibe Coding
+
+An interesting article (via Josh) about a potential future for the industry.
+
+- https://irace.me/vibe
+
+Gemini 2.5 model is new model that does a lot of stuff correctly that other models don't seem to be able to.
+
+- https://www.youtube.com/watch?v=RxCZhltR9Cw
+    
+Someone mentioned that Claude is good for interactive Vibe coding.
+
+### Presentation: GoF: Design Patterns in Swift
+
+Josh H. presented about the classic "Gang of Four" Design patterns--it is a common lexicon that can be used
+to communicate with other developers or even machines using prompts.
+
+
+#### Creational Patterns
+
+These focus on object creation mechanisms, promoting better encapsulation and system independence.
+    
+- **Factory Method:** Defines an interface for creating objects, letting subclasses decide the class to instantiate.
+- **Abstract Factory:** Provides an abstract factory class that creates families of related objects.
+- **Builder:** Separates object construction from its representation, enabling different representations through the same process.
+- **Prototype:** Creates objects by cloning existing instances rather than using constructors.
+- **Singleton:** Ensures a class has only one instance and provides global access to it.
+    
+#### Structural Patterns
+
+These focus on how classes and objects can be composed to form larger structures.
+
+- **Adapter:** Converts an interface to another, allowing incompatible classes to work together.
+- **Decorator:** Dynamically adds responsibilities to objects by wrapping them in decorator classes.
+- **Proxy:** Acts as a placeholder for an object, controlling access and handling tasks like lazy loading.
+- **Facade:** Provides a simplified interface to a complex system, reducing exposed complexity.
+- **Composite:** Treats individual and composite objects uniformly, useful for tree structures.
+- **Flyweight:** Shares data among multiple objects to reduce memory usage.
+    
+
+#### Behavioral Patterns
+    
+These focus on how classes interact and the responsibilities of objects within a system.
+
+- **Strategy:** Encapsulates algorithms, allowing selection at runtime based on conditions.
+- **Observer:** Establishes a one-to-many dependency, notifying dependents of state changes.
+- **State:** Changes object behavior when its internal state changes.
+- **Chain of Responsibility:** Passes requests along a chain of handlers until one handles it.
+- **Command:** Encapsulates requests as objects for operations like logging and undo/redo.
+- **Iterator:** Accesses aggregate elements sequentially without exposing the structure.
+- **Mediator:** Reduces coupling between classes by encapsulating interactions.
+- **Memento:** Captures and restores object state, useful for undo/redo functionality.
+- **Visitor:** Adds methods to objects without changing their classes, useful for operations across sets of objects.
+- **Template Method:** Defines an algorithm skeleton in a base class, letting subclasses implement specific steps.
+    
+
+### Other Patterns
+
+Peter mentioned a pattern that he has been looking into
+
+- https://swiftology.io/articles/typestate/
+ 
+
+Alex mentioned one of his favorites: "Inversion of Control 🙂"
+
+---
+
 ## 2025.03.22
 
 ### Discussion
