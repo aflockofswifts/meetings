@@ -17,6 +17,104 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2025.04.05
+
+### Discussion on SwiftData
+
+Some key debugging tips:
+
+- https://www.avanderlee.com/debugging/core-data-debugging-xcode/
+    
+
+You can see the underlying SQL commands: `-com.apple.CoreData.SQLDebug 1`
+    
+- https://developer.apple.com/documentation/swiftdata/adding-and-editing-persistent-data-in-your-app  
+    
+10:12:17 From Josh Homann to Everyone:
+    https://www.hackingwithswift.com/quick-start/swiftui/how-to-dismiss-the-keyboard-for-a-textfield
+    
+10:13:21 From Josh Homann to Everyone:
+    https://developer.apple.com/documentation/uikit/synchronizing-documents-in-the-icloud-environment
+    
+10:18:42 From Ray Fix to Everyone:
+    https://www.pointfree.co/blog/posts/168-sharinggrdb-a-swiftdata-alternative
+    
+
+New in iOS 18 there are notifications for SwiftData that you can lisen to.
+
+- https://developer.apple.com/documentation/swiftdata/modelcontext/notificationkey
+
+Recommended reading for SwiftData:
+
+- https://fatbobman.com/en/tags/SwiftData/
+
+### Modular Apps
+    
+Mihaela MJ is working on a modular framework. Here is a working sample project
+
+https://github.com/mihaelamj/Formidabble
+
+### Design Patterns
+
+It is always possible to convert between level and edge based events.
+
+```swift
+    Publishers.Merge(
+        NotificationCenter.default.publisher(for: NSApplication.willResignActiveNotification).map { _ in false },
+        NotificationCenter.default.publisher(for: NSApplication.willBecomeActiveNotification).map { _ in true }
+    )
+    .prepend(true)
+```
+
+Looking deeper at Patterns with Josh (such as the iterator pattern):
+
+
+```swift
+extension Sequence {
+  static func +<Right: Sequence>(lhs: Self, rhs: Right) -> ConcatenatedSequence<Self, Right, Element> {
+    ConcatenatedSequence(leftSequence: lhs, rightSequence: rhs)
+  }
+}
+    
+struct ConcatenatedSequence<Left: Sequence<Value>, Right: Sequence<Value>, Value>: Sequence {
+  typealias Element = Value
+  var leftSequence: Left
+  var rightSequence: Right
+  func makeIterator() -> Iterator {
+      .init(leftIterator: leftSequence.makeIterator(), rightIterator: rightSequence.makeIterator())
+  }
+  struct Iterator: IteratorProtocol {
+      typealias Element = Value
+      var leftIterator: Left.Iterator
+      var rightIterator: Right.Iterator
+      mutating func next() -> Value? {
+          leftIterator.next() ?? rightIterator.next()
+      }
+  }
+}
+    
+let a = [1,2,3] + Set([4,5,6])
+for value in a {
+    print(value)
+}
+``` 
+
+```swift
+extension Sequence {
+  static func +(lhs: Self, rhs: some Sequence<Element>) -> some Sequence<Element> {
+    sequence(
+        state: (
+                leftIterator: lhs.makeIterator(),
+                rightIterator: rhs.makeIterator()
+        )
+    ) { state in
+          state.leftIterator.next() ?? state.rightIterator.next()
+    }
+}
+```    
+
+---
+
 ## 2025.03.29
 
 ### Instruments
