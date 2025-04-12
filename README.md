@@ -17,6 +17,104 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2025.04.12
+
+### Async Discussion
+
+When should you dispatch to the background?
+
+No clear rule. Measure. An example from Josh:
+
+```swift
+import SwiftUI
+
+@Observable
+@MainActor
+final class VM {
+    var names: [String] = []
+    func sort() async {
+        async let sortedNames = { [names] in
+            names.sorted()
+        }()
+        names = await sortedNames
+    }
+}
+```
+
+Peter brings up the point about re-entrancy. That leads to a discussion
+about implementing switch map.
+
+https://rxmarbles.com
+
+- FlatMap in Combine is Merge Map
+- FlatMap in AsyncAlgorithms is concatMap
+
+There are many ways to flatten such as exhaustMap.
+
+- https://rxjs.dev/api/operators/exhaustMap
+
+Here is a manual way of doing it:
+
+```swift
+@Observable
+@MainActor
+final class VM {
+    var names: [String] = []
+    var sortTask: Task<[String], Error>?
+    func sort() async {
+        sortTask?.cancel()
+        let sortTask = Task.detached { [names] in
+            try await Task.sleep(for: .seconds(1))
+            return names.sorted()
+        }
+        self.sortTask = sortTask
+        do {
+            names = try await sortTask.value
+        } catch {
+            switch error {
+            case is CancellationError: print("task was canceled")
+            default: print(error.localizedDescription)
+            }
+        }
+    }
+}
+```
+
+### Xcode Preview Bug
+
+Ed filed feedback on Xcode previews always flipping back to their default (half screen) size.
+
+
+### Benchmarking
+
+How can you be sure that a better abstraction isn't slowing down your code too much. How can you
+measure it?  It is a hard problem.
+
+### Swift Evolution Proposal Review
+
+
+#### Yielding Accessors
+
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0474-yielding-accessors.md
+
+
+#### Observed
+
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0475-observed.md
+
+
+### Swift Forums
+
+There is a lot of detailed, amazing information on them.  Peter wonders where they get the time
+to make these long, detailed posts.
+
+You can find the pitches (pre-proposal stage) on the forums:
+
+https://forums.swift.org/c/evolution/pitches/5
+
+
+---
+
 ## 2025.04.05
 
 ### Discussion on SwiftData
