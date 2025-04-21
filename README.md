@@ -17,6 +17,112 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2025.04.19
+
+
+### Using Ignite
+
+Paul Hudson's static website builder, Ignite, continues to be awesome to use. Mihaela 
+
+- https://aleahim.com
+
+Talked about how to use your own custom domain.
+
+- https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
+
+Useful for debugging DNS issues:
+
+https://dnschecker.org/    
+
+
+### try! Swift Tokyo Conference
+
+- https://www.youtube.com/@trySwiftConference/videos
+  
+
+Along with some of Frank's picks:
+
+- https://www.youtube.com/watch?v=eQefdC2xDY4    
+- https://www.youtube.com/watch?v=xtXaxMlFI6M&pp=0gcJCX4JAYcqIYzv
+    
+
+Learning Regex:    
+- https://regexcrossword.com
+- https://regex101.com
+    
+Example: let regex = /^([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/
+    
+From Apple:
+
+- https://developer.apple.com/videos/play/wwdc2022/110357
+- https://developer.apple.com/videos/play/wwdc2022/110358
+
+
+### Why Chris Eidhof avoids Group
+    
+- https://chris.eidhof.nl/post/why-i-avoid-group/
+    
+SwiftUI works more consistently if you have a single stable view at the root of your hierarchy.
+
+### SwiftUI and Identity    
+
+```swift
+// Single identity
+// .clear option becomes a no-op 
+ViewWithState()
+    .background(flag ? .red : .clear)
+    .animation(.easeInOut(duration: 2), value: flag)
+```
+
+As Josh points out, you still get the space taken.
+
+```swift    
+struct ContentView: View {
+    var body: some View {
+        VStack {
+            Image(systemName: "globe")
+                .imageScale(.large)
+                .foregroundStyle(.tint)
+            Text("Hello, world!").opacity(0.0)
+            Text("a")
+        }
+        .padding()
+    }
+}
+```
+
+### New Development Environments (Design tools)
+
+
+- https://createwithplay.com
+
+Firebase
+
+- https://www.firebasestudio.vip
+- https://firebase.google.com
+
+### Learning Xcode Instruments
+
+A new cohort of the epic instruments workshop is going to run in May:
+- https://swift-virtuoso.com
+    
+### Presentation: Removing Combine
+
+Josh started a presentation about the tooling that you can build in order 
+to ditch import Combine.
+
+Tools we reviewed this week:
+
+- Subject
+- Subscriptions
+- ViewModel
+
+One more abstraction to build next week and we will be ready to convert apps.
+
+Source code TBD.
+
+---
+
 ## 2025.04.12
 
 ### Async Discussion
