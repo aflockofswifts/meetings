@@ -17,8 +17,221 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
-## 2025.04.19
 
+## 2025.05.17
+
+
+### Discussion on Apple Developer Ecosystem
+
+- General longing for the simple early days and the wonders of getting new stuff at WWDC.
+- Apple behind in server tech? Swift could be a great solution.
+- Widgets are not in a great state. Hoping for improvements at WWDC. (Problems around multiprocessing and controlling when they wake up.)    
+
+### Swift Proposals
+
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0481-weak-let.md
+    
+
+#### Progress
+
+- https://forums.swift.org/t/pitch-progress-reporting-in-swift-concurrency/78112    
+- https://forums.swift.org/t/review-sf-0023-progress-reporting-in-swift-concurrency/79474
+
+### Using OpenAPI Generator
+
+- https://developer.apple.com/videos/play/wwdc2023/10171/
+- https://www.swift.org/blog/introducing-swift-openapi-generator/
+    
+
+### Keyboard Avoidance
+
+- https://www.fivestars.blog/articles/swiftui-keyboard/
+
+### Dependency Management PointFree
+
+A demo of using the dependency management system from pointfree
+
+- https://swiftpackageindex.com/pointfreeco/swift-dependencies/main/documentation/dependencies
+
+
+### Dependency Management 
+
+Alex showed us a dependency injection tool he created.
+
+- https://swiftpackageindex.com/bealex/Macaroni
+
+### Programming Font
+
+- https://en.wikipedia.org/wiki/PragmataPro
+- https://github.com/fabrizioschiavi/pragmatapro
+- https://github.com/shytikov/pragmasevka
+    
+
+### Swift Easter Egg: Jabberwocky
+
+- https://github.com/swiftlang/swift/blob/44c5f9f4596dcb4d85cc2c61930851508df6c513/benchmark/single-source/CodableTest.swift#L72
+    
+
+---
+
+## 2025.05.10
+
+
+### Upcoming Events
+
+- https://github.com/twostraws/wwdc
+- https://communitykit.social/schedule.html
+
+
+### Swift Concurrency is Awesome
+- https://mastodon.social/@Migueldeicaza/114446205671894351
+  
+
+### Distributed Actors    
+
+Looking for examples.
+
+- https://www.swift.org/blog/distributed-actors/
+    
+Example (non-production, proof of concept): https://github.com/franklefebvre/DistributedActors-FrenchKit
+    
+- https://developer.apple.com/documentation/xpc
+
+
+### Experiments with containerRelativeFrame    
+
+- https://developer.apple.com/documentation/swiftui/view/containerrelativeframe(_:alignment:)
+    
+
+```           
+available length = ((container length - safe area) - (spacing x (count - 1))       
+column length = available length / count
+       
+view length = (column length x span) + ((span - 1) x spacing)
+```
+
+Here is the code we experimented with:
+
+```swift
+    struct ContentView: View {
+        var body: some View {
+      ScrollView(.horizontal) {
+       LazyHStack(spacing: 100) {
+        ForEach(0..<20) { item in
+         Rectangle()
+          .fill([Color.red, .green, .blue][item % 3])
+    //      .aspectRatio(3.0 / 2.0, contentMode: .fit)
+          .frame(height: 100)
+    //      .overlay(Color.yellow.opacity(0.5))
+          
+          .containerRelativeFrame(
+           .horizontal, count: 3, span: 1, spacing: 100)
+    //      .overlay(Color.blue.opacity(0.5))
+        }
+       }
+      }
+    //  .safeAreaPadding(.horizontal, 20.0)
+        }
+    }
+    
+    #Preview {
+        ContentView()
+    }
+```
+    
+
+### What is a Crash?
+
+A cool low level exploration:
+
+- https://blog.jacobstechtavern.com/p/what-is-a-crash
+    
+
+---
+
+## 2025.05.03
+
+### What's New in Swift 6.1
+
+- https://www.hackingwithswift.com/articles/276/whats-new-in-swift-6-1
+    
+
+### Deep Dish Videos
+
+- https://www.youtube.com/@DeepDishSwift/streams
+- https://deepdishswift.com/#schedule
+  
+### Swift Mocking
+
+A mocking library announced at Deep Dish from Peter's company fetch-rewards!
+
+- https://swiftpackageindex.com/fetch-rewards/swift-mocking    
+- https://github.com/fetch-rewards/swift-mocking
+
+
+### SSE Server Streaming Events
+
+- https://github.com/launchdarkly/swift-eventsource    
+- https://github.com/Recouse/EventSource
+
+Carlyn's experiments on the subject.
+
+- https://github.com/carlynorama/APItizer/blob/main/Sources/APItizer/SSEListener.swift
+
+---
+
+## 2025.04.26
+
+
+### Concurrency Changes
+
+    https://swiftpackageindex.com/fetch-rewards/swift-mocking
+    
+
+Peter took us on a blog post tour:
+
+- https://www.avanderlee.com/concurrency/swift-6-2-concurrency-changes/
+ 
+
+### Better Sounds
+
+Exploring the sounds that are available:
+
+```
+    import AVFoundation
+    var greeting = "Hello, playground"
+    
+    let systemSoundIDs: [SystemSoundID] = Array(1000...4000).map { SystemSoundID($0)}
+    
+    for id in systemSoundIDs {
+    //    AudioServicesPlaySystemSoundWithCompletion(id) {
+    //        print(id)
+    //        return
+    //    }
+        AudioServicesPlaySystemSound(id)
+        AudioServicesPropertyID(systemSoundIDs[0])
+    }
+```
+
+Tutorial for creating system sounds (with a funny ending):    
+    
+- https://www.youtube.com/watch?v=TjmkmIsUEbA
+    
+
+Haptics might be a useful semantic way to get some sounds:
+
+- https://developer.apple.com/documentation/corehaptics/delivering-rich-app-experiences-with-haptics
+
+
+### Backups
+
+"321" - Three copies of your data, two formats, one offsite.
+
+"Just use Backblaze."
+
+---
+
+## 2025.04.19
 
 ### Using Ignite
 
