@@ -17,6 +17,47 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2025.05.24
+
+Discussion about testing, specifically about testing Combine. 
+
+- https://developer.apple.com/documentation/combine/processing-published-elements-with-subscribers  
+- https://github.com/FlineDev/ErrorKit
+
+Carlyn gave us a Swift testing demo and it is awesome. We also went over how to get code coverage 
+numbers in Xcode.    
+    
+- https://developer.apple.com/documentation/testing/migratingfromxctest
+
+Josh talked about how many
+
+- https://www.hyrumslaw.com
+    
+10:33:45 From Peter Wu to Everyone:
+    For larger code bases codecov is nice that you can see the lines not covered in a PR https://about.codecov.io
+    
+
+A previous project from Josh (before concurrency) forming a nice example about how to get the buisness logic out of your tests.
+
+- https://github.com/joshuajhomann/DeclarativeTests
+  
+
+### Discussion of AI and Coding Tools
+
+- https://openai.com/index/introducing-codex/    
+- https://repoprompt.com
+- https://pre-commit.com/
+- https://aider.chat
+    
+11:05:51 From carlyn to Everyone:
+    https://www.cookiecutter.io
+    
+### New Swift Playground
+
+From Bob: This is newly released from Marcin Krzyzanowski: a third-party 
+“Swift Playground”. https://notepadexe.com/ Looks like fun.
+    
+---
 
 ## 2025.05.17
 
