@@ -17,6 +17,85 @@ All people and all skill levels are welcome to join.
 
 ## Notes
 
+## 2025.05.31
+
+We discussed some other meetups:
+  * https://links.iosdevhappyhour.com
+  * https://lu.ma/core-coffee
+We discussed solving the [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/) problem and how the particulars of Swift's String implementation make this different than the solutions in other languages.
+We discussed comparing normalized strings:
+```swift
+let chars: [Character] = ["a", "ä"]
+extension Character {
+    func isSemanticallyEquivalent(to other: Character) -> Bool {
+//        String(self).compare(String(other), options: [.diacriticInsensitive, .caseInsensitive, .widthInsensitive], locale: .current) == .orderedSame
+        String(self).folding(options: [.diacriticInsensitive, .caseInsensitive, .widthInsensitive], locale: .current) == String(other).folding(options: [.diacriticInsensitive, .caseInsensitive, .widthInsensitive], locale: .current)
+    }
+}
+print(chars[0].lowercased() == chars[1].lowercased())
+print(chars[0].isSemanticallyEquivalent(to: chars[1]))
+```swift
+Then how to solve the problem: First the indexing solution which shows how RandomAccessCollection works.  YUou should no use this solution in any language since index math is unsafe:
+```swift
+extension RandomAccessCollection where Element == Character  {
+    var isPalindrome: Bool {
+        let backwards = reversed()
+        var front = indices.first
+        var back = backwards.indices.first
+        while let unwrappedFront = front, let unwrappedBack = back {
+            front = self[unwrappedFront...].firstIndex(where: \.isLetter)
+            back = backwards[unwrappedBack...].firstIndex(where:\.isLetter)
+            guard let unwrappedFront = front, let unwrappedBack = back  else { return true }
+            guard self[unwrappedFront].isSemanticallyEquivalent(to: backwards[unwrappedBack]) else {
+                return false
+            }
+            front = front.map { self.index(after: $0) }
+            back = back.map { backwards.index(after: $0)}
+        }
+        return true
+    }
+}
+```
+Next the iterator solution:
+```swift
+extension BidirectionalCollection where Element == Character {
+    var isPalindrome2: Bool {
+        var frontIterator = makeIterator()
+        var backIterator = reversed().makeIterator()
+        var matchCount = 0
+        let length = count / 2
+        while let front = frontIterator.next(where: \.isLetter), let back = backIterator.next(where: \.isLetter), matchCount < length  {
+            guard front.isSemanticallyEquivalent(to: back) else {
+                return false
+            }
+            matchCount += 1
+        }
+        return true
+    }
+}
+
+private extension IteratorProtocol where Element == Character {
+    mutating func next(where predicate: (Character) -> Bool) -> Character? {
+        while let next = next(){
+            if predicate(next){
+                return next
+            }
+        }
+        return nil
+    }
+}
+```
+And finally the functional solution:
+```swift
+extension String {
+    var isPalindrome3: Bool {
+        zip(
+            lazy.compactMap { $0.isLetter ? $0 : nil },
+            reversed().lazy.compactMap { $0.isLetter ? $0 : nil }
+        ).prefix(count/2).allSatisfy { $0.isSemanticallyEquivalent(to: $1) }
+    }
+}
+```
 ## 2025.05.24
 
 Discussion about testing, specifically about testing Combine. 
