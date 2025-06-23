@@ -15,7 +15,84 @@ All people and all skill levels are welcome to join.
 
 ---
 
-## Notes
+## 2025.06.21
+
+### Embedded Swift
+
+Ray is embarking on a Embedded Swift hobby project to build a one button remote that toggles the mute on his Sony TV. He is using an ESP32C6 dev kit from espressif.
+
+- https://developer.espressif.com/blog/build-embedded-swift-application-for-esp32c6/
+
+There is some good documentation for Embedded Swift:
+
+- https://www.swift.org/get-started/embedded/
+    
+
+Swiftly is a good tool for managing toolchains:
+
+- https://github.com/swiftlang/swiftly
+
+
+A previous exploration by Carlyn:
+
+- https://github.com/carlynorama/swift-pico-w-hello
+
+
+### AI and Machine Learning
+
+Software 3.0 by Andrej Karpathy
+
+- https://www.youtube.com/watch?v=LCEmiRjPEtQ
+
+More talks:
+
+- https://www.youtube.com/@AndrejKarpathy/videos
+
+
+Also,
+
+- https://www.3blue1brown.com/topics/neural-networks
+
+
+### Get a job
+    
+- https://www.levels.fyi/heatmap/
+    
+
+### ExtensionKit
+
+- https://www.massicotte.org/extensionkit-intro?utm_source=substack&utm_medium=email    
+- https://mastodon.social/@mattiem/114665149298651073
+
+
+### Expensive Runtime    
+
+- https://medium.com/ios-ic-weekly/swift-dynamiccast-in-swifts-runtime-0d41b244c8f0
+    
+
+### What's new in SwiftUI
+
+Josh took us through many of the SwiftUI changes presented by Paul Hudson.
+
+- https://www.hackingwithswift.com/articles/278/whats-new-in-swiftui-for-ios-26
+    
+
+With the new Liquid Glass theme, you might want to checkout the HIG again.
+
+- https://developer.apple.com/design/human-interface-guidelines
+    
+
+### Learning Metal
+
+Josh tells Ed to watch this!
+
+- https://www.youtube.com/watch?v=vO0M4c9mb2E
+
+
+Also, squircles...
+    
+---
+
 
 ## 2025.05.31
 
