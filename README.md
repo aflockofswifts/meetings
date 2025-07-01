@@ -15,6 +15,190 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.06.28
+
+
+### New Beta Available
+
+There is a new beta available for 26. 
+
+- https://www.xcodes.app
+- https://github.com/XcodesOrg/xcodes
+    
+For new toolchains there is an excellent tool called Swiftly:
+    
+- https://github.com/swiftlang/swiftly
+  
+
+### Optimizing Animation  
+
+Allen had a question about animating sticks and spheres using SceneKit.  The spheres are animating
+smoothly while the sticks attached to the spheres would jump into place at the end. The question was
+how to make it smooth.  The issue was that he was rendering the sticks using billboards. The consensus 
+recommendation was to use simple geometry (e.g. hexagonal rod) to render the sticks and let the system
+handle it for you.
+
+Aside: SceneKit has been deprecated in favor of Reality kit.
+
+- https://developer.apple.com/videos/play/wwdc2025/288/
+
+
+### Result Building Arrays and Sets    
+    
+
+Josh notes that in many of his projects he defines a result builders to declaratively define
+arrays.
+
+Here is the result builder:
+
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0289-result-builders.md
+    
+
+Here is how you do it for array:
+
+```swift
+@resultBuilder
+struct ArrayBuilder<Element> {
+    typealias Expression = Element
+    typealias Component = Array<Element>
+    
+    static func buildBlock(_ components: Component...) -> Component {
+        buildArray(components)
+    }
+    static func buildExpression(_ expression: Expression) -> Component {
+        [expression]
+    }
+    static func buildExpression(_ expression: Expression?) -> Component {
+        expression.map { [$0] } ?? []
+    }
+    static func buildOptional(_ component: Component?) -> Component {
+        component ?? []
+    }
+    static func buildEither(first component: Component) -> Component {
+        component
+    }
+    static func buildEither(second component: Component) -> Component {
+        component
+    }
+    static func buildArray(_ components: [Component]) -> Component {
+        components.flatMap { $0 }
+    }
+    static func buildLimitedAvailability(_ component: Component) -> Component {
+        component
+    }
+}
+```
+
+An extension improves the ergonomics.
+
+```swift
+extension Array {
+    static func build(@ArrayBuilder<Element> _ make: () -> Self) -> Self {
+        make()
+    }
+}
+```
+
+You can use it like this:
+
+```swift
+var b = true
+var c: Int? = nil
+let a = Array<Int>.build {
+    1
+    2
+    c
+    if b {
+        3
+    }
+    if #available(iOS 26.0, *) {
+        4
+    }
+}
+```
+
+Another compelling use case for result builders is declarative tests:
+    
+- https://github.com/joshuajhomann/DeclarativeTests
+    
+
+### Either and Functional Programming
+
+A functional library for swift:
+
+ - https://bow-swift.io
+    
+ - https://github.com/bow-swift/bow/blob/master/Sources/Bow/Data/Either.swift
+    
+
+### Layout and SwiftUI
+
+- https://www.semanticscholar.org/paper/A-System-for-Efficient-and-Flexible-One-Way-in-C%2B%2B-Hudson/9609985dbef43633f4deb88c949a9776e0cd766b
+- https://talk.objc.io/collections/swiftui-layout-explained  
+
+### Swift and Certification
+
+If you have background in CS, it is hard to beat Paul Hegerty's class even thought it is a little old.
+
+- https://cs193p.stanford.edu
+
+A starting point for a lot of people:
+
+- https://www.hackingwithswift.com
+    
+
+There are degrees you can get through coursera and udacity but consensus says a github account with the portfolio project is great. Meta has a
+certificate as well.
+
+- https://www.coursera.org/degrees    
+- https://www.udacity.com
+- https://www.coursera.org/professional-certificates/meta-ios-developer
+    
+
+### AI Coding
+
+- Cursor ai: https://www.youtube.com/watch?v=oOylEw3tPQ8
+- Reverse-Engineering Xcode's Coding Intelligence prompt https://peterfriese.dev/blog/2025/reveng-xcode-coding-intelligence/
+
+
+### Sharing GRDB
+
+
+- https://github.com/pointfreeco/sharing-grdb
+- https://www.pointfree.co/blog/posts/168-sharinggrdb-a-swiftdata-alternative
+- https://www.pointfree.co/episodes/ep313-point-free-live-sharinggrdb
+    
+
+All of the free episodes for pointfree are here:
+
+- https://www.pointfree.co/episodes/free
+
+
+### Link Roundup    
+    
+
+- https://www.createwithswift.com/exploring-a-new-visual-language-liquid-glass/?utm_source=substack&utm_medium=email
+- https://developer.apple.com/design/human-interface-guidelines/
+- https://www.donnywals.com/exploring-tab-bars-on-ios-26-with-liquid-glass/?utm_source=substack&utm_medium=email
+- https://nilcoalescing.com/blog/StretchyHeaderInSwiftUI/?utm_source=substack&utm_medium=email    
+- https://steipete.me/posts/2025/automatic-observation-tracking-uikit-appkit    
+- https://christianselig.com/2025/05/godot-ios-interop/
+
+
+### Android Swift Workgroup
+
+- https://forums.swift.org/t/announcing-the-android-workgroup/80666
+    
+
+### Foundation Models
+    
+
+- https://onevcat.com/2025/06/foundation-models/
+- https://azamsharp.com/2025/06/18/the-ultimate-guide-to-the-foundation-models-framework.html
+    
+
+---
+
 ## 2025.06.21
 
 ### Embedded Swift
