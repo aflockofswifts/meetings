@@ -15,6 +15,80 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.07.05
+
+
+### Embedded Swift
+
+Frank Lefebvre is teaching a workshop on embedded Swift. Here is a link to 
+some of the materials he has used.
+
+- https://github.com/franklefebvre/EmbeddedSwiftWorkshop
+
+Carlyn suggests starting with something simpler than Swift. (i.e. Vendor environments tends to be highly streamlined.)
+
+- https://www.arduino.cc
+- https://www.adafruit.com
+
+Also, for board design:
+
+- https://www.kicad.org
+
+### A cool clock design with 48 stepper motors. Alex is experimenting building something like it and showed:
+
+- https://store.moma.org/products/clockclock-24
+
+
+Another motor based art project  from Carlyn
+- https://www.youtube.com/watch?v=1ZPJ0U_kpNg
+
+
+### Question about customizing the output of DoCC
+
+Here are some general resources:
+
+- https://danielsaidi.com/blog/2022/04/27/building-multi-platform-documentation-with-docc
+- https://forums.swift.org/t/customizing-the-look-and-feel-of-swift-docc-render/58858
+- https://www.youtube.com/watch?v=8KoIXbm0nv4
+  
+(Sounds like Carlyn is hoping to inspect the AST and build a custom DOCC backend. The most relevant
+one supplied by Bob.)
+
+- https://www.createwithswift.com/publishing-docc-documention-as-a-static-website-on-github-pages/
+
+
+Carlyn's docc notes:
+
+- https://www.whynotestflight.com/excuses/docc-notes-on-getting-started/
+
+### Puzzles
+
+YYUR, YYUB, ICUR YY4ME
+    
+There is a new puzzle game that Apple released in the news App.  It requires you to drag emoji
+combination.
+
+
+### New Coding Language Model
+
+The idea is that instead of a sequential context window, it uses a diffusion model
+to come up with the global structure of the program.
+
+- https://9to5mac.com/2025/07/04/apple-just-released-a-weirdly-interesting-coding-language-model/
+    
+
+### Vibe Coding in Xcode 26
+
+We made an experimental Inventory app on macOS 26 and Xcode 26.  
+
+Some thoughts:
+- It put together mostly working code.
+- It made some unfortunate design decisions (user defaults storage, monolithic file to store everything)
+- We were able to correct the problems though it did put some things in the wrong file and forgot to  inject all of the dependencies.
+    
+
+---
+
 ## 2025.06.28
 
 
