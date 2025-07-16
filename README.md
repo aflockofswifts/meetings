@@ -15,6 +15,63 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.07.12
+
+
+### CMake Examples
+
+- https://github.com/carlynorama/another-swift-cmake-examples
+    
+
+### Waiting for Observations
+
+The new Observations API is still not available in the current Xcode beta 3.
+
+- https://forums.swift.org/t/observations-for-await-compilation-error/80508/7
+    
+
+### Emoji Game
+
+Josh talked about a solution for the new apple emoji game.  The correspondance problem 
+between emoji images and word solutions probably requires an LLM.
+
+You can solve the word problem independently. An old game that Josh used a trie to 
+solve the Boggle game. 
+
+- https://github.com/joshuajhomann/Boggle-SwiftUI
+    
+
+A more generalized type of trie useful for the emoji game is a "compressed suffix trie" which can quickly match substrings.
+
+
+### Cancelling TaskGroup
+
+Peter investigating the subtleties of TaskGroup and cancellation.
+
+- https://www.avanderlee.com/concurrency/task-groups-in-swift/
+
+> “Since a TaskGroup is a structured concurrency primitive, cancellation is automatically propagated through all of its child-tasks (and their child tasks).”    
+
+- https://developer.apple.com/documentation/swift/taskgroup 
+
+
+### Solutions for Different Layout
+
+These blog posts go into quite a bit of depth about how things work.
+  
+- https://fatbobman.com/en/posts/how-to-detect-text-truncation-in-swiftui/
+    
+Another solution is to create a variant of Text that never truncates and use it in combination with ViewThatFits.
+    
+
+### AI and XcodeBuild
+
+From Chitaranjan:
+
+- https://github.com/cameroncooke/XcodeBuildMCP
+
+---
+
 ## 2025.07.05
 
 
