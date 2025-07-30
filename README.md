@@ -15,6 +15,101 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.07.26
+
+### Swift Composable Architecture (TCA)
+- https://github.com/pointfreeco/swift-composable-architecture – John B.
+- https://www.youtube.com/watch?v=efGCznIDVb4 – Bob D.
+- https://www.youtube.com/watch?v=XWZmgbylTpc – Bob D.
+
+### Community & Chat Groups
+- https://ios-developers.io – Josh H.
+- https://discord.gg/dVbEFjbU – carlyn
+- https://www.meetup.com/Learn-Swift-Boston/ – Peter W.
+
+### Swift Language & Features
+- https://www.swiftbysundell.com/articles/let-vs-var-for-swift-struct-properties/ – Peter W.
+- https://docs.swift.org/swift-book/documentation/the-swift-programming-language/declarations/#In-Out-Parameters - Peter W.
+- https://developer.apple.com/documentation/realitykit/realityview/init(make:update:)-666xr – John B.
+- https://github.com/swiftlang/swift-evolution/blob/main/visions/embedded-swift.md – John B.
+
+### Swift & C++ Interop
+- https://developer.apple.com/videos/play/wwdc2023/10172/ – John B.
+- https://github.com/carlynorama/SoManyWaysToInclude – carlyn
+- https://github.com/carlynorama/CxxInteropLibrary – carlyn
+- https://github.com/carlynorama/CppInteropSimplestXCode – carlyn
+- https://www.swift.org/documentation/cxx-interop/) – carlyn
+- https://github.com/carlynorama/another-swift-cmake-examples – carlyn
+- https://bazel.build – carlyn
+- https://crascit.com/professional-cmake/ – carlyn
+- https://www.youtube.com/watch?v=m0DwB4OvDXk – carlyn
+
+### Swift Embedded / Pico Projects
+- https://github.com/carlynorama/swift-pico-w-hello/blob/e180cf9b99b042ef16589ed881d48489124ea731/XX-BadgeFirmware/HAL/LanguageSupport.swift#L12 – carlyn
+- https://github.com/carlynorama/swift-pico-w-hello/tree/main/08-StrippedDownBlink – carlyn
+
+### MCP (Model Context Protocol)
+- https://github.com/Cocoanetics/SwiftMCP – Chitaranjan S.
+- https://www.youtube.com/watch?v=ANOpQiLG7Q0 – Chitaranjan S.
+- https://www.youtube.com/watch?v=qjHf_S_PxSw – Chitaranjan S.
+- https://crascit.com/professional-cmake/ – carlyn
+- https://www.youtube.com/watch?v=m0DwB4OvDXk – carlyn
+
+## 🧠 Swift Concurrency
+- https://developer.apple.com/videos/play/wwdc2025/268 – John B.
+- https://developer.apple.com/videos/play/wwdc2025/270 – John B.
+
+### Mesh Gradients in SwiftUI
+- https://developer.apple.com/videos/play/wwdc2024/10151 – carlyn
+- https://medium.com/@rishixcode/animated-mesh-gradient-in-swiftui-e1c2e11ed6bf – carlyn
+
+```swift
+struct MeshGradientView: View {
+    @State var isAnimating = false
+    
+    var body: some View {
+        MeshGradient(width: 3, height: 3, points: [
+            [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
+            [0.0, 0.5], [isAnimating ? 0.1 : 0.8, 0.5], [1.0, isAnimating ? 0.5 : 1],
+            [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+        ], colors: [
+            .purple, .indigo, .purple,
+            isAnimating ? .mint : .purple, .blue, .blue,
+            .purple, .indigo, .purple
+        ])
+        .edgesIgnoringSafeArea(.all)
+        .onAppear() {
+            withAnimation(.easeInOut(duration: 3.0).repeatForever(autoreverses: true)) {
+                isAnimating.toggle()
+            }
+        }
+    }
+}
+```
+
+### UIKit & Transparent Tab Bars
+
+From Joe:
+
+```swift
+Found what I needed to get my UIKit (storyboard and UIViewControllerRepresentables) to work with the transparent tab bar in iOS 18 and iOS 26 
+    
+    .ignoresSafeArea(.all, edges: .bottom)
+    .toolbarBackgroundVisibility(.hidden, for: .tabBar)
+```
+
+### AI Agent IDE & ChatGPT Commentary
+
+- https://kiro.dev/blog/introducing-kiro/ – Robert G.
+- https://www.wheresyoured.at/the-haters-gui/ – John B.
+
+### Misc Tools
+- https://getunblocked.com – Mihaela MJ / Peter W.
+
+
+---
+
+
 ## 2025.07.12
 
 
