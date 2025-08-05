@@ -17,7 +17,6 @@ All people and all skill levels are welcome to join.
 
 ## 2025.08.05
 
-
 ### Swift Async Algorithms
 
 Sharing async streams begins a new round of development.
@@ -46,11 +45,21 @@ Sharing async streams begins a new round of development.
 - *SE-0240: Ordered Collection Diffing*  
   https://github.com/swiftlang/swift-evolution/blob/main/proposals/0240-ordered-collection-diffing.md — via **Josh H.**
 
-
 ### Keyframe Animations
 
-- Code snippet shared — see "Code Snippets" below — via **Alex**  
-  > "This line allows me to use runtime-generated array of keyframes inside track content builder: `KeyframeTrackContentBuilder.buildArray(`"
+From Alex:
+
+```swift
+KeyframeTrack(\.x) {
+    MoveKeyframe(0)
+    LinearKeyframe(0, duration: appearDuration)
+    let keyframes = spiralKeyframes(cos, targetAngle: a, targetRadius: r, duration: flyDuration)
+    KeyframeTrackContentBuilder.buildArray(keyframes)
+}
+```
+
+Comment:  
+> "This line allows me to use runtime-generated array of keyframes inside track content builder: `KeyframeTrackContentBuilder.buildArray()`"
 
 
 ### SwiftUI & UI Tutorials
@@ -78,22 +87,6 @@ Sharing async streams begins a new round of development.
 
 - *Default Actor Isolation (Fatbobman)*  
   https://fatbobman.com/en/posts/default-actor-isolation/ — via **Josh H.**
-
-## 
-
-### Keyframe Animations – **Alex**
-
-```swift
-KeyframeTrack(\.x) {
-    MoveKeyframe(0)
-    LinearKeyframe(0, duration: appearDuration)
-    let keyframes = spiralKeyframes(cos, targetAngle: a, targetRadius: r, duration: flyDuration)
-    KeyframeTrackContentBuilder.buildArray(keyframes)
-}
-```
-
-Comment:  
-> "This line allows me to use runtime-generated array of keyframes inside track content builder: `KeyframeTrackContentBuilder.buildArray()`"
 
 ---
 
@@ -137,7 +130,7 @@ Comment:
 - https://crascit.com/professional-cmake/ – carlyn
 - https://www.youtube.com/watch?v=m0DwB4OvDXk – carlyn
 
-## 🧠 Swift Concurrency
+## Swift Concurrency
 - https://developer.apple.com/videos/play/wwdc2025/268 – John B.
 - https://developer.apple.com/videos/play/wwdc2025/270 – John B.
 
