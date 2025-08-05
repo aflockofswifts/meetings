@@ -15,6 +15,88 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.08.05
+
+
+### Swift Async Algorithms
+
+Sharing async streams begins a new round of development.
+
+- *Swift Async Algorithms Proposal: Broadcast*  
+  https://forums.swift.org/t/swift-async-algorithms-proposal-broadcast-previously-shared/61210 — via **Robert G.**
+
+- *Kickoff of a New Season of Development for AsyncAlgorithms*  
+  https://forums.swift.org/t/kickoff-of-a-new-season-of-development-for-asyncalgorithms-share/81447 — via **Ray F.**
+
+- *Open Pull Requests for Swift Async Algorithms*  
+  https://github.com/apple/swift-async-algorithms/pulls — via **Josh H.**
+
+
+### Observation & Perception
+
+- *Perception 2.0 (Point-Free blog)*  
+  https://www.pointfree.co/blog/posts/180-perception-2-0-an-updated-back-port-of-swift-s-observation-framework — via **Ray F.**
+
+- *PerceptionCheckingTests.swift from Point-Free*  
+  https://github.com/pointfreeco/swift-perception/blob/main/Tests/PerceptionTests/PerceptionCheckingTests.swift — via **Peter W.**
+
+
+### Swift Evolution & Diffing
+
+- *SE-0240: Ordered Collection Diffing*  
+  https://github.com/swiftlang/swift-evolution/blob/main/proposals/0240-ordered-collection-diffing.md — via **Josh H.**
+
+
+### Keyframe Animations
+
+- Code snippet shared — see "Code Snippets" below — via **Alex**  
+  > "This line allows me to use runtime-generated array of keyframes inside track content builder: `KeyframeTrackContentBuilder.buildArray(`"
+
+
+### SwiftUI & UI Tutorials
+
+- *Landmarks: Building an App with Liquid Glass*  
+  https://developer.apple.com/documentation/swiftui/landmarks-building-an-app-with-liquid-glass — via **Josh H.**
+
+- *Chris Eidhof: How SwiftUI’s Rendering Works*  
+  https://youtu.be/dCSf9nR6SOQ?si=G6_9HW5sPjEPGMSb — via **Chitaranjan S.** 
+
+
+### Open Source Projects
+
+- *TrackWeight app on GitHub*  
+  https://github.com/KrishKrosh/TrackWeight — via **Chitaranjan S.**
+
+- *Core Motion CMotionManager Docs*  
+  https://developer.apple.com/documentation/coremotion/cmmotionmanager — via **Josh H.**
+
+- *Redline GitHub Repo*  
+  https://github.com/robb/Redline — via **Josh H.** 
+
+
+## How Default Actor Isolation introduces problems and how to fix them 
+
+- *Default Actor Isolation (Fatbobman)*  
+  https://fatbobman.com/en/posts/default-actor-isolation/ — via **Josh H.**
+
+## 
+
+### Keyframe Animations – **Alex**
+
+```swift
+KeyframeTrack(\.x) {
+    MoveKeyframe(0)
+    LinearKeyframe(0, duration: appearDuration)
+    let keyframes = spiralKeyframes(cos, targetAngle: a, targetRadius: r, duration: flyDuration)
+    KeyframeTrackContentBuilder.buildArray(keyframes)
+}
+```
+
+Comment:  
+> "This line allows me to use runtime-generated array of keyframes inside track content builder: `KeyframeTrackContentBuilder.buildArray()`"
+
+---
+
 ## 2025.07.26
 
 ### Swift Composable Architecture (TCA)
