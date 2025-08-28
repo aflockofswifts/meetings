@@ -15,6 +15,249 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.08.23
+
+### Payments 
+
+It is wise to not do encryption and payment systems yourself.
+
+- **Josh Homann**: Stripe  https://stripe.com/
+
+### Authentication
+
+- **Ray FASWebAuthenticationSession OAuth*  
+- **Ray Fix**: Credit card input UI inspirations  https://dribbble.com/tags/credit-card-input  
+- **Josh Homann**: Auth0  
+  https://auth0.com  
+
+### Passwords & Security Tools
+- **carlyn**: *OnePassword, BitWarden, LastPass … used them all but I still like the built-in password manager*  
+- **carlyn**: *Bitwarden is freemium open-source*  
+- **Josh Homann**: Apple recovery contact guide  
+  https://support.apple.com/en-us/102608  
+- **Bob DeLaurentis**: Diceware password method  
+  https://en.wikipedia.org/wiki/Diceware  
+- **Josh Homann**: CryptoKit docs  
+  https://developer.apple.com/documentation/cryptokit/  
+- **Bob DeLaurentis**: Secure features in Notes app  
+  https://support.apple.com/guide/security/secure-features-in-the-notes-app-sec1782bcab1/web  
+
+### ARKit
+- **Josh Homann**: Scene Reconstruction Provider  
+  https://developer.apple.com/documentation/ARKit/SceneReconstructionProvider  
+
+### Swift Observation Extensions
+
+Using observed to replace combine.
+
+- **Josh Homann**: Shared `Observation.Observable` extension snippet:  
+
+```swift
+extension Observation.Observable where Self: AnyObject {
+    func values<Value: Sendable>(of keyPath: KeyPath<Self, Value>) -> some AsyncSequence<Value, Never> {
+        Observations.untilFinished { [weak self] in
+            self.map { .next($0[keyPath: keyPath]) } ?? .finish
+        }
+    }
+    func newValues<Value: Sendable>(of keyPath: KeyPath<Self, Value>) -> some AsyncSequence<Value, Never> {
+        values(of: keyPath).dropFirst()
+    }
+}
+```  
+
+- **Josh Homann**: Example `@Observable` Person class:  
+
+```swift
+@Observable
+@MainActor
+final class Person: Sendable {
+    var name = "Joshua"
+    var age = 25
+    init() {
+        let a = newValues(of: \.name)
+        Task {
+            try await Task.sleep(for: .seconds(1))
+            name = "Mark"
+        }
+        Task {
+            for await name in a {
+                print(name)
+            }
+        }
+    }
+}
+```
+
+---
+
+## 2025.08.16
+
+### Hummingbird Adventures from Carlyn
+- https://github.com/carlynorama/HummingbirdExamples/tree/main/04_front_end_work/welomeToTheCircus/Sources/welcomeToTheCircus/HTMLMakers  
+- https://github.com/carlynorama/HummingbirdExamples/  
+- https://github.com/carlynorama/SimplerServer  
+
+
+If you need a static site generator:
+
+  https://github.com/twostraws/Ignite 
+
+### JavaScript in Swift
+
+- **Josh Homann**: nshipster article  https://nshipster.com/javascriptcore/  
+
+A live example:
+
+```swift
+import JavaScriptCore
+
+let context = JSContext()
+let squareScript = """
+var a = 1;
+function square(number) {
+    return number * number;
+}
+"""
+context?.evaluateScript(squareScript)
+let square = context?.objectForKeyedSubscript("square")
+print(square?.call(withArguments: [2]).toDouble())
+```  
+
+- WKWebView reference  
+  https://developer.apple.com/documentation/webkit/wkwebview/evaluatejavascript(_:completionhandler:)  
+- SwiftUI WebView reference  
+  https://developer.apple.com/documentation/webkit/webpage/calljavascript(_:arguments:in:contentworld:)  
+
+
+### Protobuf & WWDC
+- **Alex**: Apple Protobuf generator  https://github.com/apple/swift-protobuf  
+- **Chitaranjan sahu**: WWDC 2023 video  https://developer.apple.com/videos/play/wwdc2023/10171/  
+
+### App Store Guidelines & Hybrid Apps
+
+- **John Brewer**: External Javascript in hybrid apps (StackOverflow links)  
+  https://stackoverflow.com/questions/43517892/apple-store-guidelines-external-javascript-files-in-hybrid-mobile-application  
+  https://stackoverflow.com/questions/43503259/convert-server-generated-site-to-phonegap-cordova-app/43504441#43504441 
+### References & Utilities
+
+- **Josh Homann**: SwiftUI TabView for page controller snippet:  
+
+```swift
+TabView {
+    // ... views ...
+}
+.tabViewStyle(.page(indexDisplayMode: .always))
+```  
+
+- **Chitaranjan sahu**: SwiftLint repo  
+  https://github.com/realm/SwiftLint  
+  
+### Swift Evolution
+- **Ray Fix**: Inline Array Sugar proposal accepted
+  https://github.com/swiftlang/swift-evolution/blob/main/proposals/0483-inline-array-sugar.md
+
+---
+
+## 2025.08.09
+
+### AI Chat
+
+- **Peter Wu**: *I highly recommend Claude code — the $20 is worth it*  
+- **Alex**: https://ollama.com  
+- **Chitaranjan sahu**: https://lmstudio.ai/ (*Download and run models on your computer*)
+- **Frank Lefebvre**: *There’s MLX too, optimized for Apple Silicon*  
+  https://github.com/ml-explore/mlx  
+- **Josh Homann**: Swift Composable Architecture examples  
+  https://github.com/pointfreeco/swift-composable-architecture?tab=readme-ov-file#examples
+
+### Speaking of AI 
+
+- **Josh Homann**: News link  
+  https://www.benzinga.com/markets/tech/25/08/46949685/zuck-poaching-effect-pushes-openai-to-announce-1-5-million-bonus-for-all-employees-even-new-hires-says-tech-entrepreneur  
+
+### Interface talk
+
+- **Josh Homann**: Minimum touch targets by platform  
+  https://developer.apple.com/design/human-interface-guidelines/accessibility 
+
+### Bartosz Milewski Category Theory
+- **Peter Wu**: Category Theory for Programmers  
+  https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/  
+
+### Cool Stuff
+
+- **Josh Homann**: SwiftUI Backports  
+  https://github.com/shaps80/SwiftUIBackports  
+- **Josh Homann**: Silent memory leak fix  
+  https://medium.com/@egzonpllana/how-i-stopped-a-silent-memory-leak-in-my-ios-app-282aef170df5  
+- **Peter Wu**: Past project demonstrated RAII
+  https://github.com/aflockofswifts/meetings/tree/main/2024#20240406  
+
+
+### Memory & System APIs
+- **Frank Lefebvre**: *About available memory: on iOS (and all other platforms except macOS) you can use `os_proc_available_memory()`*  
+
+
+### Async & Extensions
+- **Peter Wu**: AsyncSequence assign example  
+  https://github.com/sideeffect-io/AsyncExtensions/blob/main/Sources/Operators/AsyncSequence+Assign.swift  
+
+### Assembly Discussion
+- **Josh Homann**: Assembly for Swift developers  
+  https://arturgruchala.com/assembler-for-swift-developers/?utm_source=substack&utm_medium=email 
+- **carlyn**: Helpful tool  
+  https://cpulator.01xz.net  
+- **carlyn**: Video resource  
+  https://www.youtube.com/watch?v=in-UY_EyI14&list=PL2EF13wm-hWAlQe87UB2HV0SVhBXFpXbn  
+
+### Swift Evolution — `@Observable`
+  https://github.com/swiftlang/swift-evolution/blob/main/proposals/0475-observed.md  
+
+```swift
+import Swift
+import Observation
+
+@Observable
+final class Person: Sendable {
+    var name = "John"
+    var age = 30
+    init(name: String = "John", age: Int = 30) {
+        self.name = name
+        self.age = age
+    }
+}
+
+extension Observation.Observable where Self: Sendable & AnyObject {
+    func changes<Value: Sendable>(in transform: @escaping @Sendable (Self) -> Value) -> some AsyncSequence<Value, Never> {
+        Observations.untilFinished { [weak self] in
+            if let self {
+                return .next(transform(self))
+            } else {
+                return .finish
+            }
+        }
+    }
+}
+
+let p = Person()
+let names = p.changes { $0.name }
+
+Task {
+    for await name in names {
+        print(name)
+    }
+}
+
+Task {
+    try await Task.sleep(for: .seconds(1))
+    p.name = "Jane"
+    try await Task.sleep(nanoseconds: 0)
+    p.name = "Jim"
+}
+```  
+
+---
+
 ## 2025.08.05
 
 ### Swift Async Algorithms
