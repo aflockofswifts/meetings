@@ -15,6 +15,113 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.08.30
+
+## Numerics Release 1.1 
+
+This release introduces relaxed addition (that can use FMA instructions) for an order of magnitude performance gain.
+
+https://github.com/apple/swift-numerics/releases/tag/1.1.0  
+
+## Issues & Debugging
+- **Joe**: *With iOS 26 I get Xcode console messages for “Attribute Graph: cycle detected through attribute” when using the new tab bar bottom accessory. Anyone else seeing these?*  
+
+
+## Sendable, Sending, and Nonsending
+
+- **Josh Homann**: Article: Sendable / Non-Sending discussion  
+  https://fatbobman.com/en/posts/sendable-sending-nonsending/  
+
+## Global Actor Example
+- **Josh Homann**: Example of global actor  
+
+```swift
+@globalActor
+actor MyActor {
+    static let shared = MyActor()
+    private init() { }
+}
+```  
+
+## Containers
+
+- **carlyn**: *I’ve started using containers! Will say more next week when I’m more confident.*  
+  
+https://www.whynotestflight.com/excuses/podman-how-do-i-get-and-edit-an-image-on-macos/  
+
+
+## Subscriptions & Assign
+
+- **Josh Homann**: Subscriptions class  
+
+```swift
+nonisolated final class Subscriptions {
+    private var disposables: [() -> Void] = []
+    deinit { disposables.forEach { $0() } }
+    static func += <Value> (lhs: Subscriptions, rhs: Task<Value, some Error>) {
+        lhs.disposables.append(rhs.cancel)
+    }
+}
+```  
+
+- **Josh Homann**: Generic `assign` function  
+
+```swift
+func assign<each Value, Target: AnyObject>(
+        on target: Target,
+        to keyPaths: repeat ReferenceWritableKeyPath<Target, each Value>
+    ) -> Task<Void, Never> where Element == (repeat each Value) {
+        subscribe(referencing: target) { target, values in
+            for (value, keyPath) in repeat (each values, each keyPaths) {
+                target[keyPath: keyPath] = value
+            }
+        }
+    }
+```  
+
+## Text Rendering
+
+- **Josh Homann**: Custom Renderer for text blur effect  
+
+```swift
+struct Renderer: TextRenderer {
+    var time: TimeInterval
+    func draw(layout: Text.Layout, in context: inout GraphicsContext) {
+        let glyphs = layout.lazy.flatMap(\.self).flatMap(\.self)
+        let currentTime = sin(time)
+        for (offset, glyph) in glyphs.enumerated() {
+            var context = context
+            let blur = abs(Double(offset) * currentTime)
+            context.addFilter(.blur(radius: blur))
+            context.translateBy(x: 0, y: Double(offset) * 5 * currentTime)
+            context.draw(glyph)
+        }
+    }
+}
+```  
+
+- **Josh Homann**: Example `ContentView` using `TimelineView`  
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        VStack {
+            Image(systemName: "globe")
+                .imageScale(.large)
+                .foregroundStyle(.tint)
+            TimelineView(.animation) { context in
+                Text("Hello, world!")
+                    .font(.largeTitle)
+                    .textRenderer(Renderer(time: context.date.timeIntervalSince1970))
+            }
+        }
+        .padding()
+    }
+}
+```
+
+---
+
 ## 2025.08.23
 
 ### Payments 
