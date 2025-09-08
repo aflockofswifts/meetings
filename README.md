@@ -15,6 +15,186 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.09.06
+
+### Retro-computing
+
+John Brewer informed us that Microsoft released the source code BASIC for the 6502.
+
+- https://github.com/microsoft/BASIC-M6502
+
+It is about 8000 lines and compiles for multiple platforms, including the Apple II, Commodore PET and others.
+
+
+### UUID
+
+Universal Unique IDs are an important part of application development are defined by RFC 4122 and is being updated in RFC 9562. See https://www.rfc-editor.org/rfc/rfc9562.html
+
+The Foundation implementation is version 4 of RFC 4122 and contains 120 bits of randomness. Ray walked us through an extension that implements version 7 which uses Unix-based time so that UUIDs can be sorted in order.
+
+The first thing we did was make a setter from a raw UInt128.  The first implementation looks like this:
+
+```swift
+extension UUID {
+  @inlinable init(_ value: UInt128) {
+    let v: uuid_t =
+      (UInt8(value >> 120 & 0xff),
+       UInt8(value >> 112 & 0xff),
+       UInt8(value >> 104 & 0xff),
+       UInt8(value >> 96 & 0xff),
+       UInt8(value >> 88 & 0xff),
+       UInt8(value >> 80 & 0xff),
+       UInt8(value >> 72 & 0xff),
+       UInt8(value >> 64 & 0xff),
+       UInt8(value >> 56 & 0xff),
+       UInt8(value >> 48 & 0xff),
+       UInt8(value >> 40 & 0xff),
+       UInt8(value >> 32 & 0xff),
+       UInt8(value >> 24 & 0xff),
+       UInt8(value >> 16 & 0xff),
+       UInt8(value >> 8 & 0xff),
+       UInt8(value & 0xff))
+    self = UUID(uuid: v)
+  }
+}
+```
+
+Turns out that this is only valid for little endian platforms (which is most everything these days) but might fail on an embedded platform.  Here is the final version:
+
+```swift
+import Foundation
+    
+extension UUID {
+      
+  var version: Int {
+    Int((uuid.6 & 0xf0) >> 4)
+  }
+      
+  enum Variant {
+     case ncs, rfc9562, guid, future
+   }
+       
+   var variant: Variant {
+       switch (uuid.8 >> 4) & 0xf {
+       case 0x0 ... 0x7: .ncs
+       case 0x8 ... 0xb: .rfc9562
+       case 0xc ... 0xd: .guid
+       case 0xe ... 0xf: .future
+       }
+   }
+      
+  init(_ value: UInt128) {
+    var bigEndian = value.bigEndian
+    let t = withUnsafeBytes(of: &bigEndian) { raw -> uuid_t in
+      raw.load(as: uuid_t.self)
+    }
+    self = UUID(uuid: t)
+  }
+      
+  var value: UInt128 {
+    var source = uuid
+    var destination: UInt128 = 0        
+    _ = withUnsafeBytes(of: &source) { src in
+      withUnsafeMutableBytes(of: &destination) { dst in
+        src.copyBytes(to: dst)
+      }
+    }        
+    return Int(littleEndian: 42) == 42 ? destination.byteSwapped : destination
+  }
+
+  static func v7() -> UUID {
+      let timestamp = UInt128(Date().timeIntervalSince1970 * 1000)
+      var random = UInt128.zero
+      withUnsafeMutableBytes(of: &random) { raw in
+        let result = SecRandomCopyBytes(kSecRandomDefault, 10, raw.baseAddress!)
+        assert(result == 0)
+      }
+        
+      var value = UInt128(0x7000_0000_000000000000)
+      value |= (timestamp & ((UInt128(1) << 48) - 1)) << 80
+      value |= (random & ((UInt128(1) << 76) - 1))
+        
+      // Patch in the variant
+      value &= ~(UInt128(0b11) << 62) // clear the two bits
+      value |=  (UInt128(0b10) << 62) // set to 10
+        
+      return UUID(value)
+    }
+      
+  var unixMilliseconds: UInt64? {
+     guard version == 7 else { return nil }
+     return UInt64((value >> 80) & ((UInt128(1) << 48) - 1))
+   }
+      
+  var timestamp: Date? {
+    guard let unixMilliseconds else { return nil }
+    return Date(timeIntervalSince1970: TimeInterval(unixMilliseconds) / 1000.0)
+  }
+}
+
+```
+
+We also wrote some tests:
+
+```swift
+import Testing
+import Foundation
+@testable import uuid_exploration
+    
+@Suite struct UUIDTests {
+  @Test func version() {
+    let uuid = UUID()
+    #expect(uuid.version == 4)
+    #expect(uuid.timestamp == nil)
+  }
+      
+  @Test func initialize() {
+    let x = UUID(1)
+    #expect(x.uuidString == "00000000-0000-0000-0000-000000000001")
+    #expect(x.value == 1)
+        
+    let y = UUID(0x112233445566778899AABBCCDDEEFF00)
+    #expect(y.uuidString == "11223344-5566-7788-99AA-BBCCDDEEFF00")
+    #expect(y.value == 0x112233445566778899AABBCCDDEEFF00)
+  }
+      
+  @Test func generateUUID7() {
+    let uuid = UUID.v7()
+    #expect(uuid.version == 7)
+    print(uuid.uuidString)
+    print(uuid.timestamp!)
+  }
+}
+```
+
+We also tested with this web service:
+
+- https://uuid7.com
+
+
+### Making a Random Label
+
+From Josh:
+
+```swift
+print(String(Int.random(in: 0..<Int.max), radix: 36).uppercased())
+```
+
+Alternatively:
+
+```swift
+print(ObjectIdentifier(a).debugDescription)
+```
+
+### Homework
+
+From Josh. Read up on this for next week:
+
+- https://www.swiftbysundell.com/articles/building-a-design-system-at-genius-scan/
+
+
+---
+
 ## 2025.08.30
 
 ## Numerics Release 1.1 
