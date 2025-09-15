@@ -15,6 +15,51 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.09.13
+
+### Apple Security & Updates
+  
+- https://security.apple.com/blog/memory-integrity-enforcement/  
+ 
+### Projects & Apps
+- **Ed Arenberg**: Emoji Game Helper app (App Store link)  
+  https://apps.apple.com/us/app/emoji-game-helper/id6749472749  
+
+### Links & References
+- **Josh Homann**: iPhone URL Scheme reference  
+  https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007899-CH1-SW1  
+- Square link  
+  https://squareup.com  
+- **Ed Arenberg**: Mobile app design inspiration  
+  https://dribbble.com/tags/mobile-app-design  
+
+
+### Swift & Interpreter
+- **Josh Homann**: Swift Interpreter article  
+  https://www.bitrig.app/blog/swift-interpreter
+- https://github.com/SwiftyLua/SwiftyLua
+
+
+### Containers & Servers
+
+Carlyn led a presentation on containers.
+
+- Podman on macOS (shared twice)  
+  https://www.whynotestflight.com/excuses/podman-how-do-i-get-and-edit-an-image-on-macos/  
+- HelloServer repo  
+  https://github.com/carlynorama/HelloServer  
+- HummingbirdExamples repo  
+  https://github.com/carlynorama/HummingbirdExamples/  
+
+
+### Other container references
+- **Georgi Dagnall**: New Docker tutorial (same channel)  
+  https://www.youtube.com/watch?v=zFa9_K8BS8I   
+- **carlyn**: YouTube reference (containers)  
+  https://www.youtube.com/watch?v=SXwC9fSwct8
+
+--
+
 ## 2025.09.06
 
 ### Retro-computing
