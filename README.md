@@ -33,7 +33,7 @@ Some other options (resources):
 
   Recreating Stateobject: https://fatbobman.com/en/posts/lazy-initialization-state-in-swiftui/
 
-![images/architecture.png](Architecture)
+![Architecture](images/architecture1.png)
 
 ### Memory Safety
 
