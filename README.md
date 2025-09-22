@@ -15,6 +15,146 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.09.20
+
+
+### To OpenAI or Not
+
+Carlyn talked about when it makes sense to generate your APIs using OpenAPI.
+
+- https://www.whynotestflight.com/excuses/how-do-i-get-hummingbird-to-work-with-the-openapi-plugins/
+  
+Some other options (resources):
+
+-  https://loopback.io
+-  https://fastapi.tiangolo.com
+
+### Talking Architecture  
+
+  Recreating Stateobject: https://fatbobman.com/en/posts/lazy-initialization-state-in-swiftui/
+
+![images/architecture.png](Architecture)
+
+### Memory Safety
+
+Ray F. did an exploration of the new Swift 6.2 strict memory enforcement.
+
+- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0458-strict-memory-safety.md
+
+We started by enabling checking in the package.
+
+```swift
+// swift-tools-version: 6.2
+```
+
+And in the target:
+
+```swift
+
+
+.target(name: "uuid-exploration"),
+        swiftSettings: [.strictMemorySafety(), .treatAllWarnings(as: .error)])
+```
+
+You can enable from the command line or as an argument in your Xcode project's build:
+
+```none
+  -strict-memory-safety
+```
+  
+Then we fixed the warnings (errors) by adding `unsafe` to every place that required it.
+
+```swift
+unsafe withUnsafeMutableBytes(of: &random) { raw in
+    let result = unsafe SecRandomCopyBytes(kSecRandomDefault, 10, raw.baseAddress!)
+    precondition(result == errSecSuccess)
+}
+```
+
+### Exploring a Design System 
+
+Going back to the homework from Josh.
+
+- https://www.swiftbysundell.com/articles/building-a-design-system-at-genius-scan/
+  
+
+HTML/CSS are very good about separating semantics and style. SwiftUI, similarly can be decomposed into different parts.
+
+
+As example consider this view which is all about content:
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        List {
+            ForEach(0..<10) { i in
+                LabeledContent {
+                    Text("Title")
+                        .font(.body)
+                        .foregroundStyle(.red)
+                    Text("Subtitle")
+                    Text("Subsubtitle")
+                    Text("Subsubsubtitle")
+                } label: {
+                    Label("hello", systemImage: "star.fill")
+                }
+                .labeledContentStyle(.verticalHierarchicalText)
+            }
+        }
+    }
+}
+```
+
+The style is applied with a custom modifier and can be defined like so:
+
+```swift  
+struct HierarchicalLabeledContentStyle: LabeledContentStyle {
+    var orientation: Axis = .horizontal
+    var spacing: Double = .zero
+    enum Constant {
+        static let fontFromIndex: [Int: Font] = [ 1 : .body, 2: .caption2, 3 : .caption]
+        static let shapeStyleFromIndex: [Int: AnyShapeStyle] = [ 1 : AnyShapeStyle(.primary), 2: nyShapeStyle(.secondary), 3 : AnyShapeStyle(.tertiary)]
+    }
+
+    func makeBody(configuration: Configuration) -> some View {
+        let layout = switch orientation {
+          case .horizontal: AnyLayout(HStackLayout(spacing: spacing))
+          case .vertical: AnyLayout(VStackLayout(alignment: .leading, spacing: spacing))
+        }
+        HStack(spacing: 10) {
+          configuration.label
+                .alignmentGuide(.listRowSeparatorLeading) { $0[.trailing] + 10 }
+  
+            layout {
+                var index = 0
+                ForEach(subviews: configuration.content) { subview in
+                    subview.font(Constant.fontFromIndex[index] ?? .footnote)
+                        .foregroundStyle(Constant.shapeStyleFromIndex[index] ?? AnyShapeStyle(.quaternary))
+                    let _ = index += 1
+                }
+            }
+        }
+    }
+}
+```
+
+To allow for ergonomic auto-completing modifiers:
+
+```swift
+extension LabeledContentStyle where Self == HierarchicalLabeledContentStyle {
+    static var horizontal: Self {
+        Self(orientation: .horizontal)
+    }
+    static var verticalHierarchicalText: Self {
+        Self(orientation: .vertical)
+    }
+    static func verticalHierarchicalText(spacing: Double) -> Self {
+        Self(orientation: .vertical, spacing: spacing)
+    }
+}
+```
+---
+
 ## 2025.09.13
 
 ### Apple Security & Updates
