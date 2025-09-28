@@ -15,6 +15,96 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.09.27
+
+### AI Generated History
+
+Allen used Claude to go through all of the pages documents that had a high level UML-like diagram of his
+design turn them into a movie.
+
+### Gestures
+
+There are things that you still cannot do with pure SwiftUI.
+
+- https://developer.apple.com/documentation/uikit/uigesturerecognizerdelegate    
+- https://swiftwithmajid.com/2024/12/17/introducing-uigesturerecognizerrepresentable-protocol-in-swiftui/
+
+
+### UI Design
+
+Be careful about using SF symbol as images because they lose their original type-based semantics.
+
+Consider using scaled metric: https://developer.apple.com/documentation/swiftui/scaledmetric
+
+#### Liquid Glass
+    
+- https://developer.apple.com/documentation/SwiftUI/Applying-Liquid-Glass-to-custom-views
+    
+
+```swift
+    Text("Hello, World!")
+        .font(.title)
+        .padding()
+        .glassEffect(.regular.tint(.orange).interactive())
+```
+
+### App Intents
+
+Interesting impromptu discussion with Joe leading about how he uses app intents in some of his apps. Here are some resources:
+
+- https://developer.apple.com/documentation/appintents/adopting-app-intents-to-support-system-experiences    
+- https://developer.apple.com/videos/play/wwdc2025/275
+
+
+### Trip Advisor Moving to from MVVM-C to TCA
+
+Shared by Rainer.
+
+https://medium.com/tripadvisor/the-evolution-of-native-engineering-at-tripadvisor-part-1-577cc0e36ec8
+
+
+### Article Roundup from Peter
+
+In depth coverage of how SwiftUI view updates.
+
+- https://fatbobman.com/en/posts/understanding-swiftui-view-update-mechanism/
+
+Also from Josh:
+
+- https://medium.com/@matgnt/swiftui-redraw-system-in-depth-attributes-recomputation-diffing-and-observation-66b469fdcada
+
+Async algorithm share:
+
+https://github.com/apple/swift-async-algorithms/blob/main/Evolution/0016-share.md
+
+### Article Roundup from Josh
+
+A bunch of shortcuts to produce things like screenshots that you can include in git commits.
+
+- https://lickability.com/blog/github-markdown-shortcuts/
+
+An IDE for Shortcuts on macOS.
+    
+- https://www.jellycuts.com
+
+It is suprising just how slow NSImage is. If you are on the Mac, make sure you are using CGImage.
+
+- https://macguru.dev/fast-thumbnails-with-cgimagesource/
+
+If you use the command line, this is how you can create code completion for zsh.    
+
+- https://swifttoolkit.dev/posts/argument-parser-gems
+    
+This is a deep dive on how rendering in iOS works.
+
+- https://github.com/EthanArbuckle/ios-rendering-docs
+  
+Matt Mssicotte's take on when to use actors. (Which Josh doesn't seem to agree with but found it to be an interesting post.)
+
+- https://www.massicotte.org/actors
+
+---
+
 ## 2025.09.20
 
 
