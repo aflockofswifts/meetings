@@ -15,6 +15,80 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.10.04
+
+### Algorithms & Interview Prep
+- **Josh Homann**: Cracking the Coding Interview  
+  https://www.amazon.com/Cracking-Coding-Interview-Programming-Questions/dp/0984782850  
+- **Josh Homann**: neetcode YouTube channel  
+  https://www.youtube.com/c/neetcode  
+- **Josh Homann**: Leetcode  
+  https://leetcode.com  
+- **Peter Wu**: The Algorithm Design Manual  
+  https://www.amazon.com/Algorithm-Design-Manual-Steven-Skiena/dp/1849967202  
+- **Alex**: *Just for fun — Algorithms (big books)*  
+  https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/  
+  https://www.amazon.com/Computer-Programming-Volumes-1-4B-Boxed/dp/0137935102  
+- **Tobias**: Swift Collections Heap documentation  
+  https://swiftpackageindex.com/apple/swift-collections/1.2.1/documentation/heapmodule/heap  
+- **Joe Mestrovich**: Swift Algorithm Club (Kodeco)  
+  https://github.com/kodecocodes/swift-algorithm-club  
+- **Josh Homann**: Swift API Design Guidelines  
+  https://www.swift.org/documentation/api-design-guidelines/  
+- **Josh Homann**: Advent of Code  
+  https://adventofcode.com  
+- **Josh Homann**: SymbolSearch project  
+  https://github.com/joshuajhomann/SymbolSearch  
+ 
+
+### Global Actor Example
+
+```swift
+@globalActor
+actor MyActor {
+    static let shared = MyActor()
+    private init() { }
+}
+```  
+### AI & Tools
+
+- **Josh Homann**: SwiftLog  
+  https://github.com/apple/swift-log 
+- **Josh Homann**: Reactive ViewModels Simplified video  
+  https://www.youtube.com/watch?v=uTLG_LgjWGA  
+- **Josh Homann**: SwiftUI file exporter reference  
+  https://developer.apple.com/documentation/swiftui/view/fileexporter(ispresented:document:contenttype:defaultfilename:oncompletion:)  
+- **Josh Homann**: Claude for mobile demo  
+  https://www.youtube.com/watch?v=NnYLzGMk8Tg&t=750s  
+- **Josh Homann**: OpenAI GPT OSS 20B & 120B models  
+  https://huggingface.co/openai/gpt-oss-120b  
+- **Peter Wu**: Claude Code origin video  
+  https://www.youtube.com/watch?v=Yf_1w00qIKc  
+- **Peter Wu**: Claude Code best practices walk-through  
+  https://www.youtube.com/watch?v=6eBSHbLKuN0&t=956s  
+- **Josh Homann**: TechCrunch article on local AI models with iOS 26  
+  https://techcrunch.com/2025/10/03/how-developers-are-using-apples-local-ai-models-with-ios-26/  
+- **Peter Wu**: objc.io Environment & Preference Updates episode  
+  https://talk.objc.io/episodes/S01E409-environment-preference-updates
+
+### Using Foundation Models
+
+An example from Josh Homann.
+
+```swift
+import FoundationModels
+let instructions =
+"""
+    All recipes should be vegan. Start every answer with a bulleted list of ingredients followed by a description of the dish followed by a numbered list of instructions.
+"""
+let options = GenerationOptions(temperature: 5.0)
+let session = LanguageModelSession(instructions: instructions)
+
+let prompt = "create a recipe for Mapo Tofu"
+let response = try await session.respond(to: prompt, options: options)
+print(response.content)
+```  
+
 ## 2025.09.27
 
 ### AI Generated History
