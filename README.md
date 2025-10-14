@@ -15,6 +15,64 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.10.11
+
+### Swift & Apple APIs
+- **Josh Homann:** Swift diagnostics — nonisolated / non-sending by default  
+  https://docs.swift.org/compiler/documentation/diagnostics/nonisolated-nonsending-by-default/
+- **Ray Fix:** Swift Evolution: Module Selectors proposal  
+  https://github.com/swiftlang/swift-evolution/blob/main/proposals/0491-module-selectors.md
+- **Josh Homann:** SpeechAnalyzer API  
+  https://developer.apple.com/documentation/speech/speechanalyzer
+- **Peter Wu:** Mutex docs  
+  https://developer.apple.com/documentation/synchronization/mutex
+
+### Swift Packages & Libraries
+- **Mihaela MJ:** Point‑Free Clocks  
+  https://github.com/pointfreeco/swift-clocks
+
+### UUID Extras Package
+
+- **Ray Fix:** UUIDExtras (v7 UUID package)  
+  https://github.com/rayfix/UUIDExtras  👍
+
+### ViewModels are just a Function
+- **Josh Homann:** RxTvMaze  
+  https://github.com/joshuajhomann/RxTvMaze/tree/master
+
+
+### Foundation Models
+
+- **Josh Homann:** Profiling Foundation Models  
+  https://artemnovichkov.com/blog/foundation-models-profiling-with-xcode-instruments
+
+- **Josh Homann:** iOS 26 Foundation Model framework overview  
+  https://antongubarenko.substack.com/p/ios-26-foundation-model-framework-f6d
+
+```swift
+.task {
+    do {
+        let instructions =
+        """
+        You are a screen writer pitching ideas for a screenplay.
+        Your response should be a synopsis of the plot followed by a bulleted list
+        of major characters with a brief biography.
+        """
+        let options = GenerationOptions(sampling: .greedy)
+        let session = LanguageModelSession(instructions: instructions)
+        session.prewarm()
+        let prompt = "Write a murder mystery set on a train"
+        let response = try await session.respond(to: prompt,
+                           generating: ScreenPlaySynopsis.self, options: options)
+        print(response)
+    } catch {
+        print(error)
+    }
+}
+```
+
+---
+
 ## 2025.10.04
 
 ### Algorithms & Interview Prep
