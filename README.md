@@ -15,6 +15,47 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.10.18
+
+### Server‑Side Swift / Middleware
+
+- **Mihaela MJ:** OpenAPI Logging middleware  
+  https://github.com/mihaelamj/OpenAPILoggingMiddleware
+
+- **Mihaela MJ:** Bearer token auth middleware  
+  https://github.com/mihaelamj/BearerTokenAuthMiddleware
+
+- **Mihaela MJ:** Swift OpenAPI “extreme packaging” example  
+  https://github.com/mihaelamj/swift-openapi-extremepackaging-example
+
+
+### Conferences & Communities
+- **Frank Lefebvre:** CocoaConferences aggregator  
+  https://cocoaconferences.com
+
+### Symbols & Vector Design Tools
+
+Alex created a script to produce custom SF symbols. He is working on possibly open sourcing it.
+
+Vector drawing: Figma, Sketch, Affinity Designer, Inkscape
+
+- https://inkscape.org
+
+## Articles & Reading
+
+- **Ray Fix:** Advanced Codable (“No‑Drama Codable”)  
+  https://nothingtocommitworkingtreeclean.com/advanced_codable.html
+
+
+## AI Model Sizes & Local Models
+- **Bob DeLaurentis:** (from web search) “Claude 3.5 Sonnet ~175B params; Claude 4 ~1.7T (unverified).”
+- **Josh Homann:** “I run the 20B GPT‑OSS on ollama.”
+- **Mihaela MJ:** OpenAI GPT‑OSS intro  
+  https://openai.com/index/introducing-gpt-oss/
+
+---
+
+
 ## 2025.10.11
 
 ### Swift & Apple APIs
