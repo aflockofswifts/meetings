@@ -15,6 +15,59 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.10.25
+
+
+### Swift on Android & Cross-Platform UI
+- **Ray Fix:** Swift Android Workgroup  
+  https://www.swift.org/android-workgroup/
+- **Mihaela MJ:** Skip (write in Swift, run on iOS/Android)  
+  https://skip.tools
+- **Josh Homann:** Swift Android examples  
+  https://github.com/swiftlang/swift-android-examples
+- **Josh Homann:** OpenSwiftUI project  
+  https://github.com/OpenSwiftUIProject/OpenSwiftUI
+- **Alex:** swift-cross-ui  
+  https://github.com/stackotter/swift-cross-ui
+
+
+### Xcode / Distribution
+- **Josh Homann:** Distributing binary frameworks as Swift packages (Xcode)  
+  https://developer.apple.com/documentation/xcode/distributing-binary-frameworks-as-swift-packages
+
+### Symbols, Fonts & Rendering
+- **Alex:** SFSymbolBuilder  
+  https://github.com/bealex/SFSymbolBuilder
+
+- **Josh Homann:** Font anatomy (Material guidelines)  
+  https://m2.material.io/design/typography/understanding-typography.html#type-properties
+
+### Monospaced Fonts
+
+- **Peter Wu:** SwiftUI monospaced digits  
+  https://developer.apple.com/documentation/swiftui/font/monospaceddigit()
+- TextRenderer (SwiftUI)  
+  https://developer.apple.com/documentation/swiftui/textrenderer
+
+### Retro Books & Articles
+- **Josh Homann:** Programming iOS 14 (Matt Neuburg)  
+  https://www.amazon.com/Programming-iOS-14-Controllers-Frameworks/dp/1492092177
+- **Mihaela MJ:** iOS Core Animation: Advanced Techniques (Nick Lockwood)  
+  https://www.amazon.com/iOS-Core-Animation-Advanced-Techniques-ebook/dp/B00EHJCORC
+- **Mihaela MJ:** Core Animation Simplified (O’Reilly)  
+  https://www.oreilly.com/library/view/core-animation-simplified/9780321617835/
+- NOTE: You might be able to check out some of these books from your library!
+
+### Articles
+
+- **Josh Homann:** “Swift Concurrency — what I wish someone had told me”  
+  https://www.linkedin.com/pulse/swift-concurrency-what-i-wish-someone-had-told-me-valente-pimentel--xqb5f/
+
+- **Josh Homann:** Singletons and Concurrency
+  https://www.massicotte.org/singletons
+
+---
+
 ## 2025.10.18
 
 ### Server‑Side Swift / Middleware
