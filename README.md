@@ -13,6 +13,60 @@ All people and all skill levels are welcome to join.
 - [2023 Meetings](2023/README.md)
 - [2024 Meetings](2024/README.md)
 
+
+---
+
+## 2025.11.01
+
+
+### Graphics tooling: Affinity & SwiftDraw (09:33–09:41)
+
+Quick exchange on vector/bitmap tooling that can fit developer workflows.
+
+- **Links**
+  - Affinity downloads — <https://www.affinity.studio/download>  
+  - SwiftDraw (Swift vector drawing library) — <https://github.com/swhitty/SwiftDraw>
+
+
+### Apple performance/efficiency session & follow-ups
+
+Peter flags an Apple session; later chat touches view identity/diffing in SwiftUI.
+
+- Apple session: *Performance & Efficiency* — <https://www.youtube.com/watch?v=yXAQTIKR8fk>  
+- “Meet with Apple / 212” — <https://developer.apple.com/videos/play/meet-with-apple/212>  
+- SwiftUI diffing deep-dive article — <https://fatbobman.com/en/posts/understanding-swiftui-view-update-mechanism/>
+
+### Linking discussion (static vs dynamic) in Xcode
+
+static vs dynamic linking practices; notes about embedding dylibs and verifying app bundle contents.
+
+
+### SwiftUI view identity: preserving state across branches
+
+Mihaela posts code illustrating how identity changes across `if` branches can reset state, and how a single identity preserves it.
+
+- https://fatbobman.com/en/posts/understanding-swiftui-view-update-mechanism/
+
+### SwiftUI
+
+It is possible to implement your own ShapeStyle conformances. Alex created his own color type HSL
+
+- https://developer.apple.com/documentation/swiftui/shapestyle
+
+### Swift on Android
+
+- https://www.swift.org/blog/nightly-swift-sdk-for-android/
+- https://www.swift.org/android-workgroup/
+
+### Data modeling & migrations: SQLiteData
+
+- https://swiftpackageindex.com/pointfreeco/sqlite-data/1.3.0/documentation/sqlitedata
+
+
+Specifically we walked through creation of a database.
+
+- https://swiftpackageindex.com/pointfreeco/sqlite-data/1.3.0/documentation/sqlitedata/preparingdatabase
+
 ---
 
 ## 2025.10.25
