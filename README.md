@@ -16,10 +16,73 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.11.08
+
+### Using Shazam API
+
+Rainer discovered that Shazam requires 12 second samples or its performance is very poor.
+  
+### Making Previews Work
+
+There are strange interactions with Previews and third party packages. Josh notes that you can steer around these problems by
+making your code modular and not depending at all on any
+external package.
+
+This lead to a discussion about architecture.
+
+![Architecture](images/architecture1.png)
+
+```swift
+@MainActor final class ViewModelFactory {
+    private let services: Services
+    func makeDocumentViewModel(from id: Document.ID) -> DocumentViewModel{
+        .init(
+            id: id,
+            analyticsService: services.analyticsService,
+            documentManager: services.documentManager
+        )
+    }
+}
+
+@EnvironmentObject private var viewModelFactory
+var body: some View {
+    Child(viewModel: viewModelFactory.makeChildViewModel(from: viewmodel.document.id))
+}
+```
+  
+### Article Roundup
+
+Mihaela recommends this podcast. Lots of interesting stuff about server side swift:
+
+- https://www.youtube.com/@SwiftToolkit
+
+
+Josh showed us a lot of interesting articles:
+
+- https://antongubarenko.substack.com/p/optimize-your-apps-speed-and-efficiency
+- https://swiftdevjournal.com/posts/swiftui-frequent-view-updates/
+- https://gioscalzo.com/blog/demystifying-ai-coding-agents-in-swift/
+- https://forums.swift.org/t/roadmap-for-improving-the-type-checker/82952
+- https://www.avanderlee.com/optimization/analysing-build-performance-xcode/
+
+From SwiftLeeds.
+
+- https://www.youtube.com/playlist?list=PL-wmxEeX64YTpDbpfszWMV76oZZO3wxZH
+  
+### More Conference Videos
+
+From Frank to talk about next week!
+
+- Swift Connection: https://www.youtube.com/playlist?list=PLZsRQnRG-mlIkHsjeax_cRq6kAclNrWBF 
+  
+- Pragma: https://www.youtube.com/playlist?list=PLAVm70iJlMuvTihK1OzK9S4Vzw_KO71b0
+
+---
+
 ## 2025.11.01
 
 
-### Graphics tooling: Affinity & SwiftDraw (09:33–09:41)
+### Graphics tooling: Affinity & SwiftDraw
 
 Quick exchange on vector/bitmap tooling that can fit developer workflows.
 
