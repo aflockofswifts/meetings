@@ -13,6 +13,96 @@ All people and all skill levels are welcome to join.
 - [2023 Meetings](2023/README.md)
 - [2024 Meetings](2024/README.md)
 
+---
+
+## 2025.11.15
+
+### MCP for Apple Documentation
+
+Mihaela has a new exciting project that compiles Apple docs and provides access to AI agents.
+
+- https://github.com/mihaelamj/appledocsucker
+
+
+### Async Functions
+
+Took a deep dive into async function.
+
+Some low level details about how async wrote:
+- https://developer.apple.com/videos/play/wwdc2021/10254/
+- https://www.youtube.com/watch?v=H_K-us4-K7s
+
+In Swift 6.2, the caller decides where (what executor) a function finishes on.
+
+The old way:
+
+```swift
+func getCities(completion: @escaping @Sendable (Int) -> Void) {
+    DispatchQueue.global(qos: .utility).async {
+        let response = 1
+        DispatchQueue.main.async { [completion] in
+            completion(response)
+        }
+    }
+}
+```
+
+Can be translated to this:
+
+```swift
+func getCities() async -> Int {
+    await withCheckedContinuation { continuation in
+        DispatchQueue.global(qos: .utility).async {
+            let response = 1
+            continuation.resume(returning: response)
+        }
+    }
+}
+```
+
+A more modern actor approach bridging the old world:
+
+```swift
+actor NetworkService {
+    private var header: [String: String] = [:]
+    static func getCities() async -> Int {
+        // Continuation captures this state
+        var a = 0
+        try? await Task.sleep(for: .seconds(1))
+        let b = await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .utility).async {
+                let response = 1
+                continuation.resume(returning: response)
+            }
+        }
+        // Continuation returns here
+        print(a)
+        return b
+    }
+    @available(*, deprecated)
+    nonisolated static func getCities(completion: @escaping @Sendable (Int) -> Void) {
+        Task {
+            completion(await getCities())
+        }
+    }
+}
+```
+
+Non-isolated behavior: https://docs.swift.org/compiler/documentation/diagnostics/nonisolated-nonsending-by-default/
+
+
+### Embedded Swift
+
+Sadly, I was in and out during most of Carlyn's presentation. She talked about
+several projects and things including embedded swift the ESP 32 C6 and hacking conference badges. She also talked about Swift and LoRa and implementing a 
+Harware Abstraction Layer for Swift.
+
+
+### Swift Everywhere
+
+Related to this, Josh mentioned that Android tools are now available for Swift for free.
+
+- https://skip.tools/blog/skip-fuse-free-for-indies/
 
 ---
 
