@@ -15,6 +15,72 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.11.22
+
+### Conference Playlists
+
+- Swift Connection 2025 playlist — <https://www.youtube.com/playlist?list=PLZsRQnRG-mlIkHsjeax_cRq6kAclNrWBF>
+
+- Pragma Conf 2025 playlist — <https://www.youtube.com/playlist?list=PLAVm70iJlMuvTihK1OzK9S4Vzw_KO71b0>
+
+### Individual talks (Swift Connection 2025)
+
+- Quentin Fasquel — *The Wonderful World of Private APIs*
+- Thomas Durand — *Crafting Reusable SwiftUI Components the Same Way Apple Does* — <https://www.youtube.com/watch?v=eS1DIEnfXvk&list=PLZsRQnRG-mlIkHsjeax_cRq6kAclNrWBF&index=20>
+- Josh Holtz & Zach Brass — *A Talk... Two Ways* — <https://www.youtube.com/watch?v=3uZHL-Oco9I&list=PLZsRQnRG-mlIkHsjeax_cRq6kAclNrWBF&index=6>
+- Maxim Cramer — *Designing for the Post-Screen Era*
+- Gui Rambo — *Inside Liquid Glass: How iOS 26 Synthesizes Refractive UI*
+
+### Individual talks (Pragma Conf 2025)
+
+- Chris Eidhof — *The Attribute Graph: SwiftUI’s Invisible Hand*
+- Johannes Fahrenkrug — *AI from Scratch: Let's Build & Train a Perceptron in Swift*
+- Arkadiusz Świętnicki — *Joys and challenges of a sightless coder*
+- Matteo Rattotti & Konstantin Erokhin — *The sacred secret behind our App's speed*
+
+### Ed's Demo of On-Device AI
+
+Apple technote: managing on‑device model context window
+
+- TN3193 — *Managing the On-Device Foundation Model’s Context Window* — <https://developer.apple.com/documentation/technotes/tn3193-managing-the-on-device-foundation-model-s-context-window>
+
+- `TranslationSession` API — <https://developer.apple.com/documentation/translation/translationsession>
+
+- **Swift Log**, **Swift Metrics**, **Swift Distributed Tracing** — packages support swapping custom implementations.
+
+### Concurrency pattern: bridging callbacks to `AsyncStream`
+
+Mihaela shared a neat adapter for streaming location updates via `AsyncStream` while cleaning up on termination.
+
+```swift
+class LocationManager {
+    var onLocationUpdate: ((Location) -> Void)?
+}
+
+extension LocationManager {
+    var locationUpdates: AsyncStream<Location> {
+        AsyncStream { continuation in
+            self.onLocationUpdate = { location in
+                continuation.yield(location)
+            }
+
+            continuation.onTermination = { @Sendable _ in
+                self.onLocationUpdate = nil
+            }
+
+            self.startUpdating()
+        }
+    }
+}
+
+// Usage
+for await location in locationManager.locationUpdates {
+    print("New location: \(location)")
+}
+```
+
+---
+
 ## 2025.11.15
 
 ### MCP for Apple Documentation
@@ -22,7 +88,6 @@ All people and all skill levels are welcome to join.
 Mihaela has a new exciting project that compiles Apple docs and provides access to AI agents.
 
 - https://github.com/mihaelamj/appledocsucker
-
 
 ### Async Functions
 
