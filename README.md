@@ -15,6 +15,52 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2025.11.29
+
+### Conference Talk Suggestions (Frank)
+
+Frank shared a YouTube playlist of Server Side Swift talks:
+
+- Playlist of suggested talks — https://www.youtube.com/playlist?list=PLTFt3GGfH3hl2rTYswjVXCaNvXmafQ3bt
+
+Individual talks mentioned from that playlist:
+
+- Usability Meets Performance in Swift — Ben Cohen  
+- How To Approach Approachable Concurrency — Matt Massicotte  
+- Observability in Server-Side Swift — Si Beaumont & Moritz Lang  
+
+We touched briefly on server-side Swift technologies:
+
+- Swift Temporal SDK (general discussion)  
+- Swift gRPC  
+- Frank noted the talk in question was actually about this library:  
+- grpc-swift-2 — https://github.com/grpc/grpc-swift-2
+
+### Mihaela’s “cupertino” Project (“Josh in a Box”)
+
+Mihaela shared her `cupertino` project, jokingly described as “Josh in a box.”
+
+- cupertino — https://github.com/mihaelamj/cupertino
+
+### Build Tooling: XcodeGen
+
+Xcode project generation came up as a way to keep projects maintainable and reproducible.
+
+- XcodeGen — https://github.com/yonaskolb/XcodeGen
+
+### Transcription Models: Parakeet
+
+Frank recommended **Parakeet** as a good model for transcription, useful for meeting recordings and similar audio tasks.
+
+### Action Abstractions in Reactive Frameworks
+
+Josh shared links to `Action` abstractions from popular reactive Swift libraries as references for modeling user actions and side effects:
+
+- ReactiveSwift `Action` — https://github.com/ReactiveCocoa/ReactiveSwift/blob/master/Sources/Action.swift  
+- RxSwiftCommunity `Action` — https://github.com/RxSwiftCommunity/Action
+
+---
+
 ## 2025.11.22
 
 ### Conference Playlists
