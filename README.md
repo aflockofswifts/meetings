@@ -59,6 +59,297 @@ Josh shared links to `Action` abstractions from popular reactive Swift libraries
 - ReactiveSwift `Action` — https://github.com/ReactiveCocoa/ReactiveSwift/blob/master/Sources/Action.swift  
 - RxSwiftCommunity `Action` — https://github.com/RxSwiftCommunity/Action
 
+An implementation using `AsyncSequence`:
+```swift
+nonisolated final class Action<Input, Output, Failure: Error> {
+    var isEnabled: some AsyncSequence<Bool, Never> {
+        isEnabledSubject
+    }
+    var isExecuting: some AsyncSequence<Bool, Never> {
+        isExecutingSubject
+    }
+    var results: some AsyncSequence<Result<Output, Failure>, Never> {
+        resultsPipe
+    }
+    var outputs: some AsyncSequence<Output, Never> {
+        resultsPipe.compactMap { try? $0.get() }
+    }
+    var errors: some AsyncSequence<Failure, Never> {
+        resultsPipe.compactMap {
+            switch $0 {
+            case .success: nil
+            case .failure(let error): error
+            }
+        }
+    }
+    private let isExecutingSubject = AsyncSubject<Bool>(false)
+    private let isEnabledSubject = AsyncSubject<Bool>(false)
+    private let resultsPipe = AsyncPipe<Result<Output, Failure>>()
+    private let transform: @Sendable (Input) -> AnyAsyncSequence<Output, Failure>
+    private let lockedWorkTask = Mutex<Task<Void, Never>?>(nil)
+    private let lockedEnabledTask = Mutex<Task<Void, Never>?>(nil)
+    init(
+        enabledIf: some AsyncSequence<Bool, Never>,
+        transform: @escaping @Sendable (Input) -> some AsyncSequence<Output, Failure>
+    ) {
+        self.transform = { input in
+            AnyAsyncSequence(transform(input))
+        }
+        let enabledTask = Task { [isExecutingSubject, isEnabledSubject] in
+            for await value in combineLatest(isExecutingSubject, enabledIf) {
+                isEnabledSubject.send(!value.0 && value.1)
+            }
+        }
+        lockedEnabledTask.withLock { $0 = enabledTask }
+    }
+    convenience init(transform: @escaping @Sendable (Input) -> some AsyncSequence<Output, Failure>) {
+        self.init(
+            enabledIf: [true].async,
+            transform: transform
+        )
+    }
+    deinit{
+        lockedWorkTask.withLock(\.self)?.cancel()
+        lockedEnabledTask.withLock(\.self)?.cancel()
+    }
+    func callAsFunction(_ input: sending Input) {
+        guard isEnabledSubject.currentValue else { return }
+        isExecutingSubject.currentValue = true
+        let workTask = Task {
+            defer { isExecutingSubject.currentValue = false }
+            let values = transform(input)
+            do {
+                for try await value in values {
+                    resultsPipe.send(.success(value))
+                }
+            } catch let error as Failure {
+                resultsPipe.send(.failure(error))
+            } catch {
+                fatalError("Unhandled error: \(error)")
+            }
+        }
+        lockedWorkTask.withLock {
+            $0 = workTask
+        }
+    }
+    func cancel() {
+        lockedWorkTask.withLock(\.self)?.cancel()
+        if isEnabledSubject.currentValue {
+            isEnabledSubject.send(true)
+        }
+    }
+}
+
+extension Action where Input == Void {
+    func callAsFunction() {
+        self(())
+    }
+}
+extension Action: Sendable where Output: Sendable, Failure: Sendable { }
+
+```
+
+Usage
+```swift
+@Observable
+final class ContentViewModel {
+    var text: String = ""
+    private(set) var progress: Double = 0
+    private(set) var isProgressVisible = false
+    private(set) var isButtonDisabled = false
+    private(set) var isUploading = false
+    private(set) var tapButton: Action<Void, Double, Never>
+
+    private let subscriptions = Subscriptions()
+    init() {
+
+        let textIsNonEmpty = AsyncPipe<Bool>()
+
+        tapButton = .init(enabledIf: textIsNonEmpty) { _ in
+            var progress = 0
+            return AsyncStream<Int> {
+                defer { progress += 1 }
+                try? await Task.sleep(for: .milliseconds(50))
+                return progress <= 100 ? progress : nil
+            }.map {
+                Double($0) / 100.0
+            }
+        }
+
+        subscriptions += values(of: \.text)
+            .map(\.isEmpty)
+            .map(!)
+            .subscribe(onNext: textIsNonEmpty.send)
+
+        subscriptions += tapButton
+            .outputs
+            .assign(on: self, to: \.progress)
+
+        subscriptions += tapButton
+            .isExecuting
+            .assign(on: self, to: \.isUploading)
+
+        subscriptions += tapButton
+            .isEnabled
+            .map { !$0 }
+            .assign(on: self, to: \.isButtonDisabled)
+
+        subscriptions += tapButton
+            .isExecuting
+            .filter(!)
+            .map { _ in (0.0, "")}
+            .assign(on: self, to: \.progress, \.text)
+    }
+}
+
+
+struct ContentView: View {
+    @ViewModel var viewModel = ContentViewModel()
+    var body: some View {
+        VStack {
+            TextField("Upload file", text: $viewModel.text)
+                .disabled(viewModel.isUploading)
+            Button {
+                viewModel.tapButton()
+            } label: {
+                ZStack(alignment: .center) {
+                    Text("Upload…")
+                        .opacity(viewModel.isUploading ? 0 : 1)
+                    ProgressView()
+                        .opacity(viewModel.isUploading ? 1 : 0)
+                        .controlSize(.small)
+                }
+            }
+            .disabled(viewModel.isButtonDisabled)
+            VStack {
+                Text("\(viewModel.progress.formatted(.percent.precision(.fractionLength(0))))")
+                ProgressView("downloading…", value: viewModel.progress, total: 1)
+            }
+            .opacity(viewModel.isUploading ? 1 : 0)
+        }
+        .padding()
+    }
+}
+```
+
+Supporting types
+```swift
+nonisolated final class AsyncSubject<Element>: AsyncSequence {
+    typealias Failure = Never
+    private let input: AsyncStream<Element>.Continuation
+    private let output: AnyAsyncSequence<Element, Never>
+    private let lockedValue: Mutex<Element>
+    var currentValue: Element {
+        get {
+            lockedValue.withLock(\.self)
+        }
+        set {
+            lockedValue.withLock { $0 = newValue }
+            input.yield(newValue)
+        }
+    }
+    init(_ initialValue: Element) {
+        lockedValue = .init(initialValue)
+        let (output, input) = AsyncStream.makeStream(of: Element.self, bufferingPolicy: .bufferingNewest(1))
+        self.input = input
+        self.output = AnyAsyncSequence(output.share())
+        self.input.yield(initialValue)
+    }
+
+    func makeAsyncIterator() -> AnyAsyncSequence<Element, Never>.AsyncIterator {
+        output.makeAsyncIterator()
+    }
+
+    func send(_ value: Element) {
+        currentValue = value
+    }
+    func finish() {
+        input.finish()
+    }
+}
+
+extension AsyncSubject: Sendable where Element: Sendable { }
+
+nonisolated final class AsyncPipe<Element>: AsyncSequence {
+    private let input: AsyncStream<Element>.Continuation
+    private let output: AnyAsyncSequence<Element, Never>
+
+    init() {
+        let (output, input) = AsyncStream.makeStream(of: Element.self, bufferingPolicy: .bufferingNewest(0))
+        self.input = input
+        self.output = AnyAsyncSequence<Element, Never>(output.share())
+    }
+
+    func makeAsyncIterator() -> AnyAsyncSequence<Element, Never>.AsyncIterator {
+        output.makeAsyncIterator()
+    }
+
+    func send(_ value: Element) {
+        input.yield(value)
+    }
+    func finish() {
+        input.finish()
+    }
+}
+
+extension AsyncPipe: Sendable where Element: Sendable { }
+
+nonisolated struct AnyInfallibleAsyncSequence<Element>: AsyncSequence {
+    struct AsyncIterator: AsyncIteratorProtocol {
+        private let _next: () async -> Element?
+        init<I: AsyncIteratorProtocol>(_ base: consuming I) where I.Element == Element, I.Failure == Never {
+            self._next = { await base.next(isolation: #isolation) }
+        }
+        mutating func next() async -> Element? { await _next() }
+    }
+
+    private let _makeAsyncIterator: () -> AsyncIterator
+
+    init<S: AsyncSequence>(_ base: S) where S.Element == Element, S.Failure == Never {
+        self._makeAsyncIterator = {
+            AsyncIterator(base.makeAsyncIterator())
+        }
+    }
+
+    func makeAsyncIterator() -> AsyncIterator { _makeAsyncIterator() }
+}
+
+nonisolated struct AnyAsyncSequence<Element, Failure: Error>: AsyncSequence {
+    struct AsyncIterator: AsyncIteratorProtocol {
+        private let _next: (isolated (any Actor)?) async -> Result<Element?, Failure>
+        init<Base: AsyncIteratorProtocol>(
+            _ base: consuming Base
+        ) where Base.Element == Element, Base.Failure == Failure {
+            self._next = { isolation in
+                do {
+                    let element = try await base.next(isolation: isolation)
+                    return .success(element)
+                } catch let error as Failure {
+                    return .failure(error)
+                } catch {
+                    fatalError("Unexpected error type: \(error)")
+                }
+            }
+        }
+        mutating func next(isolation actor: isolated (any Actor)?) async throws(Failure) -> Element? {
+            try await _next(actor).get()
+        }
+    }
+
+    private let _makeAsyncIterator: () -> AsyncIterator
+
+    init<Base: AsyncSequence>(_ base: Base) where Base.Element == Element, Base.Failure == Failure {
+        self._makeAsyncIterator = {
+            AsyncIterator(base.makeAsyncIterator())
+        }
+    }
+
+    func makeAsyncIterator() -> AsyncIterator {
+        _makeAsyncIterator()
+    }
+}
+
+```
 ---
 
 ## 2025.11.22
