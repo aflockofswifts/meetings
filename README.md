@@ -15,8 +15,6 @@ All people and all skill levels are welcome to join.
 
 ---
 
----
-
 ## 2025.12.06
 
 ### Resources Shared
@@ -27,11 +25,10 @@ All people and all skill levels are welcome to join.
 
 - Refactoring Guru: https://refactoring.guru/design-patterns
 
-## SwiftLint Plugins
+### SwiftLint Plugins
 
 - Jamie asked whether anyone uses SwiftLint’s Xcode BuildToolPlugin:  
   https://github.com/SimplyDanny/SwiftLintPlugins
-
 
 Continued discussion about `Action` abstraction from last week.
 
