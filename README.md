@@ -15,6 +15,28 @@ All people and all skill levels are welcome to join.
 
 ---
 
+---
+
+## 2025.12.06
+
+### Resources Shared
+
+- *The Programmer’s Brain* (Manning): https://www.manning.com/books/the-programmers-brain  
+
+- *Ten Faces of Innovation* (IDEO): https://www.ideo.com/journal/the-ten-faces-of-innovation
+
+- Refactoring Guru: https://refactoring.guru/design-patterns
+
+## SwiftLint Plugins
+
+- Jamie asked whether anyone uses SwiftLint’s Xcode BuildToolPlugin:  
+  https://github.com/SimplyDanny/SwiftLintPlugins
+
+
+Continued discussion about `Action` abstraction from last week.
+
+---
+
 ## 2025.11.29
 
 ### Conference Talk Suggestions (Frank)
