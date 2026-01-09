@@ -1,9 +1,6 @@
 # A Flock of Swifts - 2025
 
-
-
 ## 2025.12.27
-
 
 ### Review of **What’s New in Swift**:
   - https://www.swift.org/blog/whats-new-in-swift-december-2025/
@@ -12,14 +9,12 @@
     https://github.com/swiftlang/swift/blob/main/docs/ReferenceGuides/UnderscoredAttributes.md
   - Swift Collections: https://github.com/apple/swift-collections
 
-
 ### Tooling Discussed
 - Tooling ecosystem discussions:
   - JetBrains IDEs and IntelliJ IDEA:
     - https://www.jetbrains.com/idea/
   - SKIE for Kotlin Multiplatform ↔ Swift interop:
     - https://skie.touchlab.co
-
 
 ### Improving the `with` function
 
@@ -68,7 +63,6 @@ The semantics beween the two are subtly different. The first is copy-initialize,
 - Educational resources shared:
   - Updated Stanford CS193p course: https://cs193p.stanford.edu
   - Point-Free SQLiteData episode (re-shared)
-
 
 ### Offline Maps
   - Mapbox offline maps: https://docs.mapbox.com/android/maps/guides/offline/
