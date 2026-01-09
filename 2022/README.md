@@ -1,10 +1,4 @@
-# A Flock of Swifts
-
-We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
-
-All people and all skill levels are welcome to join. 
-
-- **RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
+# A Flock of Swifts - 2022
 
 ## 2022.12.31
 

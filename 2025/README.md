@@ -1,19 +1,10 @@
-# A Flock of Swifts
-![Flock](materials/flock.jpg)
-We are a group of people excited by the Swift language. We meet each Saturday morning to share and discuss Swift-related topics. 
+# A Flock of Swifts - 2025
 
-All people and all skill levels are welcome to join.  
-**RSVP**: https://www.meetup.com/A-Flock-of-Swifts/
 
-## Archives
 
-- [2020 Meetings](2020/README.md)
-- [2021 Meetings](2021/README.md)
-- [2022 Meetings](2022/README.md)
-- [2023 Meetings](2023/README.md)
-- [2024 Meetings](2024/README.md)
 
 ---
+
 ## 2025.12.13
 
 ### Vibe coding an app
