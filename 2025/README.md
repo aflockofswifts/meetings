@@ -2,18 +2,172 @@
 
 
 
+## 2025.12.27
+
+
+### Review of **What’s New in Swift**:
+  - https://www.swift.org/blog/whats-new-in-swift-december-2025/
+  - Swift underscored attributes such as `@_transparent`, `@inline(always)`, and `@_disfavoredOverload`
+  - Swift underscored attributes guide:  
+    https://github.com/swiftlang/swift/blob/main/docs/ReferenceGuides/UnderscoredAttributes.md
+  - Swift Collections: https://github.com/apple/swift-collections
+
+
+### Tooling Discussed
+- Tooling ecosystem discussions:
+  - JetBrains IDEs and IntelliJ IDEA:
+    - https://www.jetbrains.com/idea/
+  - SKIE for Kotlin Multiplatform ↔ Swift interop:
+    - https://skie.touchlab.co
+
+
+### Improving the `with` function
+
+The original version:
+
+```swift
+@discardableResult public func with<Item>(_ item: Item, update: (inout Item) throws -> Void) rethrows -> Item {
+    var copy = item
+    try update(&copy)
+    return copy
+}
+```
+
+The improved version using inlinable and consuming:
+    
+```swift
+@inlinable
+@discardableResult
+public func with<T>( _ value: consuming T, update: (inout T) throws -> Void) rethrows -> T {
+    var taken = consume value
+    try update(&taken)
+    return taken
+}
+```
+
+The semantics beween the two are subtly different. The first is copy-initialize, the second is take/move-initialize. It always prevents the copy which is closer to what we wanted to do originally but couldn't without the consuming/consume language features.
+
+---
+
+## 2025.12.20
+
+### Swift Evolution
+- Discussion of Swift Evolution topics, including **extensible enums**:
+  - https://github.com/swiftlang/swift-evolution/blob/main/proposals/0487-extensible-enums.md
+- Discussion around **OptionSet**, bit masking, and performance-sensitive code:
+  - https://developer.apple.com/documentation/swift/optionset
+- Exploration of compile-time behavior and inspection using **SIL**:
+  - `swiftc -emit-sil MyFile.swift > MyFile.sil`
+  - Compiler exploration via Godbolt
+
+### Tooling and Workflow
+- Tooling and workflow discussions:
+  - CLI workflows vs Xcode UI (CLI often faster and clearer)
+  - Xcode system prompts repo: https://github.com/artemnovichkov/xcode-26-system-prompts
+  - Swift install instructions: https://www.swift.org/install/macos/
+- Educational resources shared:
+  - Updated Stanford CS193p course: https://cs193p.stanford.edu
+  - Point-Free SQLiteData episode (re-shared)
+
+
+### Offline Maps
+  - Mapbox offline maps: https://docs.mapbox.com/android/maps/guides/offline/
+  - HERE SDK: https://www.here.com/platform/here-sdk
+  - MapKit region caching considerations
+  - FAA VFR and IFR charts:
+    - https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/vfr/
+    - https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/ifr/
+
+### Compensation Levels
+  - Compensation data discussion via https://www.levels.fyi/2025/
+  - Computer History Museum and software history resources
+
+
+### Advent of Code
+  - Advent of Code 2025: https://adventofcode.com/2025/day/1
+
+```swift
+func output(from input: String) -> Int {
+    let lines = input.split(separator: "\n")
+    var position = 50
+    var count = 0
+    for line in lines {
+        let value = Int(line
+            .replacing("L", with: "-")
+            .replacing("R", with: "")
+        )!
+        position += (value + 100)
+        position %= 100
+        count += position == 0 ? 1 : 0
+    }
+    return count
+}
+    
+func output2(from input: String) -> Int {
+    sequence(state: Scanner(string: input)) { scanner -> Int? in
+        let sign = scanner.scanCharacter() == "L" ? -1 : 1
+        guard let value = scanner.scanInt() else { return nil }
+        return sign * value
+    }
+    .reduce(into: (position: 50, count: 0)) { accumulated, next in
+        accumulated.position += next + 100
+        accumulated.position %= 100
+        accumulated.count += accumulated.position == 0 ? 1 : 0
+    }
+    .count
+}
+```
+
+---
+
+# 📅 December 13, 2025 — AI-Driven App Scaffolding & Specs
+
+**Themes:** Agent-driven development, specifications, modern Swift tooling
+
+- Discussion of an article highlighting a large productivity gap between AI power users and others, motivating interest in AI-assisted development workflows.  
+  - https://venturebeat.com/ai/openai-report-reveals-a-6x-productivity-gap-between-ai-power-users-and
+- Ongoing focus on the **vibe-tvmaze** project:  
+  - https://github.com/aflockofswifts/vibe-tvmaze
+- Proposal to use an **AGENTS.md** file as a formal, machine-readable specification for code generation.
+- Detailed app specification discussed:
+  - Universal app targeting **iOS, iPadOS, macOS Catalyst, and visionOS**
+  - Search TV shows via the **TVMaze API**
+  - Two primary views: **Search** (with recent history) and **Favorites**
+  - Favorites support for both shows and episodes, including reordering and swipe-to-delete
+  - Show detail view with episode list and favorite toggles
+  - Episode detail view with favorite toggles
+  - Deep linking via show ID or episode ID (push notifications or custom URL scheme)
+  - Offline caching support
+  - Full testability
+  - Analytics service capturing all user interactions (mock backend initially)
+  - Modern Swift features: structured concurrency, `@Observable`; **no Combine**
+  - Project generation via **xcodegen**
+- Demonstration and discussion of **Codex CLI** usage (`brew install codex`) and fully automated app scaffolding.
+- Brief troubleshooting of authentication and MCP startup issues.
+- Additional links and side discussions:
+  - Point-Free SQLiteData episode: https://www.pointfree.co/episodes/ep347-tour-of-sqlitedata-basics
+  - Mermaid vs Graphviz (`dot`)
+  - Claude agents and tools documentation
+- General agreement that **clear specs dramatically improve AI-driven development**.
 
 ---
 
 ## 2025.12.13
 
 ### Vibe coding an app
-We explored vibe coding by asking chatGPT to write an AGENTS.md file with this 30 second voice prompt:
+
+Motivated by  - https://venturebeat.com/ai/openai-report-reveals-a-6x-productivity-gap-between-ai-power-users-and we explored vibe coding by asking chatGPT to write an AGENTS.md file with this 30 second voice prompt:
+
 ```swift
-I want you to write a AGENTS.md file to generate a universal iOS, iPadOS, visionOS and macOS Catalyst app that allows the user to search for TV shows using the TV maze API from https://www.tvmaze.com/api . The app should have two tabs or sidebar items: one for search and the other for favorites. The search tab should have recent history.  The favorites tab should show favorite shows and favorite episodes. The favorite tab should support re-ordering and swipe actions to delete items. Tapping on a show result in either view should show an episode list for the show with a button to toggle the favorite for the show. Tapping on an episode should open the details for that episode a button to toggle the favorite for the episode. The app should support deep linking by either show ID or episode ID in a push notification or custom URL scheme. Tehdata should be cached for offline access.  The entire app needs to be testable. There should be an analytics service that reports analytic events for all user interactions. The analytics can go to a mock analytic service for now.  The app should use the latest swift language features including structured concurrency and the @Observable macro.  The app should not use combine.  Use xcodegen to create a project.
+I want you to write a AGENTS.md file to generate a universal iOS, iPadOS, visionOS and macOS Catalyst app that allows the user to search for TV shows using the TV maze API from https://www.tvmaze.com/api . The app should have two tabs or sidebar items: one for search and the other for favorites. The search tab should have recent history.  The favorites tab should show favorite shows and favorite episodes. The favorite tab should support re-ordering and swipe actions to delete items. Tapping on a show result in either view should show an episode list for the show with a button to toggle the favorite for the show. Tapping on an episode should open the details for that episode a button to toggle the favorite for the episode. The app should support deep linking by either show ID or episode ID in a push notification or custom URL scheme. The data should be cached for offline access.  The entire app needs to be testable. There should be an analytics service that reports analytic events for all user interactions. The analytics can go to a mock analytic service for now.  The app should use the latest swift language features including structured concurrency and the @Observable macro.  The app should not use combine.  Use xcodegen to create a project.
 ```
+
 We discussed asking chatGPT for how to install Codex and XcodeGen and then use codex to execute the above prompt.
+
 The resulting code can be found [here](https://github.com/aflockofswifts/vibe-tvmaze)
+
+  - https://venturebeat.com/ai/openai-report-reveals-a-6x-productivity-gap-between-ai-power-users-and
+
 
 ## 2025.12.06
 
