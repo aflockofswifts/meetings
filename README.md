@@ -12,13 +12,14 @@ All people and all skill levels are welcome to join.
 - [2022 Meetings](2022/README.md)
 - [2023 Meetings](2023/README.md)
 - [2024 Meetings](2024/README.md)
-- [2025 Meetings](2024/README.md)
+- [2025 Meetings](2025/README.md)
 
 ---
 
 ## 2025.01.03
 
 ### Build times
+
 We discusses using [tuist](https://docs.tuist.dev/en/) to reduce build times by pre compiling.  
 [Video](https://youtu.be/wCVPWJvJGng?si=Eo5lNP0JQoI8xx6N) shared by ChitaRanjan
 
