@@ -16,6 +16,43 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2026.01.10
+
+### Highlights & Discussion
+
+- The **Pipe** project was shared and discussed, including recent architectural changes (shared by Peter Wu):
+  - Repository: https://github.com/PeterWu9/Pipe
+  - Pipe is no longer an `AsyncSequence`.
+  - Pipe now vends an `AsyncStream`.
+  - Additional updates were pushed incorporating feedback from Josh Homann.
+
+- A concurrency observation was raised that `async let` does not always result in parallel execution in practice (noted by Peter Wu).
+
+### Articles to Read
+
+- Several resources on approachable Swift concurrency and recent community discussion were shared (by Josh Homann):
+  - https://fuckingapproachableswiftconcurrency.com/en/?utm_source=substack&utm_medium=email
+  - https://thosewhoswift.substack.com/p/those-who-swift-issue-248
+
+- An article exploring a new way of working with Metal shaders in SwiftUI was shared (by Josh Homann):
+  - https://medium.com/@victorbaro/metalgraph-a-new-way-of-working-with-metal-shaders-for-swiftui-bed1cf1a2b81
+
+- Visual and dataflow programming nostalgia was discussed, referencing tools such as Max/MSP/Jitter and PureData (shared by carlyn).
+
+- A code analytics and exploration tool was recommended (shared by carlyn):
+  - DeepWiki: https://deepwiki.com
+
+### AI and Robots
+  - Hugging Face LeRobot (shared by Ed Arenberg): https://github.com/huggingface/lerobot
+  - NVIDIA Isaac Sim (shared by carlyn): https://developer.nvidia.com/isaac/sim
+
+### Skills! (via Josh Homann):
+  - https://github.com/anthropics/skills
+  - https://github.com/Dimillian/Skills
+  - https://www.linkedin.com/posts/ajvanderlee_introducing-the-swift-concurrency-ai-agent-activity-7414656677767069697-qnXN/
+
+- A broader philosophical discussion touched on the idea that English (human-readable text) is becoming a programming language (remark by Georgi Dagnall), and that some modern “AI” systems resemble markdown-driven plugin frameworks (observed by carlyn).
+
 ## 2025.01.03
 
 ### Build times
