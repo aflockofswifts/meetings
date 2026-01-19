@@ -14,6 +14,88 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+
+---
+
+## 2026.01.17
+
+### AI Tooling, Agents, and Codex
+- **Josh Homann** shared resources related to AI coding tools and agent workflows:
+  - Claude Cowork introduction  
+    https://support.claude.com/en/articles/13345190-getting-started-with-cowork
+  - OpenCode  
+    https://opencode.ai
+  - OpenAI Codex repository (shared twice during the meeting)  
+    https://github.com/openai/codex
+  - Codex Skill Manager  
+    https://github.com/Dimillian/CodexSkillManager
+  - Curated list of agent skills  
+    https://github.com/heilcheng/awesome-agent-skills?tab=readme-ov-file
+
+### Swift Concurrency & Logging
+- **Peter Wu** raised a question about **global actor lifecycle**, and specifically:
+  - Lifecycle of custom (unowned) executors owned by a global actor.
+
+### Logging
+
+Josh noted that requiring an async context for clients wanting to use analytics is a high hurdle. Better off to just use locks / mutex and have synchronous method calls.
+
+- **Mihaela MJ** shared a gist related to the discussion:  
+  https://gist.github.com/mihaelamj/ca6b3955f47217d976111b9164d8d927
+
+- Apple’s Swift logging library:  
+  https://github.com/apple/swift-log/tree/main
+
+### Cupertino & MCP Integration
+- **Mihaela MJ** shared her Cupertino repository that got a mention on https://iosdevweekly.com/
+
+- https://github.com/mihaelamj/cupertino
+
+- **Josh Homann** showed how to add Cupertino to Codex via MCP:
+
+```
+  codex mcp add cupertino -- /usr/local/bin/cupertino serve
+```
+
+### Hardware Hacking & Security
+
+- **Mihaela MJ** mentioned Flipper Zero, followed by the official site:  
+  https://flipper.net
+- **Carlyn** shared several articles related to car hacking and replay/CAN injection attacks:
+  - Wired article on a tiny hacking device:  
+    https://www.wired.com/2015/08/hackers-tiny-device-unlocks-cars-opens-garages/
+  - Replay attack discussion:  
+    https://tcm-sec.com/intro-to-car-hacking-replay-attacks/
+  - Ars Technica on CAN injection attacks:  
+    https://arstechnica.com/information-technology/2023/04/crooks-are-stealing-cars-using-previously-unknown-keyless-can-injection-attacks/
+
+
+### Haiku's from Ed (or possibly his AI)
+
+```
+    All speech is Haiku
+    No other way to converse
+    Words are poetic
+```
+
+```
+    PR obsolete
+    Just let AI fix it all
+    No more code reviews
+```
+
+```
+    Humans make Haiku
+    AI just steals from people
+    Creativity
+```
+
+```
+    Zooming with AIs
+    No more humans required
+    Meetings so lonely
+```
+
 ---
 
 ## 2026.01.10
