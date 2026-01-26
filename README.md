@@ -14,8 +14,51 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+---
+
+## 2026.01.24
+
+### Consciousness and AI
+
+Josh shares that Anthropic's CEO talks about how AI is growing exponentially. That changes everything.
+
+- https://www.youtube.com/watch?v=Ckt1cj0xjRM
+
+Some links from Ray:
+
+- https://www.preposterousuniverse.com/podcast/2026/01/05/339-ned-block-on-whether-consciousness-requires-biology/
+- https://philarchive.org/rec/BLOCOM-3
+  
+Carlyn recommends “An Immense World” by Ed Yong
+  
+- https://en.wikipedia.org/wiki/An_Immense_World
+
+Josh hypothesises that language might not matter in a year's time.
+
+### Android and Swift
+
+There is a post on the Swift blog:
+
+https://www.swift.org/blog/exploring-the-swift-sdk-for-android/
+
+Also,
+  
+- https://github.com/skiptools/skip
+
+###  Ralph
+
+Small mini-projects that can fit into context that runs in a loop.
+
+- https://ghuntley.com/ralph/
+- https://www.youtube.com/watch?v=RpvQH0r0ecM
+- https://github.com/snarktank/ralph
+  
+### Figma and AI
+
+- https://help.figma.com/hc/en-us/articles/35280808976151-Figma-MCP-collection-MCP-collection-overview
 
 ---
+
 
 ## 2026.01.17
 
