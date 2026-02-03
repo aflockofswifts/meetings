@@ -16,6 +16,69 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2026.01.31
+
+### Swift Blog
+  - Announcing the Swift Windows Workgroup  
+    https://www.swift.org/blog/announcing-windows-workgroup/
+  - What’s New in Swift — January 2026  
+    https://www.swift.org/blog/whats-new-in-swift-january-2026/
+
+### Stanford CS193p      
+
+- https://cs193p.stanford.edu
+
+Continues to be useful. Interesting how course content has shifted over the years.
+
+### Other University Courses
+  - MIT OpenCourseWare  
+    https://ocw.mit.edu
+  - MIT 6.001 — *Structure and Interpretation of Computer Programs* (Spring 2005)  
+    https://ocw.mit.edu/courses/6-001-structure-and-interpretation-of-computer-programs-spring-2005/
+  - MIT 6.0001 — *Introduction to Computer Science and Programming in Python*  
+    https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/
+  - Coursera Instructor Page (Alex)  
+    https://www.coursera.org/instructor/~873260
+  - Scala Functional Programming Course  
+    https://www.coursera.org/learn/scala-functional-programming
+  - Scala Specialization  
+    https://www.coursera.org/specializations/scala
+
+### SwiftUI*
+  - SwiftUI Lab (older but still useful)  
+    https://swiftui-lab.com
+
+### Swift, Architecture, and App Design
+- Swift Actors pitfalls  
+  https://www.fractal-dev.com/blog/swift-actors-pitfalls
+- objc.io talk — *Solving the View Model Problem (Part 1)*  
+  https://talk.objc.io/episodes/S01E476-solving-the-view-model-problem-part-1
+- Liquid Glass Toast  
+  https://writetodisk.com/liquid-glass-toast/
+
+
+### Philosophy, Cognition, and AI
+- Ordinary Language Philosophy  
+  https://en.wikipedia.org/wiki/Ordinary_language_philosophy
+- Embodied Cognition  
+  https://en.wikipedia.org/wiki/Embodied_cognition  
+  (Related to *An Immense World* by Ed Yong)
+
+### Security, Privacy, and Tooling
+- Discussion on risks of tools with email access
+- Recommendation to use a fully separate “burner computer” for sensitive experimentation
+- UTM (virtual machines on macOS)  
+  https://mac.getutm.app
+
+
+### Moltbook - A dicussion board for agents.
+- https://www.moltbook.com  
+
+- Speaking of burner computers and the need for virtual machines. 
+  https://www.reddit.com/r/accelerate/comments/1qrr3he/a_real_security_problem_just_showed_up_on/
+
+---
+
 ## 2026.01.24
 
 ### Consciousness and AI
