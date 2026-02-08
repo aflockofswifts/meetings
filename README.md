@@ -16,6 +16,101 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2026.02.07
+
+### AI, Tooling, and Agentic Coding
+- **Josh Homann** shared Apple documentation on allowing agentic coding tools to access Xcode:  
+  https://developer.apple.com/documentation/xcode/giving-agentic-coding-tools-access-to-xcode
+
+- **Josh Homann** shared OpenAI’s announcement of the Codex app:  
+  https://openai.com/index/introducing-the-codex-app/
+
+- **carlyn** shared a discussion on Mastodon arguing that AI can be a barrier to innovation because it relies on existing code patterns rather than enabling fundamentally new ideas:  
+  https://mastodon.social/@mrtoto@mrtoto.net/116029868243712977  
+  **Ray Fix** reacted positively to the discussion.
+
+- **Josh Homann** shared an article on Kimi K2.5 and its free API:  
+  https://medium.com/data-science-in-your-pocket/kimi-k2-5-free-api-b4ce65a14dd3
+
+- **Josh Homann** shared an Ars Technica article describing multiple Claude AI agents collaborating to create a new C compiler:  
+  https://arstechnica.com/ai/2026/02/sixteen-claude-ai-agents-working-together-created-a-new-c-compiler/
+
+- **carlyn** shared a post from Adafruit’s Limor Fried discussing AI usage:  
+  https://mastodon.social/@adafruit@fosstodon.org/116029624511670210
+
+- **Josh Homann** shared Steve Yegge’s essay “Welcome to Gas Town”:  
+  https://steve-yegge.medium.com/welcome-to-gas-town-4f25ee16dd04
+
+- **Chitaranjan sahu** shared a post emphasizing that the future is not about AI replacing programmers, but about people who think clearly about systems moving faster while others generate low-quality output at scale:  
+  https://x.com/ryolu_/status/2019089085034586239
+
+### Swift, Performance, and Language Topics
+- **Ray Fix** shared a talk titled *How Apple Replaces Entire Frameworks* by Bryce Bostwick:  
+  https://www.youtube.com/watch?v=SuQGQ1vh9k0
+
+- **Ray Fix** shared the related GitHub repository *SwizzleEverything*:  
+  https://github.com/brycebostwick/SwizzleEverything/
+
+- **Ray Fix** shared the talk *Closing the Performance Gap Between Swift and C* by Paul Toffoloni:  
+  https://www.youtube.com/watch?v=-pbd2wkdpD8
+
+- **Ray Fix** shared *Swift in the Browser with ElementaryUI* by Simon Leeb:  
+  https://www.youtube.com/watch?v=OmQ881sOTIc  
+  **carlyn** asked how ElementaryUI relates to ElementaryOS.
+
+- **Ray Fix** shared *Introducing the Swift SDK for Android* by Marc Prud’hommeaux:  
+  https://www.youtube.com/watch?v=mZNIAuQ7s7k
+
+- **Josh Homann** shared references on method swizzling and dynamic method replacement in Swift:
+  - Swift underscored attributes documentation:  
+    https://github.com/swiftlang/swift/blob/main/docs/ReferenceGuides/UnderscoredAttributes.md
+  - Swift Forums discussion on dynamic method replacement:  
+    https://forums.swift.org/t/dynamic-method-replacement/16619
+
+### Swift Ecosystem, Blogs, and Resources
+- **Josh Homann** shared the Point-Free website. They have a new version of The Composable Architecture (TCA 2.0) and a bunch of skills that implement "The Point-Free Way"
+  https://www.pointfree.co
+
+- **Josh Homann** shared a YouTube video about a scientist's view of AI:  
+  https://www.youtube.com/watch?v=PctlBxRh0p4
+
+- **carlyn** shared a Psychology Today article on curiosity deficits:  
+  https://www.psychologytoday.com/us/blog/the-curiosity-deficit
+
+- **Josh Homann** shared the SwiftSonic conference Sessionize page:  
+  https://sessionize.com/swiftsonic-26
+
+- **Josh Homann** shared the SwiftSonic conference website:  
+  https://swiftsonicconf.com
+
+- **Chitaranjan sahu** shared a tweet by Chris Lattner related to LLVM and compiler topics:  
+  https://x.com/clattner_llvm/status/2020107665566036122?s=20
+
+- **Josh Homann** shared an article on tiered caching in Swift:  
+  https://kylebrowning.com/posts/tiered-caching-in-swift/?utm_source=substack&utm_medium=email
+
+- **Josh Homann** shared a Levels.fyi job listing:  
+  https://www.levels.fyi/jobs?locationSlug=united-states&jobId=141351424356164294
+
+- **Josh Homann** shared a GitHub repository for SwiftUI Agent skills:  
+  https://github.com/AvdLee/SwiftUI-Agent-Skill?utm_source=substack&utm_medium=email
+
+- **Josh Homann** shared a Captain SwiftUI Substack article on observation and SwiftUI complexity:  
+  https://captainswiftui.substack.com/p/objectively-better-observably-trickier?utm_campaign=post-expanded-share&utm_medium=post%20viewer&triedRedirect=true
+
+- **Josh Homann** shared a SwiftDifferently article on SwiftUI performance:  
+  https://www.swiftdifferently.com/blog/swiftui/swiftui-performance-article?utm_source=substack&utm_medium=email
+
+- **Josh Homann** shared an article on exploring Xcode using MCP tools and external clients:  
+  https://rudrank.com/exploring-xcode-using-mcp-tools-cursor-external-clients
+
+- **Josh Homann** shared the XcodeBuild MCP project website:  
+  https://www.xcodebuildmcp.com
+
+- **Tobias** mentioned *xclaude* and shared the related GitHub plugin:  
+  https://github.com/conorluddy/xclaude-plugin
+
+
 ## 2026.01.31
 
 ### Swift Blog
