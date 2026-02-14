@@ -16,6 +16,71 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2026.02.14
+
+### Swift Arctic Conference
+
+Frank was back from https://arcticonference.com which was a great conference. Not recorded but some of the speakers indicated that they would post their talks. One of those was ElementaryUI which Josh shared a link to.
+
+- https://elementary.codes
+
+### AI, Engineering, and Industry Updates
+
+**Josh Homann shared:** 
+- https://shumer.dev/something-big-is-happening
+- https://openai.com/index/new-result-theoretical-physics/
+- https://openai.com/index/introducing-gpt-5-3-codex-spark/
+- https://openai.com/index/harness-engineering/
+
+
+Josh feels that the industry is at a major transition and early adopters will benefit.
+
+Ed Arenberg shared:
+
+- https://www.cerebras.ai/chip
+- https://www.cerebras.ai/system
+
+Carlyn raised concerns about AI being over-hyped in a *crypto-bro-style* way. There are indications that it is having a significant negative impact on open-source projects.
+
+- https://theshamblog.com/an-ai-agent-published-a-hit-piece-on-me/
+
+Also,
+
+- https://tante.cc/2026/02/14/diffusion-of-responsibility/
+
+Ray shared anecdotal experiences about AI being useful but not getting to a full solution. He also raised some concerns about "The Point Free Way"--a new skills constellation that has strict license requirements.
+
+### Bioinformatics and Protein Structures
+
+Ed gave a demo of his VisionPro app that he has been building with Xcode 26.3 and claude code. It gives rich visualizations of large proteins and even unfolds them visually.  It reads in proteins in pdb format shows them.
+
+**carlyn shared:** - https://rothemundlab.caltech.edu
+
+**Ed Arenberg shared:** 
+
+- https://pdb101.rcsb.org
+- https://www.rcsb.org
+- https://files.wwpdb.org/pub/pdb/doc/format_descriptions/Format_v33_Letter.pdf
+
+**Josh Homann shared:** 
+- https://github.com/Androp0v/BioViewer
+
+Discussion included: - Ribbon diagrams - PDB file structure and
+specification (\~170 pages) - Protein visualization tools
+
+### Fonts
+
+https://typeof.net/Iosevka/
+
+
+### Swift topic for next time
+
+Alex shared:
+
+https://github.com/swiftlang/swift-evolution/blob/main/proposals/0504-task-cancellation-shields.md
+
+---
+
 ## 2026.02.07
 
 ### AI, Tooling, and Agentic Coding
