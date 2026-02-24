@@ -14,6 +14,60 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+
+---
+
+## 2026.02.21
+
+We talked a bunch about different AI tools and got an interesting demo from Tobias about
+a Mac app he wrote for keeping track of web articles.
+
+- https://ghuntley.com/ralph/
+
+Talked about using Codex and Claude with worktrees.  It lets you try out a bunch of 
+solutions in parallel.
+
+- https://code.claude.com/docs/en/common-workflows#run-parallel-claude-code-sessions-with-git-worktrees 
+  
+### Natural Language
+
+Just for fun project by Carlyn to do proper title case for a given style guide.  
+
+- https://github.com/carlynorama/StyleGuided
+  
+  
+### Testing Shareplay
+
+Ed wants to test his Vision Pro app without buying another Vision Pro.
+
+- https://medium.com/@xinyichen0321/the-easiest-way-to-test-shareplay-on-visionos-apps-7bf8a1753d8e
+ 
+
+### The Popularity of Swift
+
+This month, Swift is just ahead of COBOL at position 21.
+
+- https://www.tiobe.com/tiobe-index/
+  
+  
+### Articles of Interest
+
+Josh brought up some articles to read.
+
+Copy-on-write pattern.
+
+- https://www.sagarunagar.com/blog/copy-on-write-swift
+
+Building a toast component. Good interview topic because it gets to
+if you understand the view hierarchy.
+
+- https://livsycode.com/swiftui/building-a-toast-component-in-swiftui
+
+More on Observable.
+
+- https://swiftandmemes.com/how-to-migrate-to-observable-without-breaking-your-app
+  
+
 ---
 
 ## 2026.02.14
