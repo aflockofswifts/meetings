@@ -17,6 +17,96 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2026.02.28
+  
+2026-02-28 09:48:07 From Josh Homann to Everyone:
+  https://www.youtube.com/watch?v=69Gw7aoWMMI
+  
+2026-02-28 09:53:15 From SWEET Institute to Everyone:
+  What are is your opinion on server driven UI?
+
+### Dynamic Animator
+
+Josh reminded us that dynamic animator is part of UIKit.
+  
+- https://github.com/joshuajhomann/DynamicAnimatorAttachment
+- https://github.com/joshuajhomann/DynamicRadialGravity
+
+Mihaela reminds us that these things can be done with Core Animation.
+
+```swift
+  let spring = CASpringAnimation(keyPath: "position.y")
+  spring.fromValue = layer.position.y
+  spring.toValue = layer.position.y + 200
+  
+  
+  spring.mass = 1.0
+  spring.stiffness = 100
+  spring.damping = 10
+  spring.initialVelocity = 0
+  
+  
+  spring.duration = spring.settlingDuration
+  
+  
+  layer.add(spring, forKey: "springMove")
+  layer.position.y += 200 // update model layer
+```
+
+Carlyn reminds us of other affordances in SwiftUI
+
+- https://developer.apple.com/documentation/swiftui/view/visualeffect(_:)
+- https://www.hackingwithswift.com/quick-start/swiftui/how-to-add-metal-shaders-to-swiftui-views-using-layer-effects
+  
+
+### A Google PM Vibe Codes Palantir
+
+From Josh. Not really Swift related, but speaks to the idea of having a clear goals and specifying what you want a product to be.
+  
+- https://www.youtube.com/watch?v=rXvU7bPJ8n4
+
+
+### Strings, Regex and Benchmarking
+
+We looked at different implementations of string replacement. At first we thought 
+Swift string was the winner but then Tobias noticed that the units were milliseconds
+instead of microseconds.
+
+-  https://www.swift.org/blog/benchmarks/
+
+Related is the topic of "new" serialization.
+
+- https://forums.swift.org/t/the-future-of-serialization-deserialization-apis/78585
+
+RG is a fast version of Grep: https://github.com/BurntSushi/ripgrep
+  
+Alex reminds us that regular expressions can be hard.
+
+- https://pdw.ex-parrot.com/Mail-RFC822-Address.html
+  
+Helpful for learning regex.
+
+- https://regex101.com
+  
+And a great WWDC video from Michael Ilseman
+
+- https://developer.apple.com/videos/play/wwdc2022/110357/
+
+  
+### WendyOS
+
+A Swift First embedded operating system (linux distro)
+
+- https://forums.swift.org/t/wendyos-a-swift-first-embedded-linux-distro/84478
+  
+
+### Cool conferences coming
+
+- Nvidia https://www.nvidia.com/gtc/
+- siggraph https://s2026.siggraph.org
+  
+---
+
 ## 2026.02.21
 
 We talked a bunch about different AI tools and got an interesting demo from Tobias about
