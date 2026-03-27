@@ -17,6 +17,256 @@ All people and all skill levels are welcome to join.
 
 ---
 
+## 2026.03.21
+
+You can now script the browser using Swift.
+
+- https://github.com/m1guelpf/swift-playwright
+  
+
+
+### Concurrency Notes
+  
+- https://soumyamahunt.medium.com/what-you-should-know-before-migrating-from-gcd-to-swift-concurrency-74d4d9b2c4e1
+- https://github.com/mattmassicotte/Queue
+  
+
+### Avoid Spacers
+
+  https://nerdyak.tech/development/2023/04/06/avoid-swiftui-spacers-in-stacks.html
+  
+
+### Adding a timeout to an async function
+
+```swift
+  enum TimeoutError: Error {
+    case timedOut
+  }
+  
+  func withTimeout<T: Sendable>(_ duration: Duration, 
+                                operation: @Sendable @escaping () async throws -> T) async throws -> T {
+    try await withThrowingTaskGroup(of: T.self) { group in
+  
+      // Task 1: your actual work
+      group.addTask {
+        try await operation()
+      }
+  
+      // Task 2: timeout
+      group.addTask {
+        try await Task.sleep(for: duration)
+        throw TimeoutError.timedOut
+      }
+  
+      let result = try await group.next()!
+      group.cancelAll()
+      return result
+    }
+  }
+```
+
+### Copy-On-Write COW
+
+Dicussed copy on write and how it preserves value semantics and isolation.
+
+- https://livsycode.com/swift/copy-on-write-in-swift-semantics-misconceptions-and-a-custom-implementation/
+
+- https://async.techconnection.io/talks/swift-connection/swift-connection-2024/rick-van-voorden-swift-cowbox-easy-copy-on-write-semantics-for-swift-structs
+  
+- https://github.com/Swift-CowBox/Swift-CowBox
+
+- https://www.hackingwithswift.com/example-code/language/what-is-copy-on-write
+
+
+## VisionPro App for Visualizing Proteins
+
+Ed's VisionPro app is available for pre-order and shipping on April 1!
+
+- https://visionprotein.com
+
+
+## Understanding Lifetime
+
+To prepare us to understand some of the new Swift Evolution proposals, Josh took
+us on a playground quick tour through:
+
+- consuming
+- consume
+- borrowing
+- copy
+- inout
+- mutating
+- sending
+
+
+```swift
+  struct V {
+      var w: String
+      init(w: String) {
+          self.w = w
+      }
+      func make(_ x: consuming String) -> String {
+          x.append("a")
+          print(x)
+          return consume x
+      }
+      func a(_ x: String) {
+          var y = x
+          y.append("a")
+          print(y)
+      }
+      func b(_ x: borrowing String) {
+          var y = copy x
+          y.append("a")
+          _ = x
+      }
+      func c(_ x: inout String) {
+  
+      }
+      mutating func f() {
+          w = ""
+      }
+      consuming func close() -> String {
+          ""
+      }
+      func r(_ x: sending NSView) -> NSView {
+          consume x
+      }
+  }
+  
+  let r = "a"
+  let v = V(w: r)
+  print(r)
+  let s = "hello"
+  v.a(s)
+  v.make(r)
+  print(r)
+```  
+
+---
+
+
+## 2026.03.14
+
+
+### Faster Grep
+
+This has come up a few times.  "rg" is a command line tool that works
+faster than awk and grep and automatically respects .git rules. It is 
+open source (MIT) and written in Rust.
+
+- https://github.com/BurntSushi/ripgrep
+  
+### Model Agnostic Agent
+
+- https://opencode.ai
+  
+
+### APNs
+
+  Apple APN 
+  - https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns
+  
+
+  https://developer.apple.com/documentation/storekit/implementing-promotional-offers-in-your-app
+  
+### Apple: The First 50 Years
+
+- https://amzn.to/4lwJHt5
+  
+
+### iTrace
+
+Handwriting practice app from Alex!
+
+- https://apps.apple.com/us/app/itrace-handwriting-practice/id645416621
+  
+
+### iRelay
+
+Send commands to an AI agent from iMessage from Mihaela!
+
+- https://github.com/mihaelamj/iRelay
+
+How it works:
+  
+```
+iPhone (iMessage) → Mac (iRelay daemon) → Claude Code → response → iMessage
+```
+
+### Apple Neo
+
+- https://hardcoresoftware.learningbyshipping.com/p/239-mac-neo-and-my-afternoon-of-reflection
+  
+
+### AI Agent Kanban Tool - Symphony
+
+- https://github.com/openai/symphony?tab=readme-ov-file
+  
+
+### Chris Lattner and Modular
+
+Brief history of LLVM. Modular and Mojo. LLVM for AI chips.  
+
+- https://youtu.be/dYk-bt9BFIs?t=4326
+
+  
+"People who ignore this [AI] will be left behind."
+
+### Differential Fuzzing
+
+- https://github.com/graydon/dac-wasm
+  
+### Pictures of Apple Silicon M1 Die
+
+- https://x.com/Locuza_/status/1450271726827413508/photo/1
+  
+### Aticles of Interest
+
+- https://www.sagarunagar.com/blog/geometry-in-swiftui/
+- https://medium.com/@oscarberggren082/swiftui-charts-caused-major-stutter-in-my-app-replacing-it-with-path-fixed-everything-9b15059efeae
+- https://sundayswift.com/posts/building-a-high-performance-list-framework/
+- https://azamsharp.com/2026/03/04/mvvm-and-cost-of-old-patterns.html
+
+---
+
+### 2026.03.07
+
+### Memory Safety
+
+- https://youtu.be/oV6mC8Rt1kY?si=OyGoIeS2cjFAIztA
+  
+
+### Foundation Generable
+
+- https://developer.apple.com/documentation/foundationmodels/generable
+  
+
+Making reproducible outputs:
+
+- https://developers.openai.com/cookbook/examples/reproducible_outputs_with_the_seed_parameter/
+  
+
+Model personalization
+
+- https://developer.apple.com/documentation/coreml/model-personalization
+  
+
+### Tools: Git, VS Code, Worktrees
+
+- https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens
+- https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github
+- https://git-scm.com/docs/git-worktree
+- Keyboard Maestro recommended by Bob
+
+
+### Metatopic: Learning
+
+- https://www.simplypsychology.org/learning-kolb.html
+- https://ldaustralia.org/information-resources/response-to-intervention/
+  
+---
+
 ## 2026.02.28
   
 2026-02-28 09:48:07 From Josh Homann to Everyone:
