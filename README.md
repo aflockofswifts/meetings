@@ -15,7 +15,563 @@ All people and all skill levels are welcome to join.
 - [2025 Meetings](2025/README.md)
 
 
+## 2026.05.02
+
+### Executive Summary
+
+This session explored creative tooling (including voice-controlled presentations and video generation), Swift networking evolution, and practical career development advice. There was also discussion around Core Animation, compositional layouts, and real-world app development. A recurring theme was focusing on building and refining real projects as a path to growth.
+
+### Job Interviews
+
+Josh H. presented about interviewing and preparing for interviews.
+
+#### Types of questions
+
+- Bio - provide additional context not just a repeat of the resume
+- Behavioral - prepare about experience you had where you made a mistake and how you overcame it
+- Technical Deep Dive - prepare something interesting and with sufficient depth
+- System Design
+- Practical
+- Knowledge (know the APIs)
+- Data structures and Algorith - Yes, you need this.
+- AI? How to use tooling effectively
+
+#### Reasons for rejection
+
+You should always do a post mortem of the interview. 
+
+- Just not the right person for the job (it happens, move on)
+- They liked someone else better (maybe ask about positions in another dept if big company)
+- Behavioral (they didn't want to work with you)
+- Technical (you didn't have the skill)
+- Something else
+
+### Swift & Architecture
+
+- Swift networking vision (accepted):
+  https://github.com/swiftlang/swift-evolution/blob/main/visions/networking.md
+
+- Discussion topics:
+  - OpenAPI as the primary interface layer
+  - Standardizing underlying networking primitives (HTTP, TLS, observability)
+  - `swift-http-types` as a shared foundation
+
+### SwiftUI, UIKit & UI Development
+
+- Apple training tutorial:
+  https://developer.apple.com/tutorials/app-dev-training/getting-started-with-today
+
+- Compositional layout tutorial:
+  https://www.kodeco.com/5436806-modern-collection-views-with-compositional-layouts
+
+- Core Animation demo:
+  https://github.com/mihaelamj/CubeIn3DWithCoreAnimation
+
+- UIKit reference:
+  https://www.oreilly.com/library/view/programming-ios-14/9781492092162/
+
+- Core Animation book:
+  https://www.oreilly.com/library/view/ios-core-animation/9780133440744/
+
+### Creative Tools & Media
+
+- Voice-controlled presentation system:
+  https://tow.com/2026/05/02/how-i-controlled-my-slides-with-my-voice-live-at-deep-dish-swift/
+  https://tow.com/2026/04/03/action-phrase-voice-control-for-live-production/
+
+- Remotion (video generation):
+  https://www.remotion.dev
+
+- WWDC session reference (3D body pose & segmentation):
+  https://www.youtube.com/watch?v=WWDC23-placeholder
+
+### Apps & Projects
+
+- Fieldnote (plant journal app):
+  https://apps.apple.com/us/app/fieldnote-plant-journal/id6757382315
+
+- Core takeaway:
+  - Focus on improving real apps and iterating on existing work
+  - Study patterns used in your own projects
+
+### Learning & Career Development
+
+- Interview preparation:
+  https://interviewing.io/blog/we-co-wrote-the-official-sequel-to-cracking-the-coding-interview-introducing-beyond-ctci
+
+- Discussion topics:
+  - Pattern recognition in interviews
+  - Practicing with mock interviews
+  - Balancing preparation with full-time work
+
+- Notable ideas:
+  - “Best version of you”
+  - Emphasis on adaptability and learning across domains (UI, data, graphics)
+
+### Miscellaneous
+
+- Privacy-focused cell phone provider:
+  http://calyx.org
+
+- Protocol stack reference:
+  https://en.wikipedia.org/wiki/Protocol_stack
+
+- Ed's Lil Finder Guy (Etsy):
+  https://www.etsy.com/listing/4489125113/lil-finder-guy-magnetic-poseable-mini
+
 ---
+
+## 2026.04.25
+
+### Executive Summary
+
+This session focused on SwiftUI patterns (notably `.refreshable` and task cancellation), growing interest in AI “agent skills” ecosystems, and security considerations in AI systems. There was also discussion around mentorship, career development, and practical engineering wisdom. Several reusable SwiftUI samples and concurrency patterns were shared.
+
+### SwiftUI & Concurrency
+
+- SwiftUI samples:
+  https://www.hackingwithswift.com/samples/swiftui
+
+- Refreshable + task cancellation discussion:
+  https://antongubarenko.substack.com/p/swiftui-refreshable-task-cancellation?utm_source=substack&utm_medium=email
+
+- Example: `.refreshable` with `defer` for state cleanup
+
+```swift
+    struct ContentView: View {
+        @State private var items = [1,2,3]
+        @State private var isRefreshing = false
+
+        var body: some View {
+            NavigationStack {
+                ScrollView {
+                    VStack {
+                        let _ = Self._printChanges()
+                        let cells = ForEach(items, id: \.self) { item in
+                            Label("List item number \(item)", systemImage: "star.fill")
+                        }
+                        if isRefreshing {
+                            cells.redacted(reason: .placeholder)
+                        } else {
+                            cells
+                        }
+                    }
+                }
+                .refreshable {
+                    isRefreshing = true
+                    defer { isRefreshing = false }
+                    let newItems = [4,5,6]
+                    do {
+                        for newItem in newItems {
+                            items.append(newItem)
+                            try await Task.sleep(for: .seconds(1))
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+        }
+    }
+```
+
+- Notable takeaway:
+  - “`defer {}` always works” (practical pattern for state cleanup)
+
+### AI & Agent Skills
+
+- Core Data agent skill:
+  https://github.com/AvdLee/Core-Data-Agent-Skill
+
+- Swift agent skills collection:
+  https://github.com/twostraws/swift-agent-skills
+
+- Mozilla on AI security and zero-day risks:
+  https://blog.mozilla.org/en/privacy-security/ai-security-zero-day-vulnerabilities/
+
+### Data & Persistence
+
+- SQLite Data (Point-Free):
+  https://github.com/pointfreeco/sqlite-data
+
+### Apple Ecosystem
+
+- Tim Cook community letter:
+  https://www.apple.com/community-letter-from-tim/
+
+- Apple developer event:
+  https://developer.apple.com/events/view/8D4G7DD8LR/dashboard?ck_subscriber_id=2978341758&utm_source=convertkit&utm_medium=email&utm_campaign=SwiftLee%20Weekly%20-%20Issue%20320%20-%2021464229
+
+### Learning & Media
+
+- Video resources:
+  https://www.youtube.com/watch?v=p3NdQL9DND0&list=PLBn01m5Vbs4CYoNYe55G1kijxeNza9SMe&index=10
+  https://www.youtube.com/watch?v=ddOFVcZ2X6M
+  https://www.youtube.com/watch?v=SQ-bn9iC5gw
+  https://www.youtube.com/watch?v=INlzHNbQ9Eg
+
+### Community & Mentorship
+
+- Swift mentorship program:
+  https://www.swift.org/mentorship/
+
+- Discussion topics:
+  - Mentorship opportunities
+  - Interview preparation challenges
+  - Balancing full-time work with career growth
+
+### Lil Finder Guy (Etsy) from Ed!
+  https://www.etsy.com/listing/4489125113/lil-finder-guy-magnetic-poseable-mini
+
+
+---
+
+## 2026.04.18
+
+### Executive Summary
+
+This session blended discussion of conference talks (notably Deep Dish Swift), SwiftUI architecture challenges, and advanced state management patterns. A strong theme was the difficulty of animation and motion design in SwiftUI, along with ongoing friction around `@StateObject`, view lifecycle, and UIKit feature gaps. Participants also shared a large collection of Swift articles, architecture references, and tooling resources, alongside some accessibility considerations and AI knowledge tools.
+
+### Conferences & Talks
+
+- Deep Dish Swift:
+  https://deepdishswift.com
+  https://www.youtube.com/@DeepDishSwift/streams
+
+- Notable talks discussed:
+  - *Playing the Long Game as an Indie Developer* — Adam Tow  
+  - *Mistakes I Made In Alamofire 5* — Jon Shier  
+  - *AltStore: From Hacky Side Project to Legitimate App Store* — Riley Testut  
+  - *Surviving in Low Connectivity* — David Beck  
+  - *Reverse Engineering the macOS Genie Animation* — Chad Etzel  
+
+- try! Swift:
+  https://www.youtube.com/@trySwiftConference  
+  https://tryswift.jp/en/
+
+### SwiftUI & State Management
+
+- SwiftUI `Transaction`:
+  https://developer.apple.com/documentation/SwiftUI/Transaction
+
+- Keyframe animations:
+  https://developer.apple.com/documentation/swiftui/keyframetimeline
+
+- Lazy initialization and `@StateObject`:
+  https://fatbobman.com/en/posts/lazy-initialization-state-in-swiftui/
+  https://developer.apple.com/documentation/swiftui/stateobject/init(wrappedvalue:)
+
+- Discussion topics:
+  - Lifecycle challenges with `@StateObject`
+  - View recreation pitfalls
+  - Lack of UIKitDynamics equivalent in SwiftUI
+  - Difficulty of motion design even before implementation
+
+### Example: `@StateObject` Initialization Pattern
+
+```swift
+    struct V: View {
+        @State var isOn = true
+        var body: some View {
+            A(viewModel: VM())
+        }
+    }
+
+    public struct A: View {
+        @StateObject var viewModel: VM
+        public init(viewModel makeViewModel: @escaping @autoclosure () -> VM) {
+            _viewModel = .init(wrappedValue: makeViewModel())
+        }
+        public var body: some View {
+            Text(viewModel.name)
+        }
+    }
+
+    public final class VM: ObservableObject {
+        var name = "Josh"
+        init() {
+            print("expensive work")
+        }
+    }
+```
+
+### Swift Architecture & Patterns
+
+- MVVM guidance:
+  https://github.com/efremidze/swift-architecture-skill/blob/main/swift-architecture-skill/references/mvvm.md#view-guidance
+
+- Package traits in Xcode:
+  https://www.massicotte.org/blog/package-traits-in-xcode/
+
+- Interface Segregation Principle in iOS:
+  https://swiftandmemes.com/interface-segregation-principle-in-ios-how-to-prevent-protocol-from-becoming-a-prison/?utm_source=substack&utm_medium=email
+
+### SwiftUI & UI Development
+
+- Building a List replacement:
+  https://swiftwithmajid.com/2026/04/06/building-list-replacement-in-swiftui/
+
+- SwiftUI preview testing:
+  https://mobilea11y.com/blog/swiftui-preview-testing/?utm_source=substack&utm_medium=email
+
+- Swift Charts discussion (limitations and accessibility concerns)
+
+### Foundation & System APIs
+
+- URL resource values:
+  https://developer.apple.com/documentation/foundation/urlresourcevalues
+
+- iOS file system overview:
+  https://tanaschita.com/ios-file-system-overview/?utm_source=substack&utm_medium=email
+
+- FormatStyle references:
+  https://formatstyle.guide/number/
+  https://goshdarnformatstyle.com/numeric-styles/
+
+### AI & Knowledge Tools
+
+- Grove AI Knowledge Base:
+  https://apps.apple.com/us/app/grove-ai-knowledge-base/id6759467865?mt=12
+
+### Miscellaneous
+
+- Swift Blog Carnival (tiny languages):
+  https://christiantietze.de/posts/2026/04/swift-blog-carnival-tiny-languages
+
+- Jevons paradox:
+  https://en.wikipedia.org/wiki/Jevons_paradox
+
+- Cupertino MCP documentation project:
+  https://github.com/mihaelamj/cupertino
+
+
+---
+
+## 2026.04.11
+
+### Executive Summary
+
+This session focused on modern Swift architecture patterns, emerging Apple ML tooling (MLX), and increasing overlap between Swift development and AI workflows. There was notable interest in coordinator-based navigation in SwiftUI, LLM tooling integration, and evolving Swift language features such as Codable redesign discussions.
+
+### SwiftUI & Architecture
+
+- Coordinator pattern for SwiftUI navigation:
+  https://medium.com/@wesleymatlock/swiftui-coordinator-pattern-navigation-without-navigationlink-d9ebc5a3388b
+
+- Mihaela M. shared a production-style coordinator implementation:
+  https://github.com/mihaelamj/nsspainapi/tree/main/Packages/Sources/SharedModels/Coordinators
+
+- Example navigation project:
+  https://github.com/joshuajhomann/PokemonNavigation
+
+### Swift Evolution
+
+- New Codable prototype discussion on Swift Forums:
+  https://forums.swift.org/t/new-codable-prototype-available-for-feedback/85186
+
+### Machine Learning & AI
+
+- Apple MLX project:
+  https://opensource.apple.com/projects/mlx/
+
+- MLX Swift bindings:
+  https://github.com/ml-explore/mlx-swift
+
+- OpenAI Codex use cases for native Apple apps:
+  https://developers.openai.com/codex/use-cases/native-ios-macos-apps?utm_source=substack&utm_medium=email
+
+- Andrej Karpathy discussion and notes:
+  https://x.com/karpathy/status/2039805659525644595
+  https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
+
+### Knowledge Systems & Tooling
+
+- Obsidian-based LLM knowledge system:
+  https://github.com/kepano/obsidian-skills
+
+### Miscellaneous
+
+- Privacy-focused services:
+  https://calyx.org
+
+- Video resource:
+  https://www.youtube.com/watch?v=31OyQa_3gZU
+
+---
+
+## 2026.04.04
+
+### Summary
+
+This session covered a wide range of Swift-adjacent topics, including SwiftUI animation techniques, concurrency discussions, and emerging graphics approaches like Gaussian splatting. Participants shared numerous high-quality resources spanning SwiftUI, Metal, system-level tools, retro computing, and Apple history. There was also discussion of development tooling, emulation environments, and cross-platform workflows.
+
+### Swift & SwiftUI
+
+- Josh H. shared a guide on the SwiftUI Animatable protocol:
+  https://www.sagarunagar.com/blog/swiftui-animatable-protocol-guide/?utm_source=substack&utm_medium=email
+
+- Additional SwiftUI text rendering insights:
+  https://nilcoalescing.com/blog/AdjustingLineHeightInSwiftUIOniOS26/?utm_source=substack&utm_medium=email
+
+- Ray F. shared updates on Swift:
+  https://www.swift.org/blog/whats-new-in-swift-march-2026/
+
+### Concurrency
+
+- Discussion of concurrency models and tradeoffs:
+  https://livsycode.com/swift/thread-vs-queue-vs-actor/?utm_source=substack&utm_medium=email
+
+### Graphics & Metal
+
+- Gaussian splatting exploration:
+  https://www.unrealtwin.com/gallery/derelict-corridor
+
+- Overview of Gaussian splatting:
+  https://medium.com/data-science/a-comprehensive-overview-of-gaussian-splatting-e7d570081362
+
+- Metal-based implementation:
+  https://github.com/scier/MetalSplatter
+
+### Tools & Libraries
+
+- PAR2 command line tools:
+  https://github.com/Parchive/par2cmdline
+
+- Swift logging server:
+  https://github.com/krugazor/SwiftLoggerServer
+
+- SwiftBasic project:
+  https://github.com/jeradesign/SwiftBasic
+
+- Cadova (creative coding / graphics tool):
+  https://github.com/tomasf/Cadova
+
+### Apple Ecosystem & History
+
+- WWDC video index (including delisted content):
+  https://nonstrict.eu/wwdcindex/
+
+- Steve Jobs archive downloads:
+  https://stevejobsarchive.com/publications/download
+
+- Apple: The First 50 Years (book):
+  https://books.apple.com/us/book/apple/id6749329845
+
+- Remastered 1984 Apple ad:
+  https://www.youtube.com/watch?v=ErwS24cBZPc
+
+### Development & Systems
+
+- Ubuntu installation references (Carlyn C.):
+  https://documentation.ubuntu.com/desktop/en/24.04/tutorial/install-ubuntu-desktop/
+  https://linuxsimply.com/linux-basics/os-installation/dual-boot/ubuntu-on-mac/
+  https://www.youtube.com/watch?v=KIgxEEzT9ek
+  https://linuxiac.com/linux-swap-explained-do-you-need-it/
+  https://www.youtube.com/watch?v=aUbHiKVRAAw
+
+- macOS recovery issue troubleshooting:
+  https://mrmacintosh.com/how-to-fix-the-recovery-server-could-not-be-contacted-error-high-sierra-recovery-is-still-online-but-broken/
+
+### Emulation & Retro Computing
+
+- iPod emulator:
+  https://mitchivin.github.io/ipod/
+
+- OpenEmu:
+  https://openemu.org
+
+- Virtual II:
+  https://www.virtualii.com
+
+- Merlin cross-development tools:
+  https://www.brutaldeluxe.fr/products/crossdevtools/merlin/
+
+### App Release Announcement!
+
+Ed developed a new protein visualizing Vision Pro app:
+
+- VisionProtein:
+  https://visionprotein.com
+
+---
+
+## 2026.03.28
+
+### Executive Summary
+
+This session centered on upcoming Apple events (WWDC26), Swift evolution (including Swift 6.3 and networking discussions), and the growing intersection of Swift with AI agent tooling. There was also active discussion around concurrency primitives, AsyncStream use cases, and emerging libraries. Participants shared resources spanning accessibility tooling, long-running AI application design, and developer ecosystem events.
+
+### Apple Ecosystem & Events
+
+- WWDC 2026:
+  https://developer.apple.com/wwdc26/
+
+- Self Service Repair (official Apple parts):
+  https://selfservicerepair.com/en-US/home
+
+- Community-driven WWDC events:
+  https://communitykit.social/
+  https://www.meetup.com/core-coffee-a-catch-up-for-ios-and-macos-developers/events/313900770
+
+- Conferences:
+  https://swiftsonicconf.com
+  https://omt-conf.com
+
+### Swift Evolution
+
+- Swift 6.3 release:
+  https://www.swift.org/blog/swift-6.3-released/
+
+- Swift networking vision:
+  https://github.com/swiftlang/swift-evolution/blob/main/visions/networking.md?utm_source=substack&utm_medium=email
+
+- Yielding accessors proposal:
+  https://github.com/swiftlang/swift-evolution/blob/main/proposals/0474-yielding-accessors.md
+
+- SwiftUI environment value (`appearsActive`):
+  https://developer.apple.com/documentation/swiftui/environmentvalues/appearsactive
+
+### Concurrency & Async Patterns
+
+- TaskGate (concurrency utility):
+  https://github.com/mattmassicotte/TaskGate?utm_source=substack&utm_medium=email
+
+- Queue implementation discussion:
+  https://github.com/mattmassicotte/Queue/blob/main/Sources/Queue/AsyncQueue.swift
+
+- Discussion topics:
+  - AsyncStream for server-sent events (SSE)
+  - Cross-platform networking challenges (macOS/Linux)
+
+### AI & Agent Tooling
+
+- Blender MCP integration:
+  https://github.com/ahujasid/blender-mcp
+
+- Google Stitch:
+  https://stitch.withgoogle.com
+
+- Anthropic long-running app design:
+  https://www.anthropic.com/engineering/harness-design-long-running-apps
+
+- Agent skill selection framework:
+  https://www.avanderlee.com/ai-development/a-9-step-framework-for-choosing-the-right-agent-skill/?utm_source=substack&utm_medium=email
+
+- iOS Accessibility Agent Skill:
+  https://github.com/dadederk/iOS-Accessibility-Agent-Skill?ck_subscriber_id=2978341758&utm_source=convertkit&utm_medium=email&utm_campaign=SwiftLee%20Weekly%20-%20Issue%20314%20-%2020983352
+
+- Sentry skill tooling:
+  https://warden.sentry.dev/
+  https://github.com/getsentry/skills/tree/main/plugins/sentry-skills/skills/skill-scanner
+
+## Tooling & Issues
+
+- Firebase / Xcode compatibility issue:
+  https://github.com/firebase/firebase-ios-sdk/issues/15974
+
+
+  ---
+
 
 ## 2026.03.21
 
