@@ -15,6 +15,57 @@ All people and all skill levels are welcome to join.
 - [2025 Meetings](2025/README.md)
 
 
+## 2026.05.09
+
+### Executive Summary
+
+This session focused on Swift-based web tooling, Core Animation fundamentals, and developer infrastructure topics including Docker and Apple documentation workflows. 
+
+Participants shared resources related to static site generation, animation timing curves, and practical references for Core Animation behavior. 
+
+Josh ran a code-along where we used UICollectionView to power a large collection of items.
+
+### Swift Web & Static Site Generation
+
+- Toucan Sites (Swift-based static site generator):
+  https://toucansites.com
+
+- Related site:
+  https://aleahim.com
+
+### Apple Documentation & Developer Resources
+
+- Apple documentation mirror/search:
+  https://sosumi.ai
+
+- Core Animation Programming Guide:
+  https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreAnimation_guide/Introduction/Introduction.html
+
+- Reacting to layer changes:
+  https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreAnimation_guide/ReactingtoLayerChanges/ReactingtoLayerChanges.html#//apple_ref/doc/uid/TP40004514-CH7-SW6
+
+### Animation & Motion
+
+- Cubic Bézier curve visualizer:
+  https://cubic-bezier.com/#.17,.67,.83,.67
+
+- Discussion topics:
+  - Animation timing curves
+  - Core Animation behavior
+  - Layer updates and rendering
+
+### Infrastructure & Tooling
+
+- TechWorld with Nana:
+  https://www.youtube.com/@TechWorldwithNana
+
+- Discussion topics:
+  - DevOps
+  - Docker learning resources
+  - DockerCon talks and historical conference content
+
+---
+
 ## 2026.05.02
 
 ### Executive Summary
