@@ -30,6 +30,73 @@ All people and all skill levels are welcome to join.
 | run in background | `nonisolated func f() async` | `@concurrent func f() async` |
 
 
+## 2026.05.16
+
+### Executive Summary
+
+This session focused heavily on Swift isolation, actor semantics, memory management, and SwiftUI state behavior. Participants discussed actor isolation control, async result support, ARC internals, and the practical realities of SwiftUI reevaluation. There was also discussion of zombie objects, pointer APIs, and classic software design patterns.
+
+### Swift Concurrency & Isolation
+
+- Swift isolation documentation:
+  https://developer.apple.com/documentation/swift/isolation()
+
+- Actor isolation control proposal:
+  https://github.com/swiftlang/swift-evolution/blob/main/proposals/0313-actor-isolation-control.md
+
+- Async result support proposal:
+  https://github.com/swiftlang/swift-evolution/blob/main/proposals/0530-async-result-support.md
+
+- Discussion topics:
+  - Actor isolation semantics
+  - Async result handling
+  - Reevaluation behavior in SwiftUI
+  - State propagation through modifiers
+
+### SwiftUI
+
+- Formatting values in SwiftUI:
+  https://serialcoder.dev/text-tutorials/swiftui/formatting-values-in-swiftui-text-and-textfield/?utm_source=substack&utm_medium=email
+
+- SwiftUI state deep dive:
+  https://www.nsvasilev.com/posts/swiftui-state/?utm_source=substack&utm_medium=email
+
+- Reusable SwiftUI views:
+  https://matteomanferdini.com/swiftui-reusable-views/?ck_subscriber_id=2978341758&utm_source=convertkit&utm_medium=email&utm_campaign=SwiftLee%20Weekly%20-%20Issue%20323%20-%2021730246
+
+- Discussion topic:
+  - What portions of a view hierarchy reevaluate when modifier state changes
+
+### Memory Management & Pointers
+
+- Swift ARC internals:
+  https://livsycode.com/swift/swift-arc-from-zombie-objects-to-side-tables/?ck_subscriber_id=2978341758&utm_source=convertkit&utm_medium=email&utm_campaign=SwiftLee%20Weekly%20-%20Issue%20323%20-%2021730246
+
+- OpaquePointer documentation:
+  https://developer.apple.com/documentation/swift/opaquepointer
+
+- Discussion topics:
+  - Zombie objects
+  - `unowned` vs `unowned(unsafe)`
+  - Pointer mutation
+  - Debugging memory issues
+
+## Apple Platform Development
+
+- WatchConnectivity reliability discussion:
+  https://tarek-builds.dev/p/watchconnectivity-was-failing-40-of-the-time-so-i-stopped-using-it/?utm_source=substack&utm_medium=email
+
+## Software Engineering
+
+- Software design patterns:
+  https://en.wikipedia.org/wiki/Software_design_pattern
+
+- Prior A Flock of Swifts references:
+  https://github.com/aflockofswifts/meetings/tree/main/2025#20250329
+  https://github.com/aflockofswifts/meetings/tree/main/2025#presentation-gof-design-patterns-in-swift
+
+---
+
 ## 2026.05.09
 
 ### Executive Summary
