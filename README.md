@@ -14,6 +14,21 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.05.18
+
+### Concurrency
+
+# concurrency
+
+|  | &lt; Swift 6.2 | Swift 6.2+ |
+| --- | --- | --- |
+| `struct`, `enum`, `func`, `class` | `nonisolated` | `@MainActor` |
+| `actor` | `isolated` to `actor` | `isolated` to `actor` |
+|  |  |  |
+| `func synchronous()` | `nonisolated(nonsending)` | `nonisolated(nonsending)` |
+| `func nonsynchronous() async` | `nonisolated`(sending) | `nonisolated(nonsending)` |
+| run in background | `nonisolated func f() async` | `@concurrent func f() async` |
+
 
 ## 2026.05.09
 
