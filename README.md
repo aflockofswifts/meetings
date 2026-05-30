@@ -14,11 +14,67 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
-## 2026.05.18
+## 2026.05.30
+
+## 2026.05.23
+
+### Using idiomatic views in SwiftUI to build a chat app:
+```swift
+@Observable
+final class ViewModel {
+    var items: [Item] = []
+    var input = ""
+    func send() {
+        items.append(.init(title: input, isUser: true))
+        items.append(.init(title: "Hello", isUser: false))
+    }
+}
+
+struct V: View {
+    var viewModel = ViewModel()
+    var body: some View {
+        List {
+            ForEach(viewModel.items.reversed()) { item in
+                let image = item.isUser ? "bubble.left" : "bubble.right"
+                Label(item.title, systemImage: image)
+                    .listRowSeparator(.hidden)
+                    .padding(.horizontal, 20)
+                    .containerRelativeFrame(.horizontal, alignment: item.isUser ? .leading : .trailing)
+                    .scaleEffect(y: -1)
+
+            }
+        }
+        .listStyle(.plain)
+        .safeAreaBar(edge: .top) {
+            HStack {
+                @Bindable var binding = viewModel
+                TextField("Send a message", text: $binding.input)
+                    .frame(minHeight: 40)
+                    .padding(.horizontal, 16)
+                    .onSubmit(viewModel.send)
+                    .glassEffect()
+                Button {
+                    viewModel.send()
+                } label: {
+                    Image(systemName: "arrow.up")
+                        .font(.title.weight(.semibold))
+                        .padding(6)
+                        .tint(Color(uiColor: .systemBackground))
+                }
+                .glassEffect(.regular.tint(Color.accentColor).interactive(), in: Circle())
+            }
+            .padding(.horizontal, 16)
+            .scaleEffect(y: -1)
+        }
+        .scaleEffect(y: -1)
+    }
+}
+```
+
+
+## 2026.05.16
 
 ### Concurrency
-
-# concurrency
 
 |  | &lt; Swift 6.2 | Swift 6.2+ |
 | --- | --- | --- |
@@ -29,8 +85,6 @@ All people and all skill levels are welcome to join.
 | `func nonsynchronous() async` | `nonisolated`(sending) | `nonisolated(nonsending)` |
 | run in background | `nonisolated func f() async` | `@concurrent func f() async` |
 
-
-## 2026.05.16
 
 ### Executive Summary
 
