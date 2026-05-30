@@ -18,6 +18,16 @@ All people and all skill levels are welcome to join.
 
 ## 2026.05.23
 
+## Articles discussed:
+'''swift
+| Article | Clean URL | Description |
+|---|---|---|
+| A Feature Flags System in Swift | https://livsycode.com/best-practices/a-feature-flags-system-in-swift/ | Walks through building a type-safe, thread-safe feature flag system in Swift, including feature definitions, priority-based sources, local overrides, and an internal QA/developer toggle screen. |
+| A floating card using safeAreaBar | https://codakuma.com/floating-safe-area-bar/ | Shows how to build a bottom-pinned floating SwiftUI card using `safeAreaBar` on iOS 26, with an iOS 18 fallback based on `safeAreaInset`, material blur, and gradients. |
+| ContentUnavailableView in SwiftUI - Complete Guide With Examples | https://www.sagarunagar.com/blog/contentunavailableview-swiftui/ | A practical guide to SwiftUI’s `ContentUnavailableView`, covering empty states, failed searches, recovery actions, customization, accessibility, and common mistakes. |
+| Cupertino v1.1.0: my Apple docs index was 30% lies and I didn't know | https://aleahim.com/blog/cupertino-v1-1-0-poison-cleanup/ | Describes debugging and cleaning a corrupted Apple documentation search index, including crawler poison cases, CDN/SPA failure modes, audit checks, and release-version lessons. |
+```
+
 ### Using idiomatic views in SwiftUI to build a chat app:
 ```swift
 @Observable
