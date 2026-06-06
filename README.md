@@ -14,13 +14,55 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.06.06
+
+
 ## 2026.05.30
 
 ## 2026.05.23
 
+## Mihaela's shares:
+| Image / Link | Summary |
+|---|---|
+| [![Kiraa](https://yt3.googleusercontent.com/7XuP7dgwCUS8KD1RJbC2vTzRG1dc9HPWcXuJ4Jk9OVA4-0O2XbXQl64ni2aPa9nV8BmhWaHEuA=s900-c-k-c0x00ffffff-no-rj)](https://www.youtube.com/@kiraa_ai)<br>[Kiraa](https://www.youtube.com/@kiraa_ai) | YouTube channel by Errol Brandt focused on practical, skeptical analysis of AI and technology for business decision-makers. The channel pushes back on AI hype, with videos about AI economics, cloud AI, Apple/ARM hardware, open source, token usage, and the Kiraa engine. |
+| [![TileDown/tile-down](https://opengraph.githubassets.com/2649206901e23afd023cc6f32595fe4541f40767822d6c7a8b6fc1402776e4ae/TileDown/tile-down)](https://github.com/TileDown/tile-down)<br>[TileDown/tile-down](https://github.com/TileDown/tile-down) | A Swift static site generator called `tiledown`. It parses a constrained Markdown profile into typed tiles, then renders static HTML/CSS and optional browser JavaScript. It supports CommonMark/GFM basics, build-time math-to-SVG, charts, Mermaid, RSS, article PDFs, theming, and a local preview CLI. |
+| [![mihaelamj/cupertino-desktop](https://opengraph.githubassets.com/e3cf2880fabac460cb7296c4ad70c18ca398002458f50931255522c2397fc4f7/mihaelamj/cupertino-desktop)](https://github.com/mihaelamj/cupertino-desktop)<br>[mihaelamj/cupertino-desktop](https://github.com/mihaelamj/cupertino-desktop) | Early-stage native Apple-platform app for browsing Apple Developer documentation, Swift Evolution
+
 ## Articles discussed:
-'''swift
-| Article | Clean URL | Description |
+| Image / Link | Summary |
+|---|---|
+| [![Monads are Easy](https://krishna.github.io/uploads/monads-are-easy/hero.png)](https://krishna.github.io/posts/monads-are-easy/)<br>[Monads are Easy](https://krishna.github.io/posts/monads-are-easy/) | Explains monads using a concrete warehouse/book-scanning analogy. The post frames a monad as something that can wrap a value and flatten nested containers via `flatMap`, then tests that idea against arrays, optionals, results, custom structs, and JSON. |
+| [![Replacing Bash with Swift in an AI Harness](https://alejandromp.com/development/blog/replacing-bash-with-swift-in-an-ai-harness/poster.jpeg)](https://alejandromp.com/development/blog/replacing-bash-with-swift-in-an-ai-harness/)<br>[Replacing Bash with Swift in an AI Harness](https://alejandromp.com/development/blog/replacing-bash-with-swift-in-an-ai-harness/) | Describes replacing a Bash tool in an AI coding harness with embedded Swift via SwiftScript. The author argues this creates a more controlled runtime than shell execution, while still needing clear sandboxing boundaries for real security. |
+| [![Protecting sensitive content when screen sharing and remote control are active](https://developer.apple.com/tutorials/developer-og.jpg)](https://developer.apple.com/documentation/swiftui/protecting-sensitive-content-when-screen-sharing)<br>[Protecting sensitive content when screen sharing and remote control are active](https://developer.apple.com/documentation/swiftui/protecting-sensitive-content-when-screen-sharing) | Apple documentation on detecting active screen capture, mirroring, and remote-control sessions. It recommends using SwiftUI’s `isSceneCaptured` or UIKit’s `sceneCaptureState` to selectively redact sensitive content, notify users, or disable risky actions while balancing privacy with usability. |
+| [![Hide SwiftUI Views from Screenshot](https://kyleye.top/images/swiftui-hidden-from-capture/cover.png)](https://kyleye.top/posts/swiftui-hidden-from-capture/)<br>[Hide SwiftUI Views from Screenshot](https://kyleye.top/posts/swiftui-hidden-from-capture/) | Investigates how to hide specific SwiftUI views from screenshots and screen recordings without wrapping them in a secure text field. The post traces the approach through CALayer capture flags, SwiftUI renderer internals, `privacySensitive(false)`, and private redaction reasons, with caveats about SPI and security limits. |
+| [![Type-Driven Design in Swift: Better Money Formatting](https://miro.medium.com/v2/resize:fit:1200/1*lFNvzXmlwyuHYjnrPy7LmQ.png)](https://medium.com/@uwaisalqadri/type-driven-design-in-swift-better-money-formatting-4667b823fe6c)<br>[Type-Driven Design in Swift: Better Money Formatting](https://medium.com/@uwaisalqadri/type-driven-design-in-swift-better-money-formatting-4667b823fe6c) | Argues for separating raw money values from formatted display values in Swift. The article uses currency and rounding examples to show why formatted strings should not feed calculations, then proposes domain-specific types to keep calculation data and UI presentation distinct. |
+
+## Extending monads:
+```swift
+extension Sequence {
+    func mapToSet<Transformed: Hashable, Failure: Error>(
+        transform: (Element) throws(Failure) -> Transformed
+    ) throws(Failure) -> Set<Transformed> {
+        var accumulated = Set<Transformed>(minimumCapacity: underestimatedCount)
+        for element in self {
+            try accumulated.insert(transform(element))
+        }
+        return accumulated
+    }
+    func mapToCountedSet<Transformed, Failure: Error>(
+        transform: (Element) throws(Failure) -> Transformed
+    ) throws(Failure) -> [Transformed: Int] {
+        var accumulated = [Transformed: Int](minimumCapacity: underestimatedCount)
+        for element in self {
+            try accumulated[transform(element), default: 0] += 1
+        }
+        return accumulated
+    }
+}
+```
+
+## Articles discussed:
+| Article | URL | Description |
 |---|---|---|
 | A Feature Flags System in Swift | https://livsycode.com/best-practices/a-feature-flags-system-in-swift/ | Walks through building a type-safe, thread-safe feature flag system in Swift, including feature definitions, priority-based sources, local overrides, and an internal QA/developer toggle screen. |
 | A floating card using safeAreaBar | https://codakuma.com/floating-safe-area-bar/ | Shows how to build a bottom-pinned floating SwiftUI card using `safeAreaBar` on iOS 26, with an iOS 18 fallback based on `safeAreaInset`, material blur, and gradients. |
