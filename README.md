@@ -15,11 +15,14 @@ All people and all skill levels are welcome to join.
 - [2025 Meetings](2025/README.md)
 
 ## 2026.06.06
+WWDC predictions: https://mjtsai.com/blog/2026/06/04/wwdc-2026-preview/
+WWDC Wishlist: https://mjtsai.com/blog/2026/06/03/wwdc-2026-wish-lists/
+WWDC Events: https://github.com/twostraws/wwdc
+My Secret Plot to Kill SwiftUI: https://blog.jacobstechtavern.com/p/my-secret-plot-to-kill-swiftui
 
+Juan's SwiftData Observation: https://github.com/juanarzola/fetch-descriptor-observer
 
 ## 2026.05.30
-
-## 2026.05.23
 
 ## Mihaela's shares:
 | Image / Link | Summary |
@@ -60,6 +63,8 @@ extension Sequence {
     }
 }
 ```
+
+## 2026.05.23
 
 ## Articles discussed:
 | Article | URL | Description |
