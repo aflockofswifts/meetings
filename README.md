@@ -14,6 +14,36 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.06.13
+
+### WWDC 2027 Favorites
+| Person | Favorite | Link |
+|---|---|---|
+| Alex | Rewatch group labs: Camera and Photos technologies | [<img src="https://img.youtube.com/vi/fn4F09dQb3s/hqdefault.jpg" width="120" alt="YouTube thumbnail">](https://www.youtube.com/live/fn4F09dQb3s?si=S_7dKKC4_6UHGZgC&t=116) |
+| Alex | Compose advanced graphics effects with SwiftUI | [<img src="https://img.youtube.com/vi/HTDU2HKqM8c/hqdefault.jpg" width="120" alt="YouTube thumbnail">](https://www.youtube.com/watch?v=HTDU2HKqM8c) |
+| Frank | Foundation Models are now open source |  |
+| Frank | `@State` macro |  |
+| Mihaela | CoreAI |  |
+| Bob | Evaluations framework | [Apple Developer Documentation](https://developer.apple.com/documentation/evaluations) |
+| Juan | SwiftData updates for `groupby` and `fetchresults` |  |
+| Juan | Multimodal input for Foundation Models |  |
+| Peter | `@State` |  |
+| Peter | Xcode previews on multiple devices |  |
+| Ed | Firebase AI integration | [Firebase docs](https://firebase.google.com/docs/ai-logic/apple-foundation-models-framework/get-started?api=dev) |
+| Ed | RealityKit 3 |  |
+| Carlyn | PaperKit | [<img src="https://devimages-cdn.apple.com/wwdc-services/images/9B2E82C5-4DDF-4B9A-9459-328D8E297696/10929/10929_wide_250x141_2x.jpg" width="120" alt="PaperKit thumbnail">](https://developer.apple.com/videos/play/wwdc2026/372) |
+| Josh | Apple’s EU announcement | [Apple Newsroom](https://www.apple.com/newsroom/2026/06/due-to-dma-siri-ai-delayed-in-eu-for-ios-27-and-ipados-27/) |
+|
+
+### Articles discussed
+| Thumbnail | Description |
+|---|---|
+| [<img src="https://nilcoalescing.com/static/blog/InitializingObservableClassesWithTheStateMacroInXcode27/banner.JK1OXwnQB21bdUROhOdM19nntAH1Sp1uA-kON2POmhk.png" width="160" alt="@State macro thumbnail">](https://nilcoalescing.com/blog/InitializingObservableClassesWithTheStateMacroInXcode27/) | [Explains how `@State` becoming a macro in Xcode 27 changes `@Observable` class initialization, including lazy initial values and avoiding unnecessary model recreation.](https://nilcoalescing.com/blog/InitializingObservableClassesWithTheStateMacroInXcode27/) |
+| [<img src="https://opengraph.githubassets.com/dc18eafdf4a93ddbab3e43e3261a68d9c7ef692e7a7d0bd2a6c63a2af59be408/swiftlang/swift-evolution" width="160" alt="Swift Evolution thumbnail">](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0400-init-accessors.md) | [Swift Evolution SE-0400: init accessors, which let computed properties participate in definite initialization and support cleaner initialization patterns for wrappers and macros.](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0400-init-accessors.md) |
+| [<img src="https://www.swiftjectivec.com/assets/images/UIKit2026_1.jpg" width="160" alt="UIKit additions thumbnail">](https://www.swiftjectivec.com/ios-27-notable-uikit-additions/) | [A tour of notable UIKit additions in iOS 27, including practical API changes and examples for modern UIKit apps.](https://www.swiftjectivec.com/ios-27-notable-uikit-additions/) |
+| [<img src="https://api.microlink.io/?url=https%3A%2F%2Fpdf.aleahim.com&amp;screenshot=true&amp;meta=false&amp;embed=screenshot.url" width="160" alt="MarkdownPDF Playground thumbnail">](https://pdf.aleahim.com) | [MarkdownPDF Playground renders Markdown to PDF directly in the browser using a pure-Swift engine compiled to WebAssembly.](https://pdf.aleahim.com) |
+| [<img src="https://www.swift.org/assets/images/bringing-goodnotes-to-web-with-swift/blog-hero@2x.png" width="160" alt="Goodnotes Swift WebAssembly thumbnail">](https://www.swift.org/blog/bringing-goodnotes-to-web-with-swift/) | [Goodnotes explains how it brought its Swift codebase to the web with WebAssembly, sharing ink rendering and note-taking logic across platforms.](https://www.swift.org/blog/bringing-goodnotes-to-web-with-swift/) |
+
 ## 2026.06.06
 WWDC predictions: https://mjtsai.com/blog/2026/06/04/wwdc-2026-preview/
 WWDC Wishlist: https://mjtsai.com/blog/2026/06/03/wwdc-2026-wish-lists/
