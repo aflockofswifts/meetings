@@ -14,6 +14,81 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.06.27
+
+## 2026.06.20
+
+### Decorators with @dynamicMemberLookup
+```swift
+import Foundation
+
+@dynamicMemberLookup
+struct UniquelyIdentifiable<WrappedValue>: Identifiable {
+    var value: WrappedValue
+    let id: UUID = .init()
+    subscript<Value>(dynamicMember keyPath: KeyPath<WrappedValue, Value>) -> Value {
+        value[keyPath: keyPath]
+    }
+}
+
+struct Name {
+    var given: String
+}
+
+let name = Name(given: "Josh")
+let uniqueName = UniquelyIdentifiable(value: name)
+print(uniqueName.given)
+```
+
+### Articles Discussed
+| Thumbnail | Description |
+|---|---|
+| [<img src="https://api.microlink.io/?url=https%3A%2F%2Fgithub.com%2Fswiftlang%2Fswift-evolution%2Fblob%2Fmain%2Fproposals%2F0533-reasync-macros.md&screenshot=true&meta=false&embed=screenshot.url" width="160" alt="SE-0533 reasync macros thumbnail">](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0533-reasync-macros.md) | [Swift Evolution SE-0533 proposes an `@Reasync` macro that generates synchronous overloads from `async` functions, reducing duplicated APIs and keeping sync/async variants aligned from a single implementation.](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0533-reasync-macros.md) |
+| [<img src="https://api.microlink.io/?url=https%3A%2F%2Fblog.jacobstechtavern.com%2Fp%2Fios-27-launch-time&screenshot=true&meta=false&embed=screenshot.url" width="160" alt="iOS 27 launch time thumbnail">](https://blog.jacobstechtavern.com/p/ios-27-launch-time) | [An Instruments-focused performance deep dive into Apple’s claimed 30% launch-time improvement in iOS 27, with attention to dyld, startup costs, and how developers can reason about launch bottlenecks in real apps.](https://blog.jacobstechtavern.com/p/ios-27-launch-time) |
+| [<img src="https://api.microlink.io/?url=https%3A%2F%2Ffatbobman.com%2Fen%2Fposts%2Ffrom-size-class-to-available-space%2F&screenshot=true&meta=false&embed=screenshot.url" width="160" alt="Available space article thumbnail">](https://fatbobman.com/en/posts/from-size-class-to-available-space/) | [Explains why `horizontalSizeClass` is no longer a reliable proxy for width in newly resizable iPhone environments, and argues that SwiftUI layout decisions should move toward actual available space instead of device-style assumptions.](https://fatbobman.com/en/posts/from-size-class-to-available-space/) |
+| [<img src="https://api.microlink.io/?url=https%3A%2F%2Ftanaschita.com%2Fswift-defer-async%2F&screenshot=true&meta=false&embed=screenshot.url" width="160" alt="Async defer thumbnail">](https://tanaschita.com/swift-defer-async/) | [Shows how Swift 6.4 allows asynchronous work inside `defer`, making cleanup code easier to keep next to resource acquisition while still guaranteeing it runs when the scope exits.](https://tanaschita.com/swift-defer-async/) |
+| [<img src="https://api.microlink.io/?url=https%3A%2F%2Fwww.sagarunagar.com%2Fblog%2Fswiftui-prominent-tab-is-not-a-floating-action-button%2F&screenshot=true&meta=false&embed=screenshot.url" width="160" alt="Prominent tab thumbnail">](https://www.sagarunagar.com/blog/swiftui-prominent-tab-is-not-a-floating-action-button/) | [A design-focused SwiftUI article arguing that `.prominent` emphasizes a navigation destination, not an action button, and that using it like a floating action button breaks long-standing tab-bar expectations.](https://www.sagarunagar.com/blog/swiftui-prominent-tab-is-not-a-floating-action-button/) |
+
+### @State is still broken?
+```swift
+import SwiftUI
+import Combine
+
+@Observable
+final class ViewModel: ObservableObject {
+    var name: String
+    init(name: String) {
+        self.name = name
+        print("Init \(name)")
+    }
+    deinit {
+        print("deinit \(name)")
+    }
+}
+
+struct V1: View {
+    @State var viewModel: ViewModel
+    var body: some View {
+        Text(viewModel.name)
+    }
+}
+struct V2: View {
+    @StateObject var viewModel: ViewModel
+    var body: some View {
+        Text(viewModel.name)
+    }
+}
+struct ContentView: View {
+    var body: some View {
+        TimelineView(.explicit(sequence(first: Date.now, next: { $0 + 5}))) { time in
+            V1(viewModel: .init(name: "State \(time.date)"))
+            V2(viewModel: .init(name: "StateObject \(time.date)"))
+
+        }
+    }
+}
+```
+
 ## 2026.06.13
 
 ### WWDC 2027 Favorites
