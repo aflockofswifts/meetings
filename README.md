@@ -16,6 +16,92 @@ All people and all skill levels are welcome to join.
 
 ## 2026.06.27
 
+### Articles Discussed
+| Thumbnail | Description |
+|---|---|
+| [<img src="https://aleahim.com/images/blog/swiftui-is-one-graph/hero.jpg" width="160" alt="SwiftUI graph thumbnail">](https://aleahim.com/blog/swiftui-is-one-graph/) | [Argues that SwiftUI is best understood as a single demand-driven attribute graph rather than a view tree diffing system, with disposable view values sitting on top of decades of lower-level Apple rendering infrastructure.](https://aleahim.com/blog/swiftui-is-one-graph/) |
+| [<img src="https://livsycode.com/wp-content/uploads/2024/08/SocialMediaPostCover.png" width="160" alt="_UIPortalView thumbnail">](https://livsycode.com/uikit/exploring-_uiportalview-live-view-replication-without-copying-or-snapshots/) | [Explores the private UIKit `_UIPortalView` and its `CAPortalLayer` backing, explaining how live layer mirroring can support picture-in-picture, reflections, transitions, and Liquid Glass-style effects while warning about private API risk.](https://livsycode.com/uikit/exploring-_uiportalview-live-view-replication-without-copying-or-snapshots/) |
+| [Swift 6.4: What's New in Concurrency](https://www.avanderlee.com/concurrency/swift-6-4-whats-new-in-concurrency/) | [Surveys Swift 6.4 concurrency changes, including async `defer`, task cancellation shields, warnings for ignored throwing tasks, typed throwing task initializers, `AsyncResult`, weak `let`, and explicit non-Sendable types.](https://www.avanderlee.com/concurrency/swift-6-4-whats-new-in-concurrency/) |
+| [<img src="https://swiftjectivec.com/assets/images/logo.png" width="160" alt="Swiftjective-C thumbnail">](https://www.swiftjectivec.com/siri-ai-for-ios027/) | [Looks at how iOS 27 Siri integrations connect to apps through App Entities, IndexedEntity, app schemas, on-screen awareness, and data handoff through App Intents.](https://www.swiftjectivec.com/siri-ai-for-ios027/) |
+| [<img src="https://iosapptemplates.com/img/blog/app-intents-swiftui-siri-shortcuts-spotlight/app-intents-swiftui-siri-shortcuts-spotlight-cover.svg" width="160" alt="App Intents thumbnail">](https://iosapptemplates.com/blog/app-intents-swiftui-siri-shortcuts-spotlight/) | [A SwiftUI planning guide for exposing useful product actions through App Intents across Siri, Shortcuts, Spotlight, widgets, and the Action Button while keeping intents thin and entity-driven.](https://iosapptemplates.com/blog/app-intents-swiftui-siri-shortcuts-spotlight/) |
+| [<img src="https://substackcdn.com/image/fetch/$s_!Ji45!,f_auto,q_auto:best,fl_progressive:steep/https%3A%2F%2Fantongubarenko.substack.com%2Ftwitter%2Fsubscribe-card.jpg%3Fv%3D544402036%26version%3D9" width="160" alt="Anton Substack thumbnail">](https://antongubarenko.substack.com/wwdc26-swiftui-group-lab-2nd-qanda) | [The open Substack tab currently renders as a page-not-found for Anton Gubarenko's iOS development Substack, so the link is retained here without inferring article content beyond the available page metadata.](https://antongubarenko.substack.com/wwdc26-swiftui-group-lab-2nd-qanda) |
+| [<img src="https://nilcoalescing.com/static/blog/AsyncImageImprovementsInSwiftUIOnIOS27/banner.vM8Mp6-r4VlvIwdjKUcMPM576Rn94UQHh9e4d-UYhdo.png" width="160" alt="AsyncImage thumbnail">](https://nilcoalescing.com/blog/AsyncImageImprovementsInSwiftUIOnIOS27/) | [Explains iOS 27's new `AsyncImage` support for `URLRequest`, allowing custom headers, cache policies, and timeouts, plus a hierarchy-wide `asyncImageURLSession(_:)` modifier.](https://nilcoalescing.com/blog/AsyncImageImprovementsInSwiftUIOnIOS27/) |
+| [<img src="https://iosapptemplates.com/img/blog/metrickit-swiftui-performance-after-launch/metrickit-swiftui-performance-after-launch-cover.svg" width="160" alt="MetricKit thumbnail">](https://iosapptemplates.com/blog/metrickit-swiftui-performance-after-launch/) | [A practical guide to using MetricKit after launch to monitor SwiftUI app performance in the field, connect diagnostics to product states, and build release performance budgets.](https://iosapptemplates.com/blog/metrickit-swiftui-performance-after-launch/) |
+| [LinkedIn post by Dave Verwer](https://www.linkedin.com/posts/daveverwer_what-is-it-im-supposed-to-say-some-personal-share-7475301426106347520-f6Wb/) | [Dave Verwer shares that Swift Package Index has joined Apple and that he will be working on Swift packages at Apple, with follow-up discussion noting the SPI blog will continue.](https://www.linkedin.com/posts/daveverwer_what-is-it-im-supposed-to-say-some-personal-share-7475301426106347520-f6Wb/) |
+
+### Josh's article skill
+Josh's skill to automatically scan email and social media for articles and rate them based on their match with existing topics: [swift-article-roundup](materials/swift-article-roundup/)
+
+### Swift flatMapLatest and share fixes
+These proposals have [PRs](https://github.com/apple/swift-async-algorithms/pulls) but no confirmed release.
+
+
+### @State still not fixed in iOS 27
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 3)) { context in
+            let _ = print("-----------\(Date.now)-----------")
+            V().padding(40)
+        }
+    }
+}
+
+struct V: View {
+    var vm = VM(Self.annotateWithSeconds("naked var"))
+    @State var vm0 = VM(Self.annotateWithSeconds("@State"))
+    @ViewModel var vm1 = VM(Self.annotateWithSeconds("@ViewModel"))
+    var body: some View {
+        Text(vm.text)
+        Text(vm0.text)
+        Text(vm1.text)
+    }
+    static func annotateWithSeconds(_ text: some StringProtocol) -> String {
+        "\(text) \(Date.now.formatted(.dateTime.second()))"
+    }
+}
+
+@Observable
+final class VM {
+    var text: String
+    init(_ text: String) {
+        self.text = text
+        print("Init \(text)")
+    }
+    deinit {
+        print("Deinit \(text)")
+    }
+}
+
+
+@propertyWrapper
+struct ViewModel<Wrapped: AnyObject & Observable>: DynamicProperty {
+    @State private var reference: Reference
+    var wrappedValue: Wrapped {
+        reference.value
+    }
+    var projectedValue: Bindable<Wrapped> {
+        reference.bindable
+    }
+    init(wrappedValue make: @autoclosure @escaping () -> Wrapped) {
+        _reference = State(wrappedValue: Reference(make))
+    }
+}
+
+extension ViewModel {
+    final class Reference {
+        private var viewModel: Wrapped?
+        private let makeViewModel: () -> Wrapped
+        lazy var value: Wrapped = makeViewModel()
+        lazy var bindable = { Bindable(value) }()
+        init(_ make: @escaping () -> Wrapped) {
+            makeViewModel = make
+        }
+    }
+}
+```
 ## 2026.06.20
 
 ### Decorators with @dynamicMemberLookup

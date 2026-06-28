@@ -1,0 +1,4 @@
+interface:
+  display_name: "Swift Article Roundup"
+  short_description: "Build ranked Swift article reports"
+  default_prompt: "Use $swift-article-roundup to collect this week's Swift newsletter and social articles into the dated meetup markdown report."
