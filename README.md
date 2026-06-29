@@ -16,6 +16,31 @@ All people and all skill levels are welcome to join.
 
 ## 2026.06.27
 
+### Links shared in chat
+
+#### Josh: Apple pricing and upcoming M7
+| Link | Description |
+|---|---|
+| [Apple Explains Why It Raised Prices](https://www.macrumors.com/2026/06/25/apple-explains-why-it-raised-prices/) | MacRumors reports that Apple raised prices across Macs, iPads, Apple TV, HomePod, and Vision Pro, citing AI-driven pressure on memory and storage component costs. |
+| [2027 Macs Expected to Use M7 Chips](https://www.macrumors.com/2026/06/25/2027-macs-m7-chips/) | A Bloomberg-sourced roadmap suggesting Apple may skip high-end M6 Pro and M6 Max chips, accelerating M7 Pro and M7 Max Macs for on-device AI and GPU-heavy workloads. |
+
+#### AI tools
+| Shared by | Link | Description |
+|---|---|---|
+| Peter | [OpenRouter Fusion](https://openrouter.ai/fusion) | Peter asked about OpenRouter's Fusion page, which appears to be an interface for starting model-fusion runs or experiments across available OpenRouter models. |
+
+#### SwiftUI and layout
+| Shared by | Link | Description |
+|---|---|---|
+| Josh Homann / Josh | [SwiftUI Is One Graph, Over 40+ Years of Engineering](https://aleahim.com/blog/swiftui-is-one-graph/) | Deep dive arguing that SwiftUI is a demand-driven attribute graph, tying state identity, lazy invalidation, layout negotiation, coalesced layers, and animation back to Apple's lower-level rendering stack. |
+| Carlyn | [SwiftUI Layout Explained](https://talk.objc.io/collections/swiftui-layout-explained) | Carlyn recommended this Swift Talk series as a concrete companion to "just a graph": objc.io reimplements pieces of SwiftUI layout from scratch, covering view protocols, frames, alignment, stacks, layout priority, and grids. |
+
+#### Other shares
+| Shared by | Link / Note | Description |
+|---|---|---|
+| Ray | [In the Weights](https://www.intheweights.com) | Ray shared the In the Weights site|
+| Ray Fix | [Dropping the requirement for C++-only bootstrapping](https://forums.swift.org/t/dropping-the-requirement-for-c-only-bootstrapping/87739) | Swift Forums announcement that mandatory parts of the Swift compiler can now be implemented in Swift, dropping the old requirement that the compiler bootstrap from a pure C++ host toolchain. |
+
 ### Articles Discussed
 | Thumbnail | Description |
 |---|---|
@@ -37,6 +62,7 @@ These proposals have [PRs](https://github.com/apple/swift-async-algorithms/pulls
 
 
 ### @State still not fixed in iOS 27
+The new macro is a half fix; viewmodels still run init on every pass through body, but now SwiftUI discards the new viewmodels and only observes the first viewmodel.
 ```swift
 import SwiftUI
 
