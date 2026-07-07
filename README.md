@@ -14,6 +14,67 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.07.04
+
+### Discussion notes
+
+- Mihaela shared Aleahim's "Humans Don't Work at GitHub" article, which drew reactions from Josh, Bob, Chitaranjan, Frank, and Ray.
+- Jack mentioned "greg hockenberry"; Bob and Ray followed with links to Craig Hockenberry's Mastodon profile and a Mastodon post.
+- Josh shared a sequence of Swift and SwiftUI links covering SwiftUI internals, SwiftUI animation bugs, toolbar APIs, Swift Testing traits, privacy manifests, dynamic colors, loading state ownership, HDR images, and iOS 27 SDK requirements.
+- Color management came up through Bob's Craig Hockenberry book link, Mihaela's color-space list, Josh's Apple HDR images documentation link, and Georgi's Android color video.
+- Josh then shared a set of AI, math, formal methods, hardware, Mac gaming, and generative-media resources, including Lean, mathlib4, 3Blue1Brown, Dwarkesh Patel, Theo, Figma, Snazzy Labs, and World Science Festival videos.
+
+### Color spaces shared by Mihaela
+
+```text
+deviceRGB — Device RGB (DeviceRGB)
+deviceCMYK — Device CMYK (DeviceCMYK)
+deviceGray — Device Gray (DeviceGray)
+displayP3 — Display P3 (DisplayP3)
+extendedSRGB — Extended-range sRGB (ExtendedSRGB)
+linearSRGB — Linear-light sRGB (LinearSRGB)
+extendedLinearSRGB — Extended-range linear sRGB (ExtendedLinearSRGB)
+rec2020 — Rec.2020 / BT.2020 (Rec2020)
+```
+
+### Links shared by Josh
+
+| Preview | Link | Description |
+|---|---|---|
+| [<img src="https://aleahim.com/images/blog/the-swiftui-oracle/hero.jpg" width="160" alt="The SwiftUI Oracle preview">](https://aleahim.com/blog/the-swiftui-oracle/) | ["The SwiftUI Oracle: Measuring a Clean Room Against the Real Thing"](https://aleahim.com/blog/the-swiftui-oracle/) | Aleahim article about testing a clean-room SwiftUI-style engine against real SwiftUI with differential tests and a headless oracle harness. |
+| [<img src="https://og.fatbobman.com/card/debugging-notes-on-two-swiftui-animation-bugs-en.webp" width="160" alt="SwiftUI animation bugs preview">](https://fatbobman.com/en/posts/debugging-notes-on-two-swiftui-animation-bugs/) | [Debugging Notes on Two SwiftUI Animation Bugs](https://fatbobman.com/en/posts/debugging-notes-on-two-swiftui-animation-bugs/) | Fatbobman debugging notes on two SwiftUI animation issues, including an iOS 27 rebuild case and an `Image` rendering glitch in `List`. |
+| [<img src="https://swiftwithmajid.com/public/glassy-toolbar.png" width="160" alt="SwiftUI toolbar preview">](https://swiftwithmajid.com/2026/06/23/taking-control-of-toolbar-items-in-swiftui/) | [Taking control of toolbar items in SwiftUI](https://swiftwithmajid.com/2026/06/23/taking-control-of-toolbar-items-in-swiftui/) | Swift with Majid article on newer SwiftUI toolbar APIs for controlling toolbar appearance and behavior. |
+| [<img src="https://d3rccdn33rt8ze.cloudfront.net/email-assets/pf-email-header.png" width="160" alt="Point-Free preview">](https://www.pointfree.co/blog/posts/217-proposing-task-local-test-traits-for-swift-testing) | [Proposing task-local test traits for Swift Testing](https://www.pointfree.co/blog/posts/217-proposing-task-local-test-traits-for-swift-testing) | Point-Free post about proposing task-local test traits for Swift Testing and feeding ideas from Point-Free libraries back into Swift. |
+| [<img src="https://tanaschita.com/og/ios-privacy-manifests.png" width="160" alt="Privacy manifests preview">](https://tanaschita.com/ios-privacy-manifests/) | [Understanding privacy manifests in iOS](https://tanaschita.com/ios-privacy-manifests/) | Guide to iOS privacy manifests, third-party SDK disclosures, and required-reason APIs. |
+| [<img src="https://substackcdn.com/image/fetch/$s_!8qXX!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F28f9bc60-227e-41b0-9072-1e038ee362cf_1254x1254.png" width="160" alt="Dynamic Color Init preview">](https://antongubarenko.substack.com/p/dynamic-color-init) | [Dynamic Color Init](https://antongubarenko.substack.com/p/dynamic-color-init) | Anton Gubarenko Substack post about making colors reflect the current color scheme. |
+| No preview | [Where Should Loading State Live In Swiftui](https://azamsharp.com/2026/06/24/where-should-loading-state-live-in-swiftui.html) | AzamSharp post on where loading state should live in SwiftUI. |
+| [<img src="https://docs.developer.apple.com/tutorials/developer-og.jpg" width="160" alt="Apple Developer Documentation preview">](https://developer.apple.com/documentation/uikit/supporting-hdr-images-in-your-app) | [Supporting HDR images in your app](https://developer.apple.com/documentation/uikit/supporting-hdr-images-in-your-app) | Apple Developer Documentation on loading, displaying, editing, and saving HDR images using SwiftUI and Core Image. |
+| [<img src="https://cdn.hashnode.com/uploads/covers/5fe8ca6cc0c31a41479b568a/3f10d727-bb96-4c70-9dae-47a19250d8f3.jpg" width="160" alt="iOS 27 SDK requirements preview">](https://blog.makwanbk.com/ios-27-sdk-3-major-requirements-that-migh-break-your-app) | [iOS 27 SDK: 3 Major Requirements That Might Break Your App](https://blog.makwanbk.com/ios-27-sdk-3-major-requirements-that-migh-break-your-app) | Article about SDK-enforced iOS 27 requirements that may affect launch behavior or App Store submission. |
+| [<img src="https://lean-lang.org/static/png/banner.png" width="160" alt="Lean preview">](https://lean-lang.org/) | [Lean Programming Language](https://lean-lang.org/) | Official site for Lean, an open-source programming language and proof assistant for formally verified code. |
+| [<img src="https://opengraph.githubassets.com/ed37388e373c69d48b87bf8a0bcbefb832bc38165a5a1944836bae34cc5d9991/leanprover-community/mathlib4" width="160" alt="mathlib4 preview">](https://github.com/leanprover-community/mathlib4) | [leanprover-community/mathlib4](https://github.com/leanprover-community/mathlib4) | GitHub repository for the Lean 4 mathematics library. |
+
+### YouTube videos shared by Josh
+
+| Preview | Video | Description |
+|---|---|---|
+| [<img src="https://i.ytimg.com/vi/ypO0q_8zhWw/hqdefault.jpg" width="160" alt="OpenAI efficiency video preview">](https://www.youtube.com/watch?v=ypO0q_8zhWw) | [Why is OpenAI so much more efficient?](https://www.youtube.com/watch?v=ypO0q_8zhWw) | YouTube video by Theo - t3.gg on OpenAI efficiency. |
+| [<img src="https://i.ytimg.com/vi/iFYF_e1GSGI/hqdefault.jpg" width="160" alt="AI reasoning video preview">](https://www.youtube.com/watch?v=iFYF_e1GSGI) | [The Uncomfortable Truth About AI "Reasoning" \| World Science Festival](https://www.youtube.com/watch?v=iFYF_e1GSGI) | World Science Festival video about AI reasoning. |
+| [<img src="https://i.ytimg.com/vi/bLSLN96Gn-w/hqdefault.jpg" width="160" alt="Designing Math video preview">](https://www.youtube.com/watch?v=bLSLN96Gn-w) | [Designing Math ft. Grant Sanderson (3Blue1Brown) I Config 2026](https://www.youtube.com/watch?v=bLSLN96Gn-w) | Figma video with Grant Sanderson on designing math explanations. |
+| [<img src="https://i.ytimg.com/vi/TfyPshgMbug/hqdefault.jpg" width="160" alt="AI and math video preview">](https://www.youtube.com/watch?v=TfyPshgMbug) | [Grant Sanderson (3Blue1Brown) - AI and the future of math](https://www.youtube.com/watch?v=TfyPshgMbug) | Dwarkesh Patel video with Grant Sanderson on AI and mathematics. |
+| [<img src="https://i.ytimg.com/vi/oIk3R-sMX5o/hqdefault.jpg" width="160" alt="Chip design video preview">](https://www.youtube.com/watch?v=oIk3R-sMX5o) | [Chip design from the bottom up - Reiner Pope](https://www.youtube.com/watch?v=oIk3R-sMX5o) | Dwarkesh Patel video with Reiner Pope about chip design. |
+| [<img src="https://i.ytimg.com/vi/3ZlPEsiaGiQ/hqdefault.jpg" width="160" alt="Mac gaming video preview">](https://www.youtube.com/watch?v=3ZlPEsiaGiQ) | [Apple Just Fixed Mac Gaming and Said Nothing](https://www.youtube.com/watch?v=3ZlPEsiaGiQ) | Snazzy Labs video about Apple's Mac gaming improvements. |
+| [<img src="https://i.ytimg.com/vi/iv-5mZ_9CPY/hqdefault.jpg" width="160" alt="AI images and videos preview">](https://www.youtube.com/watch?v=iv-5mZ_9CPY) | [But how do AI images and videos actually work? \| Guest video by Welch Labs](https://www.youtube.com/watch?v=iv-5mZ_9CPY) | 3Blue1Brown video explaining how AI image and video generation works. |
+
+### Other links shared in chat
+
+| Shared by | Preview | Link | Description |
+|---|---|---|---|
+| Mihaela | [<img src="https://aleahim.com/images/blog/humans-dont-work-at-github/hero.jpg" width="160" alt="Humans Don't Work at GitHub preview">](https://aleahim.com/blog/humans-dont-work-at-github/) | [Humans Don't Work at GitHub](https://aleahim.com/blog/humans-dont-work-at-github/) | Aleahim article about a GitHub account/workflow problem where automated enforcement left no apparent human appeal path. |
+| Bob | [<img src="https://files.mastodon.social/accounts/avatars/000/423/566/original/61c6e28824186686.jpeg" width="160" alt="Craig Hockenberry Mastodon profile preview">](https://mastodon.social/@chockenberry) | [Craig Hockenberry on Mastodon](https://mastodon.social/@chockenberry) | Mastodon profile for Craig Hockenberry. |
+| Ray | [<img src="https://files.mastodon.social/media_attachments/files/116/789/845/449/447/062/original/d61596d4a895e437.png" width="160" alt="Craig Hockenberry Mastodon post preview">](https://mastodon.social/@chockenberry/116789845717297219) | [Craig Hockenberry Mastodon post](https://mastodon.social/@chockenberry/116789845717297219) | Mastodon post by Craig Hockenberry with an attached image and a thank-you note to someone at Apple keeping something alive. |
+| Bob | No preview | [Making Sense of Color Management](https://www.amazon.com/Making-Sense-Color-Management-Hockenberry/dp/1937557502) | Amazon listing for Craig Hockenberry's color management book. |
+| Georgi | [<img src="https://i.ytimg.com/vi/r8NeG0wmFXM/hqdefault.jpg" width="160" alt="Understanding color video preview">](https://www.youtube.com/watch?v=r8NeG0wmFXM) | [Understanding color (Google I/O '17)](https://www.youtube.com/watch?v=r8NeG0wmFXM) | Android Developers video shared as "Color from the Android side." |
+
 ## 2026.06.27
 
 ### Links shared in chat
