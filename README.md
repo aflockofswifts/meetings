@@ -14,6 +14,257 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.07.11
+
+### Discussion notes
+
+- Alex asked about building Swift server executables for x86 Linux from Apple Silicon. The group discussed Swift's Static Linux SDK, musl, static linking, Docker, GitHub Actions, CI cost, and whether compiling objects locally and linking in an x86 environment could shorten the inner loop.
+- Jack demoed work on an iPod Touch emulator in QEMU. He used AI assistance to add a Broadcom Wi-Fi driver, then tracked a DNS/Safari issue to an old entitlement/Seatbelt configuration problem. The group discussed older iOS internals, TLS compatibility, jailbreaking, and how to approach an AI-authored open-source pull request responsibly.
+- Praveen asked about Kotlin Multiplatform from an iOS team's perspective. Mihaela, Gage, Alex, Josh, and Juan compared KMP with native Swift, Swift-on-Android, generated API clients, shared contracts, and agent-assisted porting between Android, iOS, and web codebases.
+- The API-contract discussion covered OpenAPI, GraphQL, gRPC, protobuf optionality, Thrift, JSON schema, and decoding incidents caused by weak or reused client/server contracts.
+- Alex described FreeFeed, an open-source small social network, and the app he is building for it. The group also discussed older private social networks, including Path and its role in pushing iOS toward clearer Contacts permission prompts.
+- Josh demoed a SwiftUI `UIViewRepresentable` that hosts a `UICollectionView` with a compositional list layout and a diffable data source. The demo focused on observing `@Observable` state with `Observations.untilFinished`, subscribing to `AsyncSequence` changes, retaining task cancellation, avoiding retain cycles, and keeping task work on the current actor with `#isolation`.
+- During the collection view discussion, Mihaela emphasized the continued usefulness of `UITableView`, `UICollectionView`, and diffable data sources. Alex described moving a text-heavy social feed from SwiftUI to UIKit collection views to remove scrolling stutters.
+- Josh showed how an agent caught edge cases in Pokemon evolution data that a simpler hand-written traversal missed, including branching paths and cycles. The group tied that back to contracts, test-driven agent loops, and using developer judgment to reshape generated code into the preferred style.
+- Josh closed with links about custom SwiftUI bindings, iOS performance myths, iOS 27 RAW image processing, and HDR/gamma perception.
+
+### Links shared in chat
+
+| Shared by | Preview | Link | Description |
+|---|---|---|---|
+| Alex | [<img src="https://api.microlink.io/?url=https%3A%2F%2Fmusl.libc.org&screenshot=true&meta=false&embed=screenshot.url" width="160" alt="musl libc preview">](https://musl.libc.org) | [musl libc](https://musl.libc.org) | Lightweight C standard library for Linux used by Swift's Static Linux SDK for fully static Linux executables. |
+| Alex / Carlyn | [<img src="https://api.microlink.io/?url=https%3A%2F%2Fwww.swift.org%2Fdocumentation%2Farticles%2Fstatic-linux-getting-started.html&screenshot=true&meta=false&embed=screenshot.url" width="160" alt="Swift Static Linux SDK preview">](https://www.swift.org/documentation/articles/static-linux-getting-started.html) | [Getting Started with the Static Linux SDK](https://www.swift.org/documentation/articles/static-linux-getting-started.html) | Swift.org guide to building fully statically linked Linux executables, including x86_64 and ARM64 musl SDK targets. |
+| Carlyn | [<img src="https://opengraph.githubassets.com/10d193ebf38e2eef247f1ad2bc78b8eb8ad43c6559559f5ecb46fd7f924b884b/carlynorama/GHActionsForOpenUSD" width="160" alt="GHActionsForOpenUSD preview">](https://github.com/carlynorama/GHActionsForOpenUSD) | [GHActionsForOpenUSD](https://github.com/carlynorama/GHActionsForOpenUSD) | Reusable GitHub Actions for OpenUSD, shared during the CI and cached-build discussion. |
+| Jack | [<img src="https://api.microlink.io/?url=https%3A%2F%2Fdevos50.github.io%2Fblog%2F2022%2Fipod-touch-qemu%2F&screenshot=true&meta=false&embed=screenshot.url" width="160" alt="iPod Touch QEMU preview">](https://devos50.github.io/blog/2022/ipod-touch-qemu/) | [Emulating an iPod Touch 1G and iPhoneOS 1.0 using QEMU](https://devos50.github.io/blog/2022/ipod-touch-qemu/) | Blog post about emulating early iPod Touch hardware in QEMU, the project Jack extended with Wi-Fi support. |
+| Alex | [<img src="https://avatars.githubusercontent.com/u/11790426?s=280&v=4" width="160" alt="FreeFeed GitHub preview">](https://github.com/FreeFeed) | [FreeFeed on GitHub](https://github.com/FreeFeed) | GitHub organization for the FreeFeed social network projects. |
+| Alex | [<img src="https://opengraph.githubassets.com/294b184fb9bc670a3750cd396e7cc529e816189972e8550054edfe3b35c0bc4e/FreeFeed/freefeed-server" width="160" alt="FreeFeed server preview">](https://github.com/FreeFeed/freefeed-server) | [FreeFeed/freefeed-server](https://github.com/FreeFeed/freefeed-server) | Open-source FreeFeed server repository. |
+| Alex | [<img src="https://api.microlink.io/?url=https%3A%2F%2Ffreefeed.net&screenshot=true&meta=false&embed=screenshot.url" width="160" alt="FreeFeed preview">](https://freefeed.net) | [FreeFeed](https://freefeed.net) | Small social network Alex discussed while describing his native client and notification proxy. |
+| Peter | [<img src="https://docs.developer.apple.com/tutorials/developer-og.jpg" width="160" alt="Apple Observation documentation preview">](https://developer.apple.com/documentation/observation/observations/untilfinished%28_%3A%29) | [Observations.untilFinished(_:)](https://developer.apple.com/documentation/observation/observations/untilfinished%28_%3A%29) | Apple documentation for constructing an async sequence from tracked observation changes. |
+| Mihaela | [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Path_logo.svg/1280px-Path_logo.svg.png" width="160" alt="Path social network preview">](https://en.wikipedia.org/wiki/Path_%28social_network%29) | [Path (social network)](https://en.wikipedia.org/wiki/Path_%28social_network%29) | Defunct private social network that came up during the discussion of small social apps and Contacts permissions. |
+| Peter | [<img src="https://opengraph.githubassets.com/0aea4c6deebe639a488415c6ea89c3b23591507354fe39562a10d8ec42b6911a/swiftlang/swift-evolution" width="160" alt="SE-0431 preview">](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0431-isolated-any-functions.md) | [SE-0431: `@isolated(any)` Function Types](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0431-isolated-any-functions.md) | Swift Evolution proposal relevant to Josh's task-isolation workaround and the `#isolation` discussion. |
+| Josh | [<img src="https://nilcoalescing.com/static/blog/CustomBindingsInSwiftUIClosuresVsSubscripts/banner.BdbPRPL9pIe8lXcpnCJMwifP1lw9bHbHgcu5emHCUY4.png" width="160" alt="Custom SwiftUI bindings preview">](https://nilcoalescing.com/blog/CustomBindingsInSwiftUIClosuresVsSubscripts/) | [Custom bindings in SwiftUI: closures vs subscripts](https://nilcoalescing.com/blog/CustomBindingsInSwiftUIClosuresVsSubscripts/) | Nil Coalescing article about closure-based bindings, subscript-based bindings, and SwiftUI view updates. |
+| Josh | [<img src="https://livsycode.com/wp-content/uploads/2024/08/SocialMediaPostCover.png" width="160" alt="Modern iOS performance myths preview">](https://livsycode.com/blog/modern-ios-performance-myths-episode-1/) | [Modern iOS Performance Myths: Episode 1](https://livsycode.com/blog/modern-ios-performance-myths-episode-1/) | Livsy Code article/podcast notes on iOS performance tradeoffs and common misconceptions. |
+| Josh | [<img src="https://i0.wp.com/9to5mac.com/wp-content/uploads/sites/6/2026/07/raw9.jpg?resize=1200%2C628&quality=82&strip=all&ssl=1" width="160" alt="RAW 9 preview">](https://9to5mac.com/2026/07/06/apple-overhauls-raw-photo-processing-with-ios-27-showcases-impressive-results/) | [Apple overhauls RAW photo processing with iOS 27](https://9to5mac.com/2026/07/06/apple-overhauls-raw-photo-processing-with-ios-27-showcases-impressive-results/) | 9to5Mac article on Apple's RAW 9 processing pipeline and ML-based denoising/detail improvements. |
+| Josh | [<img src="https://i.ytimg.com/vi/6hAVA6_Sczs/maxresdefault.jpg" width="160" alt="HDR video preview">](https://www.youtube.com/watch?v=6hAVA6_Sczs) | [The Lie You Were Sold About HDR](https://www.youtube.com/watch?v=6hAVA6_Sczs) | YouTube video about HDR, gamma, brightness perception, and display limits. |
+
+### Observation demo
+
+Josh shared this source code for the `UICollectionView` / Observation demo:
+
+```swift
+import SwiftUI
+import UIKit
+
+struct PokemonListView: UIViewRepresentable {
+    var pokemon: [Pokemon]
+
+    func makeUIView(context: Context) -> UICollectionView {
+        context.coordinator.collectionView
+    }
+
+    func updateUIView(_ uiView: UICollectionView, context: Context) {
+        context.coordinator.pokemon = pokemon
+    }
+
+    func makeCoordinator() -> Coordinator {
+        .init()
+    }
+}
+
+@MainActor
+extension PokemonListView {
+    enum Section: Int, CaseIterable {
+        case all
+    }
+
+    @Observable
+    @MainActor
+    final class Coordinator {
+        var pokemon: [Pokemon] = []
+        @ObservationIgnored let collectionView: UICollectionView
+        @ObservationIgnored private let subscriptions = Subscriptions()
+        private typealias Item = Pokemon
+        private typealias ListCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Item>
+        private typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
+        private typealias SnapShot = NSDiffableDataSourceSnapshot<Section, Item>
+
+        init() {
+            let layout = UICollectionViewCompositionalLayout.list(using: .init(appearance: .plain))
+
+            collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+
+            let listRegistration = ListCellRegistration { cell, _, item in
+                var configuration = cell.defaultContentConfiguration()
+                configuration.text = item.name.japanese
+                configuration.secondaryText = item.description
+                cell.contentConfiguration = configuration
+            }
+
+            let dataSource = DataSource(collectionView: collectionView) { [listRegistration] collectionView, indexPath, item in
+                collectionView.dequeueConfiguredReusableCell(
+                    using: listRegistration,
+                    for: indexPath,
+                    item: item
+                )
+            }
+
+            subscriptions += values(of: \.pokemon).subscribe { [dataSource] pokemon in
+                var snapshot = SnapShot()
+                snapshot.appendSections([.all])
+                snapshot.appendItems(pokemon, toSection: .all)
+                dataSource.apply(snapshot, animatingDifferences: true)
+            }
+        }
+    }
+}
+
+nonisolated extension AsyncSequence where Failure == Never {
+    func subscribe(
+        isolation: isolated (any Actor)? = #isolation,
+        _ perform: @escaping (Element) async -> Void
+    ) -> Task<Void, Never> {
+        Task {
+            _ = isolation
+            for await element in self {
+                guard !Task.isCancelled else { return }
+                await perform(element)
+            }
+        }
+    }
+
+    func subscribe<Reference: AnyObject>(
+        isolation: isolated (any Actor)? = #isolation,
+        unretained reference: Reference,
+        _ perform: @escaping (Reference, Element) -> Void
+    ) -> Task<Void, Never> {
+        Task { [weak reference] in
+            _ = isolation
+            for await element in self {
+                guard !Task.isCancelled, let reference else { return }
+                perform(reference, element)
+            }
+        }
+    }
+}
+
+extension Observation.Observable where Self: AnyObject {
+    func values<Value: Sendable>(
+        of keyPath: KeyPath<Self, Value>
+    ) -> some AsyncSequence<Value, Never> {
+        Observations.untilFinished { [weak self] in
+            self.map { .next($0[keyPath: keyPath]) } ?? .finish
+        }
+    }
+
+    func newValues<Value: Sendable>(
+        of keyPath: KeyPath<Self, Value>
+    ) -> some AsyncSequence<Value, Never> {
+        values(of: keyPath).dropFirst()
+    }
+}
+
+nonisolated final class Subscriptions {
+    private var cancellations: [() -> Void] = []
+
+    deinit {
+        for cancel in cancellations {
+            cancel()
+        }
+    }
+
+    static func += <Value, Failure>(lhs: Subscriptions, rhs: Task<Value, Failure>) {
+        lhs.cancellations.append(rhs.cancel)
+    }
+}
+```
+
+### Pokemon evolution traversal
+
+Josh also shared the source used in the Pokemon evolution-path discussion:
+
+```swift
+import Foundation
+
+nonisolated extension Pokemon {
+    static let firstEvolutions: [[Pokemon]] = Self
+        .all
+        .compactMap { pokemon -> [Pokemon]? in
+            guard pokemon.evolution.previous == nil else { return nil }
+            var visited: Set<Int> = []
+            return Array(sequence(first: pokemon) { pokemon in
+                guard let proposed = (pokemon
+                    .evolution
+                    .next
+                    .first?
+                    .targetID
+                ).flatMap({ Self.pokemonByID[$0] }) else {
+                    return nil
+                }
+                return visited.insert(pokemon.id).inserted ? pokemon : nil
+            })
+        }
+
+    static let evolutions: [[Pokemon]] = {
+        var visited: Set<Int> = []
+
+        func evolutions(from pokemon: Pokemon) -> [[Pokemon]] {
+            visited.insert(pokemon.id)
+            let children = pokemon
+                .evolution
+                .next
+                .compactMap { id in
+                    Self.pokemonByID[id.targetID]
+                        .flatMap { visited.contains($0.id) ? nil : $0 }
+                }
+            return children.isEmpty
+                ? [[pokemon]]
+                : children.flatMap { nextPokemon in
+                    evolutions(from: nextPokemon).map { [pokemon] + $0 }
+                }
+        }
+
+        return Self
+            .all
+            .lazy
+            .compactMap { pokemon -> [[Pokemon]]? in
+                visited.removeAll()
+                return pokemon.evolution.previous == nil
+                    ? evolutions(from: pokemon)
+                    : nil
+            }
+            .flatMap(\.self)
+    }()
+
+    static let evolutionPaths: [[Pokemon]] = Self
+        .all
+        .compactMap { pokemon -> [[Pokemon]]? in
+            guard pokemon.evolution.previous == nil else { return nil }
+            return Self.allEvolutionPaths(from: pokemon)
+        }
+        .flatMap { $0 }
+
+    private static func allEvolutionPaths(
+        from pokemon: Pokemon,
+        visited: Set<Int> = []
+    ) -> [[Pokemon]] {
+        let visited = visited.union([pokemon.id])
+        let nextPokemon = pokemon
+            .evolution
+            .next
+            .compactMap { Self.pokemonByID[$0.targetID] }
+            .filter { !visited.contains($0.id) }
+
+        guard !nextPokemon.isEmpty else { return [[pokemon]] }
+
+        return nextPokemon.flatMap { nextPokemon in
+            Self
+                .allEvolutionPaths(from: nextPokemon, visited: visited)
+                .map { [pokemon] + $0 }
+        }
+    }
+}
+```
+
 ## 2026.07.04
 
 ### Discussion notes
