@@ -14,6 +14,101 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.08.01
+
+### Discussion notes
+
+- Allen described using Claude and ChatGPT to organize decades of archived files into a book, identify themes, and draft an index and summaries. Josh recommended the Codex desktop app for work that needs to read and create many local files. Ray suggested using an LLM for research and organization while keeping the finished prose in Allen's own voice, and shared iA Writer's authorship annotations for distinguishing human- and AI-written text.
+- Josh followed up on Allen's pendulum project with [Why Perfect Math Still Can't Predict the Future](https://www.youtube.com/watch?v=f0YubvdhQnU). The video uses double pendulums to show how tiny differences in initial conditions produce chaotic divergence, then maps crossing time against the two starting angles to reveal a fractal boundary. Allen connected the visualization to his earlier Mandelbrot work, Conway's Game of Life, and array-processor simulations.
+- In [VFX Artists React to Bad & Great CGi 235](https://www.youtube.com/watch?v=Wf0i1dmxrNg), Josh highlighted John Whitney's use of a mechanical anti-aircraft computer to create the title animation for *Vertigo*. The example prompted discussion of analog computation, slide rules, and the long history of computer graphics before programmable digital hardware.
+- Josh used [Training Sand to Think: Artificial General Intelligence & Future of Physics](https://www.youtube.com/watch?v=Mw60FH5iflI) to discuss scaling and power laws in AI. His takeaway was that exponential trends can look slow initially and then accelerate sharply, making recent progress in mathematical and scientific reasoning relevant to forecasts of future capability.
+- In [Architecture, AI agents, and product empathy with Robert C. Martin](https://www.youtube.com/watch?v=RxxxGkFIUJ0), Josh highlighted the argument that agentic development moves programmers up another abstraction layer, from writing code toward architecture and module boundaries, while still requiring knowledge of the layer below. The group also discussed the recommendation that beginners first learn programming fundamentals without agents before treating them as power tools.
+- The same interview introduced the [Change Risk Anti-Patterns score](https://testing.googleblog.com/2011/02/this-code-is-crap.html), which combines cyclomatic complexity and test coverage to estimate change risk. Josh suggested that agents could score and rewrite overly complex functions and noted an opportunity for a Swift tool built on the Swift AST. Juan and Ray pointed out that the metric does not account for side effects or shared mutable state, which can make a function difficult to reason about even when its control flow is simple.
+- Josh walked through [Blend modes in SwiftUI](https://nilcoalescing.com/blog/BlendModesInSwiftUI/). Color modes such as `multiply`, `screen`, `hue`, and `color` combine pixel channels, while Porter-Duff modes such as `sourceAtop` and `destinationOut` can use alpha as a pixel-level mask or eraser. `compositingGroup()` creates the boundary that limits which previously rendered views participate in a blend.
+- Juan described using blend modes to compose arbitrary SF Symbols into new icons at runtime. Josh showed an interactive sample app that an agent generated from the article in a few minutes, with adjustable layers, explanations, and source code, as an example of using small generated tools to learn an API. He noted that custom SwiftUI shaders can go beyond the framework's fixed blend operations, although their implementation is still written in Metal.
+- In [Keeping SwiftData behind a boundary](https://tanaschita.com/swiftdata-persistence-boundaries/), Josh recommended isolating SwiftData or Core Data in a persistence module and exposing plain, `Sendable` value types to the rest of the app. This keeps views and view models testable and makes it easier to substitute in-memory, file, cloud, or other database implementations. Ray compared the approach with Point-Free's SQLiteData; the group agreed that direct queries in views can be reasonable for small apps but scale poorly across larger codebases and teams.
+- [Markdown links can do what?](https://jacobzivandesign.com/technology/links_in_swiftui_markdown_do_what/) prompted a review of SwiftUI's `openURL` environment value. Replacing the local handler lets an app route internal links, record analytics, or decline handling so the system can open the URL. Josh clarified for Juan that this is an action handler, not network middleware like `URLProtocol`, and recommended logging network traffic in debug builds so coding agents can inspect request failures and payloads directly.
+- Josh reviewed [iOS 27: UIBarMinimization](https://antongubarenko.substack.com/p/ios-27-uibarminimization), which covers SwiftUI and UIKit APIs for collapsing Liquid Glass tab bars while the user scrolls through content and restoring them when the scroll direction reverses.
+- Josh used [How to free up Xcode disk space safely with an AI Agent](https://www.avanderlee.com/ai-development/how-to-free-up-xcode-disk-space-safely-with-an-ai-agent/) as a caution about installing narrowly scoped agent skills without evaluating the actual workflow. A useful cleanup skill may need to understand Xcode, Bazel and Android caches, active Git worktrees, corporate storage policy, and recoverability. He recommended periodically auditing installed skills, removing unused context, recording failures, and updating personal skills when a workaround becomes repeatable.
+- Josh explained [SE-0538: `Disconnected`](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0538-disconnected.md) by contrasting it with `Sendable` and `sending`. `Sendable` is a property of a type, while `sending` applies at a function boundary when region-based isolation proves that a particular value has no other reachable references. A `Disconnected<Value>` preserves that guarantee while the value is stored in a collection or actor; consuming `take()` later produces a `sending` value that can cross an isolation boundary. Ray connected the terminology to the disconnected regions introduced by [SE-0414: Region based isolation](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0414-region-based-isolation.md).
+- Josh encouraged using agents to explain proposals from a specific point of confusion and proposed a recurring skill that summarizes new Swift Evolution activity. Juan questioned the name `Disconnected`; Ray noted its precedent in region-based isolation, where a value is disconnected from every isolation domain.
+- To illustrate why technical claims should be tested rather than repeated, Josh built a small SwiftUI experiment around a task that weakly captures `self` and then awaits an instance method. The weak capture does not prevent the async instance method from retaining `self` for its full duration because `self` is an implicit, strongly held argument to every instance method. This can delay `deinit` and therefore delay cancellation initiated from `deinit`.
+- Josh's preferred fix was to avoid an async instance method when the work does not use instance state: keep the task body local or move the operation to a static or free function, retain only the cancellation operation that is needed, and make custom long-running work check cancellation. Frank noted that system suspension points such as `Task.sleep` already throw when cancelled. The closing discussion distinguished overridable, dynamically dispatched `class` methods from non-overridable `static` methods and favored composition over inheritance for most application business logic.
+```swift
+import SwiftUI
+import Playgrounds
+import Combine
+
+@main struct MyApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
+
+struct ContentView: View {
+    var body: some View {
+        NavigationStack {
+            NavigationLink("Push me") { DetailView() }
+        }
+        .frame(width: 400, height: 400, alignment: .center)
+    }
+}
+
+struct DetailView: View {
+    @StateObject var viewModel = ViewModel()
+    var body: some View {
+        Text("Hello, world!")
+            .padding()
+    }
+}
+
+@Observable
+final class ViewModel: ObservableObject {
+    var subscription: AnyCancellable?
+    init() {
+        let id = String(describing: ObjectIdentifier(self)).suffix(4)
+        print("\(id) \(#function)")
+        subscription = .init(Task { [weak self] in
+            try Task.checkCancellation()
+            await self?.instanceMethod()
+        }.cancel)
+    }
+    isolated deinit {
+        let id = String(describing: ObjectIdentifier(self)).suffix(4)
+        subscription?.cancel()
+        print("\(id) \(#function)")
+    }
+    func instanceMethod() async {
+        do {
+            try await Task.sleep(for: .seconds(10))
+        } catch {
+            let id = String(describing: ObjectIdentifier(self)).suffix(4)
+            print("\(id) \(error.localizedDescription)")
+        }
+    }
+}
+```
+
+### Links discussed
+
+| Preview | Shared by | Link | Description |
+|---|---|---|---|
+| No preview | Ray | [Authorship in iA Writer](https://ia.net/writer/support/editor/authorship) | Explains how iA Writer records and displays the origin of text, including passages written by a person, pasted from elsewhere, or generated with AI. |
+| [<img src="https://i.ytimg.com/vi/f0YubvdhQnU/hqdefault.jpg" width="160" alt="Double-pendulum chaos video preview">](https://www.youtube.com/watch?v=f0YubvdhQnU) | Josh | [Why Perfect Math Still Can't Predict the Future](https://www.youtube.com/watch?v=f0YubvdhQnU) | Visualizes sensitive dependence on initial conditions in double-pendulum systems, including the fractal structure of crossing-time maps. |
+| [<img src="https://i.ytimg.com/vi/Wf0i1dmxrNg/hqdefault.jpg" width="160" alt="VFX artists video preview">](https://www.youtube.com/watch?v=Wf0i1dmxrNg) | Josh | [VFX Artists React to Bad & Great CGi 235](https://www.youtube.com/watch?v=Wf0i1dmxrNg) | Includes a segment on John Whitney's mechanical-computer animation for the title sequence of *Vertigo*. |
+| [<img src="https://i.ytimg.com/vi/Mw60FH5iflI/hqdefault.jpg" width="160" alt="AI and physics lecture preview">](https://www.youtube.com/watch?v=Mw60FH5iflI) | Josh | [Training Sand to Think: Artificial General Intelligence & Future of Physics](https://www.youtube.com/watch?v=Mw60FH5iflI) | A Perimeter Institute lecture connecting AI scaling trends with mathematical reasoning, scientific discovery, and the future of physics. |
+| [<img src="https://i.ytimg.com/vi/RxxxGkFIUJ0/hqdefault.jpg" width="160" alt="Robert Martin interview preview">](https://www.youtube.com/watch?v=RxxxGkFIUJ0) | Josh | [Architecture, AI agents, and product empathy with Robert C. Martin](https://www.youtube.com/watch?v=RxxxGkFIUJ0) | Interview about programming abstraction levels, architecture, agentic development, education, and maintaining technical judgment. |
+| No preview | Josh | [This Code is CRAP](https://testing.googleblog.com/2011/02/this-code-is-crap.html) | Introduces the Change Risk Anti-Patterns score derived from cyclomatic complexity and automated-test coverage. |
+| No preview | Josh | [Blend modes in SwiftUI](https://nilcoalescing.com/blog/BlendModesInSwiftUI/) | Explains SwiftUI's color and Porter-Duff blend modes and how `compositingGroup()` limits their rendering scope. |
+| No preview | Josh | [Keeping SwiftData behind a boundary](https://tanaschita.com/swiftdata-persistence-boundaries/) | Demonstrates separating persistence implementation details from domain models and application code. |
+| No preview | Josh | [Markdown links can do what?](https://jacobzivandesign.com/technology/links_in_swiftui_markdown_do_what/) | Shows how SwiftUI Markdown links interact with the `openURL` environment action and custom link handling. |
+| No preview | Josh | [iOS 27: UIBarMinimization](https://antongubarenko.substack.com/p/ios-27-uibarminimization) | Covers the APIs and behaviors for minimizing tab bars as content scrolls. |
+| No preview | Josh | [How to free up Xcode disk space safely with an AI Agent](https://www.avanderlee.com/ai-development/how-to-free-up-xcode-disk-space-safely-with-an-ai-agent/) | Presents an agent skill for identifying and safely reclaiming space used by Xcode artifacts. |
+| No preview | Josh | [SE-0538: `Disconnected`](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0538-disconnected.md) | Proposes a wrapper that preserves a value's disconnected isolation region through storage and later yields the value as `sending`. |
+| No preview | Josh | [SE-0414: Region based isolation](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0414-region-based-isolation.md) | Defines compiler analysis for safely transferring non-`Sendable` values between isolation domains when their regions are disconnected. |
+
 ## 2026.07.25
 
 ### Discussion notes
