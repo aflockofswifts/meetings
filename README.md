@@ -14,6 +14,90 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.08.15
+
+### Discussion notes
+
+- Ray shared the Swift project's [July 2026 edition of What's new in Swift](https://www.swift.org/blog/whats-new-in-swift-july-2026/), a curated digest of project and community releases, videos, and discussions. He also shared Apple's WWDC26 session [Build real-time apps and services with gRPC and Swift](https://www.youtube.com/watch?v=CCFxlFF9XRI). In a follow-up message, he referred to “Balancing High and Low-Level Programming in Swift” as the link he had wanted.
+- Peter suggested that Ed use Xcode's command-line build tools from VS Code when he only needs to build; Ed noted that Xcode previews are still valuable. Chitaranjan then shared [a post about an Xcode mode for trusted AI agents](https://x.com/_julianschiavo/status/2086880132640428080?s=20) that can retain permissions and reduce repeated prompts.
+- Ray shared the [updated Embedded Swift vision](https://forums.swift.org/t/updated-embedded-swift-vision/88931), which broadens the Swift features available to embedded programs while retaining a predictable implementation model.
+- Peter recommended [Graphite](https://graphite.com) for stacked changes, then shared GitHub's documentation for [stacked pull requests](https://docs.github.com/en/pull-requests/how-tos/stacked-pull-requests). Josh next shared a [size comparison for the proposed TerraFab AI infrastructure project](https://www.facebook.com/evtopcars/posts/a-new-size-comparison-shows-just-how-ambitious-terafab-could-be-the-proposed-ai-/1040558538897812/), and Peter followed with the open-source [git-spice](https://abhinav.github.io/git-spice/) branch-stacking tool.
+- Josh shared [Claude Now Watermarks Its Text. How Do You Even Do That?](https://www.youtube.com/watch?v=3FhxdhVMJoU), and Georgi followed with Google DeepMind's [SynthID](https://deepmind.google/models/synthid/) tools for watermarking and identifying AI-generated content.
+- Josh shared Antoine van der Lee's [`@preconcurrency`: Incremental migration to concurrency checking](https://www.avanderlee.com/concurrency/preconcurrency-checking-swift/), which presents the attribute as a temporary way to suppress `Sendable`-related diagnostics from imported modules during migration.
+- Ray shared Daring Fireball's [critique of Anthropic's explanation of Claude's text watermarking](https://daringfireball.net/linked/2026/08/11/anthropic-claude-watermarks).
+- Josh introduced [How to stream SSE with URLSession in Swift](https://onmyway133.com/posts/how-to-stream-sse-with-urlsession-in-swift/). Carlyn shared the [`SSEListener.swift` implementation from APItizer](https://github.com/carlynorama/APItizer/blob/main/Sources/APItizer/SSEListener.swift) that she had experimented with previously.
+- Josh shared [Controlling Orphans in SwiftUI Text](https://fatbobman.com/en/posts/controlling-orphans-in-swiftui-text/), which examines SwiftUI's automatic avoidance of orphaned final words and an undocumented `avoidsOrphans` environment value for controlling that behavior.
+- Josh shared [Type-safe and user-friendly error handling in Swift 6](https://theswiftdev.com/type-safe-and-user-friendly-error-handling-in-swift-6/) and posted a helper that transforms a typed error by routing the operation through `Result.mapError`:
+
+### Type throws require annoations
+```swift
+func mapError<Value, Failure: Error, TransformedFailure: Error>(
+        _ operation: @autoclosure () throws(Failure) -> Value,
+        transFormError: (Failure) -> TransformedFailure
+    ) throws(TransformedFailure) -> Value {
+        try Result { () throws(Failure) -> Value in
+            try operation()
+        }
+        .mapError(transFormError)
+        .get()
+    }
+```
+
+- Here the do block must have thee throws annotation
+
+```swift
+enum Completion<Failure: Error> {
+    case finished, cancelled, error(Failure)
+}
+
+nonisolated extension AsyncSequence {
+    func subscribe(
+        isolation: isolated (any Actor)? = #isolation,
+        onComplete: @escaping (Completion<Failure>) -> Void,
+        _ perform: @escaping (Element) async -> Void
+    ) -> Task<Void, Never> {
+        Task {
+            _ = isolation
+            do throws(Failure) {
+                for try await element in self {
+                    guard !Task.isCancelled else { return onComplete(.cancelled) }
+                    await perform(element)
+                }
+                onComplete(.finished)
+            } catch {
+                onComplete(.error(error))
+            }
+        }
+    }
+}
+```
+
+- Josh closed by sharing Apple's [AccessorySetupKit documentation](https://developer.apple.com/documentation/accessorysetupkit/), which covers privacy-preserving discovery and configuration of accessories.
+
+### Links shared
+
+| Preview | Shared by | Link | Description |
+|---|---|---|---|
+| No preview | Ray | [What's new in Swift: July 2026 Edition](https://www.swift.org/blog/whats-new-in-swift-july-2026/) | Swift.org's curated digest of releases, videos, and discussions from the Swift project and community. |
+| [<img src="https://i.ytimg.com/vi/CCFxlFF9XRI/hqdefault.jpg" width="160" alt="WWDC26 gRPC and Swift video preview">](https://www.youtube.com/watch?v=CCFxlFF9XRI) | Ray | [WWDC26: Build real-time apps and services with gRPC and Swift](https://www.youtube.com/watch?v=CCFxlFF9XRI) | Apple Developer session about building real-time apps and services with gRPC and Swift. |
+| No preview | Chitaranjan | [Xcode mode for trusted AI agents](https://x.com/_julianschiavo/status/2086880132640428080?s=20) | Post about allowing trusted AI agents to work in Xcode without repeatedly requesting the same permissions. |
+| [<img src="https://global.discourse-cdn.com/swift/original/1X/0a90dde98a223f5841eeca49d89dc9f57592e8d6.png" width="160" alt="Swift Forums preview">](https://forums.swift.org/t/updated-embedded-swift-vision/88931) | Ray | [Updated Embedded Swift vision](https://forums.swift.org/t/updated-embedded-swift-vision/88931) | Forum post describing a shift toward supporting more Swift features in Embedded Swift while preserving a predictable implementation model. |
+| [<img src="https://staging-graphite-splash.vercel.app/og.png" width="160" alt="Graphite code review preview">](https://graphite.com) | Peter | [Graphite](https://graphite.com) | Code-review tooling for GitHub that includes workflows for stacked changes. |
+| [<img src="https://docs.github.com/assets/cb-345/images/social-cards/pull-requests.png" width="160" alt="GitHub stacked pull requests preview">](https://docs.github.com/en/pull-requests/how-tos/stacked-pull-requests) | Peter | [Stacked pull requests](https://docs.github.com/en/pull-requests/how-tos/stacked-pull-requests) | GitHub's guide to breaking a large change into a chain of smaller dependent pull requests that can be reviewed and merged independently. |
+| No preview | Josh | [TerraFab size comparison](https://www.facebook.com/evtopcars/posts/a-new-size-comparison-shows-just-how-ambitious-terafab-could-be-the-proposed-ai-/1040558538897812/) | Facebook post comparing the scale of the proposed TerraFab AI infrastructure project. |
+| [<img src="https://abhinav.github.io/git-spice/assets/images/social/index.png" width="160" alt="git-spice preview">](https://abhinav.github.io/git-spice/) | Peter | [git-spice](https://abhinav.github.io/git-spice/) | Open-source tool for managing and navigating stacks of Git branches. |
+| [<img src="https://i.ytimg.com/vi/3FhxdhVMJoU/hqdefault.jpg" width="160" alt="Claude text watermarking video preview">](https://www.youtube.com/watch?v=3FhxdhVMJoU) | Josh | [Claude Now Watermarks Its Text. How Do You Even Do That?](https://www.youtube.com/watch?v=3FhxdhVMJoU) | Video examining Claude's text watermarking and how text produced by a model might be identified. |
+| No preview | Georgi | [SynthID](https://deepmind.google/models/synthid/) | Google DeepMind's technology for watermarking and identifying AI-generated content. |
+| [<img src="https://swiftlee-banners.herokuapp.com/imagegenerator.php?title=%40preconcurrency%3A+Incremental+migration+to+concurrency+checking" width="160" alt="Swift preconcurrency article preview">](https://www.avanderlee.com/concurrency/preconcurrency-checking-swift/) | Josh | [`@preconcurrency`: Incremental migration to concurrency checking](https://www.avanderlee.com/concurrency/preconcurrency-checking-swift/) | Explains how `@preconcurrency` temporarily suppresses `Sendable`-related diagnostics from imported modules during migration. |
+| No preview | Ray | [Anthropic Posts “How Claude Marks AI-Generated Content” Without Explaining How Claude Marks AI-Generated Content](https://daringfireball.net/linked/2026/08/11/anthropic-claude-watermarks) | Daring Fireball's criticism of Anthropic's explanation of Claude's text watermarking. |
+| No preview | Josh | [How to stream SSE with URLSession in Swift](https://onmyway133.com/posts/how-to-stream-sse-with-urlsession-in-swift/) | Shows how to consume Server-Sent Events as a continuous unidirectional HTTP stream using `URLSession` and Swift concurrency. |
+| [<img src="https://opengraph.githubassets.com/81ff94a9fa764d5be1a95e12b5e67cf3a632b36439354804a131f561da126ac1/carlynorama/APItizer" width="160" alt="APItizer SSEListener preview">](https://github.com/carlynorama/APItizer/blob/main/Sources/APItizer/SSEListener.swift) | Carlyn | [`SSEListener.swift`](https://github.com/carlynorama/APItizer/blob/main/Sources/APItizer/SSEListener.swift) | Carlyn's earlier implementation of an SSE listener in the APItizer package. |
+| [<img src="https://og.fatbobman.com/card/controlling-orphans-in-swiftui-text-en.webp" width="160" alt="SwiftUI text orphan control preview">](https://fatbobman.com/en/posts/controlling-orphans-in-swiftui-text/) | Josh | [Controlling Orphans in SwiftUI Text](https://fatbobman.com/en/posts/controlling-orphans-in-swiftui-text/) | Investigates SwiftUI's automatic orphan avoidance and the undocumented `avoidsOrphans` environment value. |
+| [<img src="https://opengraph.githubassets.com/0bee092eb185c9e96351cadb0cafcb9172d7c61ce003441271f6c38fafc97c18/launchdarkly/swift-eventsource" width="160" alt="LaunchDarkly Swift EventSource preview">](https://github.com/launchdarkly/swift-eventsource) | Peter | [swift-eventsource](https://github.com/launchdarkly/swift-eventsource) | LaunchDarkly's Server-Sent Events client for iOS, macOS, tvOS, and watchOS. |
+| No preview | Josh | [Type-safe and user-friendly error handling in Swift 6](https://theswiftdev.com/type-safe-and-user-friendly-error-handling-in-swift-6/) | Discusses typed error handling, structured diagnostics, and a hierarchical error model in Swift 6. |
+| No preview | Peter | [Error Handling](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/errorhandling/) | The Swift Programming Language chapter covering error representation, propagation, handling, and assertions. |
+| [<img src="https://developer.apple.com/tutorials/developer-og.jpg" width="160" alt="AccessorySetupKit documentation preview">](https://developer.apple.com/documentation/accessorysetupkit/) | Josh | [AccessorySetupKit](https://developer.apple.com/documentation/accessorysetupkit/) | Apple's framework for privacy-preserving discovery and configuration of accessories. |
+
 ## 2026.08.08
 
 ### Discussion notes
