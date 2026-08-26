@@ -14,6 +14,79 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.08.22
+
+### Discussion notes
+
+- Peter followed up on the group's strict-concurrency migration issue. He found that `SwiftUI.View` is still marked `@preconcurrency`, so actor-isolation violations inside a view can be downgraded from errors to warnings even in Swift 6, while region-based isolation violations remain errors. Peter suspected SwiftUI's continuing dependency on pre-concurrency Combine APIs. Josh recommended keeping business logic out of SwiftUI's `.task` modifier because its work is scoped to view visibility rather than view-model lifetime; for sibling view models, he preferred a narrowly defined communication channel supplied by their parent.
+
+```swift
+import SwiftUI
+
+class NonSendable { }
+
+struct Sink {
+    let sink: @Sendable () -> Void
+}
+
+struct SwiftUIView: View {
+    @State private var toggle = false
+
+    @State private var nonSendable: NonSendable
+
+    init(_ ns: NonSendable) {
+        _nonSendable = .init(wrappedValue: ns)
+    }
+
+    var body: some View {
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            .task {
+                /* Actor isolation errors are downgraded to a warning */
+                // Main actor-isolated property 'toggle' can not be mutated from a Sendable closure
+                let _ = Sink {
+                    toggle.toggle()
+                }
+
+                /* Region isolation errors are not downgraded */
+                // Sending 'nonSendable' risks causing data races
+                 await trySend(ns: nonSendable)
+            }
+    }
+
+    nonisolated func trySend(ns: NonSendable) async { }
+
+}
+```
+
+- Josh revisited SIMD with [Simple Instructions, Weird Algorithms](https://www.youtube.com/watch?v=ryfbBB3pHfI), which applies SIMD to a brute-force, quadratic N-body simulation. He emphasized that vector instructions are only part of the optimization: data-oriented design can replace an array of particle objects with separate contiguous arrays for positions and velocities, reducing cache misses and making SIMD loads and stores more efficient. The group contrasted a CPU's dependency-limited instruction stream with a GPU's ability to hide memory latency by running many parallel operations.
+- The [ContentBuilder Explained](https://fatbobman.com/en/posts/contentbuilder-explained) article expanded on the prior meeting's result-builder discussion. Decoupling content structure from leaf-type validation avoids the combinatorial overload search caused by deeply nested `ViewBuilder` containers and produces nearly constant type-checking time in the article's benchmarks. The tradeoff is that some expressions no longer resolve through view-specific overloads, so code may require a trailing closure, an explicit `EmptyView`, or a small convenience overload.
+- Josh reviewed [Headless Xcode: From Prompt to Simulator with MCP](https://artemnovichkov.com/blog/headless-xcode-from-prompt-to-simulator-with-mcp). Xcode 27 can persist an agent's permission and expose build, preview-rendering, and simulator tools without keeping the IDE open. Josh noted that an MCP server and its tool descriptions consume model context on every request, so teams should enable it when capabilities such as rendering preview PNGs justify that cost.
+- Josh then argued that many agent workflows can use Apple's [Xcode command-line tools](https://developer.apple.com/documentation/xcode/xcode-command-line-tool-reference?changes=_8,_8) without MCP. `simctl` controls simulators, `devicectl` controls registered physical devices, and `xcodebuild` builds, archives, and signs applications. The tools can install and launch apps, capture screens, inject notifications, override status bars and appearance, simulate locations and routes, and collect sysdiagnoses. Alex described older GUI/CLI signing discrepancies and AppCode's historical need to launch a hidden Xcode instance; Peter said his current CI and release pipeline runs entirely from the command line. Jake described orphaned simulator assets protected by System Integrity Protection that may require recovery or safe mode to remove.
+- In [iOS 27: StateReporter](https://antongubarenko.substack.com/p/ios-27-statereporter), Josh highlighted the new StateReporting framework for attaching application state to MetricKit and Instruments diagnostics. Stable metadata identifies meaningful states for aggregation, while volatile metadata such as progress can change without fragmenting metrics into many distinct states. He recommended reporting human-scale interactions and transitions rather than per-frame updates.
+- Josh presented the modern [DataDetector API](https://antongubarenko.substack.com/p/ios-26-data-detector), which replaces the awkward `NSString` and `NSRange` model of `NSDataDetector` with a Swift-native asynchronous sequence over `StringProtocol`. It returns `Range<String.Index>` values without copying substrings and can detect URLs, phone numbers, email addresses, dates, addresses, money, measurements, flights, shipment tracking numbers, and other semantic values.
+- Josh reviewed [multi-step animations with `PhaseAnimator`](https://nilcoalescing.com/blog/PhaseAnimationsInSwiftUI/). Phase animation provides an idiomatic way to sequence semantic animation states, works with physics-based animations whose completion time is not predetermined, and respects the user's Reduce Motion setting.
+- [The `@State` Macro: What Xcode 27 Stops Compiling](https://blakecrosley.com/blog/state-macro-xcode-27) covers source incompatibilities introduced when Xcode 27 replaces SwiftUI's `@State` property wrapper with a back-deployed macro. A property cannot both have a declaration-site default and be assigned in an initializer, and some previously synthesized memberwise initializers must now be written explicitly.
+- Peter used Apple's [`DataDetector` documentation](https://developer.apple.com/documentation/datadetection/datadetector) to clarify that match kinds are extensible static members on a struct rather than exhaustive enum cases. Josh connected that design to Apple's preference for extensible static values and explained that a caseless enum is a cleaner namespace than an instantiable struct; a struct namespace should at least make its initializer private.
+- Josh explored a reusable asynchronous action abstraction backed by Observation. Making the type and its extensions `nonisolated` fixed default-main-actor problems, but passing a `KeyPath` through the `@Sendable` closure required by `Observations.untilFinished` still produced a sendability error even when the value was `Sendable`. Peter noted that `untilFinished` requires iOS 26 or later. Josh concluded that a custom subject may be a cleaner implementation than forcing this abstraction through Observation.
+- Josh introduced Swift macros by distinguishing attached `@` macros from freestanding `#` macros and the public declaration from the compiler-executed expansion implementation. Macro expansion should be deterministic; SwiftSyntax exposes the syntax tree, while `MacroExpansionContext` supplies source locations, diagnostics, and fix-its. The swift-syntax repository's [`ObservableMacro.swift`](https://github.com/swiftlang/swift-syntax/blob/main/Examples/Sources/MacroExamples/Implementation/ComplexMacros/ObservableMacro.swift) demonstrates a complex macro with member, member-attribute, and accessor roles, while its URL macro shows how compile-time validation can turn a failable runtime initializer into a checked literal. Ray recommended [Swift AST Explorer](https://swift-ast-explorer.com) for interactively mapping source text to syntax-tree nodes.
+- The closing macro design exercise aimed to synchronize selected `@Observable` properties between macOS and iOS over Bonjour. Josh separated an `@Replicable` type macro from opt-in `@Replicated` property markers and initially reduced the network operation to an arbitrary side effect, making the macro contract testable before integrating Bonjour. He used an agent to explore the design but rejected suggestions that would replace or collide with `@Observable`; the remaining design questions include stable keys, deduplication, service injection, and whether replication represents singleton or per-instance state.
+
+### Links shared
+
+| Preview | Shared by | Link | Description |
+|---|---|---|---|
+| [<img src="https://i.ytimg.com/vi/ryfbBB3pHfI/hqdefault.jpg" width="160" alt="SIMD N-body simulation video preview">](https://www.youtube.com/watch?v=ryfbBB3pHfI) | Josh | [Simple Instructions, Weird Algorithms](https://www.youtube.com/watch?v=ryfbBB3pHfI) | Uses an N-body simulation to explain SIMD execution and the effect of memory layout on performance. |
+| [<img src="https://og.fatbobman.com/card/contentbuilder-explained-en.webp" width="160" alt="SwiftUI ContentBuilder article preview">](https://fatbobman.com/en/posts/contentbuilder-explained) | Josh | [ContentBuilder Explained](https://fatbobman.com/en/posts/contentbuilder-explained) | Explains how SwiftUI's `ContentBuilder` separates construction from validation to improve type-checking performance, with benchmarks and source-compatibility tradeoffs. |
+| [<img src="https://artemnovichkov.com/images/headless-xcode-from-prompt-to-simulator-with-mcp/cover.png" width="160" alt="Headless Xcode MCP article preview">](https://artemnovichkov.com/blog/headless-xcode-from-prompt-to-simulator-with-mcp) | Josh | [Headless Xcode: From Prompt to Simulator with MCP](https://artemnovichkov.com/blog/headless-xcode-from-prompt-to-simulator-with-mcp) | Demonstrates Xcode 27's headless MCP server, exported agent skills, preview rendering, and simulator-driven app verification. |
+| [<img src="https://developer.apple.com/tutorials/developer-og.jpg" width="160" alt="Xcode command-line documentation preview">](https://developer.apple.com/documentation/xcode/xcode-command-line-tool-reference?changes=_8,_8) | Josh | [Xcode command-line tool reference](https://developer.apple.com/documentation/xcode/xcode-command-line-tool-reference?changes=_8,_8) | Apple's reference for command-line build, simulator, device, and development tools. |
+| [<img src="https://substackcdn.com/image/fetch/$s_!DP84!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa29a9438-a03c-435f-8346-f5ab572ebb00_1254x1254.png" width="160" alt="iOS StateReporter article preview">](https://antongubarenko.substack.com/p/ios-27-statereporter) | Josh | [iOS 27: StateReporter](https://antongubarenko.substack.com/p/ios-27-statereporter) | Introduces StateReporting for correlating MetricKit and Instruments performance data with application states and structured metadata. |
+| [<img src="https://substackcdn.com/image/fetch/$s_!AF0H!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F18ea23f1-39e0-44d3-b8ef-7f76ebafe415_1254x1254.png" width="160" alt="iOS DataDetector article preview">](https://antongubarenko.substack.com/p/ios-26-data-detector) | Josh | [iOS 26: DataDetector](https://antongubarenko.substack.com/p/ios-26-data-detector) | Shows the Swift-native asynchronous API for finding semantic values in strings. |
+| [<img src="https://nilcoalescing.com/static/blog/PhaseAnimationsInSwiftUI/banner.8h9FjIJsPjECQw1m_E-RZKXNuM4JckoUOzclXW5hpl4.png" width="160" alt="SwiftUI PhaseAnimator article preview">](https://nilcoalescing.com/blog/PhaseAnimationsInSwiftUI/) | Josh | [Creating multi-step animations with PhaseAnimator in SwiftUI](https://nilcoalescing.com/blog/PhaseAnimationsInSwiftUI/) | Builds repeating and event-driven sequences from phase values and per-phase animation transitions. |
+| [<img src="https://blakecrosley.com/og/blog/state-macro-xcode-27.png" width="160" alt="Xcode 27 State macro article preview">](https://blakecrosley.com/blog/state-macro-xcode-27) | Josh | [The `@State` Macro: What Xcode 27 Stops Compiling](https://blakecrosley.com/blog/state-macro-xcode-27) | Identifies two source patterns that stop compiling when Xcode 27 reimplements SwiftUI's `@State` as a macro. |
+| [<img src="https://developer.apple.com/tutorials/developer-og.jpg" width="160" alt="DataDetector documentation preview">](https://developer.apple.com/documentation/datadetection/datadetector) | Peter | [`DataDetector`](https://developer.apple.com/documentation/datadetection/datadetector) | Apple's API documentation for the namespace and types used by the DataDetection framework. |
+| No preview | Josh | [`ObservableMacro.swift`](https://github.com/swiftlang/swift-syntax/blob/main/Examples/Sources/MacroExamples/Implementation/ComplexMacros/ObservableMacro.swift) | SwiftSyntax's example implementation of a complex Observation macro with multiple attached-macro roles. |
+| [<img src="https://swift-ast-explorer.com/images/ogp_image.png" width="160" alt="Swift AST Explorer preview">](https://swift-ast-explorer.com) | Ray | [Swift AST Explorer](https://swift-ast-explorer.com) | Visualizes Swift syntax trees and interactively highlights the node corresponding to selected source code. |
+
 ## 2026.08.15
 
 ### Discussion notes
