@@ -14,6 +14,37 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.09.12
+
+### Discussion notes
+
+- Mihaela demonstrated [Nomad Split](https://nomadsplit.codeberg.page), a multilingual apartment-rental site built with TileDown. The project showed that her Swift static-site generator can serve compact commercial sites as well as blogs.
+- The new devices prompted a technical discussion of the iPhone 18 Pro's variable-aperture camera, the iPhone Duo's camera and Pencil tradeoffs, and the Apple Watch Ultra's dedicated audio buffer. The watch can retain a short rolling window and transcribe it only when requested, reducing continuous processing and power use; the group also considered how language-specific transcription models might be delivered.
+- Carlyn highlighted opt-in cryptographic signing for camera captures. The group distinguished verifiable provenance from the idea that a photograph is an objective record: exposure, framing, sensor conversion, and Apple's computational pipeline all transform the captured scene, so the signature attests to a particular camera output rather than eliminating interpretation.
+- Peter described using an agent to navigate an iOS app, exercise roughly twenty sheet presentations, and collect screenshots and video without specifying every tap. Josh noted that much of this can be built around `simctl`, `devicectl`, reusable agent skills, and accessibility-aware simulator control; real performance validation should still run on hardware and use signposts or Instruments traces. [RocketTrace](https://rockettrace.app) offers a complementary workflow that ranks measured trace evidence for human or agent investigation.
+- Ray shared Point-Free's newly free [WWDC 2026 collection](https://www.pointfree.co/collections/wwdc/wwdc-2026), covering alerts, UIKit, SwiftData, SQLiteData, and the `@State` and `@LazyState` macros.
+- The group examined how Apple's earlier hardware and software choices anticipated iPhone Duo: nano-texture reduces visible glare at the crease, the hinge angle becomes an app input, toolbars can move vertically, and apps can use two displays, multiple scenes, paired windows, and a camera accessory screen. Existing apps still run, but an iOS 27 build improves resizability and the iOS 27.1 SDK is required for full edge-to-edge support and the new APIs; developers need to test size classes, reserved regions, arrangements, authentication wording, alerts, and content near the fold.
+- Ray introduced [A Design Space Exploration of Async/Await](https://cel.cs.brown.edu/blog/design-space-async-await/), which identifies nine independent semantic choices across modern runtimes. The examples showed why similar syntax can yield different task lifetimes, cancellation behavior, and output ordering. The group connected that to Swift command-line tools, where reaching the end of `main` ends outstanding work, and to iOS, where ordinary tasks can be suspended or terminated after backgrounding unless work uses the appropriate background-task APIs.
+- The future of voice-first computing led to a discussion of accessibility, full-duplex conversation, and whether a new AI device must offer a genuinely different interaction model rather than duplicating a phone app. The group expected visual interfaces to remain important for dense or spatial information even if conversational interfaces replace many routine app interactions.
+- Shopify's [return to native mobile development](https://shopify.engineering/back-to-native) illustrated how coding agents can reduce the cost of maintaining Swift and Kotlin versions while preserving platform-native behavior. The group contrasted native UI with server-driven and cross-platform approaches: dynamic systems offer flexibility and fault tolerance, but bridging layers add complexity, and custom renderers can lag platform features such as Liquid Glass. Shopify's checkpointed implementation, visual review, adversarial review, and headless business-logic tooling were seen as more credible than a one-shot rewrite.
+- Ed shared Apple's [SimpleDesign](https://apple.news/A2p326qU2QnWIFUy8moM5Dw) research, a single-stage model that jointly generates protein sequences and structures directly in the data space. It uses modality-specific Transformer processing with shared attention and was trained on more than two million sequence-structure pairs.
+
+### Links shared
+
+| Preview | Shared by | Link | Description |
+|---|---|---|---|
+| [<img src="https://nomadsplit.codeberg.page/assets/hero-balcony.jpg" width="160" alt="Nomad Split apartment site preview">](https://nomadsplit.codeberg.page) | Mihaela | [Nomad Split](https://nomadsplit.codeberg.page) | A multilingual TileDown site for a remote-worker apartment rental in Split. |
+| No preview | Josh | [The iOS Simulator Inside Cursor, Claude Code, and Codex](https://www.avanderlee.com/ai-development/the-ios-simulator-inside-cursor-claude-code-and-codex/) | Describes simulator streaming, agent-driven navigation and validation, and a feedback loop inside agentic development environments. |
+| No preview | Peter | [RocketTrace](https://rockettrace.app) | Turns Instruments recordings into ranked, measured investigation leads and prompts for coding agents. |
+| No preview | Ray | [WWDC: 2026](https://www.pointfree.co/collections/wwdc/wwdc-2026) | Ten free videos on new SwiftUI and SwiftData APIs and Point-Free's related tools. |
+| No preview | Josh | [Get ready for iPhone Duo](https://developer.apple.com/iphone-duo/) | Apple's developer hub for adaptive layouts, multiple displays and scenes, camera experiences, and device-specific design. |
+| No preview | Ray | [A Design Space Exploration of Async/Await](https://cel.cs.brown.edu/blog/design-space-async-await/) | Maps nine semantic design dimensions across seven modern async runtimes. |
+| No preview | Ray | [Async/await and structured-concurrency discussion](https://mastodon.social/@tonofcrates/117241380083291749) | A discussion of task lifetimes, cancellation, local concurrency, and what structure makes it possible to reason about completion. |
+| No preview | Ray | [Callback 8020: The Future of Flip-Phones](https://commodore.net/callback/) | A Sailfish-based flip phone that keeps selected modern apps while blocking browsers and social media. |
+| No preview | Ed | [SimpleDesign: A Joint Model for Protein Sequence and Structure Codesign](https://apple.news/A2p326qU2QnWIFUy8moM5Dw) | Apple's single-stage model for jointly generating amino-acid sequences and three-dimensional protein structures. |
+| No preview | Josh | [Native is now the future of mobile at Shopify](https://shopify.engineering/back-to-native) | Explains why better coding agents shifted Shopify from React Native back to Swift and Kotlin, with staged verification rather than one-shot generation. |
+| No preview | Josh | [iPhone Duo for Developers: The 1.42 Problem and the SDK Gap](https://blakecrosley.com/blog/iphone-duo-for-developers) | Summarizes display geometry, size classes, SDK requirements, multiple scenes, reserved regions, and the camera accessory display. |
+
 ## 2026.09.05
 
 ### Discussion notes
