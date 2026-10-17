@@ -14,6 +14,33 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.10.17
+
+### Discussion notes
+
+- Early iPhone Duo testing exposed gaps between the simulator, App Store Connect, and a physical device. App Store screenshots need to cover open and closed orientations, while layouts must account for the outer display's reserved region, its merged app and system controls, a camera that can appear in that region, the movable leading or trailing bar, and the fold in book and laptop modes. The group recommended centering content within the safe area and testing each arrangement explicitly instead of treating Duo as merely a wider phone.
+- HomeView prompted a discussion of shared-device identity and its limited developer surface. It combines facial recognition with signals such as a nearby recently unlocked device to select personal context, acts as a HomeKit hub, and exposes selected partner apps through CarPlay rather than a general app or widget SDK. The group saw useful household and accessibility scenarios but noted that developers still lack a clear approval process or simulator story.
+- Mihaela described a serverless voice-and-chat app in which participants communicate peer to peer and one capable device can become a temporary host for a group. NAT traversal, discovery, transcoding capacity, changing hosts, and iOS background-execution limits make the design difficult even if iCloud stores only rendezvous information. [BitChat](https://github.com/permissionlesstech/bitchat) provided a related open-source example using Bluetooth mesh locally and Nostr relays for wider reach.
+- Allen's problems with Claude Code's terminal input, scrollback, and multi-agent rendering led to a broader tooling discussion. Peter and Alex suggested graphical clients for simpler workflows, while [Herdr](https://herdr.dev/) was shared as a way to keep multiple coding-agent terminals organized, persistent, and reachable across machines. The practical takeaway was that interface friction matters when developers supervise several agents at once.
+- Point-Free's second advanced macro technique uses a generated protocol with associated types plus a concrete witness generated from each property's initializer. The macro itself still sees only syntax, but it arranges code that lets Swift's compiler infer the witness's associated type and then uses that type in a generated memberwise initializer. The group viewed it as a clever workaround that would be unnecessary if macros eventually received resolved type information directly.
+- A 100,000-event calendar stress test illustrated how Instruments separates updates that take too long from updates that happen too often. Short, focused captures can reveal hitches, excessive SwiftUI graph updates, layout churn, and main-thread work without creating enormous traces. The group preferred measuring and correcting the underlying state or rendering path over simply removing an affected interaction, and recommended signposts for application-specific work such as network and disk operations.
+- The async-testing discussion rejected `Task.yield()` and arbitrary sleeps as synchronization mechanisms because neither establishes deterministic ordering. An injected task factory can help when a synchronous lifecycle entry point must launch work, but the group preferred making completion part of the API contract whenever possible through `async`, a completion handler, a publisher, or observable state. Caching an in-flight `Task` can also coalesce duplicate requests; clearing it on completion turns the same operation into an explicit reload.
+- SwiftUI lazy containers perform best when every `ForEach` element contributes a predictable number of child views. Filtering inside the view builder forces SwiftUI to inspect offscreen elements and can destabilize indexing, so omitted elements should usually be filtered before reaching the view. When every element remains but its inner content varies, wrapping that content in a suitable container restores one outer view per element; `-LogForEachSlowPath YES` helps diagnose violations.
+- Xcode 27's ordinary skill export omits some capabilities, including its localization workflow. The complete active-Xcode plugin can instead be located with `xcrun agent plugin path --plugin-format claude` and adapted for another coding agent. Josh recommended turning installation, removal, and version refresh into a reusable local skill so the integration can be updated whenever Xcode changes, while keeping machine-generated String Catalog translations identifiable for later human review.
+
+### Links shared
+
+| Preview | Shared by | Link | Description |
+|---|---|---|---|
+| No preview | Josh | [BitChat](https://github.com/permissionlesstech/bitchat) | A Swift peer-to-peer messenger using Bluetooth mesh for nearby offline communication and Nostr relays for wider reach. |
+| No preview | Chitaranjan | [Herdr](https://herdr.dev/) | A persistent runtime and terminal workspace for supervising coding agents across projects and machines. |
+| No preview | Peter | [Claude Code](https://claude.com/product/claude-code) | Anthropic's coding agent for terminal, desktop, browser, and IDE workflows. |
+| No preview | Josh | [Advanced macro technique #2: Type inference](https://www.pointfree.co/blog/posts/233-advanced-macro-technique-2-type-inference) | Uses an associated-type protocol and generated witness to recover an initializer's inferred static type in macro-generated code. |
+| No preview | Josh | [SwiftUI Profiling with Instruments: 100,000 Calendar Events](https://horacal.app/blog/swiftui-performance-profiling-instruments/) | Investigates hitches, repeated layout work, persistence paths, and view updates in a large calendar stress test. |
+| No preview | Josh | [Testing Async Code in Swift: Stop Using `Task.yield()` in Your Tests](https://www.nsvasilev.com/posts/testing-swift-tasks-with-itaskfactory) | Explains why yielding produces flaky ordering and demonstrates an injectable task factory for synchronous entry points. |
+| No preview | Josh | [Diagnosing `ForEach` performance issues in SwiftUI lazy containers](https://nilcoalescing.com/blog/DiagnosingForEachPerformanceIssuesInSwiftUILazyContainers/) | Shows how conditional child counts defeat lazy evaluation and how to use SwiftUI's slow-path diagnostic. |
+| No preview | Josh | [Using Xcode 27's localization skills over MCP](https://macguru.dev/using-xcode-27s-localization-skills-over-mcp/) | Locates Xcode's complete agent plugin so external coding agents can use its String Catalog translation workflow. |
+
 ## 2026.10.10
 
 ### Discussion notes
