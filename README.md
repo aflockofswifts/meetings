@@ -14,6 +14,18 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.10.24
+
+### Discussion notes
+
+- Josh demonstrated [Once](https://github.com/joshuajhomann/Once), a Swift macro project that memoizes asynchronous work that should execute only once per instance. The first call creates and stores a `Task`; overlapping and later calls await the same task and reuse its result or thrown error, replacing repetitive manual task-caching code with `@Once`.
+
+### Links shared
+
+| Preview | Shared by | Link | Description |
+|---|---|---|---|
+| No preview | Josh | [Once](https://github.com/joshuajhomann/Once) | A Swift package demonstrating an `@Once` macro that caches a task so repeated calls share one asynchronous result. |
+
 ## 2026.10.17
 
 ### Discussion notes
