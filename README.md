@@ -14,6 +14,149 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.11.21
+
+### Discussion notes
+
+- Ray reviewed two Swift Evolution proposals. SE-0562 aligns subscript parameters with function parameter ownership, including `inout`, `borrowing`, and `consuming`. SE-0567 allows selected floating-point operations to relax strict rounding rules so the compiler can reassociate or vectorize calculations; the group discussed the precision and performance tradeoffs and whether `&` is a clear operator marker given its existing use for wrapping integer arithmetic.
+- Mihaela asked about representing framework and domain knowledge as small, linked, reusable facts. The discussion connected that idea to Zettelkasten, static analysis, and formal methods. Josh demonstrated Bend, which uses Lean proofs to check stated program invariants, and contrasted exhaustive proofs of properties with tests that cover selected inputs. The group also noted that implicit API behavior can become a dependency, as described by Hyrum's Law, and is difficult to capture in a formal contract.
+- Ray's Swift concurrency demo started with shared mutable store state accessed by task-group children. `@unchecked Sendable` allowed the code to cross isolation boundaries but did not make the mutation safe; the example exposed a data race. Converting the store and its items to actors let the compiler enforce isolated access. In the final example, each `Item` holds `unowned let isolation` and forwards its `unownedExecutor` to the store actor, placing both on the same isolation domain at runtime. Since Swift cannot express that relationship statically, the demo uses `assumeIsolated` for synchronous item access. Tests also used an `isolated` actor parameter and an `Actor.run` helper, then created many items concurrently. The discussion distinguished data races, which can cause undefined behavior, from logical race conditions, which isolation alone does not prevent.
+
+**Code shared by Ray**
+
+`ActorExploration.swift`
+
+```swift
+import Foundation
+
+//@globalActor
+//actor StoreActor {
+//    static let shared: some Actor = StoreActor()
+//}
+
+
+actor Store {
+    private var items: [UUID: Item] = [:]
+
+    actor Item {
+        let id: UUID
+        var name: String
+        unowned let isolation: any Actor
+
+        fileprivate init(id: UUID, name: String, isolation: any Actor) {
+            self.id = id
+            self.name = name
+            self.isolation = isolation
+        }
+
+        nonisolated var unownedExecutor: UnownedSerialExecutor {
+            isolation.unownedExecutor
+        }
+    }
+
+    func process() {
+        start()
+        finish()
+    }
+
+    func start() { }
+
+    func finish() { }
+
+    func create(name: String) -> Item {
+        let id = UUID()
+        let item = Item(id: id, name: name, isolation: self)
+        items[id] = item
+        return item
+    }
+
+    func item(id: UUID) throws -> Item {
+        guard let item = items[id] else {
+            struct NotFound: Error {}
+            throw NotFound()
+        }
+        return item
+    }
+}
+```
+
+`ActorExplorationTests.swift`
+
+```swift
+import Testing
+@testable import Exploration
+
+extension Store {
+    func process2() {
+        start()
+        finish()
+    }
+}
+
+func process3(store: isolated Store) {
+    store.start()
+    store.finish()
+}
+
+extension Actor {
+    @discardableResult
+    func run<R, Failure: Error>(body: @Sendable (isolated Self) throws(Failure) -> sending R) throws(Failure) -> sending R {
+        try body(self)
+    }
+}
+
+@Suite struct ActorExploration {
+    @Test func simple() async {
+        let store = Store()
+
+        await store.run { store in
+            let chair = store.create(name: "Chair")
+            let table = store.create(name: "Table")
+
+            store.start()
+            store.finish()
+
+            store.process()
+            store.process2()
+            process3(store: store)
+
+            store.start()
+            store.finish()
+
+            print(chair.assumeIsolated { print($0.name) })
+            print(table.assumeIsolated { print($0.name) })
+        }
+    }
+
+    @Test func createMany() async {
+        let store = Store()
+
+        _ = await withTaskGroup {
+            for index in 1 ... 1000 {
+                $0.addTask {
+                    await store.create(name: "item \(index)")
+                }
+            }
+        }
+    }
+}
+```
+
+- The closing comparison covered lock-based protection: `Mutex` uses `sending` while `OSAllocatedUnfairLock` requires `Sendable`. Ray also pointed out a compiler soundness issue in which a value protected by `Mutex` could be returned into an unprotected domain, underscoring that protected references must not escape their synchronization boundary.
+
+### Links shared
+
+| Preview | Shared by | Link | Description |
+|---|---|---|---|
+| No preview | Ray | [SE-0562: Subscript ownership parameters](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0562-subscript-ownership-parameters.md) | Proposal to support ownership modifiers on subscript parameters. |
+| No preview | Ray | [SE-0567: Relaxed floating-point operators](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0567-relaxed-floating-point-operators.md) | Proposal for opt-in floating-point relaxations that can enable additional optimizations. |
+| No preview | Josh | [Bend and Lean proof demo](https://www.youtube.com/watch?v=c7k3ehM3oWI) | Video discussed as an example of specifying program laws and proving invariants with Lean. |
+| No preview | Alex | [Lean](https://lean-lang.org) | The proof assistant referenced in the formal verification discussion. |
+| No preview | Mihaela | [Zettelkasten](https://en.wikipedia.org/wiki/Zettelkasten) | Linked-note method for organizing small, reusable pieces of knowledge. |
+| No preview | Carlyn | [Static program analysis](https://en.wikipedia.org/wiki/Static_program_analysis) | Background reference during the discussion of analyzing program properties. |
+| No preview | Carlyn | [Formal methods](https://en.wikipedia.org/wiki/Formal_methods) | Overview of mathematical techniques for specifying and verifying systems. |
+| No preview | Josh | [Hyrum's Law](https://lawsofsoftwareengineering.com/laws/hyrums-law/) | Explains how users can depend on observable behavior beyond an API's intended contract. |
+
 ## 2026.11.14
 
 ### Discussion notes
