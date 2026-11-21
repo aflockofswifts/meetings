@@ -14,6 +14,32 @@ All people and all skill levels are welcome to join.
 - [2024 Meetings](2024/README.md)
 - [2025 Meetings](2025/README.md)
 
+## 2026.11.14
+
+### Discussion notes
+
+- Mihaela and Alex compared Apple's UI drawing and animation systems, including AppKit's legacy constraints, Core Animation, and differences between macOS and iOS rendering. The group noted that developers can use Core Graphics and animation directly, and discussed how in-process versus out-of-process animation affects interface design.
+- Ray had prepared an actor isolation code-along, and Josh worked through how asynchronous closures run under Swift concurrency. `Sendable` and `isolated any` express different guarantees: a closure can cross concurrency domains while retaining an optional actor isolation, but passing an actor reference alone does not move execution onto that actor. `Task` inherits its creation context, while detached work and `@concurrent` run without that inherited isolation; `@_inheritActorContext` can express context inheritance in APIs, though it is underscored and makes execution behavior less obvious. The practical lesson was to state and verify where asynchronous work runs instead of assuming it follows the declaration site or a particular thread.
+- The actor discussion grew from designing a one-shot asynchronous future that can preserve isolation, support lazy work, and handle cancellation. Swift's current continuation patterns make cancellation and waiter management awkward; the split-continuations proposal separates resuming work from waiting, and adds synchronous resumption and a place to respond to priority escalation.
+- A migration from XCTest to Swift Testing can take advantage of native concurrency and parallel test execution. For large mechanical rewrites, a script can preserve test logic more predictably than an agent rewrite; if an agent is used, migrate in stages and compare behavior so the tests do not silently change what they verify.
+- Swift package graphs can fail when transitive dependencies require different major versions of the same package. The proposal for namespaced side-by-side package versions would avoid forking and editing dependencies just to reconcile those version requirements.
+- The group discussed having coding agents read documentation before implementing unfamiliar APIs. This is most useful for new or poorly documented APIs that may be missing from training data; loading an entire established framework for every task adds cost without much benefit. Josh recommended using focused research for new APIs and the skills Apple ships with Xcode for familiar frameworks.
+- SwiftUI's inspector API can provide a collapsible detail panel, which is especially useful for iPhone Duo and other larger or resizable layouts. A separate ImageIO discussion covered very large PSD/PSB files: ImageIO is a good default, but decoding a whole file can use substantial memory, so a specialized reader or partial decoding can help when profiling shows a real bottleneck.
+
+### Links shared
+
+| Preview | Shared by | Link | Description |
+|---|---|---|---|
+| No preview | Mihaela | [How SwiftUI animates](https://aleahim.com/blog/how-swiftui-animates/) | Explains SwiftUI animation, including rendering work inside and outside the app process. |
+| No preview | Mihaela | [SwiftUI Animation Witness](https://codeberg.org/Mihaela/SwiftUIAnimationWitness) | Code shared alongside the SwiftUI animation discussion. |
+| No preview | Mihaela | [Animation presentation](https://aleahim.com/d/slayerdeckstory-55517ea0bea0/) | A visual presentation shared during the discussion of UI drawing and animation. |
+| No preview | Josh | [Migrating 10,000 unit tests from XCTest to Swift Testing](https://engineering.depop.com/from-xctest-to-swift-testing-migrating-10-000-unit-tests-at-depop-4bc0b438eb12) | Describes a scripted migration and the benefits of Swift Testing's concurrency support. |
+| No preview | Josh | [Allowing multiple major versions of a package](https://forums.swift.org/t/pitch-allowing-multiple-major-versions-of-a-package/90326) | A Swift package manager proposal for resolving conflicting transitive dependency versions. |
+| No preview | Josh | [Research first when making with AI](https://thosewhoswift.substack.com/p/devs-for-devs-research-first-making) | Discusses grounding agent work in documentation for unfamiliar APIs. |
+| No preview | Josh | [SwiftUI inspector](https://tanaschita.com/swiftui-inspector/) | Describes a collapsible inspector panel for SwiftUI interfaces. |
+| No preview | Josh | [A fast native PSB reader in Swift](https://dev.to/mynetx/why-i-stopped-letting-apples-imageio-open-huge-psds-a-fast-native-psb-reader-in-swift-6-1dna) | Explores memory and performance limits when opening very large Photoshop files. |
+| No preview | Josh | [Split continuations](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0564-split-continuations.md) | Proposes separating continuation resumption from waiting to improve cancellation and priority handling. |
+
 ## 2026.10.24
 
 ### Discussion notes
